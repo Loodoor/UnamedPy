@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 from FPS_regulator import IAFPS
 from constantes import *
+import carte
 
 
 class Game:
@@ -10,6 +11,12 @@ class Game:
         self.fps_regulator = IAFPS(FPS_base)
         self.continuer = 1
         self.ecran = ecran
+
+        #Managers
+        self.carte_mgr = carte.Carte(self.ecran)
+
+    def load(self):
+        pass
 
     def save(self):
         pass
