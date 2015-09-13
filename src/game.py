@@ -1,9 +1,10 @@
 import os
 import pygame
 from pygame.locals import *
-from FPS_regulator import IAFPS
+from fpsregulator import IAFPS
 from constantes import *
 import carte
+import personnage
 
 
 class Game:
@@ -13,33 +14,48 @@ class Game:
         self.ecran = ecran
 
         #Managers
-        self.carte_mgr = carte.Carte(self.ecran)
+        self.carte_mgr = carte.CarteManager(self.ecran)
+
+        #Entités
+        self.personnage = personnage.Personnage(self.ecran)
+
+        self.load()
 
     def load(self):
         pass
 
     def save(self):
-        pass
+        self.carte_mgr.save()
 
-    def get_events(self, events):
+    def process_events(self, events):
         for event in events:
             if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 self.continuer = 0
 
-    def start(self):
-        print("Working !")
-
+    def prepare(self):
+        #Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
+
+    def render(self):
+        pygame.draw.rect(self.ecran, (55, 178, 25), (0, 0) + self.ecran.get_size())
+        self.carte_mgr.update()
+        self.personnage.update()
+
+    def start(self):
+        self.prepare()
+        print("Working !")
 
         while self.continuer:
             #Evénements
-            self.get_events(pygame.event.get())
+            self.process_events(pygame.event.get())
 
             #FPS
             self.fps_regulator.actualise()
             dt = self.fps_regulator.get_DeltaTime()
 
             #Affichage
-            pygame.draw.rect(self.ecran, (55, 178, 25), (0, 0) + self.ecran.get_size())
+            self.render()
 
             pygame.display.flip()
+
+        self.save()

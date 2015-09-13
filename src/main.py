@@ -27,3 +27,6 @@ while continuer:
 pygame.quit()
 
 print("Exited cleanly")
+
+if __name__ == '__main__':
+    pass
