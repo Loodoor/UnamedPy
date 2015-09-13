@@ -23,3 +23,5 @@ ANIM1 = 1
 ANIM2 = 2
 
 DEFAUT_TILE = '0'
+
+EXTENSION = 'umd'

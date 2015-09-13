@@ -37,6 +37,7 @@ class Game:
 
     def save(self):
         self.carte_mgr.save()
+        self.personnage.save()
 
     def process_events(self, events):
         for event in events:
