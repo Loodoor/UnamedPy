@@ -85,6 +85,7 @@ class Game:
             #FPS
             self.fps_regulator.actualise()
             dt = self.fps_regulator.get_DeltaTime()
+            print(dt)
 
             #Affichage
             self.render()

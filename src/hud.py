@@ -27,3 +27,8 @@ class HUDBoutique(HUD):
 class HUDInventaire(HUD):
     def __init__(self, ecran):
         super().__init__(ecran)
+
+
+class HUDGear(HUD):
+    def __init__(self, ecran):
+        super().__init__(ecran)
