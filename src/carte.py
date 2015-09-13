@@ -10,13 +10,11 @@ class CarteManager:
     def __init__(self, ecran):
         self.ecran = ecran
         self.carte = []
-        self.map_path = os.path.join("..", "saves", "map.umd")
+        self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
         self.fov = [0, 10, 0, 10]
         self.offsets = [0, 0]
         self.images = {}
         self.lassets = []
-
-        self.load()
 
     def load(self):
         if os.path.exists(self.map_path):

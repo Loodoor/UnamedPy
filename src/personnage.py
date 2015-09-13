@@ -28,8 +28,6 @@ class Personnage:
         self.pos = list(pos)
         self.carte_mgr = carte_mgr
 
-        self.load()
-
     def move(self, direction=HAUT):
         self.direction = direction
         self.perso = self.sprites[self.direction][ANIM1]
@@ -48,10 +46,10 @@ class Personnage:
         self.ecran.blit(self.perso, self.pos)
 
     def load(self):
-        if os.path.exists(os.path.join("..", "saves", "perso." + EXTENSION)):
-            with open(os.path.join("..", "saves", "perso." + EXTENSION), "rb") as read_perso:
+        if os.path.exists(os.path.join("..", "saves", "perso" + EXTENSION)):
+            with open(os.path.join("..", "saves", "perso" + EXTENSION), "rb") as read_perso:
                 self.pos = pickle.Unpickler(read_perso).load()
 
     def save(self):
-        with open(os.path.join("..", "saves", "perso." + EXTENSION), "wb") as save_perso:
+        with open(os.path.join("..", "saves", "perso" + EXTENSION), "wb") as save_perso:
             pickle.Pickler(save_perso).dump(self.pos)

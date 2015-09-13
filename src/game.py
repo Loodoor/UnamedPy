@@ -6,6 +6,7 @@ from constantes import *
 import carte
 import personnage
 import sys
+import inventaire
 
 
 class Game:
@@ -16,6 +17,7 @@ class Game:
 
         #Managers
         self.carte_mgr = carte.CarteManager(self.ecran)
+        self.inventaire = inventaire.Inventaire(self.ecran)
 
         #Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -33,7 +35,9 @@ class Game:
         self.load()
 
     def load(self):
-        pass
+        self.carte_mgr.load()
+        self.personnage.load()
+        self.inventaire.load()
 
     def save(self):
         self.carte_mgr.save()
@@ -73,7 +77,6 @@ class Game:
 
     def start(self):
         self.prepare()
-        print("Working !")
 
         while self.continuer:
             #Evénements
