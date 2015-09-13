@@ -1,9 +1,22 @@
 FEN_large = 640
 FEN_haut = 640
+FEN_taille = (FEN_large, FEN_haut)
+
 FPS_base = 100
+
 TILE_SIZE = 32
-YTAILLE = 20
-XTAILLE = 20
+YTAILLE_carte = 1200
+XTAILLE_carte = 1200
+
 TILECODE = 0
-BATISIZE = 1
+BATIMENTSIZE = 1
+
+HAUT = 0
+BAS = 1
+GAUCHE = 2
+DROITE = 3
+PAUSE = 0
+ANIM1 = 1
+ANIM2 = 2
+
 DEFAUT = '0'

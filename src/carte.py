@@ -1,7 +1,9 @@
 import os
 import pickle
+from glob import glob
 import pygame
 from pygame.locals import *
+from constantes import *
 
 
 class CarteManager:
@@ -9,6 +11,10 @@ class CarteManager:
         self.ecran = ecran
         self.carte = []
         self.map_path = os.path.join("..", "saves", "map.umd")
+        self.fov = [0, 10, 0, 10]
+        self.offsets = [0, 0]
+        self.images = {}
+        self.lassets = []
 
         self.load()
 
@@ -19,6 +25,10 @@ class CarteManager:
         else:
             print("An error occurred. The map seems to doesn't exist")
 
+        for i in glob("..//assets//tiles//*.png"):
+            self.images[i[16:-4]] = pygame.image.load(i).convert_alpha()
+            self.lassets.append(i[16:-4])
+
     def save(self):
         with open(self.map_path, "wb") as map_wb:
             pickle.Pickler(map_wb).dump(self.carte)
@@ -27,4 +37,9 @@ class CarteManager:
         self.render()
 
     def render(self):
-        pass
+        tmp_map = [ligne[self.fov[0]:self.fov[1]] for ligne in self.carte[self.fov[2]:self.fov[3]]]
+        for y in range(len(tmp_map)):
+            for x in range(len(tmp_map[y])):
+                tile = self.carte[y][x][TILECODE]
+                xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
+                self.ecran.blit(self.images[tile], (xpos, ypos))

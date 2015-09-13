@@ -17,7 +17,7 @@ class Game:
         self.carte_mgr = carte.CarteManager(self.ecran)
 
         #Entités
-        self.personnage = personnage.Personnage(self.ecran)
+        self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
 
         self.load()
 
@@ -31,6 +31,10 @@ class Game:
         for event in events:
             if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 self.continuer = 0
+            if event.type == KEYDOWN:
+                pass
+            if event.type == KEYUP:
+                pass
 
     def prepare(self):
         #Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
