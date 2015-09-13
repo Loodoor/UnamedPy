@@ -30,6 +30,7 @@ class Personnage:
     def move(self, direction=HAUT):
         self.direction = direction
         self.perso = self.sprites[self.direction][ANIM1]
+        self.is_moving = True
 
         #Détection des collisions
 

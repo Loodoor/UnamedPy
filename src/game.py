@@ -5,6 +5,7 @@ from fpsregulator import IAFPS
 from constantes import *
 import carte
 import personnage
+import sys
 
 
 class Game:
@@ -19,6 +20,16 @@ class Game:
         #Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
 
+        #Contrôles
+        self.controles = {
+            HAUT: K_UP,
+            BAS: K_DOWN,
+            GAUCHE: K_LEFT,
+            DROITE: K_RIGHT,
+            INVENTAIRE: K_RSHIFT,
+            MENU: K_ESCAPE
+        }
+
         self.load()
 
     def load(self):
@@ -29,10 +40,22 @@ class Game:
 
     def process_events(self, events):
         for event in events:
-            if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
-                self.continuer = 0
+            if event.type == QUIT:
+                self.save()
+                sys.exit()
             if event.type == KEYDOWN:
-                pass
+                if event.key == self.controles[HAUT]:
+                    self.personnage.move(HAUT)
+                if event.key == self.controles[BAS]:
+                    self.personnage.move(BAS)
+                if event.key == self.controles[GAUCHE]:
+                    self.personnage.move(GAUCHE)
+                if event.key == self.controles[DROITE]:
+                    self.personnage.move(DROITE)
+                if event.key == self.controles[INVENTAIRE]:
+                    raise NotImplementedError
+                if event.key == self.controles[MENU]:
+                    self.continuer = 0
             if event.type == KEYUP:
                 pass
 
