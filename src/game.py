@@ -36,6 +36,8 @@ class Game:
         #Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
 
+        pygame.key.set_repeat(200, 100)
+
     def render(self):
         pygame.draw.rect(self.ecran, (55, 178, 25), (0, 0) + self.ecran.get_size())
         self.carte_mgr.update()

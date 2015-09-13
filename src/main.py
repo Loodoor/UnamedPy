@@ -4,29 +4,31 @@ import pygame
 from pygame.locals import *
 from constantes import *
 
-pygame.init()
 
-ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
-pygame.display.set_caption("Unamed")
-continuer = 1
-jeu = game.Game(ecran)
+def main():
+    pygame.init()
 
-while continuer:
-    for event in pygame.event.get():
-        if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
-            continuer = 0
-        if event.type == KEYDOWN:
-            if event.key == K_j:
-                jeu.start()
+    ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
+    pygame.display.set_caption("Unamed")
+    continuer = 1
+    jeu = game.Game(ecran)
 
-    #Affichage
-    pygame.draw.rect(ecran, (25, 66, 145), (0, 0) + ecran.get_size())
+    while continuer:
+        for event in pygame.event.get():
+            if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
+                continuer = 0
+            if event.type == KEYDOWN:
+                if event.key == K_j:
+                    jeu.start()
 
-    pygame.display.flip()
+        #Affichage
+        pygame.draw.rect(ecran, (25, 66, 145), (0, 0) + ecran.get_size())
 
-pygame.quit()
+        pygame.display.flip()
 
-print("Exited cleanly")
+    pygame.quit()
+
+    print("Exited cleanly")
 
 if __name__ == '__main__':
-    pass
+    main()

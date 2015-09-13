@@ -1,3 +1,9 @@
 FEN_large = 640
 FEN_haut = 640
 FPS_base = 100
+TILE_SIZE = 32
+YTAILLE = 20
+XTAILLE = 20
+TILECODE = 0
+BATISIZE = 1
+DEFAUT = '0'
