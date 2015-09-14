@@ -11,7 +11,7 @@ class Personnage:
         self.ecran = ecran
         self.direction = BAS
         self.anim_cursor = PAUSE
-        self.max_anim_cursor = 2
+        self.max_anim_cursor = 3
         self.lhaut = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "haut*.png"))]
         self.lbas = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "bas*.png"))]
         self.lgauche = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "gauche*.png"))]
@@ -33,7 +33,12 @@ class Personnage:
         self.perso = self.sprites[self.direction][ANIM1]
         self.is_moving = True
 
+        self.pos = (32, 32)  # A modifier !!
+
         #Détection des collisions
+
+    def end_move(self):
+        self.is_moving = False
 
     def update(self):
         if not self.is_moving:

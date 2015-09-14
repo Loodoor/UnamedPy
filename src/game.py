@@ -62,7 +62,14 @@ class Game:
                 if event.key == self.controles[MENU]:
                     self.continuer = 0
             if event.type == KEYUP:
-                pass
+                if event.key == self.controles[HAUT]:
+                    self.personnage.end_move()
+                if event.key == self.controles[BAS]:
+                    self.personnage.end_move()
+                if event.key == self.controles[GAUCHE]:
+                    self.personnage.end_move()
+                if event.key == self.controles[DROITE]:
+                    self.personnage.end_move()
 
     def prepare(self):
         #Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
@@ -85,7 +92,6 @@ class Game:
             #FPS
             self.fps_regulator.actualise()
             dt = self.fps_regulator.get_DeltaTime()
-            print(dt)
 
             #Affichage
             self.render()
