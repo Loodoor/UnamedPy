@@ -34,18 +34,25 @@ class Personnage:
         self.perso = self.sprites[self.direction][self.anim_cursor+1]
         self.is_moving = True
 
-        x, y = (self.pos[0] + self.carte_mgr.get_of1() + self.carte_mgr.get_fov()[0]) // TILE_SIZE, \
-               (self.pos[1] + self.carte_mgr.get_of2() + self.carte_mgr.get_fov()[1]) // TILE_SIZE
-        x2, y2 = x + 1, y + 1
+        x, y = self.pos[0] + self.carte_mgr.get_of1() + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
+            self.pos[1] + self.carte_mgr.get_of2() + self.carte_mgr.get_fov()[2] * TILE_SIZE
+        x2, y2 = x + x % TILE_SIZE if (x + TILE_SIZE) % TILE_SIZE != x else x, \
+                 y + y % TILE_SIZE if (y + TILE_SIZE) % TILE_SIZE != y else y
         x3, y3 = x, y2
         x4, y4 = x2, y
 
         pos_possibles = [(x, y)]
 
         if (x, y) == (x2, y2) == (x4, y4) != (x3, y3):
-            pos_possibles.append((x3, y3))
+            print('in start x3y3')
+            if direction == GAUCHE or direction == DROITE:
+                print('in x3y3')
+                pos_possibles.append((x3, y3))
         if (x, y) == (x2, y2) == (x3, y3) != (x4, y4):
-            pos_possibles.append((x4, y4))
+            print('in start x4y4')
+            if direction == HAUT or direction == BAS:
+                print('in x4y4')
+                pos_possibles.append((x4, y4))
         if (x, y) != (x2, y2) != (x3, y3) != (x4, y4):
             pos_possibles.append((x2, y2))
             pos_possibles.append((x3, y3))
@@ -65,12 +72,14 @@ class Personnage:
         #Détection des collisions
         can_move = False
         for i in pos_possibles:
-            nx = i[0] + vecteur[0]
-            ny = i[1] + vecteur[1]
+            nx = i[0] // TILE_SIZE + vecteur[0]
+            ny = i[1] // TILE_SIZE + vecteur[1]
             if not COLLIDE(nx, ny, self.carte_mgr.get_carte(), TILECODE):
                 can_move = True
             else:
+                can_move = False
                 break
+
         if can_move:
             x, y = self.pos[0], self.pos[1]
             x += vecteur[0] * self.speed

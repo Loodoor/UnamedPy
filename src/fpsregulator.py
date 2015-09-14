@@ -1,11 +1,12 @@
 __author__ = 'Moustillon'
 
 import time
+from constantes import MAX_FPS
 
 
 class IAFPS:
     def __init__(self, FPS):
-        self.FPS = FPS / 10
+        self.FPS = FPS / 10 if FPS != -1 else MAX_FPS
         self.defaut_value = self.FPS
         self.reduction = 0.0005
         self.wait = 0.001

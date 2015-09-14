@@ -11,7 +11,7 @@ class CarteManager:
         self.ecran = ecran
         self.carte = []
         self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
-        self.fov = [0, 10, 0, 10]
+        self.fov = [0, FIRST_BASIC_FOV, 0, FIRST_BASIC_FOV2]
         self.offsets = [0, 0]
         self.images = {}
         self.lassets = []

@@ -2,7 +2,8 @@ FEN_large = 640
 FEN_haut = 640
 FEN_taille = (FEN_large, FEN_haut)
 
-FPS_base = 100
+FPS_base = -1
+MAX_FPS = 1000000
 
 TILE_SIZE = 32
 YTAILLE_carte = 1200
@@ -34,5 +35,8 @@ EXTENSION = '.umd'
 
 BASIC_SPEED = 4
 VELO_SPEED = 7
+
+FIRST_BASIC_FOV = 10
+FIRST_BASIC_FOV2 = 10
 
 COLLIDE = lambda x, y, c, tc: True if int(c[y][x][tc]) % 2 else False

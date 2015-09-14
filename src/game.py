@@ -1,4 +1,3 @@
-import os
 import pygame
 from pygame.locals import *
 from fpsregulator import IAFPS
@@ -86,15 +85,15 @@ class Game:
         self.prepare()
 
         while self.continuer:
-            #Evénements
-            self.process_events(pygame.event.get())
-
             #FPS
             self.fps_regulator.actualise()
             dt = self.fps_regulator.get_DeltaTime()
 
             #Affichage
             self.render()
+
+            #Evénements
+            self.process_events(pygame.event.get())
 
             pygame.display.flip()
 
