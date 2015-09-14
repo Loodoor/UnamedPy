@@ -77,7 +77,6 @@ class Game:
         pygame.key.set_repeat(200, 100)
 
     def render(self):
-        pygame.draw.rect(self.ecran, (55, 178, 25), (0, 0) + self.ecran.get_size())
         self.carte_mgr.update()
         self.personnage.update()
 
@@ -85,6 +84,7 @@ class Game:
         self.prepare()
 
         while self.continuer:
+            pygame.display.set_caption(str(self.personnage.get_pos()))
             #FPS
             self.fps_regulator.actualise()
             dt = self.fps_regulator.get_DeltaTime()

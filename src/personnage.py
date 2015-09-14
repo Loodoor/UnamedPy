@@ -1,6 +1,5 @@
 import os
 import pygame
-from pygame.locals import *
 import pickle
 from constantes import *
 from glob import glob
@@ -31,32 +30,37 @@ class Personnage:
 
     def move(self, direction=HAUT):
         self.direction = direction
-        self.perso = self.sprites[self.direction][self.anim_cursor+1]
+        self.perso = self.sprites[self.direction][self.anim_cursor + 1]
         self.is_moving = True
 
         x, y = self.pos[0] + self.carte_mgr.get_of1() + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
             self.pos[1] + self.carte_mgr.get_of2() + self.carte_mgr.get_fov()[2] * TILE_SIZE
-        x2, y2 = x + x % TILE_SIZE if (x + TILE_SIZE) % TILE_SIZE != x else x, \
-                 y + y % TILE_SIZE if (y + TILE_SIZE) % TILE_SIZE != y else y
+        x2, y2 = x + TILE_SIZE, y + TILE_SIZE
         x3, y3 = x, y2
         x4, y4 = x2, y
 
-        pos_possibles = [(x, y)]
+        pos_possibles = []
 
-        if (x, y) == (x2, y2) == (x4, y4) != (x3, y3):
-            print('in start x3y3')
-            if direction == GAUCHE or direction == DROITE:
-                print('in x3y3')
-                pos_possibles.append((x3, y3))
-        if (x, y) == (x2, y2) == (x3, y3) != (x4, y4):
-            print('in start x4y4')
-            if direction == HAUT or direction == BAS:
-                print('in x4y4')
-                pos_possibles.append((x4, y4))
-        if (x, y) != (x2, y2) != (x3, y3) != (x4, y4):
+        print(x, y)
+        print(x2, y2)
+        print(x3, y3)
+        print(x4, y4)
+
+        if direction == HAUT:
             pos_possibles.append((x2, y2))
             pos_possibles.append((x3, y3))
+        elif direction == BAS:
+            pos_possibles.append((x, y))
             pos_possibles.append((x4, y4))
+        elif direction == GAUCHE:
+            pos_possibles.append((x4, y4))
+            pos_possibles.append((x2, y2))
+        elif direction == DROITE:
+            pos_possibles.append((x, y))
+            pos_possibles.append((x3, y3))
+
+        print(pos_possibles)
+        print()
 
         vecteur = (0, 0)
 
@@ -72,8 +76,8 @@ class Personnage:
         #Détection des collisions
         can_move = False
         for i in pos_possibles:
-            nx = i[0] // TILE_SIZE + vecteur[0]
-            ny = i[1] // TILE_SIZE + vecteur[1]
+            nx = (i[0] + vecteur[0] * self.speed) // TILE_SIZE
+            ny = (i[1] + vecteur[1] * self.speed) // TILE_SIZE
             if not COLLIDE(nx, ny, self.carte_mgr.get_carte(), TILECODE):
                 can_move = True
             else:
@@ -98,6 +102,9 @@ class Personnage:
 
     def render(self):
         self.ecran.blit(self.perso, self.pos)
+
+    def get_pos(self):
+        return self.pos
 
     def load(self):
         if os.path.exists(os.path.join("..", "saves", "perso" + EXTENSION)):

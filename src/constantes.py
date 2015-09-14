@@ -36,7 +36,7 @@ EXTENSION = '.umd'
 BASIC_SPEED = 4
 VELO_SPEED = 7
 
-FIRST_BASIC_FOV = 10
-FIRST_BASIC_FOV2 = 10
+FIRST_BASIC_FOV = FEN_large // TILE_SIZE + 1
+FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE + 1
 
 COLLIDE = lambda x, y, c, tc: True if int(c[y][x][tc]) % 2 else False
