@@ -31,3 +31,8 @@ POCHE_CT_CS = 4
 DEFAUT_TILE = '0'
 
 EXTENSION = '.umd'
+
+BASIC_SPEED = 4
+VELO_SPEED = 7
+
+COLLIDE = lambda x, y, c, tc: True if int(c[y][x][tc]) % 2 else False

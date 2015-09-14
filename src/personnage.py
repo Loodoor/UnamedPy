@@ -11,7 +11,8 @@ class Personnage:
         self.ecran = ecran
         self.direction = BAS
         self.anim_cursor = PAUSE
-        self.max_anim_cursor = 3
+        self.max_anim_cursor = 2
+        self.speed = BASIC_SPEED
         self.lhaut = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "haut*.png"))]
         self.lbas = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "bas*.png"))]
         self.lgauche = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "gauche*.png"))]
@@ -30,12 +31,51 @@ class Personnage:
 
     def move(self, direction=HAUT):
         self.direction = direction
-        self.perso = self.sprites[self.direction][ANIM1]
+        self.perso = self.sprites[self.direction][self.anim_cursor+1]
         self.is_moving = True
 
-        self.pos = (32, 32)  # A modifier !!
+        x, y = (self.pos[0] + self.carte_mgr.get_of1() + self.carte_mgr.get_fov()[0]) // TILE_SIZE, \
+               (self.pos[1] + self.carte_mgr.get_of2() + self.carte_mgr.get_fov()[1]) // TILE_SIZE
+        x2, y2 = x + 1, y + 1
+        x3, y3 = x, y2
+        x4, y4 = x2, y
+
+        pos_possibles = [(x, y)]
+
+        if (x, y) == (x2, y2) == (x4, y4) != (x3, y3):
+            pos_possibles.append((x3, y3))
+        if (x, y) == (x2, y2) == (x3, y3) != (x4, y4):
+            pos_possibles.append((x4, y4))
+        if (x, y) != (x2, y2) != (x3, y3) != (x4, y4):
+            pos_possibles.append((x2, y2))
+            pos_possibles.append((x3, y3))
+            pos_possibles.append((x4, y4))
+
+        vecteur = (0, 0)
+
+        if direction == HAUT:
+            vecteur = (0, -1)
+        if direction == BAS:
+            vecteur = (0, 1)
+        if direction == GAUCHE:
+            vecteur = (-1, 0)
+        if direction == DROITE:
+            vecteur = (1, 0)
 
         #Détection des collisions
+        can_move = False
+        for i in pos_possibles:
+            nx = i[0] + vecteur[0]
+            ny = i[1] + vecteur[1]
+            if not COLLIDE(nx, ny, self.carte_mgr.get_carte(), TILECODE):
+                can_move = True
+            else:
+                break
+        if can_move:
+            x, y = self.pos[0], self.pos[1]
+            x += vecteur[0] * self.speed
+            y += vecteur[1] * self.speed
+            self.pos = (x, y)
 
     def end_move(self):
         self.is_moving = False

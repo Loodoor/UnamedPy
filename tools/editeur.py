@@ -30,7 +30,7 @@ clock = pygame.time.Clock()
 pygame.key.set_repeat(200, 100)
 
 if os.path.exists(map_path):
-    with open(map_path, "wb") as file:
+    with open(map_path, "rb") as file:
         carte = pickle.Unpickler(file).load()
 else:
     for i in range(YTAILLE):
@@ -95,7 +95,7 @@ while continuer:
     pygame.display.flip()
 
 print("Saving map ...")
-
+print(carte is not None)
 with open(map_path, "wb") as file:
     pickle.Pickler(file).dump(carte)
 

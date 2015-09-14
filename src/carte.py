@@ -16,6 +16,21 @@ class CarteManager:
         self.images = {}
         self.lassets = []
 
+    def get_of1(self):
+        return self.offsets[0]
+
+    def get_of2(self):
+        return self.offsets[1]
+
+    def get_ofs(self):
+        return self.offsets
+
+    def get_fov(self):
+        return self.fov
+
+    def get_carte(self):
+        return self.carte
+
     def load(self):
         if os.path.exists(self.map_path):
             with open(self.map_path, "rb") as map_rdb:
@@ -24,8 +39,8 @@ class CarteManager:
             print("An error occurred. The map seems to doesn't exist")
 
         for i in glob("..//assets//tiles//*.png"):
-            self.images[i[16:-4]] = pygame.image.load(i).convert_alpha()
-            self.lassets.append(i[16:-4])
+            self.images[i[18:-4]] = pygame.image.load(i).convert_alpha()
+            self.lassets.append(i[18:-4])
 
     def save(self):
         with open(self.map_path, "wb") as map_wb:
