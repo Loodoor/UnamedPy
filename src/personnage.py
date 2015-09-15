@@ -12,6 +12,7 @@ class Personnage:
         self.anim_cursor = PAUSE
         self.max_anim_cursor = 2
         self.speed = BASIC_SPEED
+        self.cur_div = DIV_DT_BASIC
         self.lhaut = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "haut*.png"))]
         self.lbas = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "bas*.png"))]
         self.lgauche = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "gauche*.png"))]
@@ -28,39 +29,10 @@ class Personnage:
         self.pos = list(pos)
         self.carte_mgr = carte_mgr
 
-    def move(self, direction=HAUT):
+    def move(self, direction=HAUT, dt=1):
         self.direction = direction
         self.perso = self.sprites[self.direction][self.anim_cursor + 1]
         self.is_moving = True
-
-        x, y = self.pos[0] + self.carte_mgr.get_of1() + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
-            self.pos[1] + self.carte_mgr.get_of2() + self.carte_mgr.get_fov()[2] * TILE_SIZE
-        x2, y2 = x + TILE_SIZE, y + TILE_SIZE
-        x3, y3 = x, y2
-        x4, y4 = x2, y
-
-        pos_possibles = []
-
-        print(x, y)
-        print(x2, y2)
-        print(x3, y3)
-        print(x4, y4)
-
-        if direction == HAUT:
-            pos_possibles.append((x2, y2))
-            pos_possibles.append((x3, y3))
-        elif direction == BAS:
-            pos_possibles.append((x, y))
-            pos_possibles.append((x4, y4))
-        elif direction == GAUCHE:
-            pos_possibles.append((x4, y4))
-            pos_possibles.append((x2, y2))
-        elif direction == DROITE:
-            pos_possibles.append((x, y))
-            pos_possibles.append((x3, y3))
-
-        print(pos_possibles)
-        print()
 
         vecteur = (0, 0)
 
@@ -73,22 +45,54 @@ class Personnage:
         if direction == DROITE:
             vecteur = (1, 0)
 
-        #Détection des collisions
-        can_move = False
-        for i in pos_possibles:
-            nx = (i[0] + vecteur[0] * self.speed) // TILE_SIZE
-            ny = (i[1] + vecteur[1] * self.speed) // TILE_SIZE
-            if not COLLIDE(nx, ny, self.carte_mgr.get_carte(), TILECODE):
-                can_move = True
-            else:
-                can_move = False
-                break
+        x, y = self.pos[0], self.pos[1]
+        x += vecteur[0] * (self.speed * 1)  # / dt / self.cur_div)
+        y += vecteur[1] * (self.speed * 1)  # / dt / self.cur_div)
 
-        if can_move:
-            x, y = self.pos[0], self.pos[1]
-            x += vecteur[0] * self.speed
-            y += vecteur[1] * self.speed
-            self.pos = (x, y)
+        #Détection des collisions
+        x1, y1 = int(x) + self.carte_mgr.get_of1() + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
+            int(y) + self.carte_mgr.get_of2() + self.carte_mgr.get_fov()[2] * TILE_SIZE
+        x2, y2 = x1 + TILE_SIZE, y1
+        x3, y3 = x1, y1 + TILE_SIZE
+        x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
+
+        if direction == HAUT:
+            if COLLIDE(x1 // TILE_SIZE, y1 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+                decx, decy = x % TILE_SIZE, y % TILE_SIZE
+                y += TILE_SIZE - decy
+            if COLLIDE(x2 // TILE_SIZE, y2 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+                if x % TILE_SIZE:
+                    decx, decy = x % TILE_SIZE, y % TILE_SIZE
+                    y += TILE_SIZE - decy
+
+        if direction == GAUCHE:
+            if COLLIDE(x1 // TILE_SIZE, y1 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+                decx, decy = x % TILE_SIZE, y % TILE_SIZE
+                x += TILE_SIZE - decx
+            if COLLIDE(x3 // TILE_SIZE, y3 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+                if y % TILE_SIZE:
+                    decx, decy = x % TILE_SIZE, y % TILE_SIZE
+                    x += TILE_SIZE - decx
+
+        if direction == DROITE:
+            if COLLIDE(x2 // TILE_SIZE, y2 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+                decx, decy = x % TILE_SIZE, y % TILE_SIZE
+                x -= decx
+            if COLLIDE(x4 // TILE_SIZE, y4 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+                if y % TILE_SIZE:
+                    decx, decy = x % TILE_SIZE, y % TILE_SIZE
+                    x -= decx
+
+        if direction == BAS:
+            if COLLIDE(x3 // TILE_SIZE, y3 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+                decx, decy = x % TILE_SIZE, y % TILE_SIZE
+                y -= decy
+            if COLLIDE(x4 // TILE_SIZE, y4 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+                if x % TILE_SIZE:
+                    decx, decy = x % TILE_SIZE, y % TILE_SIZE
+                    y -= decy
+
+        self.pos = (x, y)
 
     def end_move(self):
         self.is_moving = False

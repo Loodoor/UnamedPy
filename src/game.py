@@ -42,20 +42,20 @@ class Game:
         self.carte_mgr.save()
         self.personnage.save()
 
-    def process_events(self, events):
+    def process_events(self, events, dt=1):
         for event in events:
             if event.type == QUIT:
                 self.save()
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == self.controles[HAUT]:
-                    self.personnage.move(HAUT)
+                    self.personnage.move(HAUT, dt)
                 if event.key == self.controles[BAS]:
-                    self.personnage.move(BAS)
+                    self.personnage.move(BAS, dt)
                 if event.key == self.controles[GAUCHE]:
-                    self.personnage.move(GAUCHE)
+                    self.personnage.move(GAUCHE, dt)
                 if event.key == self.controles[DROITE]:
-                    self.personnage.move(DROITE)
+                    self.personnage.move(DROITE, dt)
                 if event.key == self.controles[INVENTAIRE]:
                     raise NotImplementedError
                 if event.key == self.controles[MENU]:
@@ -84,16 +84,15 @@ class Game:
         self.prepare()
 
         while self.continuer:
-            pygame.display.set_caption(str(self.personnage.get_pos()))
             #FPS
             self.fps_regulator.actualise()
             dt = self.fps_regulator.get_DeltaTime()
 
+            #Evénements
+            self.process_events(pygame.event.get(), dt)
+
             #Affichage
             self.render()
-
-            #Evénements
-            self.process_events(pygame.event.get())
 
             pygame.display.flip()
 

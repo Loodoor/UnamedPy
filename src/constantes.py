@@ -34,9 +34,11 @@ DEFAUT_TILE = '0'
 EXTENSION = '.umd'
 
 BASIC_SPEED = 4
-VELO_SPEED = 7
+DIV_DT_BASIC = 1
+DIV_DT_VELO = 0.5
 
 FIRST_BASIC_FOV = FEN_large // TILE_SIZE + 1
 FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE + 1
 
-COLLIDE = lambda x, y, c, tc: True if int(c[y][x][tc]) % 2 else False
+COLLIDE_ITEM = lambda c: True if int(c) % 2 else False
+COLLIDE = lambda x, y, c, tc: True if COLLIDE_ITEM(c[y][x][tc]) else False
