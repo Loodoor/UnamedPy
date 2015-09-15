@@ -49,6 +49,13 @@ T_LUMIERE = 8
 T_TENEBRE = 9
 MAX_T_NBR = 9
 
+VU = 0
+CAPTURE = 1
+
+MAX_CREATURES = 52
+
+MAX_RATIO_CAP = 100
+
 SPEC_ATK = 'attaque'
 SPEC_DEF = 'defense'
 SPEC_VIT = 'vitesse'
@@ -58,6 +65,13 @@ SPEC_CRA = 'creature'
 SPEC_TYP = 'type'
 SPEC_NIV = 'niveau'
 SPEC_PVS = 'points de vie'
+
+CAP_NOM = 'nom'
+CAP_PSEUDO = 'pseudo'
+CAP_TYPE = 'type'
+CAP_NIV = 'niveau'
+CAP_SPECS = 'specs'
+CAP_PV = 'points de vie'
 
 BORNES_GAIN_LVLUP = (1, 3)
 
