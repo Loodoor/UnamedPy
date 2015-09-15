@@ -37,6 +37,30 @@ BASIC_SPEED = 4
 DIV_DT_BASIC = 1
 DIV_DT_VELO = 0.5
 
+T_FEU = 0
+T_EAU = 1
+T_PLANTE = 2
+T_ELEC = 3
+T_AIR = 4
+T_NORMAL = 5
+T_TERRE = 6
+T_PLASMA = 7
+T_LUMIERE = 8
+T_TENEBRE = 9
+MAX_T_NBR = 9
+
+SPEC_ATK = 'attaque'
+SPEC_DEF = 'defense'
+SPEC_VIT = 'vitesse'
+SPEC_OBE = 'obeissance'
+SPEC_NOM = 'pseudo'
+SPEC_CRA = 'creature'
+SPEC_TYP = 'type'
+SPEC_NIV = 'niveau'
+SPEC_PVS = 'points de vie'
+
+BORNES_GAIN_LVLUP = (1, 3)
+
 FIRST_BASIC_FOV = FEN_large // TILE_SIZE + 1
 FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE + 1
 

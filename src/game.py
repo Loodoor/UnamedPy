@@ -6,6 +6,8 @@ import carte
 import personnage
 import sys
 import inventaire
+import indexer
+import captureurs
 
 
 class Game:
@@ -17,6 +19,7 @@ class Game:
         #Managers
         self.carte_mgr = carte.CarteManager(self.ecran)
         self.inventaire = inventaire.Inventaire(self.ecran)
+        self.indexeur = indexer.Indexer(self.ecran)
 
         #Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -37,6 +40,7 @@ class Game:
         self.carte_mgr.load()
         self.personnage.load()
         self.inventaire.load()
+        self.indexeur.load()
 
     def save(self):
         self.carte_mgr.save()
