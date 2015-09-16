@@ -8,6 +8,7 @@ import sys
 import inventaire
 import indexer
 import captureurs
+import tab_types
 
 
 class Game:
@@ -20,6 +21,7 @@ class Game:
         self.carte_mgr = carte.CarteManager(self.ecran)
         self.inventaire = inventaire.Inventaire(self.ecran)
         self.indexeur = indexer.Indexer(self.ecran)
+        self.tab_types = tab_types.Storage()
 
         #Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -41,6 +43,7 @@ class Game:
         self.personnage.load()
         self.inventaire.load()
         self.indexeur.load()
+        self.tab_types.init_tab()
 
     def save(self):
         self.carte_mgr.save()

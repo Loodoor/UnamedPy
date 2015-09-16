@@ -8,7 +8,6 @@ import pickle
 class Storage:
     def __init__(self):
         self.tab = [[0 for _ in range(MAX_T_NBR + 1)] for _ in range(MAX_T_NBR + 1)]
-        self.init_tab()
 
     def init_tab(self):
         # Feu
