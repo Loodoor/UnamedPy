@@ -22,11 +22,11 @@ class Game:
         self.last_rendering = RENDER_GAME
 
         # Polices
-        self.police_normale = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, False, False)
-        self.police_gras = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, True, False)
-        self.police_italique = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, False, True)
-        self.police_grande = pygame.font.SysFont("arial", POL_GRANDE_TAILLE, False, False)
-        self.police_petite = pygame.font.SysFont("arial", POL_PETITE_TAILLE, False, False)
+        self.police_normale = pygame.font.SysFont("arial", POL_NORMAL_TAILLE)
+        self.police_gras = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, bold=True)
+        self.police_italique = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, italic=True)
+        self.police_grande = pygame.font.SysFont("arial", POL_GRANDE_TAILLE)
+        self.police_petite = pygame.font.SysFont("arial", POL_PETITE_TAILLE)
 
         # Managers
         self.carte_mgr = carte.CarteManager(self.ecran)
