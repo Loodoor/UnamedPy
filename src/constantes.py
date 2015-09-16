@@ -58,6 +58,8 @@ MAX_RATIO_CAP = 100
 
 MAX_LEVEL = 1000
 
+MAX_PP_PER_ATK = 25
+
 UPGRADE_RANGE_SPEC = (1, 3)
 
 SPEC_ATK = 'attaque'
@@ -76,6 +78,17 @@ CAP_TYPE = 'type'
 CAP_NIV = 'niveau'
 CAP_SPECS = 'specs'
 CAP_PV = 'points de vie'
+
+ATK_NOM = 'nom'
+ATK_TYP = 'type'
+ATK_DEGATS = 'degats'
+ATK_TXT = 'texte'
+ATK_PPS = 'points de pouvoir'
+ATK_IMPOSSIBLE = -1
+ATK_PP = 0
+ATK_MAX_PP = 1
+
+HAUTES_HERBES = 6
 
 FIRST_BASIC_FOV = FEN_large // TILE_SIZE + 1
 FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE + 1

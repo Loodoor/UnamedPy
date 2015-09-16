@@ -3,19 +3,20 @@ import pygame
 from pygame.locals import *
 from constantes import *
 import random
+import atk_sys
 
 
 class Creature:
     def __init__(self, nom: str, type: int, niv: tuple) -> None:
         self.specs = {
-            SPEC_ATK: 0,
-            SPEC_DEF: 0,
-            SPEC_VIT: 0,
+            SPEC_ATK: random.randint(2, 10),
+            SPEC_DEF: random.randint(2, 10),
+            SPEC_VIT: random.randint(2, 10),
             SPEC_CREA: nom,
             SPEC_TYP: type,
             SPEC_NOM: '',
             SPEC_NIV: random.randint(niv[0], niv[1]),
-            SPEC_PVS: 20
+            SPEC_PVS: random.randint(18, 27)
         }
         self.upgrade_range = UPGRADE_RANGE_SPEC
 

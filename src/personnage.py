@@ -46,8 +46,8 @@ class Personnage:
             vecteur = (1, 0)
 
         x, y = self.pos[0], self.pos[1]
-        x += vecteur[0] * (self.speed * 1)  # / dt / self.cur_div)
-        y += vecteur[1] * (self.speed * 1)  # / dt / self.cur_div)
+        x += vecteur[0] * (self.speed * 1)  # (dt / 1000))
+        y += vecteur[1] * (self.speed * 1)  # (dt / 1000))
 
         #Détection des collisions
         x1, y1 = int(x) + self.carte_mgr.get_of1() + self.carte_mgr.get_fov()[0] * TILE_SIZE, \

@@ -51,7 +51,7 @@ def render(carte, offset, offset2, scale):
             ypos = y * scale + offset2
             if 0 <= xpos <= ecran.get_size()[0] and 0 <= ypos <= ecran.get_size()[1]:
                 img = assets[carte[y][x][TILECODE]]
-                img = pygame.transform.scale(img, (scale, scale))
+                #img = pygame.transform.scale(img, (scale, scale))
                 ecran.blit(img, (xpos, ypos))
 
 
