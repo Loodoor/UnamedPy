@@ -21,16 +21,23 @@ class Game:
         self.current_rendering = RENDER_GAME
         self.last_rendering = RENDER_GAME
 
-        #Managers
+        # Polices
+        self.police_normale = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, False, False)
+        self.police_gras = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, True, False)
+        self.police_italique = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, False, True)
+        self.police_grande = pygame.font.SysFont("arial", POL_GRANDE_TAILLE, False, False)
+        self.police_petite = pygame.font.SysFont("arial", POL_PETITE_TAILLE, False, False)
+
+        # Managers
         self.carte_mgr = carte.CarteManager(self.ecran)
-        self.inventaire = inventaire.Inventaire(self.ecran)
+        self.inventaire = inventaire.Inventaire(self.ecran, self.police_grande)
         self.indexeur = indexer.Indexer(self.ecran)
         self.tab_types = tab_types.Storage()
 
-        #Entités
+        # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
 
-        #Contrôles
+        # Contrôles
         self.controles = {
             HAUT: K_UP,
             BAS: K_DOWN,
@@ -38,7 +45,9 @@ class Game:
             DROITE: K_RIGHT,
             INVENTAIRE: K_RSHIFT,
             MENU: K_ESCAPE,
-            SCREENSCHOT: K_F5
+            SCREENSCHOT: K_F5,
+            NEXT_PAGE: K_RIGHT,
+            PREVIOUS_PAGE: K_LEFT
         }
 
         self.load()
@@ -46,8 +55,8 @@ class Game:
     def load(self):
         self.carte_mgr.load()
         self.personnage.load()
-        self.inventaire.load()
-        self.indexeur.load()
+        #self.inventaire.load()
+        #self.indexeur.load()
         self.tab_types.init_tab()
 
     def save(self):
@@ -58,6 +67,7 @@ class Game:
 
     def screenschot(self):
         pygame.image.save(self.ecran, os.path.join("..", "screenschots", str(len(glob(os.path.join("..", "screenschots", "*.png")))) + ".png"))
+        print("Screenschot sauvegardée")
 
     def process_events(self, events, dt=1):
         for event in events:
@@ -100,6 +110,10 @@ class Game:
                 tmp = self.last_rendering
                 self.last_rendering = self.current_rendering
                 self.current_rendering = tmp
+            if event.key == self.controles[NEXT_PAGE]:
+                self.inventaire.next()
+            if event.key == self.controles[PREVIOUS_PAGE]:
+                self.inventaire.previous()
 
     def process_events_game(self, event, dt):
         if event.type == KEYDOWN:
@@ -125,7 +139,7 @@ class Game:
                 self.personnage.end_move()
 
     def prepare(self):
-        #Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
+        # Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
         self.current_rendering = RENDER_GAME
         self.last_rendering = RENDER_GAME
@@ -150,14 +164,14 @@ class Game:
         self.prepare()
 
         while self.continuer:
-            #FPS
+            # FPS
             self.fps_regulator.actualise()
             dt = self.fps_regulator.get_DeltaTime()
 
-            #Evénements
+            # Evénements
             self.process_events(pygame.event.get(), dt)
 
-            #Affichage
+            # Affichage
             self.render()
 
             pygame.display.flip()
