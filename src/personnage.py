@@ -46,12 +46,12 @@ class Personnage:
             vecteur = (1, 0)
 
         x, y = self.pos[0], self.pos[1]
-        x += vecteur[0] * (self.speed * 1)  # (dt / 1000))
-        y += vecteur[1] * (self.speed * 1)  # (dt / 1000))
+        x += -self.carte_mgr.get_of1() + vecteur[0] * (self.speed * 1)  # (dt / 1000))
+        y += -self.carte_mgr.get_of2() + vecteur[1] * (self.speed * 1)  # (dt / 1000))
 
         #Détection des collisions
-        x1, y1 = int(x) + self.carte_mgr.get_of1() + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
-            int(y) + self.carte_mgr.get_of2() + self.carte_mgr.get_fov()[2] * TILE_SIZE
+        x1, y1 = int(x) + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
+            int(y) + self.carte_mgr.get_fov()[2] * TILE_SIZE
         x2, y2 = x1 + TILE_SIZE, y1
         x3, y3 = x1, y1 + TILE_SIZE
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
@@ -92,7 +92,7 @@ class Personnage:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     y -= decy
 
-        self.pos = (x, y)
+        self.pos = (x + self.carte_mgr.get_of1(), y + self.carte_mgr.get_of2())
 
     def end_move(self):
         self.is_moving = False

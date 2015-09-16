@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from fpsregulator import IAFPS
 from constantes import *
+from glob import glob
 import carte
 import personnage
 import sys
@@ -9,6 +10,7 @@ import inventaire
 import indexer
 import captureurs
 import tab_types
+import os
 
 
 class Game:
@@ -33,7 +35,8 @@ class Game:
             GAUCHE: K_LEFT,
             DROITE: K_RIGHT,
             INVENTAIRE: K_RSHIFT,
-            MENU: K_ESCAPE
+            MENU: K_ESCAPE,
+            SCREENSCHOT: K_F5
         }
 
         self.load()
@@ -48,6 +51,11 @@ class Game:
     def save(self):
         self.carte_mgr.save()
         self.personnage.save()
+        self.inventaire.save()
+        self.indexeur.save()
+
+    def screenschot(self):
+        pygame.image.save(self.ecran, os.path.join("..", "screenschots", str(len(glob(os.path.join("..", "screenschots", "*.png")))) + ".png"))
 
     def process_events(self, events, dt=1):
         for event in events:
@@ -76,6 +84,8 @@ class Game:
                     self.personnage.end_move()
                 if event.key == self.controles[DROITE]:
                     self.personnage.end_move()
+                if event.key == self.controles[SCREENSCHOT]:
+                    self.screenschot()
 
     def prepare(self):
         #Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)

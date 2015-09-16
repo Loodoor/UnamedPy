@@ -14,14 +14,28 @@ class Inventaire:
         self.cur_categorie = POCHE_COMMUNS
 
         #Objets
-        self.objets = {}
+        self.objets = [
+            [],  # Poche communs
+            [],  # Poche capturateurs
+            [],  # Poche médicaments
+            [],  # Poche Objets Rares
+            []   # Poche CT/CS
+        ]
 
     def update(self):
         self.render()
 
     def render(self):
         self.hud.render()
-        pass
+
+    def next(self):
+        self.cur_categorie = self.cur_categorie + 1 if self.cur_categorie + 1 < len(self.objets) else len(self.objets) - 1
+
+    def previous(self):
+        self.cur_categorie = self.cur_categorie - 1 if self.cur_categorie - 1 >= 0 else 0
+
+    def jeter(self, item: int):
+        self.objets[self.cur_categorie].pop(item)
 
     def load(self):
         if os.path.exists(os.path.join("..", "saves", "inventaire" + EXTENSION)):
