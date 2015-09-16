@@ -56,6 +56,10 @@ MAX_CREATURES = 52
 
 MAX_RATIO_CAP = 100
 
+MAX_LEVEL = 1000
+
+UPGRADE_RANGE_SPEC = (1, 3)
+
 SPEC_ATK = 'attaque'
 SPEC_DEF = 'defense'
 SPEC_VIT = 'vitesse'
@@ -65,6 +69,7 @@ SPEC_CRA = 'creature'
 SPEC_TYP = 'type'
 SPEC_NIV = 'niveau'
 SPEC_PVS = 'points de vie'
+MAX_VAL_SPEC = 1000
 
 CAP_NOM = 'nom'
 CAP_PSEUDO = 'pseudo'
@@ -72,8 +77,6 @@ CAP_TYPE = 'type'
 CAP_NIV = 'niveau'
 CAP_SPECS = 'specs'
 CAP_PV = 'points de vie'
-
-BORNES_GAIN_LVLUP = (1, 3)
 
 FIRST_BASIC_FOV = FEN_large // TILE_SIZE + 1
 FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE + 1
