@@ -3,13 +3,11 @@ import pygame
 from pygame.locals import *
 from constantes import *
 import pickle
-from hud import HUDInventaire
 
 
 class Inventaire:
     def __init__(self, ecran):
         self.ecran = ecran
-        self.hud = HUDInventaire(self.ecran)
 
         self.cur_categorie = POCHE_COMMUNS
 
@@ -26,7 +24,7 @@ class Inventaire:
         self.render()
 
     def render(self):
-        self.hud.render()
+        pygame.draw.rect(self.ecran, (50, 180, 70), (0, 0, 20, 50))
 
     def next(self):
         self.cur_categorie = self.cur_categorie + 1 if self.cur_categorie + 1 < len(self.objets) else len(self.objets) - 1

@@ -18,6 +18,8 @@ class Game:
         self.fps_regulator = IAFPS(FPS_base)
         self.continuer = 1
         self.ecran = ecran
+        self.current_rendering = RENDER_GAME
+        self.last_rendering = RENDER_GAME
 
         #Managers
         self.carte_mgr = carte.CarteManager(self.ecran)
@@ -62,40 +64,87 @@ class Game:
             if event.type == QUIT:
                 self.save()
                 sys.exit()
+
+            # Différents mode de gestion des événements
+            if self.current_rendering == RENDER_GAME:
+                self.process_events_game(event, dt)
+            elif self.current_rendering == RENDER_INVENTAIRE:
+                self.process_events_inventaire(event, dt)
+            elif self.current_rendering == RENDER_COMBAT:
+                self.process_events_combat(event, dt)
+            elif self.current_rendering == RENDER_BOUTIQUE:
+                self.process_events_boutique(event, dt)
+            elif self.current_rendering == RENDER_MENU_IN_GAME:
+                self.process_events_menu_in_game(event, dt)
+
+            # Global
             if event.type == KEYDOWN:
-                if event.key == self.controles[HAUT]:
-                    self.personnage.move(HAUT, dt)
-                if event.key == self.controles[BAS]:
-                    self.personnage.move(BAS, dt)
-                if event.key == self.controles[GAUCHE]:
-                    self.personnage.move(GAUCHE, dt)
-                if event.key == self.controles[DROITE]:
-                    self.personnage.move(DROITE, dt)
-                if event.key == self.controles[INVENTAIRE]:
-                    raise NotImplementedError
                 if event.key == self.controles[MENU]:
-                    self.continuer = 0
+                        self.continuer = 0
             if event.type == KEYUP:
-                if event.key == self.controles[HAUT]:
-                    self.personnage.end_move()
-                if event.key == self.controles[BAS]:
-                    self.personnage.end_move()
-                if event.key == self.controles[GAUCHE]:
-                    self.personnage.end_move()
-                if event.key == self.controles[DROITE]:
-                    self.personnage.end_move()
                 if event.key == self.controles[SCREENSCHOT]:
-                    self.screenschot()
+                        self.screenschot()
+
+    def process_events_menu_in_game(self, event, dt):
+        raise NotImplementedError
+
+    def process_events_boutique(self, event, dt):
+        raise NotImplementedError
+
+    def process_events_combat(self, event, dt):
+        raise NotImplementedError
+
+    def process_events_inventaire(self, event, dt):
+        if event.type == KEYDOWN:
+            if event.key == self.controles[INVENTAIRE]:
+                tmp = self.last_rendering
+                self.last_rendering = self.current_rendering
+                self.current_rendering = tmp
+
+    def process_events_game(self, event, dt):
+        if event.type == KEYDOWN:
+            if event.key == self.controles[HAUT]:
+                self.personnage.move(HAUT, dt)
+            if event.key == self.controles[BAS]:
+                self.personnage.move(BAS, dt)
+            if event.key == self.controles[GAUCHE]:
+                self.personnage.move(GAUCHE, dt)
+            if event.key == self.controles[DROITE]:
+                self.personnage.move(DROITE, dt)
+            if event.key == self.controles[INVENTAIRE]:
+                self.last_rendering = self.current_rendering
+                self.current_rendering = RENDER_INVENTAIRE
+        if event.type == KEYUP:
+            if event.key == self.controles[HAUT]:
+                self.personnage.end_move()
+            if event.key == self.controles[BAS]:
+                self.personnage.end_move()
+            if event.key == self.controles[GAUCHE]:
+                self.personnage.end_move()
+            if event.key == self.controles[DROITE]:
+                self.personnage.end_move()
 
     def prepare(self):
         #Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
+        self.current_rendering = RENDER_GAME
+        self.last_rendering = RENDER_GAME
 
+        self.load()
         pygame.key.set_repeat(200, 100)
 
     def render(self):
-        self.carte_mgr.update()
-        self.personnage.update()
+        if self.current_rendering == RENDER_GAME:
+            self.carte_mgr.update()
+            self.personnage.update()
+        elif self.current_rendering == RENDER_INVENTAIRE:
+            self.inventaire.update()
+        elif self.current_rendering == RENDER_BOUTIQUE:
+            raise NotImplementedError
+        elif self.current_rendering == RENDER_COMBAT:
+            raise NotImplementedError
+        elif self.current_rendering == RENDER_MENU_IN_GAME:
+            raise NotImplementedError
 
     def start(self):
         self.prepare()
