@@ -10,16 +10,11 @@ class Capturer:
         self.ecran = ecran
         self.ratio = 0  # 100
         self.type_capt = None  # NotImpletedError
-        self.creature = {}
+        self.creature = None
 
-    def use(self, sur, pseudo, type, niv, pv, specs):
+    def use(self, creature):
         if random.randint(0, MAX_RATIO_CAP) >= self.ratio:
-            self.creature[CAP_PSEUDO] = pseudo
-            self.creature[CAP_NOM] = sur
-            self.creature[CAP_TYPE] = type
-            self.creature[CAP_NIV] = niv
-            self.creature[CAP_PV] = pv
-            self.creature[CAP_SPECS] = specs
+            self.creature = creature
             return True
         return False
 
