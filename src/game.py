@@ -114,6 +114,9 @@ class Game:
                 self.inventaire.next()
             if event.key == self.controles[PREVIOUS_PAGE]:
                 self.inventaire.previous()
+        if event.type == MOUSEBUTTONUP:
+            xp, yp = event.pos
+            self.inventaire.clic(xp, yp)
 
     def process_events_game(self, event, dt):
         if event.type == KEYDOWN:

@@ -54,8 +54,10 @@ def render(carte, offset, offset2, scale):
                 #img = pygame.transform.scale(img, (scale, scale))
                 ecran.blit(img, (xpos, ypos))
 
+clock = pygame.time.Clock()
 
 while continuer:
+    clock.tick(30)
     pygame.draw.rect(ecran, (0, 0, 0), (0, 0) + ecran.get_size())
 
     for event in pygame.event.get():
