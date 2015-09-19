@@ -14,6 +14,8 @@ class Inventaire:
         self.cur_categorie = POCHE_COMMUNS
         self.selected_item = -1
 
+        self.titre = self.police.render("Inventaire", 1, (10, 10, 10))
+
         #Objets
         self.objets = [
             [objets_manager.Objet("Test", "Je suis un test !", [10, 10], objets_manager.ObjectAction(print, "Salut ! Le test fonctionne chef !"))],  # Poche communs
@@ -27,17 +29,29 @@ class Inventaire:
         self.render()
 
     def render(self):
-        pygame.draw.rect(self.ecran, (50, 180, 70), (20, 20, INVENT_X_SIZE, INVENT_Y_SIZE))
-        self.ecran.blit(self.police.render("Inventaire", 1, (10, 10, 10)), (FEN_large // 2, 30))
+        pygame.draw.rect(self.ecran, (50, 180, 70), (INVENT_POSX, INVENT_POSY, INVENT_X_SIZE, INVENT_Y_SIZE))
+        self.ecran.blit(self.titre, (FEN_large // 2 - self.titre.get_size()[0] // 2, 30))
         for i in range(len(self.objets[self.cur_categorie])):
             texte = self.objets[self.cur_categorie][i].name() + ' : ' + str(self.objets[self.cur_categorie][i].tot_quantite())
             item = self.police.render(texte, 1, (10, 10, 10))
             self.ecran.blit(item, (INVENT_X_ITEM, INVENT_Y_ITEM + i * INVENT_ESP_ITEM))
         if self.selected_item != -1:
+            # les boutons jeter et jeter tout
             pygame.draw.rect(self.ecran, (180, 50, 50), (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
             pygame.draw.rect(self.ecran, (255, 50, 50), (INVENT_BTN_JETERTT_X, INVENT_BTN_JETERTT_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
+            # texte d'aide
+            self.ecran.blit(self.police.render(self.objets[self.cur_categorie][self.selected_item].aide(), 1, (255, 255, 255)), (INVENT_TXT_AIDE_X, INVENT_TXT_AIDE_Y))
+
+        # image de la poche
+        pygame.draw.rect(self.ecran, (0, 0, 255), (INVENT_IMAGE_X, INVENT_IMAGE_Y, INVENT_IMAGE_SIZE, INVENT_IMAGE_SIZE))
+
+        # les boutons next & previous
         pygame.draw.rect(self.ecran, (180, 75, 180), (INVENT_BTN_PREVIOUS, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
         pygame.draw.rect(self.ecran, (180, 75, 180), (INVENT_BTN_NEXT, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
+
+        # texte de la poche
+        poche_txt = self.police.render("TEST numéro poche", 1, (255, 255, 255))
+        self.ecran.blit(poche_txt, (INVENT_TXT_POCHE_X - poche_txt.get_size()[0] // 2, INVENT_TXT_POCHE_Y))
 
     def clic(self, xp: int, yp: int):
         real_y = (yp - INVENT_Y_ITEM) // INVENT_ESP_ITEM
