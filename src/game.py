@@ -65,9 +65,9 @@ class Game:
         self.inventaire.save()
         self.indexeur.save()
 
-    def screenschot(self):
-        pygame.image.save(self.ecran, os.path.join("..", "screenschots", str(len(glob(os.path.join("..", "screenschots", "*.png")))) + ".png"))
-        print("Screenschot sauvegardée")
+    def screenshot(self):
+        pygame.image.save(self.ecran, os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenschots", "*.png")))) + ".png"))
+        print("Screenshot sauvegardée")
 
     def process_events(self, events: pygame.event, dt: int=1):
         for event in events:
@@ -93,7 +93,7 @@ class Game:
                         self.continuer = 0
             if event.type == KEYUP:
                 if event.key == self.controles[SCREENSCHOT]:
-                        self.screenschot()
+                        self.screenshot()
 
     def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
         raise NotImplementedError
