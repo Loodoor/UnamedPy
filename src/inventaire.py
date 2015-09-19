@@ -34,20 +34,32 @@ class Inventaire:
             item = self.police.render(texte, 1, (10, 10, 10))
             self.ecran.blit(item, (INVENT_X_ITEM, INVENT_Y_ITEM + i * INVENT_ESP_ITEM))
         if self.selected_item != -1:
-            pygame.draw.rect(self.ecran, (180, 50, 75), (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
+            pygame.draw.rect(self.ecran, (180, 50, 50), (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
+            pygame.draw.rect(self.ecran, (255, 50, 50), (INVENT_BTN_JETERTT_X, INVENT_BTN_JETERTT_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
+        pygame.draw.rect(self.ecran, (180, 75, 180), (INVENT_BTN_PREVIOUS, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
+        pygame.draw.rect(self.ecran, (180, 75, 180), (INVENT_BTN_NEXT, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
 
     def clic(self, xp, yp):
         real_y = (yp - INVENT_Y_ITEM) // INVENT_ESP_ITEM
-        if INVENT_X_ITEM <= xp <= INVENT_MAX_X_ITEM:
-            if 0 <= real_y <= len(self.objets[self.cur_categorie]):
-                self.selected_item = real_y
+        if INVENT_X_ITEM <= xp <= INVENT_MAX_X_ITEM and 0 <= real_y < len(self.objets[self.cur_categorie]):
+            self.selected_item = real_y
+        else:
+            if INVENT_BTN_JETER_Y <= yp <= INVENT_BTN_JETER_Y + INVENT_SIZE_BTN_Y and \
+                        INVENT_BTN_JETER_X <= xp <= INVENT_BTN_JETER_X + INVENT_SIZE_BTN_X:
+                # DEMANDER CONFIRMATION AVANT !
+                self.jeter(self.selected_item)
+            elif INVENT_BTN_JETERTT_Y <= yp <= INVENT_BTN_JETERTT_Y + INVENT_SIZE_BTN_Y and \
+                        INVENT_BTN_JETERTT_X <= xp <= INVENT_BTN_JETERTT_X + INVENT_SIZE_BTN_X:
+                # DEMANDER CONFIRMATION AVANT !
+                self.jeter_tout(self.selected_item)
+            elif INVENT_BTN_PREVIOUS <= xp <= INVENT_BTN_PREVIOUS + INVENT_BTN_PAGES_SX and \
+                INVENT_BTN_PAGES <= yp <= INVENT_BTN_PAGES + INVENT_BTN_PAGES_SY:
+                self.previous()
+            elif INVENT_BTN_NEXT <= xp <= INVENT_BTN_NEXT + INVENT_BTN_PAGES_SX and \
+                INVENT_BTN_PAGES <= yp <= INVENT_BTN_PAGES + INVENT_BTN_PAGES_SY:
+                self.next()
             else:
                 self.selected_item = -1
-        elif INVENT_BTN_JETER_Y <= yp <= INVENT_BTN_JETER_Y + INVENT_SIZE_BTN_Y and \
-                    INVENT_BTN_JETER_X <= xp <= INVENT_BTN_JETER_X + INVENT_SIZE_BTN_X:
-                self.jeter(real_y)
-        else:
-            self.selected_item = -1
 
     def next(self):
         self.cur_categorie = self.cur_categorie + 1 if self.cur_categorie + 1 < len(self.objets) else 0
@@ -56,7 +68,12 @@ class Inventaire:
         self.cur_categorie = self.cur_categorie - 1 if self.cur_categorie - 1 >= 0 else len(self.objets) - 1
 
     def jeter(self, item: int):
-        self.objets[self.cur_categorie][item].jeter()
+        if item != -1:
+            self.objets[self.cur_categorie][item].jeter()
+
+    def jeter_tout(self, item: int):
+        if item != -1:
+            self.objets[self.cur_categorie][item].jeter_tout()
 
     def load(self):
         if os.path.exists(os.path.join("..", "saves", "inventaire" + EXTENSION)):

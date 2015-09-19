@@ -26,8 +26,11 @@ class Objet:
     def aide(self):
         return self.texte
 
-    def jeter(self):
+    def jeter_tout(self):
         self.quantite[0] = 0
+
+    def jeter(self):
+        self.quantite[0] -= 1
 
     def use(self):
         if self.quantite[0] > 0:
