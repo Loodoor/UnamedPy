@@ -35,6 +35,8 @@ class Personnage:
         self.perso = self.sprites[self.direction][self.anim_cursor + 1]
         self.is_moving = True
 
+        new_speed = self.speed * 1  # * dt / 1000
+
         vecteur = (0, 0)
 
         if direction == HAUT:
@@ -47,8 +49,8 @@ class Personnage:
             vecteur = (1, 0)
 
         x, y = self.pos[0], self.pos[1]
-        x += -self.carte_mgr.get_of1() + vecteur[0] * (self.speed * 1)  # (dt / 1000))
-        y += -self.carte_mgr.get_of2() + vecteur[1] * (self.speed * 1)  # (dt / 1000))
+        x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
+        y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
 
         #Détection des collisions
         x1, y1 = int(x) + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
