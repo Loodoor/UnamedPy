@@ -7,7 +7,7 @@ import objets_manager
 
 
 class Inventaire:
-    def __init__(self, ecran, police):
+    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font):
         self.ecran = ecran
         self.police = police
 
@@ -39,7 +39,7 @@ class Inventaire:
         pygame.draw.rect(self.ecran, (180, 75, 180), (INVENT_BTN_PREVIOUS, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
         pygame.draw.rect(self.ecran, (180, 75, 180), (INVENT_BTN_NEXT, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
 
-    def clic(self, xp, yp):
+    def clic(self, xp: int, yp: int):
         real_y = (yp - INVENT_Y_ITEM) // INVENT_ESP_ITEM
         if INVENT_X_ITEM <= xp <= INVENT_MAX_X_ITEM and 0 <= real_y < len(self.objets[self.cur_categorie]):
             self.selected_item = real_y

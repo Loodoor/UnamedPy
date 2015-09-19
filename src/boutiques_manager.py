@@ -5,7 +5,7 @@ from constantes import *
 
 
 class BoutiqueManager:
-    def __init__(self, ecran):
+    def __init__(self, ecran: pygame.Surface):
         self.ecran = ecran
         self.page = 0
 

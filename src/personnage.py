@@ -3,10 +3,11 @@ import pygame
 import pickle
 from constantes import *
 from glob import glob
+from carte import CarteManager
 
 
 class Personnage:
-    def __init__(self, ecran, carte_mgr, pos=(0, 0)):
+    def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager, pos: tuple=(0, 0)):
         self.ecran = ecran
         self.direction = BAS
         self.anim_cursor = PAUSE
@@ -29,7 +30,7 @@ class Personnage:
         self.pos = list(pos)
         self.carte_mgr = carte_mgr
 
-    def move(self, direction=HAUT, dt=1):
+    def move(self, direction: int=HAUT, dt: int=1):
         self.direction = direction
         self.perso = self.sprites[self.direction][self.anim_cursor + 1]
         self.is_moving = True

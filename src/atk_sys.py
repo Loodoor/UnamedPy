@@ -4,15 +4,15 @@ from pygame.locals import *
 from constantes import *
 
 
-def calcul_degats(degats_basiques, specs_atk, specs_def, coeff):
+def calcul_degats(degats_basiques: int, specs_atk: list, specs_def: list, coeff: int) -> int:
     return (degats_basiques + specs_atk[SPEC_ATK] / specs_def[SPEC_DEF]) * coeff
 
 
-def calcul_esquive(specs_atk, specs_def):
+def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
     return True if specs_atk[SPEC_VIT] >= 2 * specs_def[SPEC_VIT] else False
 
 
-def rencontre_creature(tile_actuelle):
+def rencontre_creature(tile_actuelle: int):
     if tile_actuelle == HAUTES_HERBES:
         pass
 

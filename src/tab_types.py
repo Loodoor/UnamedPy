@@ -130,8 +130,8 @@ class Storage:
         self.tab[T_TENEBRE][T_LUMIERE] = 2
         self.tab[T_TENEBRE][T_TENEBRE] = 1
 
-    def stronger(self, type_moi, type_adv):
+    def stronger(self, type_moi: int, type_adv: int):
         return True if self.tab[type_moi][type_adv] > 1 else False
 
-    def get_coeff(self, type_moi, type_adv):
+    def get_coeff(self, type_moi: int, type_adv: int):
         return self.tab[type_moi][type_adv]

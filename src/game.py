@@ -14,7 +14,7 @@ import os
 
 
 class Game:
-    def __init__(self, ecran):
+    def __init__(self, ecran: pygame.Surface):
         self.fps_regulator = IAFPS(FPS_base)
         self.continuer = 1
         self.ecran = ecran
@@ -69,7 +69,7 @@ class Game:
         pygame.image.save(self.ecran, os.path.join("..", "screenschots", str(len(glob(os.path.join("..", "screenschots", "*.png")))) + ".png"))
         print("Screenschot sauvegardée")
 
-    def process_events(self, events, dt=1):
+    def process_events(self, events: pygame.event, dt: int=1):
         for event in events:
             if event.type == QUIT:
                 self.save()
@@ -95,16 +95,16 @@ class Game:
                 if event.key == self.controles[SCREENSCHOT]:
                         self.screenschot()
 
-    def process_events_menu_in_game(self, event, dt):
+    def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
         raise NotImplementedError
 
-    def process_events_boutique(self, event, dt):
+    def process_events_boutique(self, event: pygame.event, dt: int=1):
         raise NotImplementedError
 
-    def process_events_combat(self, event, dt):
+    def process_events_combat(self, event: pygame.event, dt: int=1):
         raise NotImplementedError
 
-    def process_events_inventaire(self, event, dt):
+    def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[INVENTAIRE]:
                 tmp = self.last_rendering
@@ -118,7 +118,7 @@ class Game:
             xp, yp = event.pos
             self.inventaire.clic(xp, yp)
 
-    def process_events_game(self, event, dt):
+    def process_events_game(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[HAUT]:
                 self.personnage.move(HAUT, dt)

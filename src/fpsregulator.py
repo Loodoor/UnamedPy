@@ -5,7 +5,7 @@ from constantes import MAX_FPS
 
 
 class IAFPS:
-    def __init__(self, FPS):
+    def __init__(self, FPS: int):
         self.FPS = FPS / 10 if FPS != -1 else MAX_FPS
         self.defaut_value = self.FPS
         self.reduction = 0.0005
@@ -40,7 +40,7 @@ class IAFPS:
     def get_DeltaTime(self):
         return self.frame_time
 
-    def timer(self, frame_rate):
+    def timer(self, frame_rate: int):
         self.frame_rate = frame_rate
         if self.frame_rate > self.FPS:
             self.wait += self.reduction

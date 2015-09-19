@@ -6,7 +6,7 @@ from constantes import *
 
 
 class Indexer:
-    def __init__(self, ecran):
+    def __init__(self, ecran: pygame.Surface):
         self.ecran = ecran
         self.save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
         self.page = 0
@@ -29,10 +29,10 @@ class Indexer:
     def previous(self):
         self.page = self.page - 1 if self.page - 1 >= 0 else 0
 
-    def vu_(self, nom):
+    def vu_(self, nom: str):
         self.indexer[nom][VU] = True
 
-    def capture_(self, nom):
+    def capture_(self, nom: str):
         self.indexer[nom][CAPTURE] = True
 
     def update(self):

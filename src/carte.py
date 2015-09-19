@@ -7,7 +7,7 @@ from constantes import *
 
 
 class CarteManager:
-    def __init__(self, ecran):
+    def __init__(self, ecran: pygame.Surface):
         self.ecran = ecran
         self.carte = []
         self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
