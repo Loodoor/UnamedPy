@@ -17,12 +17,18 @@ class PNJ:
         self.move()
         self.render()
 
-    def move(self):
+    def move_scheme(self):
         self.cur_scheme += self.dir
         if self.cur_scheme + self.dir < 0:
             self.cur_scheme = len(self.type_mvt) - 1
         if self.cur_scheme + self.dir >= len(self.type_mvt):
             self.cur_scheme = 0
+
+    def move(self):
+        self.move_scheme()
+        actual_x, actual_y = self.type_mvt[self.cur_scheme]
+        actual_x += self.pos[0]
+        actual_y += self.pos[1]
 
     def render(self):
         pass
