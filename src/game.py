@@ -78,6 +78,11 @@ class Game:
         #self.indexeur.save()
         #self.equipe_mgr.save()
 
+    def invert_rendering(self):
+        tmp = self.last_rendering
+        self.last_rendering = self.current_rendering
+        self.current_rendering = tmp
+
     def screenshot(self):
         pygame.image.save(self.ecran, os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png"))
         print("Screenshot sauvegardée")
@@ -101,15 +106,14 @@ class Game:
                 self.process_events_menu_in_game(event, dt)
 
             # Global
-            if event.type == KEYDOWN:
-                if event.key == self.controles[MENU]:
-                    self.continuer = 0
             if event.type == KEYUP:
                 if event.key == self.controles[SCREENSCHOT]:
                     self.screenshot()
 
     def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
+            if event.key == self.controles[MENU]:
+                self.invert_rendering()
             if event.key == K_RIGHT:
                 self.menu_in_game.next()
             if event.key == K_UP:
@@ -137,10 +141,8 @@ class Game:
 
     def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
-            if event.key == self.__ctrls[INVENTAIRE]:
-                tmp = self.last_rendering
-                self.last_rendering = self.current_rendering
-                self.current_rendering = tmp
+            if event.key == self.controles[INVENTAIRE]:
+                self.invert_rendering()
             if event.key == self.__ctrls[NEXT_PAGE]:
                 self.inventaire.next()
             if event.key == self.__ctrls[PREVIOUS_PAGE]:
@@ -162,6 +164,9 @@ class Game:
             if event.key == self.controles[INVENTAIRE]:
                 self.last_rendering = self.current_rendering
                 self.current_rendering = RENDER_INVENTAIRE
+            if event.key == self.controles[MENU]:
+                self.last_rendering = self.current_rendering
+                self.current_rendering = RENDER_MENU_IN_GAME
         if event.type == KEYUP:
             if event.key == self.controles[HAUT]:
                 self.personnage.end_move()

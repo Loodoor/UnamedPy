@@ -18,9 +18,36 @@ class Menu:
 
     def update(self):
         self.render()
+        self.render_categories()
 
     def render(self):
         pygame.draw.rect(self.ecran, (50, 80, 180), (MENU_X, MENU_Y, MENU_SIZE_X, MENU_SIZE_Y))
+
+    def render_categories(self):
+        color = (180, 50, 50) if self.categories[0] != self.select else (50, 180, 50)
+        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
+                                             MENU_Y + MENU_Y_CAT,
+                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+
+        color = (180, 50, 50) if self.categories[1] != self.select else (50, 180, 50)
+        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
+                                             MENU_Y + MENU_Y_CAT,
+                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+
+        color = (180, 50, 50) if self.categories[2] != self.select else (50, 180, 50)
+        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
+                                             MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT,
+                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+
+        color = (180, 50, 50) if self.categories[3] != self.select else (50, 180, 50)
+        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
+                                             MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT,
+                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+
+        color = (180, 50, 50) if self.categories[4] != self.select else (50, 180, 50)
+        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
+                                             MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2,
+                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
 
     def next(self):
         self.select = self.select + 1 if self.select + 1 < len(self.categories) else 0
