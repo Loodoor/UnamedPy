@@ -106,3 +106,4 @@ class Menu:
             self.select = 3
         if (real_x, real_y) == (0, 2):
             self.select = 4
+        self.valider_choix()
