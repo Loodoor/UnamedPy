@@ -79,7 +79,20 @@ class Menu:
         self.previous()
 
     def valider_choix(self):
-        print("Validation")
+        work = 0
+
+        if self.select == MENU_SAC:
+            work = RENDER_INVENTAIRE
+        if self.select == MENU_SAUV:
+            work = RENDER_SAVE
+        if self.select == MENU_QUITTER:
+            work = RENDER_GAME
+        if self.select == MENU_CARTE:
+            work = RENDER_CARTE
+        if self.select == MENU_CREATURES:
+            work = RENDER_CREATURES
+
+        return work
 
     def clic(self, xp: int, yp: int):
         pass

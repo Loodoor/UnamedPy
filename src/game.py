@@ -123,7 +123,9 @@ class Game:
             if event.key == K_DOWN:
                 self.menu_in_game.double_previous()
             if event.key == K_RETURN:
-                self.menu_in_game.valider_choix()
+                self.last_rendering = self.current_rendering
+                new_renderer = self.menu_in_game.valider_choix()
+                self.current_rendering = new_renderer
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.menu_in_game.clic(xp, yp)
@@ -201,6 +203,13 @@ class Game:
             raise NotImplementedError
         elif self.current_rendering == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
+        elif self.current_rendering == RENDER_SAVE:
+            self.save()
+            print("Err .. wait ! I need a GUI man !")
+        elif self.current_rendering == RENDER_CARTE:
+            raise NotImplementedError
+        elif self.current_rendering == RENDER_CREATURES:
+            raise NotImplementedError
 
     def start(self):
         self.prepare()
