@@ -95,4 +95,14 @@ class Menu:
         return work
 
     def clic(self, xp: int, yp: int):
-        pass
+        real_x, real_y = (xp - MENU_X) // MENU_SIZE_X_CAT, (yp - MENU_Y) // MENU_SIZE_Y_CAT
+        if (real_x, real_y) == (0, 0):
+            self.select = 0
+        if (real_x, real_y) == (1, 0):
+            self.select = 1
+        if (real_x, real_y) == (0, 1):
+            self.select = 2
+        if (real_x, real_y) == (1, 1):
+            self.select = 3
+        if (real_x, real_y) == (0, 2):
+            self.select = 4
