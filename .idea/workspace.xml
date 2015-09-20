@@ -26,8 +26,8 @@
       <file leaf-file-name="game.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2221" max-vertical-offset="3808">
-              <caret line="142" column="33" selection-start-line="142" selection-start-column="33" selection-end-line="142" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1677" max-vertical-offset="3842">
+              <caret line="125" column="49" selection-start-line="125" selection-start-column="49" selection-end-line="125" selection-end-column="49" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -38,8 +38,8 @@
       <file leaf-file-name="menu_in_game.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/menu_in_game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.79291046" vertical-offset="391" max-vertical-offset="1224">
-              <caret line="48" column="90" selection-start-line="48" selection-start-column="90" selection-end-line="48" selection-end-column="90" />
+            <state vertical-scroll-proportion="0.8414179" vertical-offset="926" max-vertical-offset="1530">
+              <caret line="81" column="25" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -126,8 +126,8 @@
       <file leaf-file-name="constantes.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/constantes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="680" max-vertical-offset="2618">
-              <caret line="55" column="34" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="2652">
+              <caret line="56" column="53" selection-start-line="56" selection-start-column="53" selection-end-line="56" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -161,8 +161,8 @@
         <option value="$PROJECT_DIR$/src/inventaire.py" />
         <option value="$PROJECT_DIR$/src/creatures_mgr.py" />
         <option value="$PROJECT_DIR$/src/atk_sys.py" />
-        <option value="$PROJECT_DIR$/src/game.py" />
         <option value="$PROJECT_DIR$/src/constantes.py" />
+        <option value="$PROJECT_DIR$/src/game.py" />
         <option value="$PROJECT_DIR$/src/menu_in_game.py" />
       </list>
     </option>
@@ -879,16 +879,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2221" max-vertical-offset="3808">
-          <caret line="142" column="33" selection-start-line="142" selection-start-column="33" selection-end-line="142" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
@@ -899,16 +889,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/constantes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="680" max-vertical-offset="2618">
-          <caret line="55" column="34" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="2652">
+          <caret line="56" column="53" selection-start-line="56" selection-start-column="53" selection-end-line="56" selection-end-column="53" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1677" max-vertical-offset="3842">
+          <caret line="125" column="49" selection-start-line="125" selection-start-column="49" selection-end-line="125" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/menu_in_game.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79291046" vertical-offset="391" max-vertical-offset="1224">
-          <caret line="48" column="90" selection-start-line="48" selection-start-column="90" selection-end-line="48" selection-end-column="90" />
+        <state vertical-scroll-proportion="0.8414179" vertical-offset="926" max-vertical-offset="1530">
+          <caret line="81" column="25" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>

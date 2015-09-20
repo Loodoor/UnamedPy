@@ -5,8 +5,9 @@ from constantes import *
 
 
 class Menu:
-    def __init__(self, ecran: pygame.Surface) -> None:
+    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font) -> None:
         self.ecran = ecran
+        self.police = police
         self.select = 0
         self.categories = [
             MENU_CREATURES,
@@ -28,26 +29,40 @@ class Menu:
         pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
                                              MENU_Y + MENU_Y_CAT,
                                              MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        self.ecran.blit(self.police.render("Créatures", 1, (255, 255, 255)), (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
+                                                                     MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT))
 
         color = (180, 50, 50) if self.categories[1] != self.select else (50, 180, 50)
         pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                                              MENU_Y + MENU_Y_CAT,
                                              MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        self.ecran.blit(self.police.render("Inventaire", 1, (255, 255, 255)),
+                        (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
+                         MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT))
 
         color = (180, 50, 50) if self.categories[2] != self.select else (50, 180, 50)
         pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                                              MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT,
                                              MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        self.ecran.blit(self.police.render("Carte", 1, (255, 255, 255)),
+                        (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
+                         MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
 
         color = (180, 50, 50) if self.categories[3] != self.select else (50, 180, 50)
         pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
                                              MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT,
                                              MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        self.ecran.blit(self.police.render("Sauvegarder", 1, (255, 255, 255)),
+                        (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
+                         MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
 
         color = (180, 50, 50) if self.categories[4] != self.select else (50, 180, 50)
         pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
                                              MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2,
                                              MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        self.ecran.blit(self.police.render("Quitter", 1, (255, 255, 255)),
+                        (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
+                         MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
 
     def next(self):
         self.select = self.select + 1 if self.select + 1 < len(self.categories) else 0
@@ -62,6 +77,9 @@ class Menu:
     def double_previous(self):
         self.previous()
         self.previous()
+
+    def valider_choix(self):
+        print("Validation")
 
     def clic(self, xp: int, yp: int):
         pass

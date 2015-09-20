@@ -40,7 +40,7 @@ class Game:
         self.equipe_mgr = equipe_manager.EquipeManager(self.ecran)
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
-        self.menu_in_game = menu_in_game.Menu(self.ecran)
+        self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -122,6 +122,8 @@ class Game:
                 self.menu_in_game.previous()
             if event.key == K_DOWN:
                 self.menu_in_game.double_previous()
+            if event.key == K_RETURN:
+                self.menu_in_game.valider_choix()
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.menu_in_game.clic(xp, yp)
