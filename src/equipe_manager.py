@@ -10,8 +10,19 @@ class EquipeManager:
     def __init__(self, ecran: pygame.Surface, size: int=6):
         self.size = size
         self.ecran = ecran
-        self.creatures = []
+        self.creatures = [0, 0, 0, 0, 0, 0]
         self.path = os.path.join("..", "saves", "equipe" + EXTENSION)
+
+    def update(self):
+        self.render()
+
+    def render(self):
+        pygame.draw.rect(self.ecran, (180, 50, 50), (FCREA_X, FCREA_Y, FCREA_SIZE_X, FCREA_SIZE_Y))
+        for i in range(len(self.creatures)):
+            pygame.draw.rect(self.ecran, (50, 180, 50), (FCREA_X,
+                                                         FCREA_Y + FCREA_SIZE_Y_CASE * i,
+                                                         FCREA_SIZE_X_CASE,
+                                                         FCREA_SIZE_Y_CASE))
 
     def load(self):
         if os.path.exists(self.path):

@@ -104,6 +104,12 @@ class Game:
                 self.process_events_boutique(event, dt)
             elif self.current_rendering == RENDER_MENU_IN_GAME:
                 self.process_events_menu_in_game(event, dt)
+            elif self.current_rendering == RENDER_SAVE:
+                raise NotImplementedError
+            elif self.current_rendering == RENDER_CARTE:
+                raise NotImplementedError
+            elif self.current_rendering == RENDER_CREATURES:
+                self.process_events_creatures(event, dt)
 
             # Global
             if event.type == KEYUP:
@@ -129,6 +135,13 @@ class Game:
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.menu_in_game.clic(xp, yp)
+
+    def process_events_creatures(self, event: pygame.event, dt: int=1):
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                self.invert_rendering()
+        if event.type == MOUSEBUTTONUP:
+            xp, yp = event.pos
 
     def process_events_boutique(self, event: pygame.event, dt: int=1):
         raise NotImplementedError
@@ -191,8 +204,8 @@ class Game:
         pygame.key.set_repeat(200, 100)
 
     def render(self):
+        self.carte_mgr.update()
         if self.current_rendering == RENDER_GAME:
-            self.carte_mgr.update()
             self.personnage.update()
         elif self.current_rendering == RENDER_INVENTAIRE:
             self.inventaire.update()
@@ -205,11 +218,11 @@ class Game:
             self.menu_in_game.update()
         elif self.current_rendering == RENDER_SAVE:
             self.save()
-            print("Err .. wait ! I need a GUI man !")
+            self.invert_rendering()
         elif self.current_rendering == RENDER_CARTE:
             raise NotImplementedError
         elif self.current_rendering == RENDER_CREATURES:
-            raise NotImplementedError
+            self.equipe_mgr.update()
 
     def start(self):
         self.prepare()
