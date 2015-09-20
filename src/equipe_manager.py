@@ -19,8 +19,8 @@ class EquipeManager:
     def render(self):
         pygame.draw.rect(self.ecran, (180, 50, 50), (FCREA_X, FCREA_Y, FCREA_SIZE_X, FCREA_SIZE_Y))
         for i in range(len(self.creatures)):
-            pygame.draw.rect(self.ecran, (50, 180, 50), (FCREA_X,
-                                                         FCREA_Y + FCREA_SIZE_Y_CASE * i,
+            pygame.draw.rect(self.ecran, (50, 180, 50), (FCREA_X + FCREA_MARGE_X,
+                                                         FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1),
                                                          FCREA_SIZE_X_CASE,
                                                          FCREA_SIZE_Y_CASE))
 
