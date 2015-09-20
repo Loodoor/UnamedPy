@@ -2,6 +2,8 @@ import os
 import pygame
 from pygame.locals import *
 from constantes import *
+import random
+import creatures_mgr
 
 
 def calcul_degats(degats_basiques: int, specs_atk: list, specs_def: list, coeff: int) -> int:
@@ -14,7 +16,36 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
 
 def rencontre_creature(tile_actuelle: int):
     if tile_actuelle == HAUTES_HERBES:
+        return True
+    return False
+
+
+class Combat:
+    def __init__(self, ecran: pygame.Surface, creature_joueur, types: list=[T_NORMAL]) -> None:
+        self.ecran = ecran
+        self.compteur_tour = 0
+        self.creature_joueur = creature_joueur
+        self.seq = types
+        self.adversaire = creatures_mgr.Creature("", T_NORMAL)
+
+    def find_adv(self):
+        name_ = ''
+        type_ = random.choice(self.seq)
+        self.adversaire = creatures_mgr.Creature(name_, type_)
+
+    def mon_tour(self):
+        return True if not self.compteur_tour % 2 else False
+
+    def update(self):
+        self.compteur_tour += 1
+        self.render()
+
+    def render(self):
         pass
+
+    def process_events(self, events: pygame.event):
+        for event in events:
+            pass
 
 
 class Attaque:

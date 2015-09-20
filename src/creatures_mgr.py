@@ -7,16 +7,17 @@ import atk_sys
 
 
 class Creature:
-    def __init__(self, nom: str, type: int, niv: tuple) -> None:
+    def __init__(self, nom: str, type: int, alea_niv: tuple=(10, 20),
+                 specs_range: tuple=(2, 10), pvs_range: tuple=(18, 27)) -> None:
         self.specs = {
-            SPEC_ATK: random.randint(2, 10),
-            SPEC_DEF: random.randint(2, 10),
-            SPEC_VIT: random.randint(2, 10),
+            SPEC_ATK: random.randint(*specs_range),
+            SPEC_DEF: random.randint(*specs_range),
+            SPEC_VIT: random.randint(*specs_range),
             SPEC_CREA: nom,
             SPEC_TYP: type,
             SPEC_NOM: '',
-            SPEC_NIV: random.randint(niv[0], niv[1]),
-            SPEC_PVS: random.randint(18, 27)
+            SPEC_NIV: random.randint(alea_niv[0], alea_niv[1]),
+            SPEC_PVS: random.randint(*pvs_range)
         }
         self.upgrade_range = UPGRADE_RANGE_SPEC
 

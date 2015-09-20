@@ -9,9 +9,13 @@ import sys
 import inventaire
 import indexer
 import captureurs
+import creatures_mgr
 import tab_types
 import objets_manager
+import equipe_manager
 import os
+import atk_sys
+import menu_in_game
 
 
 class Game:
@@ -33,7 +37,10 @@ class Game:
         self.carte_mgr = carte.CarteManager(self.ecran)
         self.inventaire = inventaire.Inventaire(self.ecran, self.police_grande)
         self.indexeur = indexer.Indexer(self.ecran)
+        self.equipe_mgr = equipe_manager.EquipeManager(self.ecran)
         self.tab_types = tab_types.Storage()
+        self.cur_combat = None
+        self.menu_in_game = menu_in_game.Menu(self.ecran)
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -47,6 +54,9 @@ class Game:
             INVENTAIRE: K_RSHIFT,
             MENU: K_ESCAPE,
             SCREENSCHOT: K_F5,
+        }
+
+        self.__ctrls = {
             NEXT_PAGE: K_RIGHT,
             PREVIOUS_PAGE: K_LEFT
         }
@@ -56,35 +66,17 @@ class Game:
     def load(self):
         self.carte_mgr.load()
         self.personnage.load()
-        #self.inventaire.load()
-        #self.indexeur.load()
+        self.inventaire.load()
+        self.indexeur.load()
+        self.equipe_mgr.load()
         self.tab_types.init_tab()
-        self.create_objects()
 
     def save(self):
         self.carte_mgr.save()
         self.personnage.save()
-        self.inventaire.save()
-        self.indexeur.save()
-
-    def create_objects(self):
-        self.att_p = objets_manager.Objet("Attaque+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test attaque"))
-        self.def_p = objets_manager.Objet("Défense+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test defense"))
-        self.vit_p = objets_manager.Objet("Vitesse+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test vitesse"))
-        self.pps_p = objets_manager.Objet("PP+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pps"))
-        self.regen_pps_5 = objets_manager.Objet("Elixir", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 5"))
-        self.regen_pps_10 = objets_manager.Objet("Elixir Augmenté", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 10"))
-        self.regen_pps_30 = objets_manager.Objet("Super Elixir", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 30"))
-        self.regen_pps_75 = objets_manager.Objet("Hyper Elixir", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 75"))
-        self.regen_pps_max = objets_manager.Objet("Elixir Max", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps max"))
-        self.pvs_p = objets_manager.Objet("PV+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pvs"))
-        self.regen_pvs_20 = objets_manager.Objet("Potion Simple", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 20"))
-        self.regen_pvs_60 = objets_manager.Objet("Super Potion", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 60"))
-        self.regen_pvs_100 = objets_manager.Objet("Hyper Potion", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 100"))
-        self.regen_pvs_200 = objets_manager.Objet("Mega Potion", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 200"))
-        self.regen_pvs_max = objets_manager.Objet("Potion Max", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs max"))
-        self.chaussures = objets_manager.Objet("Chaussures", "AIDE", [1, 1], objets_manager.ObjectAction(print, "test chaussures"))
-        self.velo = objets_manager.Objet("Velo", "AIDE", [0, 1], objets_manager.ObjectAction(print, "test velo"))
+        #self.inventaire.save()
+        #self.indexeur.save()
+        #self.equipe_mgr.save()
 
     def screenshot(self):
         pygame.image.save(self.ecran, os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png"))
@@ -111,29 +103,47 @@ class Game:
             # Global
             if event.type == KEYDOWN:
                 if event.key == self.controles[MENU]:
-                        self.continuer = 0
+                    self.continuer = 0
             if event.type == KEYUP:
                 if event.key == self.controles[SCREENSCHOT]:
-                        self.screenshot()
+                    self.screenshot()
 
     def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
-        raise NotImplementedError
+        if event.type == KEYDOWN:
+            if event.key == K_RIGHT:
+                self.menu_in_game.next()
+            if event.key == K_UP:
+                self.menu_in_game.double_next()
+            if event.key == K_LEFT:
+                self.menu_in_game.previous()
+            if event.key == K_DOWN:
+                self.menu_in_game.double_previous()
+        if event.type == MOUSEBUTTONUP:
+            xp, yp = event.pos
+            self.menu_in_game.clic(xp, yp)
 
     def process_events_boutique(self, event: pygame.event, dt: int=1):
         raise NotImplementedError
 
     def process_events_combat(self, event: pygame.event, dt: int=1):
-        raise NotImplementedError
+        if event.type == KEYDOWN:
+            pass
+        if event.type == KEYUP:
+            pass
+        if event.type == MOUSEBUTTONDOWN:
+            xp, yp = event.pos
+        if event.type == MOUSEBUTTONUP:
+            xp, yp = event.pos
 
     def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
-            if event.key == self.controles[INVENTAIRE]:
+            if event.key == self.__ctrls[INVENTAIRE]:
                 tmp = self.last_rendering
                 self.last_rendering = self.current_rendering
                 self.current_rendering = tmp
-            if event.key == self.controles[NEXT_PAGE]:
+            if event.key == self.__ctrls[NEXT_PAGE]:
                 self.inventaire.next()
-            if event.key == self.controles[PREVIOUS_PAGE]:
+            if event.key == self.__ctrls[PREVIOUS_PAGE]:
                 self.inventaire.previous()
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
@@ -180,9 +190,10 @@ class Game:
         elif self.current_rendering == RENDER_BOUTIQUE:
             raise NotImplementedError
         elif self.current_rendering == RENDER_COMBAT:
+            self.cur_combat = atk_sys.Combat(self.ecran, creatures_mgr.Creature("", T_NORMAL))
             raise NotImplementedError
         elif self.current_rendering == RENDER_MENU_IN_GAME:
-            raise NotImplementedError
+            self.menu_in_game.update()
 
     def start(self):
         self.prepare()

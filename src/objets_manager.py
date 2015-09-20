@@ -21,7 +21,7 @@ class Objet:
         return self.quantite[0]
 
     def tot_quantite(self):
-        return str(self.quantite[0]) + " / " + str(self.quantite[1])
+        return str(self.quantite[0])
 
     def aide(self):
         return self.texte
@@ -30,7 +30,8 @@ class Objet:
         self.quantite[0] = 0
 
     def jeter(self):
-        self.quantite[0] -= 1
+        if self.quantite[0] > 0:
+            self.quantite[0] -= 1
 
     def use(self):
         if self.quantite[0] > 0:

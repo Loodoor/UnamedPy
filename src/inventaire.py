@@ -18,12 +18,28 @@ class Inventaire:
 
         #Objets
         self.objets = [
-            [objets_manager.Objet("Test", "Je suis un test !", [10, 10], objets_manager.ObjectAction(print, "Salut ! Le test fonctionne chef !"))],  # Poche communs
+            [],  # Poche communs
             [],  # Poche capturateurs
             [],  # Poche médicaments
             [],  # Poche Objets Rares
             []   # Poche CT/CS
         ]
+
+    def __quelle_poche(self):
+        tmp_poche = ""
+        if self.cur_categorie == POCHE_COMMUNS:
+            tmp_poche = "Communs"
+        elif self.cur_categorie == POCHE_CAPTUREURS:
+            tmp_poche = "Captureurs"
+        elif self.cur_categorie == POCHE_MEDICAMENTS:
+            tmp_poche = "Médicaments"
+        elif self.cur_categorie == POCHE_OBJETS_RARES:
+            tmp_poche = "Objets Rares"
+        elif self.cur_categorie == POCHE_CT_CS:
+            tmp_poche = "CT CS"
+        else:
+            tmp_poche = "ERREUR?"
+        return tmp_poche
 
     def update(self):
         self.render()
@@ -35,7 +51,7 @@ class Inventaire:
             texte = self.objets[self.cur_categorie][i].name() + ' : ' + str(self.objets[self.cur_categorie][i].tot_quantite())
             item = self.police.render(texte, 1, (10, 10, 10))
             self.ecran.blit(item, (INVENT_X_ITEM, INVENT_Y_ITEM + i * INVENT_ESP_ITEM))
-        if self.selected_item != -1:
+        if 0 <= self.selected_item < len(self.objets[self.cur_categorie]):
             # les boutons jeter et jeter tout
             pygame.draw.rect(self.ecran, (180, 50, 50), (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
             pygame.draw.rect(self.ecran, (255, 50, 50), (INVENT_BTN_JETERTT_X, INVENT_BTN_JETERTT_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
@@ -50,7 +66,8 @@ class Inventaire:
         pygame.draw.rect(self.ecran, (180, 75, 180), (INVENT_BTN_NEXT, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
 
         # texte de la poche
-        poche_txt = self.police.render("TEST numéro poche", 1, (255, 255, 255))
+        tmp_poche = self.__quelle_poche()
+        poche_txt = self.police.render(tmp_poche, 1, (255, 255, 255))
         self.ecran.blit(poche_txt, (INVENT_TXT_POCHE_X - poche_txt.get_size()[0] // 2, INVENT_TXT_POCHE_Y))
 
     def clic(self, xp: int, yp: int):
@@ -72,8 +89,6 @@ class Inventaire:
             elif INVENT_BTN_NEXT <= xp <= INVENT_BTN_NEXT + INVENT_BTN_PAGES_SX and \
                 INVENT_BTN_PAGES <= yp <= INVENT_BTN_PAGES + INVENT_BTN_PAGES_SY:
                 self.next()
-            else:
-                self.selected_item = -1
 
     def next(self):
         self.cur_categorie = self.cur_categorie + 1 if self.cur_categorie + 1 < len(self.objets) else 0
@@ -93,6 +108,63 @@ class Inventaire:
         if os.path.exists(os.path.join("..", "saves", "inventaire" + EXTENSION)):
             with open(os.path.join("..", "saves", "inventaire" + EXTENSION), "rb") as read_inventaire:
                 self.objets = pickle.Unpickler(read_inventaire).load()
+        else:
+            anti_para = objets_manager.Objet("Anti-Para", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti para"))
+            anti_brul = objets_manager.Objet("Anti-Brûle", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti brule"))
+            anti_poison = objets_manager.Objet("Anti-Poison", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti poison"))
+            att_p = objets_manager.Objet("Attaque+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test attaque"))
+            def_p = objets_manager.Objet("Défense+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test defense"))
+            vit_p = objets_manager.Objet("Vitesse+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test vitesse"))
+            pps_p = objets_manager.Objet("PP+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pps"))
+            regen_pps_5 = objets_manager.Objet("Elixir", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 5"))
+            regen_pps_10 = objets_manager.Objet("Elixir Augmenté", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 10"))
+            regen_pps_30 = objets_manager.Objet("Super Elixir", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 30"))
+            regen_pps_75 = objets_manager.Objet("Hyper Elixir", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 75"))
+            regen_pps_max = objets_manager.Objet("Elixir Max", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps max"))
+            pvs_p = objets_manager.Objet("PV+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pvs"))
+            regen_pvs_20 = objets_manager.Objet("Potion Simple", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 20"))
+            regen_pvs_60 = objets_manager.Objet("Super Potion", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 60"))
+            regen_pvs_100 = objets_manager.Objet("Hyper Potion", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 100"))
+            regen_pvs_200 = objets_manager.Objet("Mega Potion", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 200"))
+            regen_pvs_max = objets_manager.Objet("Potion Max", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs max"))
+            chaussures = objets_manager.Objet("Chaussures", "AIDE", [1, 1], objets_manager.ObjectAction(print, "test chaussures"))
+            velo = objets_manager.Objet("Velo", "AIDE", [0, 1], objets_manager.ObjectAction(print, "test velo"))
+
+            self.objets = [
+                [
+
+                ],  # Poche communs
+                [
+
+                ],  # Poche capturateurs
+                [
+                    anti_para,
+                    anti_brul,
+                    anti_poison,
+                    att_p,
+                    def_p,
+                    vit_p,
+                    pps_p,
+                    regen_pps_5,
+                    regen_pps_10,
+                    regen_pps_30,
+                    regen_pps_75,
+                    regen_pps_max,
+                    pvs_p,
+                    regen_pvs_20,
+                    regen_pvs_60,
+                    regen_pvs_100,
+                    regen_pvs_200,
+                    regen_pvs_max
+                ],  # Poche médicaments
+                [
+                    velo,
+                    chaussures
+                ],  # Poche Objets Rares
+                [
+
+                ]   # Poche CT/CS
+            ]
 
     def save(self):
         with open(os.path.join("..", "saves", "inventaire" + EXTENSION), "wb") as wrb_inventaire:
