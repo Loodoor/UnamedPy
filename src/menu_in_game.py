@@ -83,14 +83,16 @@ class Menu:
 
         if self.select == MENU_SAC:
             work = RENDER_INVENTAIRE
-        if self.select == MENU_SAUV:
+        elif self.select == MENU_SAUV:
             work = RENDER_SAVE
-        if self.select == MENU_QUITTER:
+        elif self.select == MENU_QUITTER:
             work = RENDER_GAME
-        if self.select == MENU_CARTE:
+        elif self.select == MENU_CARTE:
             work = RENDER_CARTE
-        if self.select == MENU_CREATURES:
+        elif self.select == MENU_CREATURES:
             work = RENDER_CREATURES
+        else:
+            work = RENDER_ERROR
 
         return work
 
@@ -106,4 +108,4 @@ class Menu:
             self.select = 3
         if (real_x, real_y) == (0, 2):
             self.select = 4
-        self.valider_choix()
+        return self.valider_choix()

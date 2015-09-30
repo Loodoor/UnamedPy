@@ -37,7 +37,7 @@ class Game:
         self.carte_mgr = carte.CarteManager(self.ecran)
         self.inventaire = inventaire.Inventaire(self.ecran, self.police_grande)
         self.indexeur = indexer.Indexer(self.ecran)
-        self.equipe_mgr = equipe_manager.EquipeManager(self.ecran)
+        self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande)
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
@@ -72,6 +72,7 @@ class Game:
         self.tab_types.init_tab()
 
     def save(self):
+        print("Sauvegarde ...")
         self.carte_mgr.save()
         self.personnage.save()
         #self.inventaire.save()
@@ -134,7 +135,10 @@ class Game:
                 self.current_rendering = new_renderer
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
-            self.menu_in_game.clic(xp, yp)
+            tmp = self.menu_in_game.clic(xp, yp)
+            if tmp != RENDER_ERROR:
+                self.last_rendering = self.current_rendering
+                self.current_rendering = tmp
 
     def process_events_creatures(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
@@ -219,6 +223,7 @@ class Game:
         elif self.current_rendering == RENDER_SAVE:
             self.save()
             self.invert_rendering()
+            print("Erreur future à corriger ici (fct render dans game.py)")
         elif self.current_rendering == RENDER_CARTE:
             raise NotImplementedError
         elif self.current_rendering == RENDER_CREATURES:

@@ -17,8 +17,9 @@ class Creature:
             SPEC_TYP: type,
             SPEC_NOM: '',
             SPEC_NIV: random.randint(alea_niv[0], alea_niv[1]),
-            SPEC_PVS: random.randint(*pvs_range)
+            SPEC_PVS: random.randint(*pvs_range),
         }
+        self.specs[SPEC_MAX_PVS] = self.specs[SPEC_PVS]  # quand on crée la créature, les pvs max = pvs actuel
         self.upgrade_range = UPGRADE_RANGE_SPEC
 
     def set_pseudo(self, new):
@@ -33,6 +34,12 @@ class Creature:
 
     def get_niv(self):
         return self.specs[SPEC_NIV]
+
+    def get_max_pvs(self):
+        return self.specs[SPEC_MAX_PVS]
+
+    def get_pvs(self):
+        return self.specs[SPEC_PVS]
 
     def level_up(self):
         if self.specs[SPEC_NIV] + 1 <= MAX_LEVEL:
