@@ -35,7 +35,7 @@ class Personnage:
         self.perso = self.sprites[self.direction][self.anim_cursor + 1]
         self.is_moving = True
 
-        new_speed = self.speed * 1  # * dt / 1000
+        new_speed = self.speed * (dt * 100) / self.cur_div
 
         vecteur = (0, 0)
 
@@ -53,8 +53,8 @@ class Personnage:
         y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
 
         #Détection des collisions
-        x1, y1 = int(x) + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
-            int(y) + self.carte_mgr.get_fov()[2] * TILE_SIZE
+        x1, y1 = x + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
+            y + self.carte_mgr.get_fov()[2] * TILE_SIZE
         x2, y2 = x1 + TILE_SIZE, y1
         x3, y3 = x1, y1 + TILE_SIZE
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
@@ -100,6 +100,12 @@ class Personnage:
     def end_move(self):
         self.is_moving = False
 
+    def run(self):
+        self.cur_div = DIV_DT_COURSE if self.cur_div != DIV_DT_COURSE else DIV_DT_BASIC
+
+    def ride(self):
+        self.cur_div = DIV_DT_VELO if self.cur_div != DIV_DT_VELO else DIV_DT_BASIC
+
     def update(self):
         if not self.is_moving:
             self.perso = self.sprites[self.direction][PAUSE]
@@ -111,7 +117,7 @@ class Personnage:
         self.ecran.blit(self.perso, self.pos)
 
     def get_pos(self):
-        return self.pos
+        return tuple([int(i) for i in self.pos])
 
     def load(self):
         if os.path.exists(os.path.join("..", "saves", "perso" + EXTENSION)):

@@ -84,6 +84,7 @@ EXTENSION = '.umd'
 BASIC_SPEED = 8
 DIV_DT_BASIC = 1
 DIV_DT_VELO = 0.5
+DIV_DT_COURSE = 0.8
 
 T_FEU = 0
 T_EAU = 1
@@ -161,4 +162,4 @@ FIRST_BASIC_FOV = FEN_large // TILE_SIZE + 1
 FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE + 1
 
 COLLIDE_ITEM = lambda c: True if int(c) % 2 else False
-COLLIDE = lambda x, y, c, tc: True if COLLIDE_ITEM(c[y][x][tc]) else False
+COLLIDE = lambda x, y, c, tc: True if COLLIDE_ITEM(c[int(y)][int(x)][tc]) else False
