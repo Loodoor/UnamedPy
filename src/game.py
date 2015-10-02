@@ -16,6 +16,7 @@ import equipe_manager
 import os
 import atk_sys
 import menu_in_game
+import computer_manager
 
 
 class Game:
@@ -38,6 +39,7 @@ class Game:
         self.inventaire = inventaire.Inventaire(self.ecran, self.police_grande)
         self.indexeur = indexer.Indexer(self.ecran)
         self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande)
+        self.pc_mgr = computer_manager.ComputerManager(self.ecran, self.police_grande)
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
@@ -69,6 +71,8 @@ class Game:
         self.inventaire.load()
         self.indexeur.load()
         self.equipe_mgr.load()
+        self.pc_mgr.load()
+
         self.tab_types.init_tab()
 
     def save(self):
@@ -78,6 +82,7 @@ class Game:
         #self.inventaire.save()
         #self.indexeur.save()
         #self.equipe_mgr.save()
+        #self.pc_mgr.save()
 
     def invert_rendering(self):
         tmp = self.last_rendering
@@ -111,6 +116,8 @@ class Game:
                 raise NotImplementedError
             elif self.current_rendering == RENDER_CREATURES:
                 self.process_events_creatures(event, dt)
+            elif self.current_rendering == RENDER_PC:
+                raise NotImplementedError
 
             # Global
             if event.type == KEYUP:
