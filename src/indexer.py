@@ -13,12 +13,28 @@ class Indexer:
         self.page = 0
         self.max_page = 10
         self.par_page = 10
-        self.indexer = {}
+        self.indexer = {
+            "a": [False, False, T_NORMAL],
+            "b": [False, False, T_NORMAL],
+            "c": [False, False, T_NORMAL],
+            "d": [False, False, T_NORMAL],
+            "e": [False, False, T_NORMAL],
+            "f": [False, False, T_NORMAL],
+            "g": [False, False, T_NORMAL],
+            "h": [False, False, T_NORMAL],
+            "i": [False, False, T_NORMAL],
+            "j": [False, False, T_NORMAL],
+            "k": [False, False, T_NORMAL],
+            "l": [False, False, T_NORMAL]
+        }
 
     def load(self):
         if os.path.exists(self.save_path):
             with open(self.save_path, "rb") as read_index:
                 self.indexer = pickle.Unpickler(read_index).load()
+        else:
+            pass
+            #raise NotImplementedError("Désolé, aucune créature ne semble exister")
 
     def save(self):
         with open(self.save_path, "wb") as save_index:
@@ -42,3 +58,15 @@ class Indexer:
     def render(self):
         pygame.draw.rect(self.ecran, (180, 20, 180), (POK_POSX, POK_POSY, POK_X_SIZE, POK_Y_SIZE))
         self.ecran.blit(self.police.render("Indexeur", 1, (255, 255, 255)), (POK_X_TITRE, POK_Y_TITRE))
+        i = 0
+        for k, v in self.indexer.items():
+            nom = k
+            vu, capture, type_ = v
+            if not vu and not capture:
+                nom = "???"
+                type_ = "???"
+            else:
+                pass
+            self.ecran.blit(self.police.render(str(nom) + " - " + str(type_), 1, (255, 255, 255)),
+                            (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
+            i += 1

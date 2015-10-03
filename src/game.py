@@ -286,8 +286,7 @@ class Game:
 
         while self.continuer:
             # FPS
-            # self.fps_regulator.actualise()
-            # dt = self.fps_regulator.get_DeltaTime()
+            # self.fps_regulator.actualise() ; dt = self.fps_regulator.get_DeltaTime()
             dt = self.fps_regulator.tick(FPS_base)
 
             # Evénements
