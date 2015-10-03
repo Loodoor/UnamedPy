@@ -6,8 +6,9 @@ from constantes import *
 
 
 class Indexer:
-    def __init__(self, ecran: pygame.Surface):
+    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont):
         self.ecran = ecran
+        self.police = police
         self.save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
         self.page = 0
         self.max_page = 10
@@ -39,4 +40,5 @@ class Indexer:
         self.render()
 
     def render(self):
-        pass
+        pygame.draw.rect(self.ecran, (180, 20, 180), (POK_POSX, POK_POSY, POK_X_SIZE, POK_Y_SIZE))
+        self.ecran.blit(self.police.render("Indexeur", 1, (255, 255, 255)), (POK_X_TITRE, POK_Y_TITRE))

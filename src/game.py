@@ -44,7 +44,7 @@ class Game:
         # Managers
         self.carte_mgr = carte.CarteManager(self.ecran)
         self.inventaire = inventaire.Inventaire(self.ecran, self.police_grande)
-        self.indexeur = indexer.Indexer(self.ecran)
+        self.indexeur = indexer.Indexer(self.ecran, self.police_grande)
         self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande)
         self.pc_mgr = computer_manager.ComputerManager(self.ecran, self.police_grande)
         self.tab_types = tab_types.Storage()
@@ -142,7 +142,7 @@ class Game:
         raise NotImplementedError
 
     def process_events_pokedex(self, event: pygame.event, dt: int=1):
-        raise NotImplementedError
+        pass
 
     def process_events_pc(self, event: pygame.event, dt: int=1):
         raise NotImplementedError
@@ -220,12 +220,16 @@ class Game:
                 self.current_rendering = RENDER_MENU_IN_GAME
         if event.type == KEYUP:
             if event.key == self.controles[HAUT]:
+                self.top = False
                 self.personnage.end_move()
             if event.key == self.controles[BAS]:
+                self.bottom = False
                 self.personnage.end_move()
             if event.key == self.controles[GAUCHE]:
+                self.left = False
                 self.personnage.end_move()
             if event.key == self.controles[DROITE]:
+                self.right = False
                 self.personnage.end_move()
         self.move_perso(dt)
 
