@@ -12,7 +12,7 @@ class Personnage:
         self.direction = BAS
         self.anim_cursor = PAUSE
         self.max_anim_cursor = 2
-        self.speed = 10
+        self.speed = BASIC_SPEED
         self.cur_div = DIV_DT_BASIC
         self.lhaut = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "haut*.png"))]
         self.lbas = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "bas*.png"))]
@@ -35,7 +35,13 @@ class Personnage:
         self.perso = self.sprites[self.direction][self.anim_cursor + 1]
         self.is_moving = True
 
-        new_speed = self.speed * (dt * 100) / self.cur_div
+        self.move_in_fov(direction, dt)
+
+    def move_with_fov(self, direction: int=HAUT, dt: int=1):
+        pass
+
+    def move_in_fov(self, direction: int=HAUT, dt: int=1):
+        new_speed = self.speed * (dt / 10) / self.cur_div
 
         vecteur = (0, 0)
 
@@ -51,6 +57,9 @@ class Personnage:
         x, y = self.pos[0], self.pos[1]
         x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
         y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
+
+        if x < 0 or y < 0 or x > self.ecran.get_width() + 1 or y > self.ecran.get_height() + 1:
+            return
 
         #Détection des collisions
         x1, y1 = x + self.carte_mgr.get_fov()[0] * TILE_SIZE, \

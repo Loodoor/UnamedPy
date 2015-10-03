@@ -2,6 +2,7 @@ __author__ = 'Moustillon'
 
 import time
 from constantes import MAX_FPS
+from math import trunc
 
 
 class IAFPS:
@@ -17,9 +18,19 @@ class IAFPS:
         self.last_time = time.time()
         self.frame_time = 0
         self.count_frames = 0
+        self.dt_compute = 0
+        self.fps_compute = 0
+
+    def get_fps(self):
+        if self.dt_compute > 1:
+            self.dt_compute = 0
+            self.fps_compute = 0
+            return -1.0
+        return self.fps_compute
 
     def actualise(self):
         self.count_frames += 1
+        self.fps_compute += 1
         if self.begin_time < time.time():
             self.cpt_tour = 0
             self.timer(self.cpt_tour)
@@ -36,6 +47,7 @@ class IAFPS:
             self.frame_time = self.cur_time - self.last_time
         else:
             self.frame_time = self.last_time - self.cur_time
+        self.dt_compute += self.get_DeltaTime()
 
     def get_DeltaTime(self):
         return self.frame_time

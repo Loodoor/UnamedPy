@@ -21,7 +21,8 @@ import computer_manager
 
 class Game:
     def __init__(self, ecran: pygame.Surface):
-        self.fps_regulator = IAFPS(FPS_base)
+        # self.fps_regulator = IAFPS(FPS_base)
+        self.fps_regulator = pygame.time.Clock()
         self.continuer = 1
         self.ecran = ecran
         self.current_rendering = RENDER_GAME
@@ -44,8 +45,6 @@ class Game:
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
-
-        self.clock = pygame.time.Clock()
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -259,16 +258,17 @@ class Game:
         elif self.current_rendering == RENDER_PC:
             self.pc_mgr.update()
 
+        if self.show_fps:
+            self.ecran.blit(self.police_italique.render(str(self.fps_regulator.get_fps()), 1, (255, 150, 150)), (0, 0))
+
     def start(self):
         self.prepare()
 
         while self.continuer:
             # FPS
-            self.fps_regulator.actualise()
-            dt = self.fps_regulator.get_DeltaTime()
-
-            if self.show_fps:
-                self.ecran.blit(self.police_italique.render(str(self.clock.get_fps()), 1, (255, 150, 150)), (0, 0))
+            # self.fps_regulator.actualise()
+            # dt = self.fps_regulator.get_DeltaTime()
+            dt = self.fps_regulator.tick(FPS_base)
 
             # Evénements
             self.process_events(pygame.event.get(), dt)
