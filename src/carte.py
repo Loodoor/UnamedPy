@@ -70,9 +70,8 @@ class CarteManager:
                 objet = self.carte[y][x]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
                 if not isinstance(objet, list):
-                    tile = objet[TILECODE]
-                    self.ecran.blit(self.images[tile], (xpos, ypos))
+                    self.ecran.blit(self.images[objet], (xpos, ypos))
                 else:
                     for z in range(len(objet)):
-                        tile = objet[z][TILECODE]
+                        tile = objet[z]
                         self.ecran.blit(self.images[tile], (xpos, ypos))

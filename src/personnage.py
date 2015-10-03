@@ -12,7 +12,7 @@ class Personnage:
         self.direction = BAS
         self.anim_cursor = PAUSE
         self.max_anim_cursor = 2
-        self.speed = BASIC_SPEED
+        self.speed = 10
         self.cur_div = DIV_DT_BASIC
         self.lhaut = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "haut*.png"))]
         self.lbas = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "bas*.png"))]
@@ -60,37 +60,37 @@ class Personnage:
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
 
         if direction == HAUT:
-            if COLLIDE(x1 // TILE_SIZE, y1 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+            if COLLIDE(x1 // TILE_SIZE, y1 // TILE_SIZE, self.carte_mgr.get_carte()):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y += TILE_SIZE - decy
-            if COLLIDE(x2 // TILE_SIZE, y2 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+            if COLLIDE(x2 // TILE_SIZE, y2 // TILE_SIZE, self.carte_mgr.get_carte()):
                 if x % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    y += TILE_SIZE - decy
+                    y += decy
 
         if direction == GAUCHE:
-            if COLLIDE(x1 // TILE_SIZE, y1 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+            if COLLIDE(x1 // TILE_SIZE, y1 // TILE_SIZE, self.carte_mgr.get_carte()):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x += TILE_SIZE - decx
-            if COLLIDE(x3 // TILE_SIZE, y3 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+            if COLLIDE(x3 // TILE_SIZE, y3 // TILE_SIZE, self.carte_mgr.get_carte()):
                 if y % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    x += TILE_SIZE - decx
+                    x += decx
 
         if direction == DROITE:
-            if COLLIDE(x2 // TILE_SIZE, y2 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+            if COLLIDE(x2 // TILE_SIZE, y2 // TILE_SIZE, self.carte_mgr.get_carte()):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x -= decx
-            if COLLIDE(x4 // TILE_SIZE, y4 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+            if COLLIDE(x4 // TILE_SIZE, y4 // TILE_SIZE, self.carte_mgr.get_carte()):
                 if y % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     x -= decx
 
         if direction == BAS:
-            if COLLIDE(x3 // TILE_SIZE, y3 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+            if COLLIDE(x3 // TILE_SIZE, y3 // TILE_SIZE, self.carte_mgr.get_carte()):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y -= decy
-            if COLLIDE(x4 // TILE_SIZE, y4 // TILE_SIZE, self.carte_mgr.get_carte(), TILECODE):
+            if COLLIDE(x4 // TILE_SIZE, y4 // TILE_SIZE, self.carte_mgr.get_carte()):
                 if x % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     y -= decy

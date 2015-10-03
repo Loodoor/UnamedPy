@@ -7,14 +7,13 @@ from pygame.locals import *
 
 pygame.init()
 
+ecran = pygame.display.set_mode((1100, 700))
+
 TILE_SIZE = 32
-YTAILLE = 1200
-XTAILLE = 1200
-TILECODE = 0
-BATISIZE = 1
+YTAILLE = ecran.get_height() // TILE_SIZE
+XTAILLE = ecran.get_width() // TILE_SIZE
 DEFAUT = '0'
 
-ecran = pygame.display.set_mode((1100, 700))
 continuer = 1
 offset = 0
 offset2 = 0
@@ -49,12 +48,13 @@ def render(carte, offset, offset2, scale):
         for x in range(len(carte[y])):
             xpos = x * scale + offset
             ypos = y * scale + offset2
-            if 0 <= xpos <= ecran.get_size()[0] and 0 <= ypos <= ecran.get_size()[1]:
-                img = assets[carte[y][x][TILECODE]]
-                #img = pygame.transform.scale(img, (scale, scale))
-                ecran.blit(img, (xpos, ypos))
+            #if 0 <= xpos <= ecran.get_size()[0] and 0 <= ypos <= ecran.get_size()[1]:
+            img = assets[carte[y][x]]
+            #img = pygame.transform.scale(img, (scale, scale))
+            ecran.blit(img, (xpos, ypos))
 
 clock = pygame.time.Clock()
+clic = 0
 
 while continuer:
     clock.tick(30)
@@ -69,9 +69,18 @@ while continuer:
             if event.button == 5:
                 curpos = curpos - 1 if curpos - 1 >= 0 else curpos
             if event.button == 1:
+                clic = 1
                 x, y = event.pos
                 mx, my = x // scale - offset // scale, y // scale - offset2 // scale
-                carte[my][mx] = [lassets[curpos], assets[lassets[curpos]].get_size()]
+                carte[my][mx] = lassets[curpos]
+        if event.type == MOUSEMOTION:
+            if clic:
+                x, y = event.pos
+                mx, my = x // scale - offset // scale, y // scale - offset2 // scale
+                carte[my][mx] = lassets[curpos]
+        if event.type == MOUSEBUTTONUP:
+            if event.button == 1:
+                clic = 0
         if event.type == KEYDOWN:
             if event.key == K_RIGHT:
                 offset -= TILE_SIZE

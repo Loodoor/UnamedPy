@@ -13,9 +13,6 @@ POL_NORMAL_TAILLE = 12
 POL_GRANDE_TAILLE = 18
 POL_PETITE_TAILLE = 9
 
-TILECODE = 0
-BATIMENTSIZE = 1
-
 HAUT = 0
 BAS = 1
 GAUCHE = 2
@@ -176,4 +173,4 @@ FIRST_BASIC_FOV = FEN_large // TILE_SIZE + 1
 FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE + 1
 
 COLLIDE_ITEM = lambda c: True if int(c) % 2 else False
-COLLIDE = lambda x, y, c, tc: True if COLLIDE_ITEM(c[int(y)][int(x)][tc]) else False
+COLLIDE = lambda x, y, c: True if COLLIDE_ITEM(c[int(y)][int(x)]) else False

@@ -26,6 +26,7 @@ class Game:
         self.ecran = ecran
         self.current_rendering = RENDER_GAME
         self.last_rendering = RENDER_GAME
+        self.show_fps = True
 
         # Polices
         self.police_normale = pygame.font.SysFont("arial", POL_NORMAL_TAILLE)
@@ -43,6 +44,8 @@ class Game:
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
+
+        self.clock = pygame.time.Clock()
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -251,6 +254,10 @@ class Game:
             raise NotImplementedError
         elif self.current_rendering == RENDER_CREATURES:
             self.equipe_mgr.update()
+        elif self.current_rendering == RENDER_POKEDEX:
+            self.indexeur.update()
+        elif self.current_rendering == RENDER_PC:
+            self.pc_mgr.update()
 
     def start(self):
         self.prepare()
@@ -259,6 +266,9 @@ class Game:
             # FPS
             self.fps_regulator.actualise()
             dt = self.fps_regulator.get_DeltaTime()
+
+            if self.show_fps:
+                self.ecran.blit(self.police_italique.render(str(self.clock.get_fps()), 1, (255, 150, 150)), (0, 0))
 
             # Evénements
             self.process_events(pygame.event.get(), dt)
