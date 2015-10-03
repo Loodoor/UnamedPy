@@ -64,7 +64,7 @@ class CarteManager:
         self.render()
 
     def render(self):
-        tmp_map = [ligne[self.fov[0]:self.fov[1]] for ligne in self.carte[self.fov[2]:self.fov[3]]]
+        tmp_map = [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.carte[int(self.fov[2]):int(self.fov[3])]]
         for y in range(len(tmp_map)):
             for x in range(len(tmp_map[y])):
                 objet = self.carte[y][x]

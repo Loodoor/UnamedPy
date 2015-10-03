@@ -29,6 +29,11 @@ class Game:
         self.last_rendering = RENDER_GAME
         self.show_fps = True
 
+        self.right = False
+        self.left = False
+        self.top = False
+        self.bottom = False
+
         # Polices
         self.police_normale = pygame.font.SysFont("arial", POL_NORMAL_TAILLE)
         self.police_gras = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, bold=True)
@@ -200,13 +205,13 @@ class Game:
     def process_events_game(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[HAUT]:
-                self.personnage.move(HAUT, dt)
+                self.top, self.bottom = True, False
             if event.key == self.controles[BAS]:
-                self.personnage.move(BAS, dt)
+                self.top, self.bottom = False, True
             if event.key == self.controles[GAUCHE]:
-                self.personnage.move(GAUCHE, dt)
+                self.left, self.right = True, False
             if event.key == self.controles[DROITE]:
-                self.personnage.move(DROITE, dt)
+                self.left, self.right = False, True
             if event.key == self.controles[INVENTAIRE]:
                 self.last_rendering = self.current_rendering
                 self.current_rendering = RENDER_INVENTAIRE
@@ -222,6 +227,17 @@ class Game:
                 self.personnage.end_move()
             if event.key == self.controles[DROITE]:
                 self.personnage.end_move()
+        self.move_perso(dt)
+
+    def move_perso(self, dt: int=1):
+        if self.top:
+            self.personnage.move(HAUT, dt)
+        if self.bottom:
+            self.personnage.move(BAS, dt)
+        if self.right:
+            self.personnage.move(DROITE, dt)
+        if self.left:
+            self.personnage.move(GAUCHE, dt)
 
     def prepare(self):
         # Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
