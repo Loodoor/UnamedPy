@@ -111,18 +111,34 @@ class Game:
             elif self.current_rendering == RENDER_MENU_IN_GAME:
                 self.process_events_menu_in_game(event, dt)
             elif self.current_rendering == RENDER_SAVE:
-                raise NotImplementedError
+                self.process_events_save(event, dt)
             elif self.current_rendering == RENDER_CARTE:
-                raise NotImplementedError
+                self.process_events_carte(event, dt)
             elif self.current_rendering == RENDER_CREATURES:
                 self.process_events_creatures(event, dt)
             elif self.current_rendering == RENDER_PC:
-                raise NotImplementedError
+                self.process_events_pc(event, dt)
+            elif self.current_rendering == RENDER_POKEDEX:
+                self.process_events_pokedex(event, dt)
+            elif self.current_rendering == RENDER_ERROR:
+                raise NotImplementedError("Cas non géré. Merci de repoter ce traceback à Folaefolc, main dev d'Unamed")
 
             # Global
             if event.type == KEYUP:
                 if event.key == self.controles[SCREENSCHOT]:
                     self.screenshot()
+
+    def process_events_carte(self, event: pygame.event, dt: int=1):
+        raise NotImplementedError
+
+    def process_events_save(self, event: pygame.event, dt: int=1):
+        raise NotImplementedError
+
+    def process_events_pokedex(self, event: pygame.event, dt: int=1):
+        raise NotImplementedError
+
+    def process_events_pc(self, event: pygame.event, dt: int=1):
+        raise NotImplementedError
 
     def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
@@ -169,7 +185,7 @@ class Game:
 
     def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
-            if event.key == self.controles[INVENTAIRE]:
+            if event.key == self.controles[INVENTAIRE] or event.key == self.controles[MENU]:
                 self.invert_rendering()
             if event.key == self.__ctrls[NEXT_PAGE]:
                 self.inventaire.next()

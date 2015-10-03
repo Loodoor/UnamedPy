@@ -6,8 +6,12 @@ import random
 import creatures_mgr
 
 
-def calcul_degats(degats_basiques: int, specs_atk: list, specs_def: list, coeff: int) -> int:
-    return (degats_basiques + specs_atk[SPEC_ATK] / specs_def[SPEC_DEF]) * coeff
+def calcul_degats(degats_basiques: int, specs_atk: list, specs_def: list, coeff_types: int, my_type: int) -> int:
+    if specs_atk[ATK_TYP] == my_type:
+        x = 1.3
+    else:
+        x = 1
+    return (degats_basiques + specs_atk[SPEC_ATK] / specs_def[SPEC_DEF]) * coeff_types * x
 
 
 def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
@@ -58,7 +62,7 @@ class Attaque:
             ATK_PPS: pp
         }
 
-    def utiliser(self):
+    def utiliser(self) -> tuple:
         if self.attaque[ATK_PPS][ATK_PP] > 0:
             self.attaque[ATK_PPS][ATK_PP] -= 1
             return self.attaque[ATK_DEGATS], self.attaque[ATK_TYP]
