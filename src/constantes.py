@@ -5,6 +5,10 @@ FEN_taille = (FEN_large, FEN_haut)
 FPS_base = -1
 MAX_FPS = 1000000
 
+BUFFER_SIZE = 4096
+TUDP_NONE = "tchat.messages.fetch:Nothing"
+TUDP_ASK_MESSAGES = "tchat.messages.fetch"
+
 TILE_SIZE = 32
 YTAILLE_carte = 1200
 XTAILLE_carte = 1200
