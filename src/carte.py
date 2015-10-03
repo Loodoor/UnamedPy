@@ -67,6 +67,12 @@ class CarteManager:
         tmp_map = [ligne[self.fov[0]:self.fov[1]] for ligne in self.carte[self.fov[2]:self.fov[3]]]
         for y in range(len(tmp_map)):
             for x in range(len(tmp_map[y])):
-                tile = self.carte[y][x][TILECODE]
+                objet = self.carte[y][x]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
-                self.ecran.blit(self.images[tile], (xpos, ypos))
+                if not isinstance(objet, list):
+                    tile = objet[TILECODE]
+                    self.ecran.blit(self.images[tile], (xpos, ypos))
+                else:
+                    for z in range(len(objet)):
+                        tile = objet[z][TILECODE]
+                        self.ecran.blit(self.images[tile], (xpos, ypos))

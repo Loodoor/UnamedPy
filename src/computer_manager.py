@@ -11,6 +11,7 @@ class ComputerManager:
         self.ecran = ecran
         self.police = police
         self.storage = []
+        self.max_size = max_size
         self.path = os.path.join("..", "saves", "pc" + EXTENSION)
 
     def load(self):
