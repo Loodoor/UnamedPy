@@ -18,6 +18,7 @@ import atk_sys
 import menu_in_game
 import computer_manager
 
+import gui
 
 class Game:
     def __init__(self, ecran: pygame.Surface):
@@ -50,6 +51,8 @@ class Game:
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
+
+        self.gui = gui.PNJSpeaking("TEST de la gui textuelle", self.ecran, self.police_grande)
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -280,6 +283,7 @@ class Game:
 
         if self.show_fps:
             self.ecran.blit(self.police_italique.render(str(self.fps_regulator.get_fps()), 1, (255, 150, 150)), (0, 0))
+        self.gui.update()
 
     def start(self):
         self.prepare()

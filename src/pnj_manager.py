@@ -21,6 +21,9 @@ class PNJ:
         self.move()
         self.render()
 
+    def get_pos(self):
+        return self.pos
+
     def move_scheme(self):
         self.cur_scheme += self.dir
         if self.cur_scheme + self.dir < 0:
