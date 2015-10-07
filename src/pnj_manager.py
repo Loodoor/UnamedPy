@@ -3,23 +3,75 @@ from pygame.locals import *
 import os
 from carte import CarteManager
 from constantes import *
+from gui import PNJSpeaking
+
+
+STANDART_MOVE = [
+    (0, 0),
+    (0, -1),
+    (0, -2),
+    (1, -2),
+    (2, -2),
+    (3, -2),
+    (3, -1),
+    (3, 0),
+    (2, 0),
+    (1, 0)
+]
+CROSS_MOVE = [
+    (0, 0),
+    (0, 1),
+    (0, 2),
+    (-1, 2),
+    (-2, 2),
+    (-1, 2),
+    (0, 2),
+    (0, 3),
+    (0, 4),
+    (0, 3),
+    (0, 2),
+    (1, 2),
+    (2, 2),
+    (1, 2),
+    (0, 2),
+    (0, 1)
+]
+VERTICAL_MOVE = [
+    (0, 0),
+    (0, 1),
+    (0, 2),
+    (0, 3)
+]
+HORIZONTAL_MOVE = [
+    (0, 0),
+    (1, 0),
+    (2, 0),
+    (3, 0)
+]
 
 
 class PNJ:
-    def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager, pos: list,
-                 type_mvt: list, dir: int=1, sprite: str='test.png') -> None:
+    def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager, pos: tuple, type_mvt: list,
+                 font: pygame.font.SysFont, dir: int=1, sprite: str='bas.png') -> None:
         self.ecran = ecran
         self.carte_mgr = carte_mgr
-        self.pos = pos
+        self.pos = list(pos)
         self.type_mvt = type_mvt
+        self.font = font
         self.cur_scheme = 0
+        self.real_pos = self.pos
         self.dir = dir
+        self.mdt = 0
         self.orientation = BAS
         self.sprite = pygame.image.load(os.path.join("..", "assets", "pnj", sprite)).convert_alpha()
+        self.on_speak = PNJSpeaking("Je suis un test :) Bonjour toi !", self.ecran, self.font)
 
-    def update(self):
-        self.move()
-        self.render()
+    def update(self, dt: int=1):
+        self.mdt += dt
+        self.mdt %= 150
+        if not self.mdt:
+            self.move()
+        self.render(dt)
 
     def get_pos(self):
         return self.pos
@@ -27,24 +79,53 @@ class PNJ:
     def move_scheme(self):
         self.cur_scheme += self.dir
         if self.cur_scheme + self.dir < 0:
-            self.cur_scheme = len(self.type_mvt) - 1
+            self.dir = +1
         if self.cur_scheme + self.dir >= len(self.type_mvt):
-            self.cur_scheme = 0
+            self.dir = -1
+
+    def speaking(self, dt: int=1):
+        self.on_speak.update(dt)
 
     def move(self):
         self.move_scheme()
+
         tmp = self.type_mvt[self.cur_scheme]
+
         actual_x, actual_y = tmp
+        actual_x *= TILE_SIZE
+        actual_y *= TILE_SIZE
         actual_x += self.pos[0]
         actual_y += self.pos[1]
-        if tmp[0] == 1:
+
+        if tmp[0] > 0:
             self.orientation = DROITE
-        if tmp[0] == -1:
+        if tmp[0] < 0:
             self.orientation = GAUCHE
-        if tmp[1] == 1:
+        if tmp[1] > 0:
             self.orientation = HAUT
-        if tmp[1] == -1:
+        if tmp[1] < 0:
             self.orientation = BAS
 
-    def render(self):
-        pass
+        # Détection des collisions
+        print(self.orientation)
+
+        if self.orientation == HAUT:
+            if COLLIDE(actual_x // TILE_SIZE, actual_y // TILE_SIZE, self.carte_mgr.get_carte()):
+                actual_y += TILE_SIZE
+
+        if self.orientation == GAUCHE:
+            if COLLIDE(actual_x // TILE_SIZE, actual_y // TILE_SIZE, self.carte_mgr.get_carte()):
+                actual_x += TILE_SIZE
+
+        if self.orientation == DROITE:
+            if COLLIDE(actual_x // TILE_SIZE, actual_y // TILE_SIZE, self.carte_mgr.get_carte()):
+                actual_x -= TILE_SIZE
+
+        if self.orientation == BAS:
+            if COLLIDE(actual_x // TILE_SIZE, actual_y // TILE_SIZE, self.carte_mgr.get_carte()):
+                actual_y -= TILE_SIZE
+
+        self.real_pos = (actual_x, actual_y)
+
+    def render(self, dt: int=1):
+        self.ecran.blit(self.sprite, self.real_pos)

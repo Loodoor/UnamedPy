@@ -17,8 +17,8 @@ import os
 import atk_sys
 import menu_in_game
 import computer_manager
+import pnj_manager
 
-import gui
 
 class Game:
     def __init__(self, ecran: pygame.Surface):
@@ -52,8 +52,6 @@ class Game:
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
 
-        self.gui = gui.PNJSpeaking("TEST de la gui textuelle", self.ecran, self.police_grande)
-
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
 
@@ -84,6 +82,8 @@ class Game:
         self.pc_mgr.load()
 
         self.tab_types.init_tab()
+
+        self.pnj = pnj_manager.PNJ(self.ecran, self.carte_mgr, (64, 64), pnj_manager.STANDART_MOVE, self.police_grande)
 
     def save(self):
         print("Sauvegarde ...")
@@ -145,7 +145,7 @@ class Game:
         raise NotImplementedError
 
     def process_events_pokedex(self, event: pygame.event, dt: int=1):
-        pass
+        raise NotImplementedError
 
     def process_events_pc(self, event: pygame.event, dt: int=1):
         raise NotImplementedError
@@ -283,7 +283,6 @@ class Game:
 
         if self.show_fps:
             self.ecran.blit(self.police_italique.render(str(self.fps_regulator.get_fps()), 1, (255, 150, 150)), (0, 0))
-        self.gui.update()
 
     def start(self):
         self.prepare()
@@ -298,6 +297,8 @@ class Game:
 
             # Affichage
             self.render()
+
+            self.pnj.update(dt)
 
             pygame.display.flip()
 
