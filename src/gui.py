@@ -12,23 +12,13 @@ class PNJSpeaking:
         self.pnj = pnj
         self.font = font
 
-        self.points = [
-            (10, 10), (630, 10),
-            (630, 10), (630, 110),
-            (630, 110), (10, 110),
-            (10, 110), (10, 10)
-        ]
-
-        """(PNJ_TXT_XPOS + PNJ_TXT_XS, PNJ_TXT_YPOS), (PNJ_TXT_XPOS + PNJ_TXT_XS, PNJ_TXT_YPOS + PNJ_TXT_YS),
-        (PNJ_TXT_XPOS + PNJ_TXT_XS, PNJ_TXT_YPOS + PNJ_TXT_YS), (PNJ_TXT_XPOS, PNJ_TXT_YPOS + PNJ_TXT_YS),
-        (PNJ_TXT_XPOS, PNJ_TXT_YPOS + PNJ_TXT_YS), (PNJ_TXT_XPOS, PNJ_TXT_YPOS)"""
-
         self.color = color
         self.txt_renderer = self.font.render(self.texte, 1, (10, 10, 10))
+        self.bulle = pygame.image.load(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
 
     def update(self):
         self.render()
 
     def render(self):
-        pygame.draw.polygon(self.ecran, self.color, self.points)
+        self.ecran.blit(self.bulle, (PNJ_TXT_XPOS, PNJ_TXT_YPOS))
         self.ecran.blit(self.txt_renderer, (PNJ_TXT_XPOS + PNJ_TXT_ALIGN_X, PNJ_TXT_YPOS + PNJ_TXT_ALIGN_Y))

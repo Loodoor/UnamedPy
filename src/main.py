@@ -16,7 +16,7 @@ def main():
     ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
     pygame.display.set_caption("Unamed")
 
-    print("Press 'J' to play")
+    print("Appuyez sur 'J' pour lancer le jeu")
 
     continuer = 1
     jeu = game.Game(ecran)
@@ -36,7 +36,7 @@ def main():
 
     pygame.quit()
 
-    print("Exited cleanly")
+    print("Le programme s'est terminé proprement")
 
 if __name__ == '__main__':
     main()
