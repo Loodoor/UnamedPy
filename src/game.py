@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from fpsregulator import IAFPS
+from exceptions import FonctionnaliteNonImplementee
 from constantes import *
 from glob import glob
 import carte
@@ -131,7 +132,7 @@ class Game:
             elif self.current_rendering == RENDER_POKEDEX:
                 self.process_events_pokedex(event, dt)
             elif self.current_rendering == RENDER_ERROR:
-                raise NotImplementedError("Cas non géré. Merci de repoter ce traceback à Folaefolc, main dev d'Unamed")
+                raise FonctionnaliteNonImplementee("Cas non géré. Merci de repoter ce traceback à Folaefolc, main dev d'Unamed")
 
             # Global
             if event.type == KEYUP:
@@ -139,16 +140,16 @@ class Game:
                     self.screenshot()
 
     def process_events_carte(self, event: pygame.event, dt: int=1):
-        raise NotImplementedError
+        raise FonctionnaliteNonImplementee
 
     def process_events_save(self, event: pygame.event, dt: int=1):
-        raise NotImplementedError
+        raise FonctionnaliteNonImplementee
 
     def process_events_pokedex(self, event: pygame.event, dt: int=1):
-        raise NotImplementedError
+        raise FonctionnaliteNonImplementee
 
     def process_events_pc(self, event: pygame.event, dt: int=1):
-        raise NotImplementedError
+        raise FonctionnaliteNonImplementee
 
     def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
@@ -181,7 +182,7 @@ class Game:
             xp, yp = event.pos
 
     def process_events_boutique(self, event: pygame.event, dt: int=1):
-        raise NotImplementedError
+        raise FonctionnaliteNonImplementee
 
     def process_events_combat(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
@@ -262,10 +263,10 @@ class Game:
         elif self.current_rendering == RENDER_INVENTAIRE:
             self.inventaire.update()
         elif self.current_rendering == RENDER_BOUTIQUE:
-            raise NotImplementedError
+            raise FonctionnaliteNonImplementee
         elif self.current_rendering == RENDER_COMBAT:
             self.cur_combat = atk_sys.Combat(self.ecran, creatures_mgr.Creature("", T_NORMAL))
-            raise NotImplementedError
+            raise FonctionnaliteNonImplementee
         elif self.current_rendering == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.current_rendering == RENDER_SAVE:
@@ -273,7 +274,7 @@ class Game:
             self.invert_rendering()
             print("Erreur future à corriger ici (fct render dans game.py)")
         elif self.current_rendering == RENDER_CARTE:
-            raise NotImplementedError
+            raise FonctionnaliteNonImplementee
         elif self.current_rendering == RENDER_CREATURES:
             self.equipe_mgr.update()
         elif self.current_rendering == RENDER_POKEDEX:

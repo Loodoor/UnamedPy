@@ -1,7 +1,8 @@
 import os
+from exceptions import ErreurRepertoire
 
 if os.path.split(os.getcwd())[1] != "src":
-    raise OSError("Le répertoire courant n'est pas correct, le jeu ne peut pas se lancer")
+    raise ErreurRepertoire("Le répertoire courant n'est pas correct, le jeu ne peut pas se lancer")
 print("Chargement ...")
 
 import game
