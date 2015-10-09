@@ -6,6 +6,18 @@ from pygame.locals import *
 from constantes import *
 
 
+class CarteRenderer:
+    def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager):
+        self.ecran = ecran
+        self.carte_mgr = carte_mgr
+
+    def update(self):
+        self.render()
+
+    def render(self):
+        pass
+
+
 class CarteManager:
     def __init__(self, ecran: pygame.Surface):
         self.ecran = ecran
@@ -30,6 +42,9 @@ class CarteManager:
 
     def get_carte(self):
         return self.carte
+
+    def get_fov_carte(self):
+        return [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.carte[int(self.fov[2]):int(self.fov[3])]]
 
     def move_of1(self, dir: int=1):
         self.offsets[0] += dir
