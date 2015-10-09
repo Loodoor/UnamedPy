@@ -60,6 +60,7 @@ class PNJ:
         self.font = font
         self.cur_scheme = 0
         self.real_pos = self.pos
+        self.speak = False
         self.dir = dir
         self.mdt = 0
         self.orientation = BAS
@@ -84,7 +85,7 @@ class PNJ:
             self.dir = -1
 
     def speaking(self, dt: int=1):
-        self.on_speak.update(dt)
+        return self.on_speak.update(dt)
 
     def move(self):
         self.move_scheme()
@@ -107,25 +108,32 @@ class PNJ:
             self.orientation = BAS
 
         # Détection des collisions
-        print(self.orientation)
-
         if self.orientation == HAUT:
             if COLLIDE(actual_x // TILE_SIZE, actual_y // TILE_SIZE, self.carte_mgr.get_carte()):
                 actual_y += TILE_SIZE
+                self.dir = -self.dir
 
         if self.orientation == GAUCHE:
             if COLLIDE(actual_x // TILE_SIZE, actual_y // TILE_SIZE, self.carte_mgr.get_carte()):
                 actual_x += TILE_SIZE
+                self.dir = -self.dir
 
         if self.orientation == DROITE:
             if COLLIDE(actual_x // TILE_SIZE, actual_y // TILE_SIZE, self.carte_mgr.get_carte()):
                 actual_x -= TILE_SIZE
+                self.dir = -self.dir
 
         if self.orientation == BAS:
             if COLLIDE(actual_x // TILE_SIZE, actual_y // TILE_SIZE, self.carte_mgr.get_carte()):
                 actual_y -= TILE_SIZE
+                self.dir = -self.dir
 
         self.real_pos = (actual_x, actual_y)
 
     def render(self, dt: int=1):
         self.ecran.blit(self.sprite, self.real_pos)
+        if self.speak:
+            self.speak = self.speaking(dt)
+
+    def player_want_to_talk(self):
+        self.speak = True

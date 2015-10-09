@@ -18,7 +18,11 @@ class PNJSpeaking:
         self.bulle = pygame.image.load(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
 
     def update(self, dt: int=1):
+        ev = pygame.event.get()
         self.render(dt)
+        if ev != KEYUP:
+            return True
+        return False
 
     def render(self, dt: int=1):
         self.ecran.blit(self.bulle, (PNJ_TXT_XPOS, PNJ_TXT_YPOS))
