@@ -6,18 +6,6 @@ from pygame.locals import *
 from constantes import *
 
 
-class CarteRenderer:
-    def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager):
-        self.ecran = ecran
-        self.carte_mgr = carte_mgr
-
-    def update(self):
-        self.render()
-
-    def render(self):
-        pass
-
-
 class CarteManager:
     def __init__(self, ecran: pygame.Surface):
         self.ecran = ecran
@@ -90,3 +78,17 @@ class CarteManager:
                     for z in range(len(objet)):
                         tile = objet[z]
                         self.ecran.blit(self.images[tile], (xpos, ypos))
+
+
+class CarteRenderer:
+    def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager):
+        self.ecran = ecran
+        self.carte_mgr = carte_mgr
+        self.carte_img = os.path.join("..", "assets", "gui", "carte.png")
+
+    def update(self):
+        self.render()
+
+    def render(self):
+        pygame.draw.rect(self.ecran, (20, 180, 20), (MAP_RDR_POSX, MAP_RDR_POSY, MAP_RDR_SX, MAP_RDR_SY))
+        self.ecran.blit(self.carte_mgr, (MAP_RDR_CARTEX, MAP_RDR_CARTEX))
