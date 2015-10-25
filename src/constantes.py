@@ -212,4 +212,4 @@ COLLIDE_ITEM = lambda c: True if int(c) % 2 else False
 def COLLIDE(x: int, y: int, c: list, tc: int=-1):
     if tc != -1:
         return True if COLLIDE_ITEM(c[int(y)][int(x)][int(tc)]) else False
-    return True if COLLIDE_ITEM(c[int(y)][int(x)]) else False
+    return True if COLLIDE_ITEM(c[int(y)][int(x)][0]) else False

@@ -18,7 +18,6 @@ continuer = 1
 offset = 0
 offset2 = 0
 curpos = 0
-scale = TILE_SIZE
 carte = []
 assets = {}
 lassets = []
@@ -35,7 +34,7 @@ else:
     for i in range(YTAILLE):
         lst = []
         for j in range(XTAILLE):
-            lst.append(DEFAUT)
+            lst.append([DEFAUT, DEFAUT, DEFAUT, DEFAUT, DEFAUT])
         carte.append(lst)
 
 for i in glob(os.path.join("..", "assets", "tiles", "*.png")):
@@ -43,18 +42,18 @@ for i in glob(os.path.join("..", "assets", "tiles", "*.png")):
     lassets.append(i[16:-4])
 
 
-def render(carte, offset, offset2, scale):
+def render(carte, offset, offset2):
     for y in range(len(carte)):
         for x in range(len(carte[y])):
-            xpos = x * scale + offset
-            ypos = y * scale + offset2
-            #if 0 <= xpos <= ecran.get_size()[0] and 0 <= ypos <= ecran.get_size()[1]:
-            img = assets[carte[y][x]]
-            #img = pygame.transform.scale(img, (scale, scale))
-            ecran.blit(img, (xpos, ypos))
+            xpos = x * TILE_SIZE + offset
+            ypos = y * TILE_SIZE + offset2
+            obj = carte[y][x]
+            for i in obj[::-1]:
+                ecran.blit(assets[i], (xpos, ypos))
 
 clock = pygame.time.Clock()
 clic = 0
+layer = 0  # maxi 5 (0 -> ... 4 compris)
 
 while continuer:
     clock.tick(30)
@@ -71,13 +70,13 @@ while continuer:
             if event.button == 1:
                 clic = 1
                 x, y = event.pos
-                mx, my = x // scale - offset // scale, y // scale - offset2 // scale
-                carte[my][mx] = lassets[curpos]
+                mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
+                carte[my][mx][layer] = lassets[curpos]
         if event.type == MOUSEMOTION:
             if clic:
                 x, y = event.pos
-                mx, my = x // scale - offset // scale, y // scale - offset2 // scale
-                carte[my][mx] = lassets[curpos]
+                mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
+                carte[my][mx][layer] = lassets[curpos]
         if event.type == MOUSEBUTTONUP:
             if event.button == 1:
                 clic = 0
@@ -91,15 +90,15 @@ while continuer:
             if event.key == K_DOWN:
                 offset2 -= TILE_SIZE
             if event.key == K_PLUS or event.key == K_KP_PLUS:
-                scale += 1
+                layer = layer + 1 if layer < 4 else 4
             if event.key == K_MINUS or event.key == K_KP_MINUS:
-                scale = scale - 1 if scale - 1 >= 1 else scale
+                layer = layer - 1 if layer > 0 else 0
 
-    pygame.display.set_caption("Scale : " + str(scale) + " Objet courant : " + str(lassets[curpos]) +
-                               " X : " + str(pygame.mouse.get_pos()[0] // scale - offset // scale) +
-                               " Y : " + str(pygame.mouse.get_pos()[1] // scale - offset2 // scale))
+    pygame.display.set_caption("Layer : " + str(layer) + " Objet courant : " + str(lassets[curpos]) +
+                               " X : " + str(pygame.mouse.get_pos()[0] // TILE_SIZE - offset // TILE_SIZE) +
+                               " Y : " + str(pygame.mouse.get_pos()[1] // TILE_SIZE - offset2 // TILE_SIZE))
 
-    render(carte, offset, offset2, scale)
+    render(carte, offset, offset2)
 
     ecran.blit(assets[lassets[curpos]], pygame.mouse.get_pos())
 

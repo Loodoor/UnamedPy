@@ -146,7 +146,9 @@ class Game:
         raise FonctionnaliteNonImplementee
 
     def process_events_pokedex(self, event: pygame.event, dt: int=1):
-        raise FonctionnaliteNonImplementee
+        if event.type == KEYDOWN:
+            if event.key == self.controles[MENU]:
+                self.invert_rendering()
 
     def process_events_pc(self, event: pygame.event, dt: int=1):
         raise FonctionnaliteNonImplementee
@@ -256,10 +258,11 @@ class Game:
         self.load()
         pygame.key.set_repeat(200, 100)
 
-    def render(self):
+    def render(self, dt: int=1):
         self.carte_mgr.update()
         if self.current_rendering == RENDER_GAME:
             self.personnage.update()
+            self.pnj.update(dt)  # c'était un test
         elif self.current_rendering == RENDER_INVENTAIRE:
             self.inventaire.update()
         elif self.current_rendering == RENDER_BOUTIQUE:
@@ -297,9 +300,7 @@ class Game:
             self.process_events(pygame.event.get(), dt)
 
             # Affichage
-            self.render()
-
-            self.pnj.update(dt)
+            self.render(dt)
 
             pygame.display.flip()
 

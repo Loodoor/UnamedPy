@@ -56,6 +56,7 @@ class CarteManager:
             print("An error occurred. The map seems to doesn't exist")
 
         for i in glob("..//assets//tiles//*.png"):
+            # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
             self.images[i[18:-4]] = pygame.image.load(i).convert_alpha()
             self.lassets.append(i[18:-4])
 
@@ -75,8 +76,7 @@ class CarteManager:
                 if not isinstance(objet, list):
                     self.ecran.blit(self.images[objet], (xpos, ypos))
                 else:
-                    for z in range(len(objet)):
-                        tile = objet[z]
+                    for tile in objet[::-1]:
                         self.ecran.blit(self.images[tile], (xpos, ypos))
 
 
