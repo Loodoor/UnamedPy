@@ -29,7 +29,7 @@ class Game:
         self.ecran = ecran
         self.current_rendering = RENDER_GAME
         self.last_rendering = RENDER_GAME
-        self.show_fps = True
+        self.show_fps = False
 
         self.right = False
         self.left = False
@@ -65,6 +65,7 @@ class Game:
             INVENTAIRE: K_RSHIFT,
             MENU: K_ESCAPE,
             SCREENSCHOT: K_F5,
+            SHOW_FPS: K_BACKSPACE
         }
 
         self.__ctrls = {
@@ -138,6 +139,8 @@ class Game:
             if event.type == KEYUP:
                 if event.key == self.controles[SCREENSCHOT]:
                     self.screenshot()
+                if event.key == self.controles[SHOW_FPS]:
+                    self.show_fps = not self.show_fps
 
     def process_events_carte(self, event: pygame.event, dt: int=1):
         raise FonctionnaliteNonImplementee
