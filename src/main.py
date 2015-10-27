@@ -9,6 +9,7 @@ import game
 import pygame
 from pygame.locals import *
 from constantes import *
+import utils
 
 
 def main():
@@ -20,6 +21,11 @@ def main():
     print("Appuyez sur 'J' pour lancer le jeu")
 
     continuer = 1
+
+    temp = utils.ULoader()
+    temp.load()
+    del temp
+
     jeu = game.Game(ecran)
 
     while continuer:

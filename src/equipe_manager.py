@@ -11,9 +11,7 @@ class EquipeManager:
         self.size = size
         self.ecran = ecran
         self.police = police
-        self.creatures = [
-            Creature("Habalu", T_NORMAL, alea_niv=(5, 5), specs_range=(5, 12))
-        ]
+        self.creatures = []
         self.path = os.path.join("..", "saves", "equipe" + EXTENSION)
 
     def update(self):

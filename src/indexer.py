@@ -6,11 +6,12 @@ from constantes import *
 
 
 class Element:
-    def __init__(self, name: str, id: int, type: int, path: str):
+    def __init__(self, name: str, id: int, type: int, path: str, desc: str=""):
         self.name = name
         self.id = id
         self.type = type
         self.path = path
+        self.description = desc
         self.vu = False
         self.capture = False
 
@@ -32,11 +33,16 @@ class Indexer:
         self.indexer = []
 
     @staticmethod
-    def add_new(name: str, id: int, type: int, path: str):
+    def add_new(name: str, id: int, type: int, path: str, desc: str=""):
         save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
-        with open(save_path, 'rb') as rbin:
-            tod = pickle.Unpickler(rbin).load() + [Element(name, id, type, path)]
-            pickle.Pickler(open(save_path, 'wb')).dump(tod)
+        if os.path.exists(save_path):
+            with open(save_path, 'rb') as rbin:
+                tod = pickle.Unpickler(rbin).load() + [Element(name, id, type, path, desc)]
+                pickle.Pickler(open(save_path, 'wb')).dump(tod)
+        else:
+            with open(save_path, 'wb') as wbin:
+                tod = [Element(name, id, type, path, desc)]
+                pickle.Pickler(wbin).dump(tod)
 
     def load(self):
         if os.path.exists(self.save_path):
@@ -79,11 +85,9 @@ class Indexer:
             nom = elem.name
             vu, capture, type_ = elem.vu, elem.capture, elem.type
 
-            if not vu and not capture:
-                nom = "???"
-                type_ = "???"
-            else:
-                pass
+            #if not vu and not capture:
+            #    nom = "???"
+            #    type_ = "???"
 
             self.ecran.blit(self.police.render(str(nom) + " - " + str(type_), 1, (255, 255, 255)),
                             (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
