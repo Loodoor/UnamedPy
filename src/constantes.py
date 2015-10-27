@@ -174,6 +174,7 @@ SPEC_DEF = 'defense'
 SPEC_VIT = 'vitesse'
 SPEC_NOM = 'pseudo'
 SPEC_CREA = 'creature'
+SPEC_ID = "unique_id"
 SPEC_TYP = 'type'
 SPEC_NIV = 'niveau'
 SPEC_PVS = 'points de vie'

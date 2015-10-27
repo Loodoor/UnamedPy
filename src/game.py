@@ -7,6 +7,8 @@ from glob import glob
 import carte
 import personnage
 import sys
+import os
+
 import inventaire
 import indexer
 import captureurs
@@ -14,7 +16,6 @@ import creatures_mgr
 import tab_types
 import objets_manager
 import equipe_manager
-import os
 import atk_sys
 import menu_in_game
 import computer_manager
@@ -22,7 +23,7 @@ import pnj_manager
 
 
 class Game:
-    def __init__(self, ecran: pygame.Surface):
+    def __init__(self, ecran: pygame.Surface, controles: dict={}):
         # self.fps_regulator = IAFPS(FPS_base)
         self.fps_regulator = pygame.time.Clock()
         self.continuer = 1
@@ -66,7 +67,7 @@ class Game:
             MENU: K_ESCAPE,
             SCREENSCHOT: K_F5,
             SHOW_FPS: K_BACKSPACE
-        }
+        } if not controles else controles
 
         self.__ctrls = {
             NEXT_PAGE: K_RIGHT,
