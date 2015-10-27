@@ -22,6 +22,39 @@ class Element:
         self.capture = True
 
 
+class Typeur:
+    def __init__(self):
+        self.types = {
+            T_TENEBRE: "ténèbre",
+            T_LUMIERE: "lumière",
+            T_FEU: "feu",
+            T_NORMAL: "normal",
+            T_AIR: "air",
+            T_EAU: "eau",
+            T_ELEC: "électrique",
+            T_PLANTE: "plante",
+            T_PLASMA: "plasma",
+            T_TERRE: "terre"
+        }
+        self.path = os.path.join("..", "saves", "types" + EXTENSION)
+
+    def change_name(self, type: int, new_name: str):
+        if type in self.types.keys():
+            self.types[type] = new_name
+
+    def get_name(self, type: int):
+        return self.types[type]
+
+    def load(self):
+        if os.path.exists(self.path):
+            with open(self.path, "rb") as type_rb:
+                self.types = pickle.Unpickler(type_rb).load()
+
+    def save(self):
+        with open(self.path, "wb") as type_wb:
+            pickle.Pickler(type_wb).dump(self.types)
+
+
 class Indexer:
     def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont):
         self.ecran = ecran

@@ -53,6 +53,7 @@ class Game:
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
+        self.typeur = indexer.Typeur()
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -66,7 +67,8 @@ class Game:
             INVENTAIRE: K_RSHIFT,
             MENU: K_ESCAPE,
             SCREENSCHOT: K_F5,
-            SHOW_FPS: K_BACKSPACE
+            SHOW_FPS: K_BACKSPACE,
+            VALIDATION: K_RETURN
         } if not controles else controles
 
         self.__ctrls = {
@@ -83,6 +85,7 @@ class Game:
         self.indexeur.load()
         self.equipe_mgr.load()
         self.pc_mgr.load()
+        self.typeur.load()
 
         self.tab_types.init_tab()
 
@@ -92,19 +95,19 @@ class Game:
         print("Sauvegarde ...")
         self.carte_mgr.save()
         self.personnage.save()
-        #self.inventaire.save()
-        #self.indexeur.save()
-        #self.equipe_mgr.save()
-        #self.pc_mgr.save()
+        # self.inventaire.save()
+        # self.indexeur.save()
+        # self.equipe_mgr.save()
+        # self.pc_mgr.save()
+        # self.typeur.save()
 
     def invert_rendering(self):
-        tmp = self.last_rendering
-        self.last_rendering = self.current_rendering
-        self.current_rendering = tmp
+        self.last_rendering, self.current_rendering = self.current_rendering, self.last_rendering
 
     def screenshot(self):
-        pygame.image.save(self.ecran, os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png"))
-        print("Screenshot sauvegardée")
+        path = os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png")
+        pygame.image.save(self.ecran, path)
+        print("Screenshot sauvegardée sous '" + path + "'")
 
     def process_events(self, events: pygame.event, dt: int=1):
         for event in events:
@@ -114,26 +117,37 @@ class Game:
 
             # Différents mode de gestion des événements
             if self.current_rendering == RENDER_GAME:
+                # le jeu en lui même
                 self.process_events_game(event, dt)
             elif self.current_rendering == RENDER_INVENTAIRE:
+                # l'inventaire
                 self.process_events_inventaire(event, dt)
             elif self.current_rendering == RENDER_COMBAT:
+                # quand on est en combat
                 self.process_events_combat(event, dt)
             elif self.current_rendering == RENDER_BOUTIQUE:
+                # dans une boutique
                 self.process_events_boutique(event, dt)
             elif self.current_rendering == RENDER_MENU_IN_GAME:
+                # le menu intermédiaire
                 self.process_events_menu_in_game(event, dt)
             elif self.current_rendering == RENDER_SAVE:
+                # la sauvegarde
                 self.process_events_save(event, dt)
             elif self.current_rendering == RENDER_CARTE:
+                # la mini carte
                 self.process_events_carte(event, dt)
             elif self.current_rendering == RENDER_CREATURES:
+                # quand on consulte ses creatures
                 self.process_events_creatures(event, dt)
             elif self.current_rendering == RENDER_PC:
+                # quand on est sur un PC pour gérer ses creatures
                 self.process_events_pc(event, dt)
             elif self.current_rendering == RENDER_POKEDEX:
+                # le pokedex
                 self.process_events_pokedex(event, dt)
             elif self.current_rendering == RENDER_ERROR:
+                # autre ...
                 raise FonctionnaliteNonImplementee("Cas non géré. Merci de repoter ce traceback à Folaefolc, main dev d'Unamed")
 
             # Global
@@ -144,9 +158,19 @@ class Game:
                     self.show_fps = not self.show_fps
 
     def process_events_carte(self, event: pygame.event, dt: int=1):
+        """
+        if event.type == KEYDOWN:
+            if event.key == self.controles[MENU]:
+                self.invert_rendering()
+        """
         raise FonctionnaliteNonImplementee
 
     def process_events_save(self, event: pygame.event, dt: int=1):
+        """
+        if event.type == KEYDOWN:
+            if event.key == self.controles[MENU]:
+                self.invert_rendering()
+        """
         raise FonctionnaliteNonImplementee
 
     def process_events_pokedex(self, event: pygame.event, dt: int=1):
@@ -155,21 +179,22 @@ class Game:
                 self.invert_rendering()
 
     def process_events_pc(self, event: pygame.event, dt: int=1):
+        """
+        if event.type == KEYDOWN:
+            if event.key == self.controles[MENU]:
+                self.invert_rendering()
+        """
         raise FonctionnaliteNonImplementee
 
     def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.invert_rendering()
-            if event.key == K_RIGHT:
+            if event.key == self.__ctrls[NEXT_PAGE]:
                 self.menu_in_game.next()
-            if event.key == K_UP:
-                self.menu_in_game.double_next()
-            if event.key == K_LEFT:
+            if event.key == self.__ctrls[PREVIOUS_PAGE]:
                 self.menu_in_game.previous()
-            if event.key == K_DOWN:
-                self.menu_in_game.double_previous()
-            if event.key == K_RETURN:
+            if event.key == self.controles[VALIDATION]:
                 self.last_rendering = self.current_rendering
                 new_renderer = self.menu_in_game.valider_choix()
                 self.current_rendering = new_renderer
@@ -182,7 +207,7 @@ class Game:
 
     def process_events_creatures(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
+            if event.key == self.controles[MENU]:
                 self.invert_rendering()
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
@@ -192,7 +217,8 @@ class Game:
 
     def process_events_combat(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
-            pass
+            if event.key == self.controles[MENU]:
+                self.invert_rendering()
         if event.type == KEYUP:
             pass
         if event.type == MOUSEBUTTONDOWN:
@@ -290,7 +316,7 @@ class Game:
             self.pc_mgr.update()
 
         if self.show_fps:
-            self.ecran.blit(self.police_italique.render(str(self.fps_regulator.get_fps()), 1, (255, 150, 150)), (0, 0))
+            self.ecran.blit(self.police_italique.render(str(self.fps_regulator.get_fps()), 1, (0, 0, 0)), (10, 10))
 
     def start(self):
         self.prepare()
