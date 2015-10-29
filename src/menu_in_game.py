@@ -69,7 +69,7 @@ class Menu:
         pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                                              MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2,
                                              MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
-        self.ecran.blit(self.police.render("Quitter", 1, (255, 255, 255)),
+        self.ecran.blit(self.police.render("Retour", 1, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
 

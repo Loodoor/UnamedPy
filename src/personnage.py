@@ -173,6 +173,8 @@ class Personnage:
                     y -= decy
 
         self.pos = (x + self.carte_mgr.get_of1(), y + self.carte_mgr.get_of2())
+        self.carte_mgr.get_trigger(int(x // TILE_SIZE) + self.carte_mgr.get_fov()[0],
+                                   int(y // TILE_SIZE) + self.carte_mgr.get_fov()[2])
 
     def isMoving(self):
         return self.is_moving

@@ -1,8 +1,16 @@
 from constantes import *
 from indexer import Indexer
+from trigger_manager import Trigger, TriggersManager
 from os import path, sep
 import pickle
 import time
+import os
+
+
+def uremove(*files):
+    for file in files:
+        if path.exists(file):
+            os.remove(file)
 
 
 class UMoment:
@@ -27,9 +35,13 @@ class ULoader:
             print("Le fichier indiquant une manipulation existe déjà.\nRemarque(s) :")
             with open(self.path, 'rb') as rlast_job_done:
                 print(pickle.Unpickler(rlast_job_done).load())
+            self.create()
 
     def create(self):
         # création des créatures
+        # doit être fait AVANT de faire quoi que ce soit !
+        uremove(path.join("..", "saves", "indexer" + EXTENSION), path.join("..", "saves", "triggers" + EXTENSION))
+
         # le nom est toujours vide, c'est le joueur qui les choisira à chaque fois
         # l'id doit etre unique
         # la description peut être vide, mais c'est mieux de la remplir
@@ -56,8 +68,13 @@ class ULoader:
         Indexer.add_new("", 6, T_TENEBRE, self.pack_creatures + "tenebre-01-a3.png",
                         "Cette créature jaillit de l'ombre pour saisir ses proies jusqu'à plusieurs mètres de distance.")
 
+        # Création des triggers
+        # toujours définir un ID (str)
+
+        TriggersManager.add_trigger_to_path(Trigger("trigger.test", 0, 0, TRIGGER_INFINITE_CALLS, print, "hello world !", "je suis un test de trigger !"))
+
         with open(self.path, 'wb') as fjob_done:
-            pickle.Pickler(fjob_done).dump(UMoment("Ajout des premières créatures"))
+            pickle.Pickler(fjob_done).dump(UMoment("Ajout des premières créatures et d'un trigger de test"))
 
     def reload(self):
         self.load()

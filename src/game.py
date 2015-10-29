@@ -148,7 +148,7 @@ class Game:
                 self.process_events_pokedex(event, dt)
             elif self.current_rendering == RENDER_ERROR:
                 # autre ...
-                raise FonctionnaliteNonImplementee("Cas non géré. Merci de repoter ce traceback à Folaefolc, main dev d'Unamed")
+                raise FonctionnaliteNonImplementee("Cas non géré. Merci de reporter ce traceback à Folaefolc, main dev d'Unamed")
 
             # Global
             if event.type == KEYUP:

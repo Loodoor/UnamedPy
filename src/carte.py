@@ -4,6 +4,7 @@ from glob import glob
 import pygame
 from pygame.locals import *
 from constantes import *
+from trigger_manager import TriggersManager
 
 
 class CarteManager:
@@ -15,6 +16,7 @@ class CarteManager:
         self.offsets = [0, 0]
         self.images = {}
         self.lassets = []
+        self.triggers_mgr = TriggersManager()
 
     def get_of1(self):
         return self.offsets[0]
@@ -48,12 +50,20 @@ class CarteManager:
                 self.offsets[1] %= TILE_SIZE
                 self.fov[2] -= dir
 
+    def has_trigger(self, x: int=0, y: int=0):
+        return True if len(self.carte[y + self.fov[2]][x + self.fov[0]]) == 6 else False
+
+    def get_trigger(self, x: int=0, y: int=0):
+        if self.has_trigger(x, y):
+            self.triggers_mgr.call_trigger_at_pos(x, y)
+
     def load(self):
         if os.path.exists(self.map_path):
             with open(self.map_path, "rb") as map_rdb:
                 self.carte = pickle.Unpickler(map_rdb).load()
         else:
             print("An error occurred. The map seems to doesn't exist")
+        self.triggers_mgr.load()
 
         for i in glob("..//assets//tiles//*.png"):
             # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
@@ -63,6 +73,7 @@ class CarteManager:
     def save(self):
         with open(self.map_path, "wb") as map_wb:
             pickle.Pickler(map_wb).dump(self.carte)
+        self.triggers_mgr.save()
 
     def update(self):
         self.render()
@@ -76,8 +87,12 @@ class CarteManager:
                 if not isinstance(objet, list):
                     self.ecran.blit(self.images[objet], (xpos, ypos))
                 else:
-                    for tile in objet[::-1]:
-                        self.ecran.blit(self.images[tile], (xpos, ypos))
+                    if len(objet) <= 5:
+                        for tile in objet[::-1]:
+                            self.ecran.blit(self.images[tile], (xpos, ypos))
+                    else:
+                        for tile in objet[-2::-1]:
+                            self.ecran.blit(self.images[tile], (xpos, ypos))
 
 
 class CarteRenderer:
