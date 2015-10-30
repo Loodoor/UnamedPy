@@ -61,6 +61,9 @@ class Inventaire:
             # les boutons jeter et jeter tout
             pygame.draw.rect(self.ecran, (180, 50, 50), (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
             pygame.draw.rect(self.ecran, (255, 50, 50), (INVENT_BTN_JETERTT_X, INVENT_BTN_JETERTT_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
+            # et leur texte
+            self.ecran.blit(self.police.render("Jeter", 1, (10, 10, 10)), (INVENT_BTN_JETER_X + 2, INVENT_BTN_JETER_Y))
+            self.ecran.blit(self.police.render("Vider", 1, (10, 10, 10)), (INVENT_BTN_JETERTT_X + 2, INVENT_BTN_JETERTT_Y))
             # texte d'aide
             self.ecran.blit(self.police.render(self.objets[self.cur_categorie][self.selected_item].aide(), 1, (255, 255, 255)), (INVENT_TXT_AIDE_X, INVENT_TXT_AIDE_Y))
 
@@ -68,8 +71,10 @@ class Inventaire:
         pygame.draw.rect(self.ecran, (0, 0, 255), (INVENT_IMAGE_X, INVENT_IMAGE_Y, INVENT_IMAGE_SIZE, INVENT_IMAGE_SIZE))
 
         # les boutons next & previous
-        pygame.draw.rect(self.ecran, (180, 75, 180), (INVENT_BTN_PREVIOUS, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
-        pygame.draw.rect(self.ecran, (180, 75, 180), (INVENT_BTN_NEXT, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
+        pygame.draw.rect(self.ecran, (180, 180, 50), (INVENT_BTN_PREVIOUS, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
+        pygame.draw.rect(self.ecran, (180, 180, 50), (INVENT_BTN_NEXT, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
+        self.ecran.blit(self.police.render("<", 1, (10, 10, 10)), (INVENT_BTN_PREVIOUS + 6, INVENT_BTN_PAGES))
+        self.ecran.blit(self.police.render(">", 1, (10, 10, 10)), (INVENT_BTN_NEXT + 6, INVENT_BTN_PAGES))
 
         # texte de la poche
         tmp_poche = self.__quelle_poche()
@@ -84,10 +89,12 @@ class Inventaire:
             if INVENT_BTN_JETER_Y <= yp <= INVENT_BTN_JETER_Y + INVENT_SIZE_BTN_Y and \
                         INVENT_BTN_JETER_X <= xp <= INVENT_BTN_JETER_X + INVENT_SIZE_BTN_X:
                 # DEMANDER CONFIRMATION AVANT !
+                print("besoin de confirmation")
                 self.jeter(self.selected_item)
             elif INVENT_BTN_JETERTT_Y <= yp <= INVENT_BTN_JETERTT_Y + INVENT_SIZE_BTN_Y and \
                         INVENT_BTN_JETERTT_X <= xp <= INVENT_BTN_JETERTT_X + INVENT_SIZE_BTN_X:
                 # DEMANDER CONFIRMATION AVANT !
+                print("besoin de confirmation")
                 self.jeter_tout(self.selected_item)
             elif INVENT_BTN_PREVIOUS <= xp <= INVENT_BTN_PREVIOUS + INVENT_BTN_PAGES_SX and \
                 INVENT_BTN_PAGES <= yp <= INVENT_BTN_PAGES + INVENT_BTN_PAGES_SY:
