@@ -4,6 +4,7 @@ from pygame.locals import *
 from constantes import *
 import pickle
 import objets_manager
+import textwrap as tw
 
 
 class Inventaire:
@@ -65,7 +66,14 @@ class Inventaire:
             self.ecran.blit(self.police.render("Jeter", 1, (10, 10, 10)), (INVENT_BTN_JETER_X + 2, INVENT_BTN_JETER_Y))
             self.ecran.blit(self.police.render("Vider", 1, (10, 10, 10)), (INVENT_BTN_JETERTT_X + 2, INVENT_BTN_JETERTT_Y))
             # texte d'aide
-            self.ecran.blit(self.police.render(self.objets[self.cur_categorie][self.selected_item].aide(), 1, (255, 255, 255)), (INVENT_TXT_AIDE_X, INVENT_TXT_AIDE_Y))
+            # DECOUPER LE TEXTE CAR TROP GRAND !
+            texte_aide_str = self.objets[self.cur_categorie][self.selected_item].aide()
+            texte_lst = tw.wrap(texte_aide_str, width=40)
+            i = 0
+            for texte_tmp in texte_lst:
+                self.ecran.blit(self.police.render(texte_tmp, 1, (255, 255, 255)),
+                                (INVENT_TXT_AIDE_X, INVENT_TXT_AIDE_Y + INVENT_ESP_ITEM * i))
+                i += 1
 
         # image de la poche
         pygame.draw.rect(self.ecran, (0, 0, 255), (INVENT_IMAGE_X, INVENT_IMAGE_Y, INVENT_IMAGE_SIZE, INVENT_IMAGE_SIZE))
