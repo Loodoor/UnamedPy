@@ -25,25 +25,58 @@ class Element:
 class Typeur:
     def __init__(self):
         self.types = {
-            T_TENEBRE: "ténèbre",
-            T_LUMIERE: "lumière",
-            T_FEU: "feu",
-            T_NORMAL: "normal",
-            T_AIR: "air",
-            T_EAU: "eau",
-            T_ELEC: "électrique",
-            T_PLANTE: "plante",
-            T_PLASMA: "plasma",
-            T_TERRE: "terre"
+            T_TENEBRE: {
+                'default': "ténèbre",
+                'user': ''
+            },
+            T_LUMIERE: {
+                'default': "lumière",
+                'user': ''
+            },
+            T_FEU: {
+                'default': "feu",
+                'user': ''
+            },
+            T_NORMAL: {
+                'default': "normal",
+                'user': ''
+            },
+            T_AIR: {
+                'default': "air",
+                'user': ''
+            },
+            T_EAU: {
+                'default': "eau",
+                'user': ''
+            },
+            T_ELEC: {
+                'default': "électrique",
+                'user': ''
+            },
+            T_PLANTE: {
+                'default': "plante",
+                'user': ''
+            },
+            T_PLASMA: {
+                'default': "plasma",
+                'user': ''
+            },
+            T_TERRE: {
+                'default': "terre",
+                'user': ''
+            }
         }
         self.path = os.path.join("..", "saves", "types" + EXTENSION)
 
     def change_name(self, type: int, new_name: str):
         if type in self.types.keys():
-            self.types[type] = new_name
+            self.types[type]['user'] = new_name
 
     def get_name(self, type: int):
-        return self.types[type]
+        return self.types[type]['user']
+
+    def get_default_name(self, type: int):
+        return self.types[type]['default']
 
     def load(self):
         if os.path.exists(self.path):
@@ -118,9 +151,9 @@ class Indexer:
             nom = elem.name
             vu, capture, type_ = elem.vu, elem.capture, elem.type
 
-            #if not vu and not capture:
-            #    nom = "???"
-            #    type_ = "???"
+            if not vu and not capture:
+                nom = "???"
+                type_ = "???"
 
             self.ecran.blit(self.police.render(str(nom) + " - " + str(type_), 1, (255, 255, 255)),
                             (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))

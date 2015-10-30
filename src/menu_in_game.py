@@ -76,16 +76,8 @@ class Menu:
     def next(self):
         self.select = self.select + 1 if self.select + 1 < len(self.categories) else 0
 
-    def double_next(self):
-        self.next()
-        self.next()
-
     def previous(self):
         self.select = self.select - 1 if self.select > 0 else len(self.categories) - 1
-
-    def double_previous(self):
-        self.previous()
-        self.previous()
 
     def valider_choix(self):
         if self.select == MENU_SAC:
@@ -120,3 +112,20 @@ class Menu:
         if (real_x, real_y) == (1, 2):
             self.select = MENU_QUITTER
         return self.valider_choix()
+
+    def mouseover(self, pos: tuple):
+        real_x = (pos[0] - MENU_X) // MENU_SIZE_X_CAT
+        real_y = (pos[1] - MENU_Y) // MENU_SIZE_Y_CAT
+
+        if (real_x, real_y) == (0, 0):
+            self.select = MENU_CREATURES
+        if (real_x, real_y) == (1, 0):
+            self.select = MENU_SAC
+        if (real_x, real_y) == (0, 1):
+            self.select = MENU_SAUV
+        if (real_x, real_y) == (1, 1):
+            self.select = MENU_CARTE
+        if (real_x, real_y) == (0, 2):
+            self.select = MENU_POKEDEX
+        if (real_x, real_y) == (1, 2):
+            self.select = MENU_QUITTER

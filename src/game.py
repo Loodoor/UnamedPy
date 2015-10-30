@@ -70,6 +70,7 @@ class Game:
             SHOW_FPS: K_BACKSPACE,
             VALIDATION: K_RETURN
         } if not controles else controles
+        controles = {}  # vider le dico à chaque fois !
 
         self.__ctrls = {
             NEXT_PAGE: K_RIGHT,
@@ -204,6 +205,8 @@ class Game:
             if tmp != RENDER_ERROR:
                 self.last_rendering = self.current_rendering
                 self.current_rendering = tmp
+
+        self.menu_in_game.mouseover(pygame.mouse.get_pos())
 
     def process_events_creatures(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:

@@ -11,6 +11,7 @@ class Inventaire:
         self.ecran = ecran
         self.police = police
 
+        self.path = os.path.join("..", "saves", "inventaire" + EXTENSION)
         self.cur_categorie = POCHE_COMMUNS
         self.selected_item = -1
 
@@ -25,8 +26,13 @@ class Inventaire:
             []   # Poche CT/CS
         ]
 
+    @staticmethod
+    def create_inventory_and_store(objs: list):
+        tmp_path = os.path.join("..", "saves", "inventaire" + EXTENSION)
+        with open(tmp_path, 'wb') as inventaire_wb:
+            pickle.Pickler(inventaire_wb).dump(objs)
+
     def __quelle_poche(self):
-        tmp_poche = ""
         if self.cur_categorie == POCHE_COMMUNS:
             tmp_poche = "Communs"
         elif self.cur_categorie == POCHE_CAPTUREURS:
@@ -105,67 +111,10 @@ class Inventaire:
             self.objets[self.cur_categorie][item].jeter_tout()
 
     def load(self):
-        if os.path.exists(os.path.join("..", "saves", "inventaire" + EXTENSION)):
-            with open(os.path.join("..", "saves", "inventaire" + EXTENSION), "rb") as read_inventaire:
+        if os.path.exists(self.path):
+            with open(self.path, "rb") as read_inventaire:
                 self.objets = pickle.Unpickler(read_inventaire).load()
-        else:
-            anti_para = objets_manager.Objet("Anti-Para", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti para"))
-            anti_brul = objets_manager.Objet("Anti-Brûle", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti brule"))
-            anti_poison = objets_manager.Objet("Anti-Poison", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti poison"))
-            att_p = objets_manager.Objet("Attaque+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test attaque"))
-            def_p = objets_manager.Objet("Défense+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test defense"))
-            vit_p = objets_manager.Objet("Vitesse+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test vitesse"))
-            pps_p = objets_manager.Objet("PP+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pps"))
-            regen_pps_5 = objets_manager.Objet("Elixir", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 5"))
-            regen_pps_10 = objets_manager.Objet("Elixir Augmenté", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 10"))
-            regen_pps_30 = objets_manager.Objet("Super Elixir", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 30"))
-            regen_pps_75 = objets_manager.Objet("Hyper Elixir", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 75"))
-            regen_pps_max = objets_manager.Objet("Elixir Max", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps max"))
-            pvs_p = objets_manager.Objet("PV+", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pvs"))
-            regen_pvs_20 = objets_manager.Objet("Potion Simple", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 20"))
-            regen_pvs_60 = objets_manager.Objet("Super Potion", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 60"))
-            regen_pvs_100 = objets_manager.Objet("Hyper Potion", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 100"))
-            regen_pvs_200 = objets_manager.Objet("Mega Potion", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 200"))
-            regen_pvs_max = objets_manager.Objet("Potion Max", "AIDE", [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs max"))
-            chaussures = objets_manager.Objet("Chaussures", "AIDE", [1, 1], objets_manager.ObjectAction(print, "test chaussures"))
-            velo = objets_manager.Objet("Velo", "AIDE", [0, 1], objets_manager.ObjectAction(print, "test velo"))
-
-            self.objets = [
-                [
-
-                ],  # Poche communs
-                [
-
-                ],  # Poche capturateurs
-                [
-                    anti_para,
-                    anti_brul,
-                    anti_poison,
-                    att_p,
-                    def_p,
-                    vit_p,
-                    pps_p,
-                    regen_pps_5,
-                    regen_pps_10,
-                    regen_pps_30,
-                    regen_pps_75,
-                    regen_pps_max,
-                    pvs_p,
-                    regen_pvs_20,
-                    regen_pvs_60,
-                    regen_pvs_100,
-                    regen_pvs_200,
-                    regen_pvs_max
-                ],  # Poche médicaments
-                [
-                    velo,
-                    chaussures
-                ],  # Poche Objets Rares
-                [
-
-                ]   # Poche CT/CS
-            ]
 
     def save(self):
-        with open(os.path.join("..", "saves", "inventaire" + EXTENSION), "wb") as wrb_inventaire:
+        with open(self.path, "wb") as wrb_inventaire:
             pickle.Pickler(wrb_inventaire).dump(self.objets)

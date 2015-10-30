@@ -1,6 +1,8 @@
 from constantes import *
 from indexer import Indexer
 from trigger_manager import Trigger, TriggersManager
+import objets_manager
+import inventaire
 from os import path, sep
 import pickle
 import time
@@ -40,7 +42,11 @@ class ULoader:
     def create(self):
         # création des créatures
         # doit être fait AVANT de faire quoi que ce soit !
-        uremove(path.join("..", "saves", "indexer" + EXTENSION), path.join("..", "saves", "triggers" + EXTENSION))
+        uremove(
+            path.join("..", "saves", "indexer" + EXTENSION),
+            path.join("..", "saves", "triggers" + EXTENSION),
+            path.join("..", "saves", "inventaire" + EXTENSION)
+        )
 
         # le nom est toujours vide, c'est le joueur qui les choisira à chaque fois
         # l'id doit etre unique
@@ -73,8 +79,92 @@ class ULoader:
 
         TriggersManager.add_trigger_to_path(Trigger("trigger.test", 0, 0, TRIGGER_INFINITE_CALLS, print, "hello world !", "je suis un test de trigger !"))
 
+        # Création des objets par défaut
+
+        anti_para = objets_manager.Objet("Anti-Para", "L'anti-Para permet d'enlever le statut 'paralysé' d'une de vos créatures",
+                                         [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti para"))
+        anti_brul = objets_manager.Objet("Anti-Brûle", "L'anti-Brûle permet d'enlever le statut 'brûlé' d'une de vos créatures",
+                                         [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti brule"))
+        anti_poison = objets_manager.Objet("Anti-Poison", "L'anti-Poison permet d'enlever le statut 'empoisonné' d'une de vos créatures",
+                                           [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti poison"))
+        att_p = objets_manager.Objet("Attaque+", "L'attaque+ augmente l'attaque d'une de vos créatures (effet à long terme)",
+                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test attaque+"))
+        def_p = objets_manager.Objet("Défense+", "Le défense+ augmente la défense d'une de vos créatures (effet à long terme)",
+                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test defense+"))
+        vit_p = objets_manager.Objet("Vitesse+", "Le vitesse+ augmente la vitesse d'une de vos créatures (effet à long terme)",
+                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test vitesse+"))
+        pps_p = objets_manager.Objet("PP+", "Le PP+ augmente le nombre de PP max d'une attaque d'une de vos créatures (effet à long terme)",
+                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pps+"))
+        regen_pps_5 = objets_manager.Objet("Elixir", "L'élixir redonne 5 PP à une attaque d'une de vos créatures",
+                                           [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 5"))
+        regen_pps_10 = objets_manager.Objet("Elixir Augmenté", "L'élixir augmenté redonne 10 PP à une attaque d'une de vos créatures",
+                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 10"))
+        regen_pps_30 = objets_manager.Objet("Super Elixir", "Le super élixir redonne 30 PP à une attaque d'une de vos créatures",
+                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 30"))
+        regen_pps_75 = objets_manager.Objet("Hyper Elixir", "L'hyper élixir redonne 75 PP à une attaque d'une de vos créatures",
+                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 75"))
+        regen_pps_max = objets_manager.Objet("Elixir Max", "L'élixir max régénère entièrement les PP d'une attaque d'une de vos créatures",
+                                             [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps max"))
+        pvs_p = objets_manager.Objet("PV+", "Le PV+ augmente le nombre de PV d'une de vos créatures (effet à long terme)",
+                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pvs"))
+        regen_pvs_20 = objets_manager.Objet("Potion Simple", "La potion régénère 20 PV à une de vos créatures",
+                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 20"))
+        regen_pvs_60 = objets_manager.Objet("Super Potion", "La super potion régénère 60 PV à une de vos créatures",
+                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 60"))
+        regen_pvs_100 = objets_manager.Objet("Hyper Potion", "L'hyper potion régénère 100 PV à une de vos créatures",
+                                             [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 100"))
+        regen_pvs_200 = objets_manager.Objet("Méga Potion", "La méga potion régénère 200 PV à une de vos créatures",
+                                             [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 200"))
+        regen_pvs_max = objets_manager.Objet("Potion Max", "La potion max régénère entièrement les PV d'une de vos créatures",
+                                             [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs max"))
+        chaussures = objets_manager.Objet("Chaussures", "Les chaussures vous permettent de vous déplacer plus vite",
+                                          [1, 1], objets_manager.ObjectAction(print, "test chaussures"))
+        velo = objets_manager.Objet("Velo", "Le vélo vous permet de vous déplacer encore vite qu'avec les Chaussures",
+                                    [0, 1], objets_manager.ObjectAction(print, "test velo"))
+
+        objets = [
+            [
+
+            ],  # Poche communs
+            [
+
+            ],  # Poche capturateurs
+            [
+                anti_para,
+                anti_brul,
+                anti_poison,
+                att_p,
+                def_p,
+                vit_p,
+                pps_p,
+                regen_pps_5,
+                regen_pps_10,
+                regen_pps_30,
+                regen_pps_75,
+                regen_pps_max,
+                pvs_p,
+                regen_pvs_20,
+                regen_pvs_60,
+                regen_pvs_100,
+                regen_pvs_200,
+                regen_pvs_max
+            ],  # Poche médicaments
+            [
+                velo,
+                chaussures
+            ],  # Poche Objets Rares
+            [
+
+            ]  # Poche CT/CS
+        ]
+
+        inventaire.Inventaire.create_inventory_and_store(objets)
+
+        # Fin du boulot !
         with open(self.path, 'wb') as fjob_done:
-            pickle.Pickler(fjob_done).dump(UMoment("Ajout des premières créatures et d'un trigger de test"))
+            pickle.Pickler(fjob_done).dump(UMoment("Ajout des premières créatures, "
+                                                   "d'un trigger de test en (0, 0), "
+                                                   "et des descriptions des objets"))
 
     def reload(self):
         self.load()
