@@ -3,18 +3,19 @@ import os
 import pygame
 from glob import glob
 from pygame.locals import *
+from constantes import *
+import trigger_manager
 
 
 map_path = input("Path vers la map (laissez vide pour garder la valeur par défaut) : ")
-if map_path == "": map_path = os.path.join("..", "saves", "map.umd")
+if map_path == "": map_path = os.path.join("..", "saves", "map" + EXTENSION)
 YTAILLE, XTAILLE = 24, 24
-if map_path not in glob(os.path.join("..", "saves", "*.umd")):
+if map_path not in glob(os.path.join("..", "saves", "*." + EXTENSION)):
     YTAILLE = int(input("Taille de la map horizontalement (en cases) : "))  # ecran.get_height() // TILE_SIZE
     XTAILLE = int(input("Taille de la map verticalement (en cases)   : "))  # ecran.get_width() // TILE_SIZE
 
 DEFAUT = '0'
 continuer = 1
-TILE_SIZE = 32
 offset = 0
 offset2 = 0
 curpos = 0
@@ -158,6 +159,18 @@ while continuer:
                 x, y = pygame.mouse.get_pos()
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
                 carte[my][mx].append([])
+
+                if fullscreen:
+                    fullscreen = not fullscreen
+                    if fullscreen:
+                        ecran = pygame.display.set_mode((0, 0), FULLSCREEN)
+                    else:
+                        ecran = pygame.display.set_mode((0, 0))
+
+                code_trigger = input("Code du trigger (placé en {}, {}) : ".format(str(mx), str(my)))
+                trigger_manager.TriggersManager.add_trigger_to_path(
+                    trigger_manager.Trigger(code_trigger, mx, my, -1)
+                )
 
     render(carte, offset, offset2)
 
