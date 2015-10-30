@@ -2,6 +2,8 @@ FEN_large = 640
 FEN_haut = 640
 FEN_taille = (FEN_large, FEN_haut)
 
+GLOBAL_ERROR = -1
+
 FPS_base = -1
 MAX_FPS = 1000000
 
@@ -31,8 +33,9 @@ TRIGGER_COMBAT_ZONEd = "trigger.combat.lance.zone.d"
 TRIGGER_COMBAT_ZONEe = "trigger.combat.lance.zone.e"
 TRIGGER_COMBAT_ZONEf = "trigger.combat.lance.zone.f"
 TRIGGER_COMBAT_ZONEg = "trigger.combat.lance.zone.g"
-TRIGGER_COMBAT_ZONEh = "trigger.combat.lance.zone.h"
 TRIGGER_INFINITE_CALLS = -1
+
+ZONE_ADV_ERROR = GLOBAL_ERROR
 
 POL_NORMAL_TAILLE = 12
 POL_GRANDE_TAILLE = 18
@@ -67,7 +70,7 @@ RENDER_SAVE = 6
 RENDER_CREATURES = 7
 RENDER_PC = 8
 RENDER_POKEDEX = 9
-RENDER_ERROR = -1
+RENDER_ERROR = GLOBAL_ERROR
 
 FCREA_X = 20
 FCREA_Y = 20
@@ -195,7 +198,6 @@ SPEC_ATK = 'attaque'
 SPEC_DEF = 'defense'
 SPEC_VIT = 'vitesse'
 SPEC_NOM = 'pseudo'
-SPEC_CREA = 'creature'
 SPEC_ID = "unique_id"
 SPEC_TYP = 'type'
 SPEC_NIV = 'niveau'
@@ -215,7 +217,7 @@ ATK_TYP = 'type'
 ATK_DEGATS = 'degats'
 ATK_TXT = 'texte'
 ATK_PPS = 'points de pouvoir'
-ATK_IMPOSSIBLE = -1
+ATK_IMPOSSIBLE = GLOBAL_ERROR
 ATK_PP = 0
 ATK_MAX_PP = 1
 

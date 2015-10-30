@@ -1,11 +1,24 @@
 from os import path
 from constantes import *
 import pickle
+from creatures_mgr import Creature
+from random import choice, randrange
+from indexer import Indexer
 
 
 class Zone:
-    def __init__(self):
-        pass
+    def __init__(self, id: str, types: list, creatures_id: list, level_range: tuple, indexer: Indexer):
+        self.id = id
+        self.types = types
+        self.creatures_id = creatures_id
+        self.level_range = level_range
+        self.indexer = indexer
+
+    def get_id(self):
+        return self.id
+
+    def get_new_adversaire(self):
+        return self
 
 
 class ZonesManager:
@@ -22,6 +35,12 @@ class ZonesManager:
         else:
             with open(path_, 'wb') as add_new:
                 pickle.Pickler(add_new).dump([zone])
+
+    def get_new_adversary(self, with_zoneid: int):
+        for zone in self.zones:
+            if zone.get_id() == with_zoneid:
+                return zone.get_new_adversaire()
+        return ZONE_ADV_ERROR
 
     def load(self):
         if path.exists(self.path):

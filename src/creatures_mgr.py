@@ -7,12 +7,11 @@ import atk_sys
 
 
 class Creature:
-    def __init__(self, nom: str, id: int, type: int, alea_niv: tuple=(10, 20), specs_range: tuple=(2, 10), pvs_range: tuple=(18, 27)) -> None:
+    def __init__(self, id: int, type: int, alea_niv: tuple=(10, 20), specs_range: tuple=(2, 10), pvs_range: tuple=(18, 27)) -> None:
         self.specs = {
             SPEC_ATK: random.randint(*specs_range),
             SPEC_DEF: random.randint(*specs_range),
             SPEC_VIT: random.randint(*specs_range),
-            SPEC_CREA: nom,
             SPEC_ID: id,
             SPEC_TYP: type,
             SPEC_NOM: '',
@@ -26,7 +25,7 @@ class Creature:
         self.specs[SPEC_NOM] = new
 
     def get_pseudo(self):
-        return self.specs[SPEC_NOM] if self.specs[SPEC_NOM] != '' else self.specs[SPEC_CREA]
+        return self.specs[SPEC_NOM] if self.specs[SPEC_NOM] != '' else "???"
 
     def get_id(self):
         return self.specs[SPEC_ID]

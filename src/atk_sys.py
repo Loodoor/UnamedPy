@@ -4,6 +4,7 @@ from pygame.locals import *
 from constantes import *
 import random
 import creatures_mgr
+from zones_attaques_manager import ZonesManager
 
 
 def calcul_degats(degats_basiques: int, specs_atk: list, specs_def: list, coeff_types: int, my_type: int) -> int:
@@ -25,18 +26,15 @@ def rencontre_creature(tile_actuelle: int):
 
 
 class Combat:
-    def __init__(self, ecran: pygame.Surface, creature_joueur, types: list=[T_NORMAL]) -> None:
+    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager) -> None:
         self.ecran = ecran
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
-        self.seq = types
-        types = [T_NORMAL]
-        self.adversaire = creatures_mgr.Creature("", -1, T_NORMAL)
+        self.adversaire = creatures_mgr.Creature(-1, -1, T_NORMAL)
+        self.zones_mgr = zone
 
     def find_adv(self):
-        name_ = ''
-        type_ = random.choice(self.seq)
-        self.adversaire = creatures_mgr.Creature(name_, type_)
+        self.adversaire = self.zones_mgr.
 
     def mon_tour(self):
         return True if not self.compteur_tour % 2 else False

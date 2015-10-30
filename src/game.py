@@ -301,7 +301,7 @@ class Game:
         elif self.current_rendering == RENDER_BOUTIQUE:
             raise FonctionnaliteNonImplementee
         elif self.current_rendering == RENDER_COMBAT:
-            self.cur_combat = atk_sys.Combat(self.ecran, creatures_mgr.Creature("", T_NORMAL))
+            self.cur_combat = atk_sys.Combat(self.ecran, creatures_mgr.Creature(-1, T_NORMAL))
             raise FonctionnaliteNonImplementee
         elif self.current_rendering == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
