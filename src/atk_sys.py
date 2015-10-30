@@ -30,7 +30,8 @@ class Combat:
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
         self.seq = types
-        self.adversaire = creatures_mgr.Creature("", T_NORMAL)
+        types = [T_NORMAL]
+        self.adversaire = creatures_mgr.Creature("", -1, T_NORMAL)
 
     def find_adv(self):
         name_ = ''

@@ -9,6 +9,10 @@ import time
 import os
 
 
+def unothing(*args, **kwargs):
+    return args, kwargs
+
+
 def uremove(*files):
     for file in files:
         if path.exists(file):

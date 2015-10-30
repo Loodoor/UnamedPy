@@ -5,12 +5,13 @@ from glob import glob
 from pygame.locals import *
 from constantes import *
 import trigger_manager
+from utils import unothing
 
 
 map_path = input("Path vers la map (laissez vide pour garder la valeur par défaut) : ")
 if map_path == "": map_path = os.path.join("..", "saves", "map" + EXTENSION)
 YTAILLE, XTAILLE = 24, 24
-if map_path not in glob(os.path.join("..", "saves", "*." + EXTENSION)):
+if not os.path.exists(map_path):
     YTAILLE = int(input("Taille de la map horizontalement (en cases) : "))  # ecran.get_height() // TILE_SIZE
     XTAILLE = int(input("Taille de la map verticalement (en cases)   : "))  # ecran.get_width() // TILE_SIZE
 
@@ -169,7 +170,7 @@ while continuer:
 
                 code_trigger = input("Code du trigger (placé en {}, {}) : ".format(str(mx), str(my)))
                 trigger_manager.TriggersManager.add_trigger_to_path(
-                    trigger_manager.Trigger(code_trigger, mx, my, -1)
+                    trigger_manager.Trigger(code_trigger, mx, my, -1, unothing, code_trigger)
                 )
 
     render(carte, offset, offset2)
