@@ -15,6 +15,23 @@ XTAILLE_carte = 1200
 
 TRIGGER_ERROR = "trigger.error"
 TRIGGER_UNDEFINED = "trigger.undefined"
+TRIGGER_COMBAT_ZONE1 = "trigger.combat.lance.zone.1"
+TRIGGER_COMBAT_ZONE2 = "trigger.combat.lance.zone.2"
+TRIGGER_COMBAT_ZONE3 = "trigger.combat.lance.zone.3"
+TRIGGER_COMBAT_ZONE4 = "trigger.combat.lance.zone.4"
+TRIGGER_COMBAT_ZONE5 = "trigger.combat.lance.zone.5"
+TRIGGER_COMBAT_ZONE6 = "trigger.combat.lance.zone.6"
+TRIGGER_COMBAT_ZONE7 = "trigger.combat.lance.zone.7"
+TRIGGER_COMBAT_ZONE8 = "trigger.combat.lance.zone.8"
+TRIGGER_COMBAT_ZONE9 = "trigger.combat.lance.zone.9"
+TRIGGER_COMBAT_ZONEa = "trigger.combat.lance.zone.a"
+TRIGGER_COMBAT_ZONEb = "trigger.combat.lance.zone.b"
+TRIGGER_COMBAT_ZONEc = "trigger.combat.lance.zone.c"
+TRIGGER_COMBAT_ZONEd = "trigger.combat.lance.zone.d"
+TRIGGER_COMBAT_ZONEe = "trigger.combat.lance.zone.e"
+TRIGGER_COMBAT_ZONEf = "trigger.combat.lance.zone.f"
+TRIGGER_COMBAT_ZONEg = "trigger.combat.lance.zone.g"
+TRIGGER_COMBAT_ZONEh = "trigger.combat.lance.zone.h"
 TRIGGER_INFINITE_CALLS = -1
 
 POL_NORMAL_TAILLE = 12
