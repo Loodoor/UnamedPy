@@ -8,10 +8,7 @@ from zones_attaques_manager import ZonesManager
 
 
 def calcul_degats(degats_basiques: int, specs_atk: list, specs_def: list, coeff_types: int, my_type: int) -> int:
-    if specs_atk[ATK_TYP] == my_type:
-        x = 1.3
-    else:
-        x = 1
+    x = 1.3 if specs_atk[ATK_TYP] == my_type else 1
     return (degats_basiques + specs_atk[SPEC_ATK] / specs_def[SPEC_DEF]) * coeff_types * x
 
 
@@ -19,22 +16,17 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
     return True if specs_atk[SPEC_VIT] >= 2 * specs_def[SPEC_VIT] else False
 
 
-def rencontre_creature(tile_actuelle: int):
-    if tile_actuelle == HAUTES_HERBES:
-        return True
-    return False
-
-
 class Combat:
-    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager) -> None:
+    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int) -> None:
         self.ecran = ecran
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
         self.adversaire = creatures_mgr.Creature(-1, -1, T_NORMAL)
         self.zones_mgr = zone
+        self.zid = zone_id
 
     def find_adv(self):
-        self.adversaire = self.zones_mgr.
+        self.adversaire = self.zones_mgr.get_new_adversary(self.zid)
 
     def mon_tour(self):
         return True if not self.compteur_tour % 2 else False
