@@ -68,9 +68,17 @@ class Typeur:
         }
         self.path = os.path.join("..", "saves", "types" + EXTENSION)
 
+        self.user_types = {}
+
+    def __create_user_type(self):
+        self.user_types = {}
+        for k, v in self.types.items():
+            self.user_types[k] = v['user']
+
     def change_name(self, type: int, new_name: str):
         if type in self.types.keys():
             self.types[type]['user'] = new_name
+        self.__create_user_type()
 
     def get_name(self, type: int):
         return self.types[type]['user']
@@ -78,10 +86,14 @@ class Typeur:
     def get_default_name(self, type: int):
         return self.types[type]['default']
 
+    def get_types(self):
+        return self.user_types
+
     def load(self):
         if os.path.exists(self.path):
             with open(self.path, "rb") as type_rb:
                 self.types = pickle.Unpickler(type_rb).load()
+        self.__create_user_type()
 
     def save(self):
         with open(self.path, "wb") as type_wb:
@@ -97,6 +109,8 @@ class Indexer:
         self.max_page = 10
         self.par_page = 10
         self.indexer = []
+        self.typeur = Typeur()
+        self.render_creatures = True
 
     @staticmethod
     def add_new(name: str, id: int, type: int, path: str, desc: str=""):
@@ -116,17 +130,32 @@ class Indexer:
                 self.indexer = pickle.Unpickler(read_index).load()
         else:
             pass
-            #raise NotImplementedError("Désolé, aucune créature ne semble exister")
+            # raise NotImplementedError("Désolé, aucune créature ne semble exister")
+        self.typeur.load()
 
     def save(self):
         with open(self.save_path, "wb") as save_index:
             pickle.Pickler(save_index).dump(self.indexer)
+        self.typeur.save()
 
     def next(self):
         self.page = self.page + 1 if self.page <= self.max_page else self.max_page
 
     def previous(self):
         self.page = self.page - 1 if self.page - 1 >= 0 else 0
+
+    def clic(self, xp: int, yp: int):
+        if POK_X_VIEWT <= xp <= POK_X_VIEWT + POK_SX_VIEWT and POK_Y_VIEWT <= yp <= POK_Y_VIEWT + POK_SY_VIEWT:
+            self.render_creatures = not self.render_creatures
+
+    def get_type_of(self, id: int):
+        for creature in self.indexer:
+            if creature.id == id:
+                return creature.type
+        return POK_SEARCH_ERROR
+
+    def get_typeur(self):
+        return self.typeur
 
     def vu_(self, id: int):
         for elem in self.indexer:
@@ -145,16 +174,27 @@ class Indexer:
 
     def render(self):
         pygame.draw.rect(self.ecran, (180, 20, 180), (POK_POSX, POK_POSY, POK_X_SIZE, POK_Y_SIZE))
-        self.ecran.blit(self.police.render("Indexeur", 1, (255, 255, 255)), (POK_X_TITRE, POK_Y_TITRE))
+        titre = self.police.render("Indexeur" if self.render_creatures else "Indexer -> Types", 1, (255, 255, 255))
+        self.ecran.blit(titre, (POK_X_TITRE, POK_Y_TITRE))
+        pygame.draw.rect(self.ecran, (20, 20, 180), (POK_X_VIEWT, POK_Y_VIEWT, POK_SX_VIEWT, POK_SY_VIEWT))
+        tmp = self.police.render("Types" if not self.render_creatures else "Créatures", 1, (255, 255, 255))
+        self.ecran.blit(tmp, (POK_X_VIEWT + (POK_SX_VIEWT - tmp.get_width()) // 2, POK_Y_VIEWT))
+
         i = 0
-        for elem in self.indexer:
-            nom = elem.name
-            vu, capture, type_ = elem.vu, elem.capture, elem.type
+        if self.render_creatures:
+            for elem in self.indexer:
+                nom = elem.name
+                vu, capture, type_ = elem.vu, elem.capture, elem.type
 
-            if not vu and not capture:
-                nom = "???"
-                type_ = "???"
+                if not vu and not capture:
+                    nom = "???"
+                    type_ = "???"
 
-            self.ecran.blit(self.police.render(str(nom) + " - " + str(type_), 1, (255, 255, 255)),
-                            (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
-            i += 1
+                self.ecran.blit(self.police.render(str(nom) + " - Type : " + str(type_), 1, (255, 255, 255)),
+                                (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
+                i += 1
+        else:
+            for t_id, type_name in self.typeur.get_types().items():
+                texte = self.police.render(str(t_id + 1) + " -> '" + type_name + "'", 1, (255, 255, 255))
+                self.ecran.blit(texte, (POK_X_TYPE, POK_Y_TYPE + i * POK_SY_TYPE))
+                i += 1

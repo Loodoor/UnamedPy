@@ -53,7 +53,6 @@ class Game:
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
-        self.typeur = indexer.Typeur()
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
@@ -69,7 +68,8 @@ class Game:
             SCREENSCHOT: K_F5,
             SHOW_FPS: K_BACKSPACE,
             VALIDATION: K_RETURN
-        } if not controles else controles
+        }
+        self.controles.update(controles)
         controles = {}  # vider le dico à chaque fois !
 
         self.__ctrls = {
@@ -86,7 +86,6 @@ class Game:
         self.indexeur.load()
         self.equipe_mgr.load()
         self.pc_mgr.load()
-        self.typeur.load()
 
         self.tab_types.init_tab()
 
@@ -100,7 +99,6 @@ class Game:
         # self.indexeur.save()
         # self.equipe_mgr.save()
         # self.pc_mgr.save()
-        # self.typeur.save()
 
     def invert_rendering(self):
         self.last_rendering, self.current_rendering = self.current_rendering, self.last_rendering
@@ -178,6 +176,9 @@ class Game:
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.invert_rendering()
+        if event.type == MOUSEBUTTONUP:
+            xp, yp = event.pos
+            self.indexeur.clic(xp, yp)
 
     def process_events_pc(self, event: pygame.event, dt: int=1):
         """

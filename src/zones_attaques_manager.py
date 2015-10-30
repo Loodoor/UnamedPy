@@ -18,7 +18,9 @@ class Zone:
         return self.id
 
     def get_new_adversaire(self):
-        return self
+        id_ = choice(self.creatures_id)
+        type_ = self.indexer.get_type_of(id_)
+        return Creature(id_, type_, self.level_range)
 
 
 class ZonesManager:

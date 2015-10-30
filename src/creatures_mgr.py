@@ -3,7 +3,6 @@ import pygame
 from pygame.locals import *
 from constantes import *
 import random
-import atk_sys
 
 
 class Creature:
