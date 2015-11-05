@@ -38,11 +38,9 @@ class Game:
         self.bottom = False
 
         # Polices
-        self.police_normale = pygame.font.SysFont("arial", POL_NORMAL_TAILLE)
-        self.police_gras = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, bold=True)
-        self.police_italique = pygame.font.SysFont("arial", POL_NORMAL_TAILLE, italic=True)
-        self.police_grande = pygame.font.SysFont("arial", POL_GRANDE_TAILLE)
-        self.police_petite = pygame.font.SysFont("arial", POL_PETITE_TAILLE)
+        self.police_normale = pygame.font.Font(POLICE_PATH, POL_NORMAL_TAILLE)
+        self.police_grande = pygame.font.Font(POLICE_PATH, POL_GRANDE_TAILLE)
+        self.police_petite = pygame.font.Font(POLICE_PATH, POL_PETITE_TAILLE)
 
         # Managers
         self.carte_mgr = carte.CarteManager(self.ecran)
@@ -320,7 +318,7 @@ class Game:
             self.pc_mgr.update()
 
         if self.show_fps:
-            self.ecran.blit(self.police_italique.render(str(self.fps_regulator.get_fps()), 1, (0, 0, 0)), (10, 10))
+            self.ecran.blit(self.police_normale.render(str(self.fps_regulator.get_fps()), 1, (0, 0, 0)), (10, 10))
 
     def start(self):
         self.prepare()

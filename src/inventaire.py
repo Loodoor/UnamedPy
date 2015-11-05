@@ -63,12 +63,12 @@ class Inventaire:
             pygame.draw.rect(self.ecran, (180, 50, 50), (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
             pygame.draw.rect(self.ecran, (255, 50, 50), (INVENT_BTN_JETERTT_X, INVENT_BTN_JETERTT_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
             # et leur texte
-            self.ecran.blit(self.police.render("Jeter", 1, (10, 10, 10)), (INVENT_BTN_JETER_X + 2, INVENT_BTN_JETER_Y))
-            self.ecran.blit(self.police.render("Vider", 1, (10, 10, 10)), (INVENT_BTN_JETERTT_X + 2, INVENT_BTN_JETERTT_Y))
+            self.ecran.blit(self.police.render("Jeter", 1, (10, 10, 10)), (INVENT_BTN_JETER_X + 2, INVENT_BTN_JETER_Y + 2))
+            self.ecran.blit(self.police.render("Vider", 1, (10, 10, 10)), (INVENT_BTN_JETERTT_X + 2, INVENT_BTN_JETERTT_Y + 2))
             # texte d'aide
             # DECOUPER LE TEXTE CAR TROP GRAND !
             texte_aide_str = self.objets[self.cur_categorie][self.selected_item].aide()
-            texte_lst = tw.wrap(texte_aide_str, width=40)
+            texte_lst = tw.wrap(texte_aide_str, width=37)
             i = 0
             for texte_tmp in texte_lst:
                 self.ecran.blit(self.police.render(texte_tmp, 1, (255, 255, 255)),
