@@ -1,9 +1,9 @@
 import pygame
-import os
 from pygame.locals import *
 from creatures_mgr import Creature
 import pickle
 from constantes import *
+import os
 
 
 class ComputerManager:
@@ -28,11 +28,20 @@ class ComputerManager:
     def update(self):
         self.render()
 
+    def clic(self, xp: int, yp: int):
+        if FCREA_PREVIOUS_X <= xp <= FCREA_PREVIOUS_X + FCREA_BTN_SX and FCREA_PREVIOUS_Y <= yp <= FCREA_PREVIOUS_Y + FCREA_BTN_SY:
+            self.previous()
+        if FCREA_NEXT_X <= xp <= FCREA_NEXT_X + FCREA_BTN_SX and FCREA_NEXT_Y <= yp <= FCREA_NEXT_Y + FCREA_BTN_SY:
+            self.next()
+
     def next(self):
         self.current_page = self.current_page + 1 if self.current_page < MAX_CREATURES // 7 else self.current_page
 
     def previous(self):
         self.current_page = self.current_page - 1 if self.current_page > 0 else self.current_page
+
+    def move_locals_creatures(self, first: int, second: int):
+        self.storage[first], self.storage[second] = self.storage[second], self.storage[first]
 
     def render(self):
         pygame.draw.rect(self.ecran, (180, 50, 50), (FCREA_X, FCREA_Y, FCREA_SIZE_X, FCREA_SIZE_Y))
@@ -53,7 +62,10 @@ class ComputerManager:
                             (FCREA_X + FCREA_MARGE_X + FCREA_MARGE_TXT_X,
                              FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y2))
         # boutons previous et next
-        pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_PREVIOUS_X, FCREA_PREVIOUS_Y))
+        pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_PREVIOUS_X, FCREA_PREVIOUS_Y, FCREA_BTN_SX, FCREA_BTN_SY))
+        self.ecran.blit(self.police.render("<", 1, (255, 255, 255)), (FCREA_PREVIOUS_X + 6, FCREA_PREVIOUS_Y + 6))
+        pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_NEXT_X, FCREA_NEXT_Y, FCREA_BTN_SX, FCREA_BTN_SY))
+        self.ecran.blit(self.police.render(">", 1, (255, 255, 255)), (FCREA_NEXT_X + 6, FCREA_NEXT_Y + 6))
 
     def move_creature_to_equipe(self, which: int, equipe):
         if equipe.add_creature(self.storage[which]):
