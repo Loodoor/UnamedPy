@@ -9,7 +9,6 @@ import personnage
 import sys
 import os
 
-import inventaire
 import indexer
 import captureurs
 import creatures_mgr
@@ -20,6 +19,7 @@ import atk_sys
 import menu_in_game
 import computer_manager
 import pnj_manager
+import zones_attaques_manager
 
 
 class Game:
@@ -44,16 +44,16 @@ class Game:
 
         # Managers
         self.carte_mgr = carte.CarteManager(self.ecran)
-        self.inventaire = inventaire.Inventaire(self.ecran, self.police_grande)
         self.indexeur = indexer.Indexer(self.ecran, self.police_grande)
         self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande)
         self.pc_mgr = computer_manager.ComputerManager(self.ecran, self.police_grande)
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
+        self.zones_manager = zones_attaques_manager.ZonesManager(self.indexeur)
 
         # Entités
-        self.personnage = personnage.Personnage(self.ecran, self.carte_mgr)
+        self.personnage = personnage.Personnage(self.ecran, self.carte_mgr, self.police_grande)
 
         # Contrôles
         self.controles = {
@@ -80,10 +80,10 @@ class Game:
     def load(self):
         self.carte_mgr.load()
         self.personnage.load()
-        self.inventaire.load()
         self.indexeur.load()
         self.equipe_mgr.load()
         self.pc_mgr.load()
+        self.zones_manager.load()
 
         self.tab_types.init_tab()
 
@@ -93,10 +93,10 @@ class Game:
         print("Sauvegarde ...")
         self.carte_mgr.save()
         self.personnage.save()
-        # self.inventaire.save()
         # self.indexeur.save()
         # self.equipe_mgr.save()
         # self.pc_mgr.save()
+        # self.zones_manager.save()
 
     def invert_rendering(self):
         self.last_rendering, self.current_rendering = self.current_rendering, self.last_rendering
@@ -233,12 +233,12 @@ class Game:
             if event.key == self.controles[INVENTAIRE] or event.key == self.controles[MENU]:
                 self.invert_rendering()
             if event.key == self.__ctrls[NEXT_PAGE]:
-                self.inventaire.next()
+                self.personnage.inventaire_next()
             if event.key == self.__ctrls[PREVIOUS_PAGE]:
-                self.inventaire.previous()
+                self.personnage.inventaire_previous()
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
-            self.inventaire.clic(xp, yp)
+            self.personnage.inventaire_clic(xp, yp)
 
     def process_events_game(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
@@ -296,7 +296,7 @@ class Game:
             self.personnage.update()
             self.pnj.update(dt)  # c'était un test
         elif self.current_rendering == RENDER_INVENTAIRE:
-            self.inventaire.update()
+            self.personnage.inventaire_update()
         elif self.current_rendering == RENDER_BOUTIQUE:
             raise FonctionnaliteNonImplementee
         elif self.current_rendering == RENDER_COMBAT:

@@ -4,12 +4,14 @@ import pickle
 from constantes import *
 from glob import glob
 from carte import CarteManager
+import inventaire
 
 
 class Personnage:
-    def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager, pos: tuple=(0, 0)):
+    def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager, police: pygame.font.Font, pos: tuple=(0, 0)):
         self.ecran = ecran
         self.direction = BAS
+        self.police = police
         self.anim_cursor = PAUSE
         self.max_anim_cursor = 2
         self.speed = BASIC_SPEED
@@ -29,6 +31,19 @@ class Personnage:
         self.is_moving = False
         self.pos = list(pos)
         self.carte_mgr = carte_mgr
+        self.inventaire = inventaire.Inventaire(self.ecran, self.police)
+
+    def inventaire_clic(self, xp: int, yp: int):
+        self.inventaire.clic(xp, yp)
+
+    def inventaire_next(self):
+        self.inventaire.next()
+
+    def inventaire_previous(self):
+        self.inventaire.previous()
+
+    def inventaire_update(self):
+        self.inventaire.update()
 
     def move(self, direction: int=HAUT, dt: int=1):
         self.direction = direction
@@ -205,7 +220,9 @@ class Personnage:
         if os.path.exists(os.path.join("..", "saves", "perso" + EXTENSION)):
             with open(os.path.join("..", "saves", "perso" + EXTENSION), "rb") as read_perso:
                 self.pos = pickle.Unpickler(read_perso).load()
+        self.inventaire.load()
 
     def save(self):
         with open(os.path.join("..", "saves", "perso" + EXTENSION), "wb") as save_perso:
             pickle.Pickler(save_perso).dump(self.pos)
+        self.inventaire.save()

@@ -1,6 +1,7 @@
 from constantes import *
 from indexer import Indexer
 from trigger_manager import Trigger, TriggersManager
+from zones_attaques_manager import ZonesManager, Zone
 import objets_manager
 import inventaire
 from os import path, sep
@@ -163,6 +164,25 @@ class ULoader:
         ]
 
         inventaire.Inventaire.create_inventory_and_store(objets)
+
+        # Création des zones par défaut
+
+        ZonesManager.add_new_zone_to_path(Zone(ZONE1, [], (0, 5)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE2, [], (4, 10)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE3, [], (8, 22)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE4, [], (17, 35)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE5, [], (30, 45)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE6, [], (40, 60)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE7, [], (55, 75)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE8, [], (70, 100)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE9, [], (90, 120)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEa, [], (110, 150)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEb, [], (140, 200)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEc, [], (180, 240)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEd, [], (220, 285)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEe, [], (265, 310)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEf, [], (290, 360)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEg, [], (330, 420)))
 
         # Fin du boulot !
         with open(self.path, 'wb') as fjob_done:

@@ -7,24 +7,23 @@ from indexer import Indexer
 
 
 class Zone:
-    def __init__(self, id: str, types: list, creatures_id: list, level_range: tuple, indexer: Indexer):
+    def __init__(self, id: str, creatures_id: list, level_range: tuple):
         self.id = id
-        self.types = types
         self.creatures_id = creatures_id
         self.level_range = level_range
-        self.indexer = indexer
 
     def get_id(self):
         return self.id
 
-    def get_new_adversaire(self):
+    def get_new_adversaire(self, indexer: Indexer):
         id_ = choice(self.creatures_id)
-        type_ = self.indexer.get_type_of(id_)
+        type_ = indexer.get_type_of(id_)
         return Creature(id_, type_, self.level_range)
 
 
 class ZonesManager:
-    def __init__(self):
+    def __init__(self, indexer: Indexer):
+        self.indexer = indexer
         self.path = path.join("..", "saves", "zones" + EXTENSION)
         self.zones = []
 
@@ -41,7 +40,7 @@ class ZonesManager:
     def get_new_adversary(self, with_zoneid: int):
         for zone in self.zones:
             if zone.get_id() == with_zoneid:
-                return zone.get_new_adversaire()
+                return zone.get_new_adversaire(self.indexer)
         return ZONE_ADV_ERROR
 
     def load(self):

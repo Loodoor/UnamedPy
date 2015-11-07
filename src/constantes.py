@@ -30,23 +30,25 @@ XTAILLE_carte = 1200
 
 TRIGGER_ERROR = "trigger.error"
 TRIGGER_UNDEFINED = "trigger.undefined"
-TRIGGER_COMBAT_ZONE1 = "trigger.combat.lance.zone.1"
-TRIGGER_COMBAT_ZONE2 = "trigger.combat.lance.zone.2"
-TRIGGER_COMBAT_ZONE3 = "trigger.combat.lance.zone.3"
-TRIGGER_COMBAT_ZONE4 = "trigger.combat.lance.zone.4"
-TRIGGER_COMBAT_ZONE5 = "trigger.combat.lance.zone.5"
-TRIGGER_COMBAT_ZONE6 = "trigger.combat.lance.zone.6"
-TRIGGER_COMBAT_ZONE7 = "trigger.combat.lance.zone.7"
-TRIGGER_COMBAT_ZONE8 = "trigger.combat.lance.zone.8"
-TRIGGER_COMBAT_ZONE9 = "trigger.combat.lance.zone.9"
-TRIGGER_COMBAT_ZONEa = "trigger.combat.lance.zone.a"
-TRIGGER_COMBAT_ZONEb = "trigger.combat.lance.zone.b"
-TRIGGER_COMBAT_ZONEc = "trigger.combat.lance.zone.c"
-TRIGGER_COMBAT_ZONEd = "trigger.combat.lance.zone.d"
-TRIGGER_COMBAT_ZONEe = "trigger.combat.lance.zone.e"
-TRIGGER_COMBAT_ZONEf = "trigger.combat.lance.zone.f"
-TRIGGER_COMBAT_ZONEg = "trigger.combat.lance.zone.g"
+TRIGGER_COMBAT_ZONE = "trigger.combat.lance."  # + ZONE ID
 TRIGGER_INFINITE_CALLS = -1
+
+ZONE1 = "zone.1"
+ZONE2 = "zone.2"
+ZONE3 = "zone.3"
+ZONE4 = "zone.4"
+ZONE5 = "zone.5"
+ZONE6 = "zone.6"
+ZONE7 = "zone.7"
+ZONE8 = "zone.8"
+ZONE9 = "zone.9"
+ZONEa = "zone.a"
+ZONEb = "zone.b"
+ZONEc = "zone.c"
+ZONEd = "zone.d"
+ZONEe = "zone.e"
+ZONEf = "zone.f"
+ZONEg = "zone.g"
 
 ZONE_ADV_ERROR = -2
 
@@ -225,7 +227,7 @@ SPEC_TYP = 'type'
 SPEC_NIV = 'niveau'
 SPEC_PVS = 'points de vie'
 SPEC_MAX_PVS = 'max points de vie'
-MAX_VAL_SPEC = 1000
+MAX_VAL_SPEC = 500
 
 CAP_NOM = 'nom'
 CAP_PSEUDO = 'pseudo'
