@@ -1,38 +1,21 @@
-(c) Folaefolc, 04-11-15
-Cette licence est fournie sous la licence MIT, vous avez donc le droit de copier,
-modifier, renommer, partager, et utiliser cette lisence à des fins commerciales
-(ou non), à condition que vous fournissiez la licence d'origine.
+The MIT License (MIT)
 
-Dans le texte qui suivra, "le logiciel", "ce logiciel", "le présent logiciel",
-"ce produit" désignent "Unamed" ;
-"le titulaire", "le créateur" désignent "Folaefolc" ;
-"tierce(s) personne(s)" désigne les personnes n'ayant pas participé au
-développement et / ou ne travaillant pas dans l'entreprise ayant créé ce produit
-("Folaefolc's enterprise").
+Copyright (c) 2015 Folae Folc
 
-Informations sur "Folaefolc's enterprise" :
-    propriétaire(s) : "Folaefolc"
-    adresse : "France, Région Centre, Orléans"
-    e-mail : ""
-    site web : "http://yaalval.alwaysdata.net/"
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Le logiciel auquel s'applique cette licence ("Unamed") ne peut pas être
-commercialisé (qu'il est été modifié ou non), par une tierce personne autre que
-le titulaire du dit logiciel (de "Folaefolc").
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Le logiciel auquel s'applique cette licence ("Unamed") peut être modifié à des
-fins personnelles, mais doit conserver cette licence (la personne ayant modifié
-ce logiciel n'en devient en aucun cas le titulaire), et nommer l'auteur original
-du présent logiciel ("Unamed", de "Folaefolc").
-Ce logiciel peut aussi être redistribué gratuitement par des tierces personnes
-(tout en conservant cette licence), à condition que le présent logiciel soit
-lui-même gratuit.
-
-Il est tout à fait autorisé de faire de la publicité pour le présent logiciel, à
-condition que la(les) tierce(s) personne(s) ayant produit cette publicité cite le
-nom du titulaire du logiciel ("Folaefolc"), et l'avertise par un
-quelconque moyen (e-mail, SMS, message sur le forum du site web s'il y en a un
-...), tout en ayant vérifié que le titulaire du logiciel ai bien vu le-dit
-message et donné son accord. La-dite publicité peut permettre à(aux) tierce(s)
-personne(s) l'ayant produite de gagner de l'argent par un quelconque moyen, à
-condition que le titulaire du logiciel reçoive 15% des recettes.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
