@@ -46,12 +46,15 @@ class EquipeManager:
     def add_creature(self, new: Creature):
         if len(self.creatures) < self.size:
             self.creatures.append(new)
+            return True
+        return False
 
-    def move_creature(self, first: int, second: int):
-        ftmp = self.creatures[first]
-        stmp = self.creatures[second]
-        self.creatures[first] = stmp
-        self.creatures[second] = ftmp
+    def move_locals_creatures(self, first: int, second: int):
+        self.creatures[first], self.creatures[second] = self.creatures[first] = self.creatures[second]
+
+    def move_creature_to_pc(self, which: int, pc):
+        if pc.add_creature(self.creatures[which]):
+            self.remove_creature(which)
 
     def remove_creature(self, index: int):
         return self.creatures.pop(index)

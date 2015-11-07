@@ -126,13 +126,29 @@ class ULoader:
                                           [1, 1], objets_manager.ObjectAction(print, "test chaussures"))
         velo = objets_manager.Objet("Velo", "Le vélo vous permet de vous déplacer encore vite qu'avec les Chaussures",
                                     [0, 1], objets_manager.ObjectAction(print, "test velo"))
+        simple_ball = objets_manager.Objet("Simple Ball", "La simple ball vous permet de capturer une créature. Son taux"
+                                                          " de réussite est très faible", [0, MAX_ITEM],
+                                           objets_manager.ObjectAction(print, "test simple ball"))
+        normal_ball = objets_manager.Objet("Normal Ball",
+                                           "La normal ball vous permet de capturer une créature. Son taux"
+                                           " de réussite est faible, quoique supérieur à celui de la simple ball",
+                                           [0, MAX_ITEM], objets_manager.ObjectAction(print, "test normal ball"))
+        sup_ball = objets_manager.Objet("Superior Ball", "La superior ball vous permet de capturer une créature. Son"
+                                                         "taux de réussite est assez élevé.", [0, MAX_ITEM],
+                                           objets_manager.ObjectAction(print, "test superior ball"))
+        ultra_ball = objets_manager.Objet("Ultra Ball", "L'ultra ball a un taux de réussite proche des 100%, mais est "
+                                                        "très complexe à fabriquer", [0, MAX_ITEM],
+                                          objets_manager.ObjectAction(print, "test ultra ball"))
 
         objets = [
             [
 
             ],  # Poche communs
             [
-
+                simple_ball,
+                normal_ball,
+                sup_ball,
+                ultra_ball
             ],  # Poche capturateurs
             [
                 anti_para,
@@ -188,7 +204,8 @@ class ULoader:
         with open(self.path, 'wb') as fjob_done:
             pickle.Pickler(fjob_done).dump(UMoment("Ajout des premières créatures, "
                                                    "d'un trigger de test en (0, 0), "
-                                                   "et des descriptions des objets"))
+                                                   "de nouveaux objets, "
+                                                   "et des débuts de zones de base"))
 
     def reload(self):
         self.load()

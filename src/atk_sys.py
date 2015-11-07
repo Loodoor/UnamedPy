@@ -17,13 +17,16 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
 
 
 class Combat:
-    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int) -> None:
+    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer) -> None:
         self.ecran = ecran
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
         self.adversaire = creatures_mgr.Creature(-1, -1, T_NORMAL)
         self.zones_mgr = zone
         self.zid = zone_id
+        self.indexer = indexer
+        self.has_started = False
+        self.is_running = True
 
     def find_adv(self):
         self.adversaire = self.zones_mgr.get_new_adversary(self.zid)
@@ -31,9 +34,20 @@ class Combat:
     def mon_tour(self):
         return True if not self.compteur_tour % 2 else False
 
+    def get_adversary(self):
+        return self.adversaire
+
+    def end_fight_for_capture(self):
+        self.is_running = False
+
     def update(self):
-        self.compteur_tour += 1
-        self.render()
+        if self.is_running:
+            if not self.has_started:
+                self.indexer.vu_(self.adversaire.get_id())
+                self.has_started = True
+
+            self.compteur_tour += 1
+            self.render()
 
     def render(self):
         pass
