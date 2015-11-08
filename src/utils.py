@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from constantes import *
 from indexer import Indexer
 from trigger_manager import Trigger, TriggersManager

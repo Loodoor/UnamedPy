@@ -1,3 +1,6 @@
+# coding=utf-8
+
+
 class ObjectAction:
     def __init__(self, fonction, *params):
         self.fonc = fonction

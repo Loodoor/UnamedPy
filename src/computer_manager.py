@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import pygame
 from pygame.locals import *
 from creatures_mgr import Creature
@@ -7,7 +9,7 @@ import os
 
 
 class ComputerManager:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont, max_size=PC_MAX_CREA):
+    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont, render_manager, max_size=PC_MAX_CREA):
         self.ecran = ecran
         self.police = police
         self.storage = []
@@ -15,6 +17,8 @@ class ComputerManager:
         self.path = os.path.join("..", "saves", "pc" + EXTENSION)
         self.current_page = 0
         self.per_page = 7
+        self.passe_equipe_txt = self.police.render("-> Equipe", 1, (255, 255, 255))
+        self.rd_mgr = render_manager
 
     def load(self):
         if os.path.exists(self.path):
@@ -28,11 +32,16 @@ class ComputerManager:
     def update(self):
         self.render()
 
+    def change_renderer(self):
+        self.rd_mgr.change_renderer_for(RENDER_CREATURES)
+
     def clic(self, xp: int, yp: int):
         if FCREA_PREVIOUS_X <= xp <= FCREA_PREVIOUS_X + FCREA_BTN_SX and FCREA_PREVIOUS_Y <= yp <= FCREA_PREVIOUS_Y + FCREA_BTN_SY:
             self.previous()
         if FCREA_NEXT_X <= xp <= FCREA_NEXT_X + FCREA_BTN_SX and FCREA_NEXT_Y <= yp <= FCREA_NEXT_Y + FCREA_BTN_SY:
             self.next()
+        if FCREA_AUTRE_MGR_X <= xp <= FCREA_AUTRE_MGR_X + FCREA_AUTRE_MGR_SX and FCREA_AUTRE_MGR_Y <= yp <= FCREA_AUTRE_MGR_Y + FCREA_AUTRE_MGR_SY:
+            self.change_renderer()
 
     def next(self):
         self.current_page = self.current_page + 1 if self.current_page < MAX_CREATURES // 7 else self.current_page
@@ -66,6 +75,11 @@ class ComputerManager:
         self.ecran.blit(self.police.render("<", 1, (255, 255, 255)), (FCREA_PREVIOUS_X + 6, FCREA_PREVIOUS_Y + 6))
         pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_NEXT_X, FCREA_NEXT_Y, FCREA_BTN_SX, FCREA_BTN_SY))
         self.ecran.blit(self.police.render(">", 1, (255, 255, 255)), (FCREA_NEXT_X + 6, FCREA_NEXT_Y + 6))
+
+        pygame.draw.rect(self.ecran, (50, 180, 180), (FCREA_AUTRE_MGR_X, FCREA_AUTRE_MGR_Y,
+                                                      FCREA_AUTRE_MGR_SX, FCREA_AUTRE_MGR_SY))
+        self.ecran.blit(self.passe_equipe_txt, (FCREA_AUTRE_MGR_X + (self.passe_equipe_txt.get_width() - FCREA_AUTRE_MGR_SX) // 2,
+                                            FCREA_AUTRE_MGR_Y + 2))
 
     def move_creature_to_equipe(self, which: int, equipe):
         if equipe.add_creature(self.storage[which]):

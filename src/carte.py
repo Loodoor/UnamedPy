@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import os
 import pickle
 from glob import glob
@@ -8,7 +10,7 @@ from trigger_manager import TriggersManager
 
 
 class CarteManager:
-    def __init__(self, ecran: pygame.Surface):
+    def __init__(self, ecran: pygame.Surface, renderer_manager):
         self.ecran = ecran
         self.carte = []
         self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
@@ -17,6 +19,7 @@ class CarteManager:
         self.images = {}
         self.lassets = []
         self.triggers_mgr = TriggersManager()
+        self.rd_mgr = renderer_manager
 
     def get_of1(self):
         return self.offsets[0]

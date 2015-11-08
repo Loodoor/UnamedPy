@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import os
 import pygame
 import pickle
@@ -45,7 +47,7 @@ class Personnage:
     def inventaire_update(self):
         self.inventaire.update()
 
-    def move(self, direction: int=HAUT, dt: int=1):
+    def move(self, direction: int=AUCUNE, dt: int=1):
         self.direction = direction
         self.perso = self.sprites[self.direction][self.anim_cursor + 1]
         self.is_moving = True

@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import pygame
 from pygame.locals import *
 from fpsregulator import IAFPS
@@ -6,6 +8,7 @@ from constantes import *
 from glob import glob
 import carte
 import personnage
+import renderer_manager as rd_mgr
 import sys
 import os
 
@@ -28,8 +31,7 @@ class Game:
         self.fps_regulator = pygame.time.Clock()
         self.continuer = 1
         self.ecran = ecran
-        self.current_rendering = RENDER_GAME
-        self.last_rendering = RENDER_GAME
+        self.renderer_manager = rd_mgr.RendererManager()
         self.show_fps = False
 
         self.right = False
@@ -43,10 +45,10 @@ class Game:
         self.police_petite = pygame.font.Font(POLICE_PATH, POL_PETITE_TAILLE)
 
         # Managers
-        self.carte_mgr = carte.CarteManager(self.ecran)
-        self.indexeur = indexer.Indexer(self.ecran, self.police_grande)
-        self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande)
-        self.pc_mgr = computer_manager.ComputerManager(self.ecran, self.police_grande)
+        self.carte_mgr = carte.CarteManager(self.ecran, self.renderer_manager)
+        self.indexeur = indexer.Indexer(self.ecran, self.police_grande, self.renderer_manager)
+        self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande, self.renderer_manager)
+        self.pc_mgr = computer_manager.ComputerManager(self.ecran, self.police_grande, self.renderer_manager)
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
@@ -98,9 +100,6 @@ class Game:
         # self.pc_mgr.save()
         # self.zones_manager.save()
 
-    def invert_rendering(self):
-        self.last_rendering, self.current_rendering = self.current_rendering, self.last_rendering
-
     def screenshot(self):
         path = os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png")
         pygame.image.save(self.ecran, path)
@@ -113,37 +112,37 @@ class Game:
                 sys.exit()
 
             # Différents mode de gestion des événements
-            if self.current_rendering == RENDER_GAME:
+            if self.renderer_manager.get_renderer() == RENDER_GAME:
                 # le jeu en lui même
                 self.process_events_game(event, dt)
-            elif self.current_rendering == RENDER_INVENTAIRE:
+            elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
                 # l'inventaire
                 self.process_events_inventaire(event, dt)
-            elif self.current_rendering == RENDER_COMBAT:
+            elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
                 # quand on est en combat
                 self.process_events_combat(event, dt)
-            elif self.current_rendering == RENDER_BOUTIQUE:
+            elif self.renderer_manager.get_renderer() == RENDER_BOUTIQUE:
                 # dans une boutique
                 self.process_events_boutique(event, dt)
-            elif self.current_rendering == RENDER_MENU_IN_GAME:
+            elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
                 # le menu intermédiaire
                 self.process_events_menu_in_game(event, dt)
-            elif self.current_rendering == RENDER_SAVE:
+            elif self.renderer_manager.get_renderer() == RENDER_SAVE:
                 # la sauvegarde
                 self.process_events_save(event, dt)
-            elif self.current_rendering == RENDER_CARTE:
+            elif self.renderer_manager.get_renderer() == RENDER_CARTE:
                 # la mini carte
                 self.process_events_carte(event, dt)
-            elif self.current_rendering == RENDER_CREATURES:
+            elif self.renderer_manager.get_renderer() == RENDER_CREATURES:
                 # quand on consulte ses creatures
                 self.process_events_creatures(event, dt)
-            elif self.current_rendering == RENDER_PC:
+            elif self.renderer_manager.get_renderer() == RENDER_PC:
                 # quand on est sur un PC pour gérer ses creatures
                 self.process_events_pc(event, dt)
-            elif self.current_rendering == RENDER_POKEDEX:
+            elif self.renderer_manager.get_renderer() == RENDER_POKEDEX:
                 # le pokedex
                 self.process_events_pokedex(event, dt)
-            elif self.current_rendering == RENDER_ERROR:
+            elif self.renderer_manager.get_renderer() == RENDER_ERROR:
                 # autre ...
                 raise FonctionnaliteNonImplementee("Cas non géré. Merci de reporter ce traceback à Folaefolc, main dev d'Unamed")
 
@@ -173,46 +172,45 @@ class Game:
     def process_events_pokedex(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
-                self.invert_rendering()
+                self.renderer_manager.invert_renderer()
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.indexeur.clic(xp, yp)
 
     def process_events_pc(self, event: pygame.event, dt: int=1):
-        """
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
-                self.invert_rendering()
-        """
-        raise FonctionnaliteNonImplementee
+                self.renderer_manager.invert_renderer()
+        if event.type == MOUSEBUTTONUP:
+            xp, yp = event.pos
+            self.pc_mgr.clic(xp, yp)
 
     def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
-                self.invert_rendering()
+                self.renderer_manager.invert_renderer()
             if event.key == self.__ctrls[NEXT_PAGE]:
                 self.menu_in_game.next()
             if event.key == self.__ctrls[PREVIOUS_PAGE]:
                 self.menu_in_game.previous()
             if event.key == self.controles[VALIDATION]:
-                self.last_rendering = self.current_rendering
                 new_renderer = self.menu_in_game.valider_choix()
-                self.current_rendering = new_renderer
+                self.renderer_manager.change_renderer_for(new_renderer)
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             tmp = self.menu_in_game.clic(xp, yp)
             if tmp != RENDER_ERROR:
-                self.last_rendering = self.current_rendering
-                self.current_rendering = tmp
+                self.renderer_manager.change_renderer_for(tmp)
 
         self.menu_in_game.mouseover(pygame.mouse.get_pos())
 
     def process_events_creatures(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
-                self.invert_rendering()
+                self.renderer_manager.invert_renderer()
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
+            self.equipe_mgr.clic(xp, yp)
 
     def process_events_boutique(self, event: pygame.event, dt: int=1):
         raise FonctionnaliteNonImplementee
@@ -220,18 +218,14 @@ class Game:
     def process_events_combat(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
-                self.invert_rendering()
-        if event.type == KEYUP:
-            pass
-        if event.type == MOUSEBUTTONDOWN:
-            xp, yp = event.pos
+                self.renderer_manager.invert_renderer()
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
 
     def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[INVENTAIRE] or event.key == self.controles[MENU]:
-                self.invert_rendering()
+                self.renderer_manager.invert_renderer()
             if event.key == self.__ctrls[NEXT_PAGE]:
                 self.personnage.inventaire_next()
             if event.key == self.__ctrls[PREVIOUS_PAGE]:
@@ -251,11 +245,9 @@ class Game:
             if event.key == self.controles[DROITE]:
                 self.left, self.right = False, True
             if event.key == self.controles[INVENTAIRE]:
-                self.last_rendering = self.current_rendering
-                self.current_rendering = RENDER_INVENTAIRE
+                self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
             if event.key == self.controles[MENU]:
-                self.last_rendering = self.current_rendering
-                self.current_rendering = RENDER_MENU_IN_GAME
+                self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
         if event.type == KEYUP:
             if event.key == self.controles[HAUT]:
                 self.top = False
@@ -284,37 +276,36 @@ class Game:
     def prepare(self):
         # Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
-        self.current_rendering = RENDER_GAME
-        self.last_rendering = RENDER_GAME
+        self.renderer_manager.clear_all()
 
         self.load()
         pygame.key.set_repeat(200, 100)
 
     def render(self, dt: int=1):
         self.carte_mgr.update()
-        if self.current_rendering == RENDER_GAME:
+        if self.renderer_manager.get_renderer() == RENDER_GAME:
             self.personnage.update()
             self.pnj.update(dt)  # c'était un test
-        elif self.current_rendering == RENDER_INVENTAIRE:
+        elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
             self.personnage.inventaire_update()
-        elif self.current_rendering == RENDER_BOUTIQUE:
+        elif self.renderer_manager.get_renderer() == RENDER_BOUTIQUE:
             raise FonctionnaliteNonImplementee
-        elif self.current_rendering == RENDER_COMBAT:
+        elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
             self.cur_combat = atk_sys.Combat(self.ecran, creatures_mgr.Creature(-1, T_NORMAL))
             raise FonctionnaliteNonImplementee
-        elif self.current_rendering == RENDER_MENU_IN_GAME:
+        elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
-        elif self.current_rendering == RENDER_SAVE:
+        elif self.renderer_manager.get_renderer() == RENDER_SAVE:
             self.save()
-            self.invert_rendering()
+            self.renderer_manager.invert_renderer()
             print("Erreur future à corriger ici (fct render dans game.py)")
-        elif self.current_rendering == RENDER_CARTE:
+        elif self.renderer_manager.get_renderer() == RENDER_CARTE:
             raise FonctionnaliteNonImplementee
-        elif self.current_rendering == RENDER_CREATURES:
+        elif self.renderer_manager.get_renderer() == RENDER_CREATURES:
             self.equipe_mgr.update()
-        elif self.current_rendering == RENDER_POKEDEX:
+        elif self.renderer_manager.get_renderer() == RENDER_POKEDEX:
             self.indexeur.update()
-        elif self.current_rendering == RENDER_PC:
+        elif self.renderer_manager.get_renderer() == RENDER_PC:
             self.pc_mgr.update()
 
         if self.show_fps:

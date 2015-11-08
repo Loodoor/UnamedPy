@@ -1,7 +1,10 @@
+# coding=utf-8
+
 import pygame
 import os
 import pickle
 from pygame.locals import *
+from exceptions import CreaturesNonTrouvees
 from constantes import *
 
 
@@ -101,7 +104,7 @@ class Typeur:
 
 
 class Indexer:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont):
+    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont, render_manager):
         self.ecran = ecran
         self.police = police
         self.save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
@@ -111,6 +114,7 @@ class Indexer:
         self.indexer = []
         self.typeur = Typeur()
         self.render_creatures = True
+        self.rd_mgr = render_manager
 
     @staticmethod
     def add_new(name: str, id: int, type: int, path: str, desc: str=""):
@@ -129,8 +133,7 @@ class Indexer:
             with open(self.save_path, "rb") as read_index:
                 self.indexer = pickle.Unpickler(read_index).load()
         else:
-            pass
-            # raise NotImplementedError("Désolé, aucune créature ne semble exister")
+            raise CreaturesNonTrouvees()
         self.typeur.load()
 
     def save(self):
