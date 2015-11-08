@@ -9,6 +9,10 @@ from constantes import *
 from trigger_manager import TriggersManager
 
 
+class none:
+    pass
+
+
 class CarteManager:
     def __init__(self, ecran: pygame.Surface, renderer_manager):
         self.ecran = ecran
@@ -38,6 +42,9 @@ class CarteManager:
 
     def get_fov_carte(self):
         return [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.carte[int(self.fov[2]):int(self.fov[3])]]
+
+    def get_zid_at(self, at: tuple=(-1, -1)):
+        return self
 
     def move_of1(self, dir: int=1):
         self.offsets[0] += dir
