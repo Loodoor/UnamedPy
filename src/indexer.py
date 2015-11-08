@@ -4,7 +4,7 @@ import pygame
 import os
 import pickle
 from pygame.locals import *
-from exceptions import CreaturesNonTrouvees
+from exceptions import CreaturesNonTrouvees, FonctionnaliteNonImplementee
 from constantes import *
 import textwrap as tw
 
@@ -175,6 +175,9 @@ class Indexer:
             if id == elem.id:
                 elem.capture_()
                 break
+
+    def select_all_crea_with_stade(self, stade: int):
+        raise FonctionnaliteNonImplementee
 
     def update(self):
         self.render()
