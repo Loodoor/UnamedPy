@@ -199,7 +199,8 @@ class Indexer:
                 if self.selected_creature != -1:
                     j = 0
                     for txt in tw.wrap(elem.description, width=38):
-                        self.ecran.blit(txt, (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
+                        self.ecran.blit(self.police.render(txt, 1, (255, 255, 255)),
+                                        (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
                         j += 1
 
                 i += 1
