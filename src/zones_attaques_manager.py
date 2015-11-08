@@ -34,7 +34,9 @@ class ZonesManager:
         path_ = path.join("..", "saves", "zones" + EXTENSION)
         if path.exists(path_):
             with open(path_, 'rb') as read_zones:
-                pickle.Pickler(open(path_, 'wb')).dump(pickle.Unpickler(read_zones).load().append(zone))
+                sv = pickle.Unpickler(read_zones).load()
+                sv.append(zone)
+                pickle.Pickler(open(path_, 'wb')).dump(sv)
         else:
             with open(path_, 'wb') as add_new:
                 pickle.Pickler(add_new).dump([zone])

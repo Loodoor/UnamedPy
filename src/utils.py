@@ -52,7 +52,8 @@ class ULoader:
         uremove(
             path.join("..", "saves", "indexer" + EXTENSION),
             path.join("..", "saves", "triggers" + EXTENSION),
-            path.join("..", "saves", "inventaire" + EXTENSION)
+            path.join("..", "saves", "inventaire" + EXTENSION),
+            path.join("..", "saves", "zones" + EXTENSION)
         )
 
         # le nom est toujours vide, c'est le joueur qui les choisira à chaque fois
@@ -185,22 +186,22 @@ class ULoader:
 
         # Création des zones par défaut
 
-        ZonesManager.add_new_zone_to_path(Zone(ZONE1, [], (0, 5)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE2, [], (4, 10)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE3, [], (8, 22)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE4, [], (17, 35)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE5, [], (30, 45)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE6, [], (40, 60)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE7, [], (55, 75)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE8, [], (70, 100)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE9, [], (90, 120)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEa, [], (110, 150)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEb, [], (140, 200)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEc, [], (180, 240)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEd, [], (220, 285)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEe, [], (265, 310)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEf, [], (290, 360)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEg, [], (330, 420)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE1, [_ for _ in range(MAX_CREATURES)], (0, 5)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE2, [_ for _ in range(MAX_CREATURES)], (4, 10)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE3, [_ for _ in range(MAX_CREATURES)], (8, 22)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE4, [_ for _ in range(MAX_CREATURES)], (17, 35)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE5, [_ for _ in range(MAX_CREATURES)], (30, 45)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE6, [_ for _ in range(MAX_CREATURES)], (40, 60)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE7, [_ for _ in range(MAX_CREATURES)], (55, 75)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE8, [_ for _ in range(MAX_CREATURES)], (70, 100)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE9, [_ for _ in range(MAX_CREATURES)], (90, 120)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEa, [_ for _ in range(MAX_CREATURES)], (110, 150)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEb, [_ for _ in range(MAX_CREATURES)], (140, 200)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEc, [_ for _ in range(MAX_CREATURES)], (180, 240)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEd, [_ for _ in range(MAX_CREATURES)], (220, 285)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEe, [_ for _ in range(MAX_CREATURES)], (265, 310)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEf, [_ for _ in range(MAX_CREATURES)], (290, 360)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEg, [_ for _ in range(MAX_CREATURES)], (330, 420)))
 
         # Fin du boulot !
         with open(self.path, 'wb') as fjob_done:

@@ -59,9 +59,9 @@ class TriggersManager:
         path_ = path.join("..", "saves", "triggers" + EXTENSION)
         if path.exists(path_):
             with open(path_, 'rb') as path_rb:
-                pickle.Pickler(open(path_, 'wb')).dump(
-                    pickle.Unpickler(path_rb).load().append(new_trigger)
-                )
+                sv = pickle.Unpickler(path_rb).load()
+                sv.append(new_trigger)
+                pickle.Pickler(open(path_, 'wb')).dump(sv)
         else:
             with open(path_, 'wb') as path_wb:
                 pickle.Pickler(path_wb).dump([new_trigger])

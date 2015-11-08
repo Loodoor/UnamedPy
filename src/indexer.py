@@ -121,7 +121,8 @@ class Indexer:
         save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
         if os.path.exists(save_path):
             with open(save_path, 'rb') as rbin:
-                tod = pickle.Unpickler(rbin).load() + [Element(name, id, type, path, desc)]
+                tod = pickle.Unpickler(rbin).load()
+                tod.append(Element(name, id, type, path, desc))
                 pickle.Pickler(open(save_path, 'wb')).dump(tod)
         else:
             with open(save_path, 'wb') as wbin:
