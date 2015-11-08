@@ -93,6 +93,10 @@ class Typeur:
     def get_types(self):
         return self.user_types
 
+    @staticmethod
+    def count_types():
+        return TYPES_NUMBER
+
     def load(self):
         if os.path.exists(self.path):
             with open(self.path, "rb") as type_rb:
@@ -196,7 +200,7 @@ class Indexer:
                 self.ecran.blit(self.police.render(str(nom) + " - Type : " + str(type_), 1, (255, 255, 255)),
                                 (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
 
-                if self.selected_creature != -1:
+                if self.selected_creature == i:
                     j = 0
                     for txt in tw.wrap(elem.description, width=38):
                         self.ecran.blit(self.police.render(txt, 1, (255, 255, 255)),
@@ -215,5 +219,7 @@ class Indexer:
             self.render_creatures = not self.render_creatures
         if self.render_creatures and POK_X_NAME_CREA <= xp <= POK_X_NAME_CREA + 200:
             self.selected_creature = (yp - POK_Y_NAME_CREA) // POK_ESP_Y_ITEM
+            self.selected_creature = self.selected_creature if 0 <= self.selected_creature < len(self.indexer) else -1
         if not self.render_creatures and POK_X_TYPE <= xp <= POK_X_TYPE + 200:
             self.selected_type = (yp - POK_Y_TYPE) // POK_SY_TYPE
+            self.selected_type = self.selected_type if 0 <= self.selected_type < self.typeur.count_types() else -1
