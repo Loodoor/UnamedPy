@@ -15,7 +15,8 @@ class EquipeManager:
         self.police = police
         self.creatures = []
         self.path = os.path.join("..", "saves", "equipe" + EXTENSION)
-        self.passe_pc_txt = self.police.render("-> PC", 1, (255, 255, 255))
+        self.passe_pc_txt = self.police.render("PC", 1, (255, 255, 255))
+        self.titre = self.police.render("Equipe", 1, (255, 255, 255))
         self.rd_mgr = render_manager
 
     def update(self):
@@ -23,6 +24,7 @@ class EquipeManager:
 
     def render(self):
         pygame.draw.rect(self.ecran, (180, 50, 50), (FCREA_X, FCREA_Y, FCREA_SIZE_X, FCREA_SIZE_Y))
+        self.ecran.blit(self.titre, ((FEN_large - self.titre.get_width()) // 2, FCREA_TITRE_Y))
         for i in range(len(self.creatures)):
             creature = self.creatures[i]
             pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), 1, (10, 10, 10))
@@ -39,7 +41,7 @@ class EquipeManager:
                              FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y2))
         pygame.draw.rect(self.ecran, (50, 180, 180), (FCREA_AUTRE_MGR_X, FCREA_AUTRE_MGR_Y,
                                                       FCREA_AUTRE_MGR_SX, FCREA_AUTRE_MGR_SY))
-        self.ecran.blit(self.passe_pc_txt, (FCREA_AUTRE_MGR_X + (self.passe_pc_txt.get_width() - FCREA_AUTRE_MGR_SX) // 2,
+        self.ecran.blit(self.passe_pc_txt, (FCREA_AUTRE_MGR_X - (self.passe_pc_txt.get_width() - FCREA_AUTRE_MGR_SX) // 2,
                                             FCREA_AUTRE_MGR_Y + 2))
 
     def load(self):

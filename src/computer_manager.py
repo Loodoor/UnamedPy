@@ -17,7 +17,8 @@ class ComputerManager:
         self.path = os.path.join("..", "saves", "pc" + EXTENSION)
         self.current_page = 0
         self.per_page = 7
-        self.passe_equipe_txt = self.police.render("-> Equipe", 1, (255, 255, 255))
+        self.passe_equipe_txt = self.police.render("Equipe", 1, (255, 255, 255))
+        self.titre = self.police.render("PC", 1, (255, 255, 255))
         self.rd_mgr = render_manager
 
     def load(self):
@@ -54,6 +55,7 @@ class ComputerManager:
 
     def render(self):
         pygame.draw.rect(self.ecran, (180, 50, 50), (FCREA_X, FCREA_Y, FCREA_SIZE_X, FCREA_SIZE_Y))
+        self.ecran.blit(self.titre, ((FEN_large - self.titre.get_width()) // 2, FCREA_TITRE_Y))
         for i in range(len(self.storage[self.current_page:self.current_page + self.per_page])):
             creature = self.storage[i]
             pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), 1,
@@ -72,14 +74,14 @@ class ComputerManager:
                              FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y2))
         # boutons previous et next
         pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_PREVIOUS_X, FCREA_PREVIOUS_Y, FCREA_BTN_SX, FCREA_BTN_SY))
-        self.ecran.blit(self.police.render("<", 1, (255, 255, 255)), (FCREA_PREVIOUS_X + 6, FCREA_PREVIOUS_Y + 6))
+        self.ecran.blit(self.police.render("<", 1, (255, 255, 255)), (FCREA_PREVIOUS_X + 6, FCREA_PREVIOUS_Y + 2))
         pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_NEXT_X, FCREA_NEXT_Y, FCREA_BTN_SX, FCREA_BTN_SY))
-        self.ecran.blit(self.police.render(">", 1, (255, 255, 255)), (FCREA_NEXT_X + 6, FCREA_NEXT_Y + 6))
+        self.ecran.blit(self.police.render(">", 1, (255, 255, 255)), (FCREA_NEXT_X + 6, FCREA_NEXT_Y + 2))
 
         pygame.draw.rect(self.ecran, (50, 180, 180), (FCREA_AUTRE_MGR_X, FCREA_AUTRE_MGR_Y,
                                                       FCREA_AUTRE_MGR_SX, FCREA_AUTRE_MGR_SY))
-        self.ecran.blit(self.passe_equipe_txt, (FCREA_AUTRE_MGR_X + (self.passe_equipe_txt.get_width() - FCREA_AUTRE_MGR_SX) // 2,
-                                            FCREA_AUTRE_MGR_Y + 2))
+        self.ecran.blit(self.passe_equipe_txt, (FCREA_AUTRE_MGR_X - (self.passe_equipe_txt.get_width() - FCREA_AUTRE_MGR_SX) // 2,
+                                                FCREA_AUTRE_MGR_Y + 2))
 
     def move_creature_to_equipe(self, which: int, equipe):
         if equipe.add_creature(self.storage[which]):
