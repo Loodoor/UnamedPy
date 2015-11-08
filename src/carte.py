@@ -9,8 +9,34 @@ from constantes import *
 from trigger_manager import TriggersManager
 
 
-class none:
-    pass
+class SubCarte:
+    def __init__(self):
+        self.carte = []
+        self.objets = {}
+
+    def get_all(self):
+        return self.carte
+
+    def get_at(self, x: int, y: int):
+        return self.carte[y][x]
+
+    def get_building_at(self, x: int, y: int):
+        return
+
+    def set_all(self, new: list):
+        self.carte = new
+
+    def set_at(self, x: int, y: int, new):
+        self.carte[y][x] = new
+
+    def collide_at(self, x: int, y: int):
+        return
+
+    def has_trigger_at(self, x: int, y: int):
+        return
+
+    def exec_trigger_at(self, x: int, y: int):
+        pass
 
 
 class CarteManager:
