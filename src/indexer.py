@@ -6,6 +6,7 @@ import pickle
 from pygame.locals import *
 from exceptions import CreaturesNonTrouvees
 from constantes import *
+import textwrap as tw
 
 
 class Element:
@@ -115,6 +116,8 @@ class Indexer:
         self.typeur = Typeur()
         self.render_creatures = True
         self.rd_mgr = render_manager
+        self.selected_creature = -1
+        self.selected_type = -1
 
     @staticmethod
     def add_new(name: str, id: int, type: int, path: str, desc: str=""):
@@ -147,10 +150,6 @@ class Indexer:
 
     def previous(self):
         self.page = self.page - 1 if self.page - 1 >= 0 else 0
-
-    def clic(self, xp: int, yp: int):
-        if POK_X_VIEWT <= xp <= POK_X_VIEWT + POK_SX_VIEWT and POK_Y_VIEWT <= yp <= POK_Y_VIEWT + POK_SY_VIEWT:
-            self.render_creatures = not self.render_creatures
 
     def get_type_of(self, id: int):
         for creature in self.indexer:
@@ -196,9 +195,24 @@ class Indexer:
 
                 self.ecran.blit(self.police.render(str(nom) + " - Type : " + str(type_), 1, (255, 255, 255)),
                                 (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
+
+                if self.selected_creature != -1:
+                    j = 0
+                    for txt in tw.wrap(elem.description, width=38):
+                        self.ecran.blit(txt, (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
+                        j += 1
+
                 i += 1
         else:
             for t_id, type_name in self.typeur.get_types().items():
                 texte = self.police.render(str(t_id + 1) + " -> '" + type_name + "'", 1, (255, 255, 255))
                 self.ecran.blit(texte, (POK_X_TYPE, POK_Y_TYPE + i * POK_SY_TYPE))
                 i += 1
+
+    def clic(self, xp: int, yp: int):
+        if POK_X_VIEWT <= xp <= POK_X_VIEWT + POK_SX_VIEWT and POK_Y_VIEWT <= yp <= POK_Y_VIEWT + POK_SY_VIEWT:
+            self.render_creatures = not self.render_creatures
+        if self.render_creatures and POK_X_NAME_CREA <= xp <= POK_X_NAME_CREA + 200:
+            self.selected_creature = (yp - POK_Y_NAME_CREA) // POK_ESP_Y_ITEM
+        if not self.render_creatures and POK_X_TYPE <= xp <= POK_X_TYPE + 200:
+            self.selected_type = (yp - POK_Y_TYPE) // POK_SY_TYPE
