@@ -17,3 +17,12 @@ class CreaturesNonTrouvees(Exception):
                          "résoudre le problème. Sinon, contactez moi sur Zeste de Savoir (.com) (Folaefolc)"
                          " pour m'indiquer votre problème"
         )
+
+
+class ListePleine(Exception):
+    def __init__(self):
+        super().__init__(
+            "La liste étant déjà pleine, le code ne peut pas s'exécuter dans des conditions normales."
+            " Cela peu avoir pour effet de déstabiliser le gameplay ou même le jeu entier. Merci de reporter "
+            "cette erreur à Folaefolc, main dev' d'Unamed"
+        )

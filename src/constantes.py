@@ -17,6 +17,7 @@ GLOBAL_ERROR = -1
 -5 : PC_GET__ERROR
 -6 : PC_POP__ERROR
 -7 : POK_SEARCH_ERROR
+-8 : OBJET_GET_ERROR
 """
 
 FPS_base = -1
@@ -29,6 +30,7 @@ TUDP_ASK_MESSAGES = "tchat.messages.fetch"
 TILE_SIZE = 32
 YTAILLE_carte = 1200
 XTAILLE_carte = 1200
+BUILDING = 12
 
 TRIGGER_ERROR = "trigger.error"
 TRIGGER_UNDEFINED = "trigger.undefined"
@@ -53,6 +55,7 @@ ZONEf = "zone.f"
 ZONEg = "zone.g"
 
 ZONE_ADV_ERROR = -2
+OBJET_GET_ERROR = -8
 
 POL_NORMAL_TAILLE = 10
 POL_GRANDE_TAILLE = 16

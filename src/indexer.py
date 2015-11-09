@@ -204,11 +204,19 @@ class Indexer:
                                 (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
 
                 if self.selected_creature == i:
-                    j = 0
-                    for txt in tw.wrap(elem.description, width=38):
-                        self.ecran.blit(self.police.render(txt, 1, (255, 255, 255)),
-                                        (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
-                        j += 1
+                    j = 1
+
+                    self.ecran.blit(self.police.render("Description :", 1, (255, 255, 255)),
+                                    (POK_X_DESC, POK_Y_DESC))
+
+                    if vu or capture:
+                        for txt in tw.wrap(elem.description, width=38):
+                            self.ecran.blit(self.police.render(txt, 1, (255, 255, 255)),
+                                            (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
+                            j += 1
+                    else:
+                        self.ecran.blit(self.police.render("???", 1, (255, 255, 255)),
+                                        (POK_X_DESC, POK_Y_DESC + POK_ESP_Y_ITEM))
 
                 i += 1
         else:

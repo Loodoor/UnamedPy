@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import pygame
+from exceptions import ListePleine
 
 
 class BaseAnimator:
@@ -13,24 +14,30 @@ class BaseAnimator:
         self.vertical = vertical
 
     def load(self):
+        if self.output:
+            raise ListePleine
+
+        time = 0
         for i in range(self.decalage):
-            self.surf = pygame.Surface((30, 30))
-            self.surf.fill((76, 76, 76))
-            self.surf.set_colorkey((76, 76, 76))
+            surf = pygame.Surface((30, 30))
+            surf.fill((76, 76, 76))
+            surf.set_colorkey((76, 76, 76))
 
             if not self.vertical:
-                self.surf.blit(self.base_image, (self.time - self.base_image.get_width(), 0))
-                self.surf.blit(self.base_image, (self.time, 0))
+                surf.blit(self.base_image, (time - self.base_image.get_width(), 0))
+                surf.blit(self.base_image, (time, 0))
             else:
-                self.surf.blit(self.base_image, (0, self.time - self.base_image.get_height()))
-                self.surf.blit(self.base_image, (0, self.time))
+                surf.blit(self.base_image, (0, time - self.base_image.get_height()))
+                surf.blit(self.base_image, (0, time))
 
-            self.surf.convert_alpha()
+            surf.convert_alpha()
 
-            self.time += self.velocity
-            self.time %= self.base_image.get_width()
-            self.output.append(self.surf)
+            time += self.velocity
+            time %= self.base_image.get_width()
+            self.output.append(surf)
+
+    def draw(self):
+        self.time += self.velocity
 
     def draw_at(self, ecran: pygame.Surface, pos: tuple=(-1, -1)):
-        self.time += self.velocity
         ecran.blit(self.output[int(self.time % len(self.output))], pos)

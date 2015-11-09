@@ -7,6 +7,7 @@ import pygame
 from pygame.locals import *
 from constantes import *
 from trigger_manager import TriggersManager
+from exceptions import FonctionnaliteNonImplementee
 
 
 class SubCarte:
@@ -20,8 +21,11 @@ class SubCarte:
     def get_at(self, x: int, y: int):
         return self.carte[y][x]
 
+    def get_objects(self):
+        return self.objets
+
     def get_building_at(self, x: int, y: int):
-        return
+        return True if len(self.carte[y][x]) == 7 else False
 
     def set_all(self, new: list):
         self.carte = new
@@ -32,11 +36,21 @@ class SubCarte:
     def collide_at(self, x: int, y: int):
         return
 
-    def has_trigger_at(self, x: int, y: int):
-        return
+    def trigger_at(self, x: int, y: int):
+        return True if len(self.carte[y][x]) == 6 else False
 
-    def exec_trigger_at(self, x: int, y: int):
-        pass
+    def has_object(self, x: int, y: int):
+        return True if (x, y) in self.objets.keys() else False
+
+    def drop_object_at(self, x: int, y: int, obj):
+        self.objets[x, y] = obj
+
+    def get_object_at(self, x: int, y: int):
+        if (x, y) in self.objets.keys():
+            work = self.objets[x, y]
+            del self.objets[x, y]
+            return work
+        return OBJET_GET_ERROR
 
 
 class CarteManager:
@@ -70,7 +84,7 @@ class CarteManager:
         return [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.carte[int(self.fov[2]):int(self.fov[3])]]
 
     def get_zid_at(self, at: tuple=(-1, -1)):
-        return self
+        raise FonctionnaliteNonImplementee
 
     def move_of1(self, dir: int=1):
         self.offsets[0] += dir
