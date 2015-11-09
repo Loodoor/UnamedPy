@@ -89,7 +89,8 @@ class Game:
 
         self.tab_types.init_tab()
 
-        self.pnj = pnj_manager.PNJ(self.ecran, self.carte_mgr, (64, 64), pnj_manager.STANDART_MOVE, self.police_grande)
+        self.pnj = pnj_manager.PNJ(self.ecran, self.carte_mgr, (64, 64), pnj_manager.STANDART_MOVE,
+                                   self.police_grande, "Je suis un test :) Bonjour toi !")
 
     def save(self):
         print("Sauvegarde ...")

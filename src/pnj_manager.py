@@ -54,7 +54,7 @@ HORIZONTAL_MOVE = [
 
 class PNJ:
     def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager, pos: tuple, type_mvt: list,
-                 font: pygame.font.SysFont, dir: int=1, sprite: str='bas.png') -> None:
+                 font: pygame.font.SysFont, texte: str, dir: int=1, sprite: str='bas.png') -> None:
         self.ecran = ecran
         self.carte_mgr = carte_mgr
         self.pos = list(pos)
@@ -67,7 +67,7 @@ class PNJ:
         self.mdt = 0
         self.orientation = BAS
         self.sprite = pygame.image.load(os.path.join("..", "assets", "pnj", sprite)).convert_alpha()
-        self.on_speak = PNJSpeaking("Je suis un test :) Bonjour toi !", self.ecran, self.font)
+        self.on_speak = PNJSpeaking(texte, self.ecran, self.font)
 
     def update(self, dt: int=1):
         self.mdt += dt
