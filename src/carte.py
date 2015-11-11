@@ -14,6 +14,18 @@ class SubCarte:
     def __init__(self):
         self.carte = []
         self.objets = {}
+        self.buildings = []
+
+    def add_building(self, x: int, y: int):
+        self.buildings.append((x, y))
+
+    def remove_buildings(self, x: int, y: int):
+        i = 0
+        for pos in self.buildings:
+            if pos == (x, y):
+                self.buildings.pop(i)
+                return True
+        return False
 
     def get_all(self):
         return self.carte
@@ -25,7 +37,7 @@ class SubCarte:
         return self.objets
 
     def get_building_at(self, x: int, y: int):
-        return True if len(self.carte[y][x]) == 7 else False
+        return True if (x, y) in self.buildings else False
 
     def set_all(self, new: list):
         self.carte = new

@@ -10,7 +10,7 @@ from indexer import Indexer
 
 class Zone:
     def __init__(self, id: str, creatures_id: list, level_range: tuple):
-        self.id = id
+        self.id = id  # c'est l'id d'une subCarte
         self.creatures_id = creatures_id
         self.level_range = level_range
 
