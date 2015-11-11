@@ -18,8 +18,11 @@ class ComputerManager:
         self.current_page = 0
         self.per_page = 7
         self.passe_equipe_txt = self.police.render("Equipe", 1, (255, 255, 255))
+        self.to_equipe = self.police.render("-> Equipe", 1, (255, 255, 255))
         self.titre = self.police.render("PC", 1, (255, 255, 255))
         self.rd_mgr = render_manager
+        self.selected_crea = -1
+        self.equipe = None
 
     def load(self):
         if os.path.exists(self.path):
@@ -30,11 +33,14 @@ class ComputerManager:
         with open(self.path, "wb") as pc_wb:
             pickle.Pickler(pc_wb).dump(self.storage)
 
+    def add_equipe(self, new_equipe):
+        self.equipe = new_equipe
+
     def update(self):
         self.render()
 
     def change_renderer(self):
-        self.rd_mgr.change_renderer_for(RENDER_CREATURES)
+        self.rd_mgr.change_without_logging(RENDER_CREATURES)
 
     def clic(self, xp: int, yp: int):
         if FCREA_PREVIOUS_X <= xp <= FCREA_PREVIOUS_X + FCREA_BTN_SX and FCREA_PREVIOUS_Y <= yp <= FCREA_PREVIOUS_Y + FCREA_BTN_SY:
@@ -43,6 +49,10 @@ class ComputerManager:
             self.next()
         if FCREA_AUTRE_MGR_X <= xp <= FCREA_AUTRE_MGR_X + FCREA_AUTRE_MGR_SX and FCREA_AUTRE_MGR_Y <= yp <= FCREA_AUTRE_MGR_Y + FCREA_AUTRE_MGR_SY:
             self.change_renderer()
+        if FCREA_PASSE_CREA_TO__X <= xp <= FCREA_PASSE_CREA_TO__X + FCREA_PASSE_CREA_TO__SY and \
+                FCREA_PASSE_CREA_TO__Y <= yp <= FCREA_PASSE_CREA_TO__Y + FCREA_PASSE_CREA_TO__SY:
+            if self.selected_crea != -1:
+                self.move_creature_to_equipe(self.selected_crea)
 
     def next(self):
         self.current_page = self.current_page + 1 if self.current_page < MAX_CREATURES // 7 else self.current_page
@@ -82,9 +92,13 @@ class ComputerManager:
                                                       FCREA_AUTRE_MGR_SX, FCREA_AUTRE_MGR_SY))
         self.ecran.blit(self.passe_equipe_txt, (FCREA_AUTRE_MGR_X - (self.passe_equipe_txt.get_width() - FCREA_AUTRE_MGR_SX) // 2,
                                                 FCREA_AUTRE_MGR_Y + 2))
+        pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_PASSE_CREA_TO__X, FCREA_PASSE_CREA_TO__Y,
+                                                      FCREA_PASSE_CREA_TO__SX, FCREA_PASSE_CREA_TO__SY))
+        self.ecran.blit(self.to_equipe, (FCREA_PASSE_CREA_TO__X - (self.to_equipe.get_width() - FCREA_PASSE_CREA_TO__SX) // 2,
+                                 FCREA_PASSE_CREA_TO__Y + 2))
 
-    def move_creature_to_equipe(self, which: int, equipe):
-        if equipe.add_creature(self.storage[which]):
+    def move_creature_to_equipe(self, which: int):
+        if self.equipe.add_creature(self.storage[which]):
             self.pop_creature(which)
 
     def add_creature(self, new: Creature):

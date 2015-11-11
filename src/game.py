@@ -279,6 +279,9 @@ class Game:
         self.continuer = 1
         self.renderer_manager.clear_all()
 
+        self.pc_mgr.add_equipe(self.equipe_mgr)
+        self.equipe_mgr.add_pc(self.pc_mgr)
+
         self.load()
         pygame.key.set_repeat(200, 100)
 

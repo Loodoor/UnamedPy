@@ -19,8 +19,11 @@ class RendererManager:
         self.queue.append(self.current_renderer)
         self.current_renderer = new_renderer
 
+    def change_without_logging(self, new_renderer: int):
+        self.current_renderer = new_renderer
+
     def change_for_last_renderer(self):
-        self.current_renderer = self.queue.pop(-1)
+        self.current_renderer = self.queue.pop()
 
     def invert_renderer(self):
         tmp = self.current_renderer
