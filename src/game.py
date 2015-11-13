@@ -296,7 +296,7 @@ class Game:
             raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
             self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
-                                             self.carte_mgr.get_zid_at(self.personnage.get_pos()), self.indexeur)
+                                             self.carte_mgr.get_zid(), self.indexeur)
             raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
