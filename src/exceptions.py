@@ -26,3 +26,11 @@ class ListePleine(Exception):
             " Cela peu avoir pour effet de déstabiliser le gameplay ou même le jeu entier. Merci de reporter "
             "cette erreur à Folaefolc, main dev' d'Unamed"
         )
+
+
+class CarteInexistante(Exception):
+    def __init__(self, path=""):
+        super().__init__(
+            "La carte demandée à l'adresse '{}' semble ne pas exister. Merci de reporter cette erreur à Folaefolc, "
+            "main dev' d'Unamed".format(path)
+        )

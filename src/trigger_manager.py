@@ -80,6 +80,13 @@ class TriggersManager:
                     if not trigger.get_left_calls():
                         self.already_used.append(trigger.get_id())
 
+    def call_trigger_with_id(self, id: str):
+        for trigger in self.triggers:
+            if trigger.get_id() == id and trigger.get_id() not in self.already_used:
+                trigger.call()
+                if not trigger.get_left_calls():
+                    self.already_used.append(trigger.get_id())
+
     def load(self):
         if path.exists(self.path):
             with open(self.path, 'rb') as trigger_rb:

@@ -152,6 +152,8 @@ DEFAUT_TILE = '0'
 
 EXTENSION = '.umd'
 
+TRIGGER = 5
+
 BASIC_SPEED = 8
 DIV_DT_BASIC = 1
 DIV_DT_VELO = 0.5
@@ -281,9 +283,3 @@ FIRST_BASIC_FOV = FEN_large // TILE_SIZE + 1
 FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE + 1
 
 COLLIDE_ITEM = lambda c: True if int(c) % 2 else False
-
-
-def COLLIDE(x: int, y: int, c: list, tc: int=-1):
-    if tc != -1:
-        return True if COLLIDE_ITEM(c[int(y)][int(x)][int(tc)]) else False
-    return True if COLLIDE_ITEM(c[int(y)][int(x)][0]) else False
