@@ -45,7 +45,7 @@ class Game:
         self.police_petite = pygame.font.Font(POLICE_PATH, POL_PETITE_TAILLE)
 
         # Managers
-        self.carte_mgr = carte.CarteManager(self.ecran, self.renderer_manager)
+        self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager)
         self.indexeur = indexer.Indexer(self.ecran, self.police_grande, self.renderer_manager)
         self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande, self.renderer_manager)
         self.pc_mgr = computer_manager.ComputerManager(self.ecran, self.police_grande, self.renderer_manager)
