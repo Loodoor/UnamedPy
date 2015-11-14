@@ -3,7 +3,6 @@
 import pygame
 from pygame.locals import *
 import os
-from carte import CartesManager
 from constantes import *
 from gui import PNJSpeaking
 
@@ -53,7 +52,7 @@ HORIZONTAL_MOVE = [
 
 
 class PNJ:
-    def __init__(self, ecran: pygame.Surface, carte_mgr: CartesManager, pos: tuple, type_mvt: list,
+    def __init__(self, ecran: pygame.Surface, carte_mgr, pos: tuple, type_mvt: list,
                  font: pygame.font.SysFont, texte: str, dir: int=1, sprite: str='bas.png') -> None:
         self.ecran = ecran
         self.carte_mgr = carte_mgr

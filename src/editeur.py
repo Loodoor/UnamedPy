@@ -193,7 +193,7 @@ while continuer:
 print("Saving map ...")
 print("Carte is not None :", carte is not None)
 with open(map_path, "wb") as file:
-    pickle.Pickler(file).dump(carte)
+    pickle.Pickler(file).dump([carte, {}, []])
 
 print("Exited cleanly")
 pygame.quit()

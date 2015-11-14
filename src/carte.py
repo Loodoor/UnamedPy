@@ -20,11 +20,11 @@ class SubCarte:
     def __init__(self):
         self.carte = []
         self.objets = {}
-        self.buildings = []
+        self.buildings = {}
         self.zid = -1
         self.pnjs = []
 
-    def load(self, path_):
+    def load(self, path_: str):
         if os.path.exists(path_):
             with open(path_, "rb") as map_reader:
                 self.carte, self.objets, self.buildings, self.zid = \
@@ -36,16 +36,8 @@ class SubCarte:
         self.pnjs.append(-1)
         raise FonctionnaliteNonImplementee
 
-    def add_building(self, x: int, y: int):
-        self.buildings.append((x, y))
-
-    def remove_buildings(self, x: int, y: int):
-        i = 0
-        for pos in self.buildings:
-            if pos == (x, y):
-                self.buildings.pop(i)
-                return True
-        return False
+    def add_building(self, x: int, y: int, id: int):
+        self.buildings[x, y] = id
 
     def get_all(self):
         return self.carte
@@ -56,8 +48,13 @@ class SubCarte:
     def get_objects(self):
         return self.objets
 
-    def get_building_at(self, x: int, y: int):
-        return True if (x, y) in self.buildings else False
+    def building_at(self, x: int, y: int):
+        return True if (x, y) in self.buildings.keys() else False
+
+    def get_building_id_at(self, x: int, y: int):
+        if self.building_at(x, y):
+            return self.buildings[x, y]
+        return BUILDING_GET_ERROR
 
     def get_zid(self):
         return self.zid
@@ -97,6 +94,7 @@ class CartesManager:
         self.ecran = ecran
         self.rd_mgr = renderer_manager
         self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
+        self.maps = {}
         self.fov = [0, FIRST_BASIC_FOV, 0, FIRST_BASIC_FOV2]
         self.offsets = [0, 0]
         self.images = {}
@@ -116,6 +114,9 @@ class CartesManager:
     def load(self):
         if not self.loaded:
             self.general_load()
+        with open(self.map_path, "rb") as map_reader:
+            self.maps = pickle.Unpickler(map_reader).load()
+        self.current_carte.load(self.maps[MAP_ENTRY_POINT])
         self.carte = self.current_carte.get_all()
 
     def save(self):
