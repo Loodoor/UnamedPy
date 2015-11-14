@@ -277,7 +277,9 @@ class Game:
     def prepare(self):
         # Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
+
         self.renderer_manager.clear_all()
+        self.renderer_manager.ban_renderer(RENDER_COMBAT)
 
         self.pc_mgr.add_equipe(self.equipe_mgr)
         self.equipe_mgr.add_pc(self.pc_mgr)
@@ -286,7 +288,7 @@ class Game:
         pygame.key.set_repeat(200, 100)
 
     def render(self, dt: int=1):
-        self.carte_mgr.update()
+        self.carte_mgr.update() if self.renderer_manager.can_i_render() else None
         if self.renderer_manager.get_renderer() == RENDER_GAME:
             self.personnage.update()
             self.pnj.update(dt)  # c'était un test
@@ -297,7 +299,6 @@ class Game:
         elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
             self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
                                              self.carte_mgr.get_zid(), self.indexeur)
-            raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:
