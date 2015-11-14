@@ -73,7 +73,9 @@ class SubCarte:
         self.carte[y][x] = new
 
     def collide_at(self, x: int, y: int):
-        return True if COLLIDE_ITEM(self.carte[int(y)][int(x)][0]) else False
+        if 0 <= int(y) < len(self.carte) and 0 <= int(x) < len(self.carte[0]):
+            return True if COLLIDE_ITEM(self.carte[int(y)][int(x)][0]) else False
+        return True
 
     def trigger_at(self, x: int, y: int):
         return True if len(self.carte[y][x]) == 6 else False
@@ -197,6 +199,7 @@ class CartesManager:
         self.current_carte.call_trigger_at(x, y, self.triggers_mgr)
 
 
+'''
 class CarteManager:
     def __init__(self, ecran: pygame.Surface, renderer_manager):
         self.ecran = ecran
@@ -287,10 +290,11 @@ class CarteManager:
                     else:
                         for tile in objet[-2::-1]:
                             self.ecran.blit(self.images[tile], (xpos, ypos))
+'''
 
 
 class CarteRenderer:
-    def __init__(self, ecran: pygame.Surface, carte_mgr: CarteManager):
+    def __init__(self, ecran: pygame.Surface, carte_mgr: CartesManager):
         self.ecran = ecran
         self.carte_mgr = carte_mgr
         self.carte_img = os.path.join("..", "assets", "gui", "carte.png")

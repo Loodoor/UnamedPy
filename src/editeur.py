@@ -16,6 +16,7 @@ YTAILLE, XTAILLE = 24, 24
 if not os.path.exists(map_path):
     YTAILLE = int(input("Taille de la map horizontalement (en cases) : "))  # ecran.get_height() // TILE_SIZE
     XTAILLE = int(input("Taille de la map verticalement (en cases)   : "))  # ecran.get_width() // TILE_SIZE
+    zid = int(input("ZID de la carte : "))
 
 DEFAUT = '0'
 continuer = 1
@@ -43,7 +44,7 @@ police = pygame.font.SysFont("comicsansms", 12)
 
 if os.path.exists(map_path):
     with open(map_path, "rb") as file:
-        carte = pickle.Unpickler(file).load()
+        carte, objets, buildings, zid = pickle.Unpickler(file).load()
 else:
     for i in range(YTAILLE):
         lst = []
@@ -167,7 +168,6 @@ while continuer:
             if event.key == K_t:
                 x, y = pygame.mouse.get_pos()
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
-                carte[my][mx].append([])
 
                 if fullscreen:
                     fullscreen = not fullscreen
@@ -176,9 +176,13 @@ while continuer:
                     else:
                         ecran = pygame.display.set_mode((0, 0))
 
-                code_trigger = input("Code du trigger (placé en {}, {}) : ".format(str(mx), str(my)))
+                id = input("ID (str) du trigger à poser : ")
+                calls = int(input("Nombre d'appels : "))
+
+                carte[my][mx].append(id)
+
                 trigger_manager.TriggersManager.add_trigger_to_path(
-                    trigger_manager.Trigger(code_trigger, mx, my, -1, unothing, code_trigger)
+                    trigger_manager.Trigger(id, mx, my, calls, unothing, id)
                 )
 
     render(carte, offset, offset2)
@@ -193,7 +197,7 @@ while continuer:
 print("Saving map ...")
 print("Carte is not None :", carte is not None)
 with open(map_path, "wb") as file:
-    pickle.Pickler(file).dump([carte, {}, []])
+    pickle.Pickler(file).dump([carte, {}, {}, zid])
 
 print("Exited cleanly")
 pygame.quit()
