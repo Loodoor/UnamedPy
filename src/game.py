@@ -21,7 +21,6 @@ import equipe_manager
 import atk_sys
 import menu_in_game
 import computer_manager
-import pnj_manager
 import zones_attaques_manager
 
 
@@ -88,9 +87,6 @@ class Game:
         self.zones_manager.load()
 
         self.tab_types.init_tab()
-
-        self.pnj = pnj_manager.PNJ(self.ecran, self.carte_mgr, (64, 64), pnj_manager.STANDART_MOVE,
-                                   self.police_grande, "Je suis un test :) Bonjour toi !")
 
     def save(self):
         print("Sauvegarde ...")
@@ -291,7 +287,6 @@ class Game:
         self.carte_mgr.update() if self.renderer_manager.can_i_render() else None
         if self.renderer_manager.get_renderer() == RENDER_GAME:
             self.personnage.update()
-            self.pnj.update(dt)  # c'était un test
         elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
             self.personnage.inventaire_update()
         elif self.renderer_manager.get_renderer() == RENDER_BOUTIQUE:

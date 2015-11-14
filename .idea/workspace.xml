@@ -26,35 +26,24 @@
       <file leaf-file-name="game.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1481" max-vertical-offset="2040">
-              <caret line="288" column="0" selection-start-line="288" selection-start-column="0" selection-end-line="288" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2805">
+              <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
               <folding>
-                <element signature="e#3480#5811#0" expanded="false" />
-                <element signature="e#5889#6071#0" expanded="false" />
-                <element signature="e#6148#6330#0" expanded="false" />
-                <element signature="e#6410#6651#0" expanded="false" />
-                <element signature="e#6726#6965#0" expanded="false" />
-                <element signature="e#7050#7850#0" expanded="false" />
-                <element signature="e#7932#8175#0" expanded="false" />
-                <element signature="e#8256#8290#0" expanded="false" />
-                <element signature="e#8369#8571#0" expanded="false" />
-                <element signature="e#8654#9165#0" expanded="false" />
-                <element signature="e#9242#10513#0" expanded="false" />
-                <element signature="e#10560#10816#0" expanded="false" />
-                <element signature="e#10849#11236#0" expanded="false" />
-                <element signature="e#11279#12901#0" expanded="false" />
-                <element signature="e#12932#13324#0" expanded="false" />
+                <element signature="e#3269#5600#0" expanded="false" />
+                <element signature="e#5678#5860#0" expanded="false" />
+                <element signature="e#5937#6119#0" expanded="false" />
+                <element signature="e#6199#6440#0" expanded="false" />
+                <element signature="e#6515#6754#0" expanded="false" />
+                <element signature="e#6839#7639#0" expanded="false" />
+                <element signature="e#7721#7964#0" expanded="false" />
+                <element signature="e#8045#8079#0" expanded="false" />
+                <element signature="e#8158#8360#0" expanded="false" />
+                <element signature="e#8443#8954#0" expanded="false" />
+                <element signature="e#9031#10302#0" expanded="false" />
+                <element signature="e#10349#10605#0" expanded="false" />
+                <element signature="e#10638#11025#0" expanded="false" />
+                <element signature="e#12670#13062#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pnj_manager.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/pnj_manager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.6797853" vertical-offset="0" max-vertical-offset="2397">
-              <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -64,16 +53,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
               <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="atk_sys.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/atk_sys.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="1666">
-              <caret line="58" column="16" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -92,27 +71,53 @@
       <file leaf-file-name="carte.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/carte.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1481" max-vertical-offset="3519">
-              <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="5219">
+              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
               <folding>
                 <element signature="e#16#25#0" expanded="true" />
-                <element signature="e#5876#9110#0" expanded="false" />
-                <element signature="e#5945#6285#0" expanded="false" />
-                <element signature="e#6318#6340#0" expanded="false" />
-                <element signature="e#6373#6395#0" expanded="false" />
-                <element signature="e#6428#6447#0" expanded="false" />
-                <element signature="e#6480#6495#0" expanded="false" />
-                <element signature="e#6530#6547#0" expanded="false" />
-                <element signature="e#6586#6694#0" expanded="false" />
-                <element signature="e#6750#6784#0" expanded="false" />
-                <element signature="e#6830#7015#0" expanded="false" />
-                <element signature="e#7061#7246#0" expanded="false" />
-                <element signature="e#7303#7383#0" expanded="false" />
-                <element signature="e#7440#7522#0" expanded="false" />
-                <element signature="e#7552#8088#0" expanded="false" />
-                <element signature="e#8118#8244#0" expanded="false" />
-                <element signature="e#8276#8289#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create_map_umd.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tools/create_map_umd.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="323">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding>
+                <element signature="e#16#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="launcher.bat" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/launcher.bat">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+              <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mapeditor.bat" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mapeditor.bat">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+              <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="editeur.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/editeur.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.61759084" vertical-offset="1564" max-vertical-offset="3349">
+              <caret line="80" column="13" selection-start-line="80" selection-start-column="13" selection-end-line="80" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -137,16 +142,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="zones_attaques_manager.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/zones_attaques_manager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="969">
-              <caret line="12" column="49" selection-start-line="12" selection-start-column="49" selection-end-line="12" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -166,7 +161,6 @@
         <option value="$PROJECT_DIR$/src/captureurs.py" />
         <option value="$PROJECT_DIR$/src/creatures_mgr.py" />
         <option value="$PROJECT_DIR$/src/dialogbox.py" />
-        <option value="$PROJECT_DIR$/src/editeur.py" />
         <option value="$PROJECT_DIR$/src/fpsregulator.py" />
         <option value="$PROJECT_DIR$/src/gui.py" />
         <option value="$PROJECT_DIR$/src/inventaire.py" />
@@ -184,13 +178,16 @@
         <option value="$PROJECT_DIR$/src/zones_attaques_manager.py" />
         <option value="$PROJECT_DIR$/src/exceptions.py" />
         <option value="$PROJECT_DIR$/src/trigger_manager.py" />
-        <option value="$PROJECT_DIR$/src/carte.py" />
         <option value="$PROJECT_DIR$/src/personnage.py" />
         <option value="$PROJECT_DIR$/src/atk_sys.py" />
         <option value="$PROJECT_DIR$/src/renderer_manager.py" />
-        <option value="$PROJECT_DIR$/src/game.py" />
         <option value="$PROJECT_DIR$/src/constantes.py" />
         <option value="$PROJECT_DIR$/src/pnj_manager.py" />
+        <option value="$PROJECT_DIR$/src/game.py" />
+        <option value="$PROJECT_DIR$/src/carte.py" />
+        <option value="$PROJECT_DIR$/tools/create_map_umd.py" />
+        <option value="$PROJECT_DIR$/mapeditor.bat" />
+        <option value="$PROJECT_DIR$/src/editeur.py" />
       </list>
     </option>
   </component>
@@ -567,48 +564,25 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/carte.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="1071">
-          <caret line="13" column="60" selection-start-line="13" selection-start-column="60" selection-end-line="13" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/constantes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
-          <caret line="28" column="15" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="663">
-          <caret line="33" column="9" selection-start-line="33" selection-start-column="9" selection-end-line="33" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/game.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1207" max-vertical-offset="1802">
           <caret line="93" column="51" selection-start-line="93" selection-start-column="51" selection-end-line="93" selection-end-column="51" />
           <folding>
-            <element signature="e#3480#5811#0" expanded="false" />
-            <element signature="e#5889#6071#0" expanded="false" />
-            <element signature="e#6148#6330#0" expanded="false" />
-            <element signature="e#6410#6651#0" expanded="false" />
-            <element signature="e#6726#6965#0" expanded="false" />
-            <element signature="e#7050#7850#0" expanded="false" />
-            <element signature="e#7932#8175#0" expanded="false" />
-            <element signature="e#8256#8290#0" expanded="false" />
-            <element signature="e#8369#8571#0" expanded="false" />
-            <element signature="e#8654#9165#0" expanded="false" />
-            <element signature="e#9242#10513#0" expanded="false" />
-            <element signature="e#10560#10816#0" expanded="false" />
-            <element signature="e#10849#11236#0" expanded="false" />
-            <element signature="e#11279#12901#0" expanded="false" />
-            <element signature="e#12932#13324#0" expanded="false" />
+            <element signature="e#3269#5600#0" expanded="false" />
+            <element signature="e#5678#5860#0" expanded="false" />
+            <element signature="e#5937#6119#0" expanded="false" />
+            <element signature="e#6199#6440#0" expanded="false" />
+            <element signature="e#6515#6754#0" expanded="false" />
+            <element signature="e#6839#7639#0" expanded="false" />
+            <element signature="e#7721#7964#0" expanded="false" />
+            <element signature="e#8045#8079#0" expanded="false" />
+            <element signature="e#8158#8360#0" expanded="false" />
+            <element signature="e#8443#8954#0" expanded="false" />
+            <element signature="e#9031#10302#0" expanded="false" />
+            <element signature="e#10349#10605#0" expanded="false" />
+            <element signature="e#10638#11025#0" expanded="false" />
+            <element signature="e#12670#13062#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -661,21 +635,20 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1700">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding>
-            <element signature="e#3480#5811#0" expanded="false" />
-            <element signature="e#5889#6071#0" expanded="false" />
-            <element signature="e#6148#6330#0" expanded="false" />
-            <element signature="e#6410#6651#0" expanded="false" />
-            <element signature="e#6726#6965#0" expanded="false" />
-            <element signature="e#7050#7850#0" expanded="false" />
-            <element signature="e#7932#8175#0" expanded="false" />
-            <element signature="e#8256#8290#0" expanded="false" />
-            <element signature="e#8369#8571#0" expanded="false" />
-            <element signature="e#8654#9165#0" expanded="false" />
-            <element signature="e#9242#10513#0" expanded="false" />
-            <element signature="e#10560#10816#0" expanded="false" />
-            <element signature="e#10849#11236#0" expanded="false" />
-            <element signature="e#11279#12901#0" expanded="false" />
-            <element signature="e#12932#13324#0" expanded="false" />
+            <element signature="e#3269#5600#0" expanded="false" />
+            <element signature="e#5678#5860#0" expanded="false" />
+            <element signature="e#5937#6119#0" expanded="false" />
+            <element signature="e#6199#6440#0" expanded="false" />
+            <element signature="e#6515#6754#0" expanded="false" />
+            <element signature="e#6839#7639#0" expanded="false" />
+            <element signature="e#7721#7964#0" expanded="false" />
+            <element signature="e#8045#8079#0" expanded="false" />
+            <element signature="e#8158#8360#0" expanded="false" />
+            <element signature="e#8443#8954#0" expanded="false" />
+            <element signature="e#9031#10302#0" expanded="false" />
+            <element signature="e#10349#10605#0" expanded="false" />
+            <element signature="e#10638#11025#0" expanded="false" />
+            <element signature="e#12670#13062#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -720,21 +693,20 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="680">
           <caret line="34" column="32" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
           <folding>
-            <element signature="e#3480#5811#0" expanded="false" />
-            <element signature="e#5889#6071#0" expanded="false" />
-            <element signature="e#6148#6330#0" expanded="false" />
-            <element signature="e#6410#6651#0" expanded="false" />
-            <element signature="e#6726#6965#0" expanded="false" />
-            <element signature="e#7050#7850#0" expanded="false" />
-            <element signature="e#7932#8175#0" expanded="false" />
-            <element signature="e#8256#8290#0" expanded="false" />
-            <element signature="e#8369#8571#0" expanded="false" />
-            <element signature="e#8654#9165#0" expanded="false" />
-            <element signature="e#9242#10513#0" expanded="false" />
-            <element signature="e#10560#10816#0" expanded="false" />
-            <element signature="e#10849#11236#0" expanded="false" />
-            <element signature="e#11279#12901#0" expanded="false" />
-            <element signature="e#12932#13324#0" expanded="false" />
+            <element signature="e#3269#5600#0" expanded="false" />
+            <element signature="e#5678#5860#0" expanded="false" />
+            <element signature="e#5937#6119#0" expanded="false" />
+            <element signature="e#6199#6440#0" expanded="false" />
+            <element signature="e#6515#6754#0" expanded="false" />
+            <element signature="e#6839#7639#0" expanded="false" />
+            <element signature="e#7721#7964#0" expanded="false" />
+            <element signature="e#8045#8079#0" expanded="false" />
+            <element signature="e#8158#8360#0" expanded="false" />
+            <element signature="e#8443#8954#0" expanded="false" />
+            <element signature="e#9031#10302#0" expanded="false" />
+            <element signature="e#10349#10605#0" expanded="false" />
+            <element signature="e#10638#11025#0" expanded="false" />
+            <element signature="e#12670#13062#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -800,13 +772,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="102">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/editeur.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3247">
-          <caret line="0" column="14" selection-start-line="0" selection-start-column="14" selection-end-line="0" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -936,30 +901,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1481" max-vertical-offset="2040">
-          <caret line="288" column="0" selection-start-line="288" selection-start-column="0" selection-end-line="288" selection-end-column="0" />
-          <folding>
-            <element signature="e#3480#5811#0" expanded="false" />
-            <element signature="e#5889#6071#0" expanded="false" />
-            <element signature="e#6148#6330#0" expanded="false" />
-            <element signature="e#6410#6651#0" expanded="false" />
-            <element signature="e#6726#6965#0" expanded="false" />
-            <element signature="e#7050#7850#0" expanded="false" />
-            <element signature="e#7932#8175#0" expanded="false" />
-            <element signature="e#8256#8290#0" expanded="false" />
-            <element signature="e#8369#8571#0" expanded="false" />
-            <element signature="e#8654#9165#0" expanded="false" />
-            <element signature="e#9242#10513#0" expanded="false" />
-            <element signature="e#10560#10816#0" expanded="false" />
-            <element signature="e#10849#11236#0" expanded="false" />
-            <element signature="e#11279#12901#0" expanded="false" />
-            <element signature="e#12932#13324#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/constantes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4930">
@@ -973,32 +914,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1107" max-vertical-offset="1700">
           <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/carte.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1481" max-vertical-offset="3519">
-          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-          <folding>
-            <element signature="e#16#25#0" expanded="true" />
-            <element signature="e#5876#9110#0" expanded="false" />
-            <element signature="e#5945#6285#0" expanded="false" />
-            <element signature="e#6318#6340#0" expanded="false" />
-            <element signature="e#6373#6395#0" expanded="false" />
-            <element signature="e#6428#6447#0" expanded="false" />
-            <element signature="e#6480#6495#0" expanded="false" />
-            <element signature="e#6530#6547#0" expanded="false" />
-            <element signature="e#6586#6694#0" expanded="false" />
-            <element signature="e#6750#6784#0" expanded="false" />
-            <element signature="e#6830#7015#0" expanded="false" />
-            <element signature="e#7061#7246#0" expanded="false" />
-            <element signature="e#7303#7383#0" expanded="false" />
-            <element signature="e#7440#7522#0" expanded="false" />
-            <element signature="e#7552#8088#0" expanded="false" />
-            <element signature="e#8118#8244#0" expanded="false" />
-            <element signature="e#8276#8289#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1022,6 +937,73 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="3.6797853" vertical-offset="0" max-vertical-offset="2397">
           <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2805">
+          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+          <folding>
+            <element signature="e#3269#5600#0" expanded="false" />
+            <element signature="e#5678#5860#0" expanded="false" />
+            <element signature="e#5937#6119#0" expanded="false" />
+            <element signature="e#6199#6440#0" expanded="false" />
+            <element signature="e#6515#6754#0" expanded="false" />
+            <element signature="e#6839#7639#0" expanded="false" />
+            <element signature="e#7721#7964#0" expanded="false" />
+            <element signature="e#8045#8079#0" expanded="false" />
+            <element signature="e#8158#8360#0" expanded="false" />
+            <element signature="e#8443#8954#0" expanded="false" />
+            <element signature="e#9031#10302#0" expanded="false" />
+            <element signature="e#10349#10605#0" expanded="false" />
+            <element signature="e#10638#11025#0" expanded="false" />
+            <element signature="e#12670#13062#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/carte.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="5219">
+          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding>
+            <element signature="e#16#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/create_map_umd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="323">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding>
+            <element signature="e#16#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/launcher.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+          <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapeditor.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/editeur.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.61759084" vertical-offset="1564" max-vertical-offset="3349">
+          <caret line="80" column="13" selection-start-line="80" selection-start-column="13" selection-end-line="80" selection-end-column="13" />
           <folding />
         </state>
       </provider>

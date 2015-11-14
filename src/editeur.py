@@ -74,6 +74,12 @@ def create_edit_zone():
     xsize = 300
     marge = xsize - 10
 
+    if 0 <= pygame.mouse.get_pos()[1] // TILE_SIZE - offset2 // TILE_SIZE < len(carte) and \
+            0 <= pygame.mouse.get_pos()[0] // TILE_SIZE - offset // TILE_SIZE < len(carte[0]):
+        t = carte[pygame.mouse.get_pos()[1] // TILE_SIZE - offset2 // TILE_SIZE][pygame.mouse.get_pos()[0] // TILE_SIZE - offset // TILE_SIZE]
+    else:
+        t = []
+
     pygame.draw.rect(ecran, (30, 30, 30), (ecran.get_width() - xsize, 0, xsize, ecran.get_height()))
 
     ecran.blit(police.render("Layer : " + str(layer), 1, (255, 255, 255)), (ecran.get_width() - marge, 10))
@@ -84,7 +90,7 @@ def create_edit_zone():
     ecran.blit(police.render("X : {}, Y : {}, trigger : {}"
                              .format(str(pygame.mouse.get_pos()[0] // TILE_SIZE - offset // TILE_SIZE),
                                      str(pygame.mouse.get_pos()[1] // TILE_SIZE - offset2 // TILE_SIZE),
-                                     str('oui' if len(carte[pygame.mouse.get_pos()[1] // TILE_SIZE - offset2 // TILE_SIZE][pygame.mouse.get_pos()[0] // TILE_SIZE - offset // TILE_SIZE]) == 6 else 'non')),
+                                     str('oui' if len(t) == 6 else 'non')),
                              1, (255, 255, 255)),
                (ecran.get_width() - marge, 50))
     ecran.blit(police.render("Taille de la carte : {}|{}"

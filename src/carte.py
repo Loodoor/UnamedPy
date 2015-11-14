@@ -5,17 +5,24 @@ import pickle
 from glob import glob
 import pygame
 from pygame.locals import *
+import pnj_manager
 from constantes import *
 from trigger_manager import TriggersManager
 from exceptions import FonctionnaliteNonImplementee, CarteInexistante
 
 
 class SubCarte:
+    """
+    chaque carte crée ses propres PNJ et s'occupe de les afficher
+    chaque carte s'occupe aussi de gérer ses objets (au sol), et les chemins vers d'autres cartes
+    elles gérent aussi leur ZID
+    """
     def __init__(self):
         self.carte = []
         self.objets = {}
         self.buildings = []
         self.zid = -1
+        self.pnjs = []
 
     def load(self, path_):
         if os.path.exists(path_):
@@ -24,6 +31,10 @@ class SubCarte:
                     pickle.Unpickler(map_reader).load()
         else:
             raise CarteInexistante(path_)
+
+    def create_pnj(self):
+        self.pnjs.append(-1)
+        raise FonctionnaliteNonImplementee
 
     def add_building(self, x: int, y: int):
         self.buildings.append((x, y))
