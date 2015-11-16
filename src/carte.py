@@ -9,6 +9,7 @@ import pnj_manager
 from constantes import *
 from trigger_manager import TriggersManager
 from exceptions import FonctionnaliteNonImplementee, CarteInexistante
+from utils import udel_same_occurence
 
 
 class SubCarte:
@@ -148,10 +149,10 @@ class CartesManager:
                     self.ecran.blit(self.images[objet], (xpos, ypos))
                 else:
                     if len(objet) <= 5:
-                        for tile in objet[::-1]:
+                        for tile in udel_same_occurence(*objet[::-1]):
                             self.ecran.blit(self.images[tile], (xpos, ypos))
                     else:
-                        for tile in objet[-2::-1]:
+                        for tile in udel_same_occurence(*objet[-2::-1]):
                             self.ecran.blit(self.images[tile], (xpos, ypos))
 
     def get_of1(self):

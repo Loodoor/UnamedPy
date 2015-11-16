@@ -16,6 +16,18 @@ def unothing(*args, **kwargs):
     return args, kwargs
 
 
+def udel_same_occurence(*args) -> list:
+    work = []
+    last = ""
+    for i in range(len(args)):
+        if args[i] == last:
+            pass
+        else:
+            last = args[i]
+            work.append(last)
+    return work
+
+
 def uremove(*files):
     for file in files:
         if path.exists(file):
