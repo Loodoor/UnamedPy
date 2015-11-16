@@ -119,7 +119,7 @@ class CartesManager:
             self.general_load()
         with open(self.map_path, "rb") as map_reader:
             self.maps = pickle.Unpickler(map_reader).load()
-        self.current_carte.load(self.maps[MAP_ENTRY_POINT])
+        self.current_carte.load(os.path.join(self.maps[MAP_ENTRY_POINT]))
         self.carte = self.current_carte.get_all()
 
     def save(self):
