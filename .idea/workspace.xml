@@ -26,24 +26,9 @@
       <file leaf-file-name="game.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2805">
+            <state vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="5712">
               <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-              <folding>
-                <element signature="e#3269#5600#0" expanded="false" />
-                <element signature="e#5678#5860#0" expanded="false" />
-                <element signature="e#5937#6119#0" expanded="false" />
-                <element signature="e#6199#6440#0" expanded="false" />
-                <element signature="e#6515#6754#0" expanded="false" />
-                <element signature="e#6839#7639#0" expanded="false" />
-                <element signature="e#7721#7964#0" expanded="false" />
-                <element signature="e#8045#8079#0" expanded="false" />
-                <element signature="e#8158#8360#0" expanded="false" />
-                <element signature="e#8443#8954#0" expanded="false" />
-                <element signature="e#9031#10302#0" expanded="false" />
-                <element signature="e#10349#10605#0" expanded="false" />
-                <element signature="e#10638#11025#0" expanded="false" />
-                <element signature="e#12670#13062#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -51,7 +36,7 @@
       <file leaf-file-name="renderer_manager.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/renderer_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
+            <state vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="748">
               <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding>
                 <marker date="1447509566454" expanded="true" signature="89:195" placeholder="..." />
@@ -65,18 +50,18 @@
       <file leaf-file-name="personnage.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/personnage.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3028" max-vertical-offset="3893">
+            <state vertical-scroll-proportion="0.0" vertical-offset="3264" max-vertical-offset="3995">
               <caret line="192" column="1" selection-start-line="192" selection-start-column="1" selection-end-line="192" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="carte.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="carte.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/carte.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.41687346" vertical-offset="1141" max-vertical-offset="3757">
-              <caret line="77" column="19" selection-start-line="77" selection-start-column="19" selection-end-line="77" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="3757">
+              <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
               <folding>
                 <element signature="e#16#25#0" expanded="true" />
                 <element signature="e#6463#9729#1" expanded="false" />
@@ -85,24 +70,32 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="editeur.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/editeur.py">
+      <file leaf-file-name="atk_sys.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/atk_sys.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2742" max-vertical-offset="3417">
-              <caret line="182" column="0" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1666">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="create_map_umd.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tools/create_map_umd.py">
+      <file leaf-file-name="indexer.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/indexer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
-              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding>
-                <marker date="1447523184008" expanded="true" signature="16:39" placeholder="import ..." />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="2708" max-vertical-offset="3995">
+              <caret line="189" column="85" selection-start-line="189" selection-start-column="85" selection-end-line="189" selection-end-column="85" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="menu_in_game.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/menu_in_game.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6277916" vertical-offset="1736" max-vertical-offset="2295">
+              <caret line="120" column="0" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -110,7 +103,7 @@
       <file leaf-file-name="constantes.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/constantes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4998">
+            <state vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="4998">
               <caret line="36" column="23" selection-start-line="36" selection-start-column="23" selection-end-line="36" selection-end-column="23" />
               <folding />
             </state>
@@ -140,14 +133,12 @@
         <option value="$PROJECT_DIR$/src/gui.py" />
         <option value="$PROJECT_DIR$/src/inventaire.py" />
         <option value="$PROJECT_DIR$/src/main.py" />
-        <option value="$PROJECT_DIR$/src/menu_in_game.py" />
         <option value="$PROJECT_DIR$/src/objets_manager.py" />
         <option value="$PROJECT_DIR$/src/tab_types.py" />
         <option value="$PROJECT_DIR$/src/tchat_udp.py" />
         <option value="$PROJECT_DIR$/src/textentry.py" />
         <option value="$PROJECT_DIR$/src/utils.py" />
         <option value="$PROJECT_DIR$/src/animator.py" />
-        <option value="$PROJECT_DIR$/src/indexer.py" />
         <option value="$PROJECT_DIR$/src/equipe_manager.py" />
         <option value="$PROJECT_DIR$/src/computer_manager.py" />
         <option value="$PROJECT_DIR$/src/zones_attaques_manager.py" />
@@ -161,8 +152,10 @@
         <option value="$PROJECT_DIR$/tools/create_map_umd.py" />
         <option value="$PROJECT_DIR$/src/constantes.py" />
         <option value="$PROJECT_DIR$/src/personnage.py" />
-        <option value="$PROJECT_DIR$/src/editeur.py" />
         <option value="$PROJECT_DIR$/src/carte.py" />
+        <option value="$PROJECT_DIR$/src/indexer.py" />
+        <option value="$PROJECT_DIR$/src/editeur.py" />
+        <option value="$PROJECT_DIR$/src/menu_in_game.py" />
       </list>
     </option>
   </component>
@@ -229,7 +222,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -278,6 +270,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -487,7 +480,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34129694" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2657581" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2657581" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -543,22 +536,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1207" max-vertical-offset="1802">
           <caret line="93" column="51" selection-start-line="93" selection-start-column="51" selection-end-line="93" selection-end-column="51" />
-          <folding>
-            <element signature="e#3269#5600#0" expanded="false" />
-            <element signature="e#5678#5860#0" expanded="false" />
-            <element signature="e#5937#6119#0" expanded="false" />
-            <element signature="e#6199#6440#0" expanded="false" />
-            <element signature="e#6515#6754#0" expanded="false" />
-            <element signature="e#6839#7639#0" expanded="false" />
-            <element signature="e#7721#7964#0" expanded="false" />
-            <element signature="e#8045#8079#0" expanded="false" />
-            <element signature="e#8158#8360#0" expanded="false" />
-            <element signature="e#8443#8954#0" expanded="false" />
-            <element signature="e#9031#10302#0" expanded="false" />
-            <element signature="e#10349#10605#0" expanded="false" />
-            <element signature="e#10638#11025#0" expanded="false" />
-            <element signature="e#12670#13062#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -609,22 +587,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1700">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding>
-            <element signature="e#3269#5600#0" expanded="false" />
-            <element signature="e#5678#5860#0" expanded="false" />
-            <element signature="e#5937#6119#0" expanded="false" />
-            <element signature="e#6199#6440#0" expanded="false" />
-            <element signature="e#6515#6754#0" expanded="false" />
-            <element signature="e#6839#7639#0" expanded="false" />
-            <element signature="e#7721#7964#0" expanded="false" />
-            <element signature="e#8045#8079#0" expanded="false" />
-            <element signature="e#8158#8360#0" expanded="false" />
-            <element signature="e#8443#8954#0" expanded="false" />
-            <element signature="e#9031#10302#0" expanded="false" />
-            <element signature="e#10349#10605#0" expanded="false" />
-            <element signature="e#10638#11025#0" expanded="false" />
-            <element signature="e#12670#13062#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -667,22 +630,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="680">
           <caret line="34" column="32" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
-          <folding>
-            <element signature="e#3269#5600#0" expanded="false" />
-            <element signature="e#5678#5860#0" expanded="false" />
-            <element signature="e#5937#6119#0" expanded="false" />
-            <element signature="e#6199#6440#0" expanded="false" />
-            <element signature="e#6515#6754#0" expanded="false" />
-            <element signature="e#6839#7639#0" expanded="false" />
-            <element signature="e#7721#7964#0" expanded="false" />
-            <element signature="e#8045#8079#0" expanded="false" />
-            <element signature="e#8158#8360#0" expanded="false" />
-            <element signature="e#8443#8954#0" expanded="false" />
-            <element signature="e#9031#10302#0" expanded="false" />
-            <element signature="e#10349#10605#0" expanded="false" />
-            <element signature="e#10638#11025#0" expanded="false" />
-            <element signature="e#12670#13062#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -757,13 +705,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/menu_in_game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2295">
-          <caret line="0" column="14" selection-start-line="0" selection-start-column="14" selection-end-line="0" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/objets_manager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="833">
@@ -803,7 +744,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2312">
           <caret line="0" column="14" selection-start-line="0" selection-start-column="14" selection-end-line="0" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -814,19 +754,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/indexer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3298" max-vertical-offset="3995">
-          <caret line="217" column="63" selection-start-line="217" selection-start-column="63" selection-end-line="217" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/computer_manager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1938">
           <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -834,7 +765,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1649">
           <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -850,15 +780,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="969">
           <caret line="12" column="49" selection-start-line="12" selection-start-column="49" selection-end-line="12" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/atk_sys.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="1666">
-          <caret line="58" column="16" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -878,7 +799,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.09123435" vertical-offset="0" max-vertical-offset="559">
           <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -886,7 +806,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1824687" vertical-offset="0" max-vertical-offset="559">
           <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -894,22 +813,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2805">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding>
-            <element signature="e#3269#5600#0" expanded="false" />
-            <element signature="e#5678#5860#0" expanded="false" />
-            <element signature="e#5937#6119#0" expanded="false" />
-            <element signature="e#6199#6440#0" expanded="false" />
-            <element signature="e#6515#6754#0" expanded="false" />
-            <element signature="e#6839#7639#0" expanded="false" />
-            <element signature="e#7721#7964#0" expanded="false" />
-            <element signature="e#8045#8079#0" expanded="false" />
-            <element signature="e#8158#8360#0" expanded="false" />
-            <element signature="e#8443#8954#0" expanded="false" />
-            <element signature="e#9031#10302#0" expanded="false" />
-            <element signature="e#10349#10605#0" expanded="false" />
-            <element signature="e#10638#11025#0" expanded="false" />
-            <element signature="e#12670#13062#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -917,7 +821,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1020">
           <caret line="0" column="14" selection-start-line="0" selection-start-column="14" selection-end-line="0" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -933,9 +836,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.12164579" vertical-offset="816" max-vertical-offset="2465">
           <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding>
-            <element signature="e#16#29#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -943,7 +843,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.24329159" vertical-offset="0" max-vertical-offset="935">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -952,7 +851,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
-            <marker date="1447523184008" expanded="true" signature="16:39" placeholder="import ..." />
+            <marker date="1447523184008" expanded="true" signature="-1:-1" placeholder="import ..." />
           </folding>
         </state>
       </provider>
@@ -965,14 +864,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/editeur.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2742" max-vertical-offset="3417">
-          <caret line="182" column="0" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/personnage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3028" max-vertical-offset="3893">
@@ -981,14 +872,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/atk_sys.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1666">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/indexer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2708" max-vertical-offset="3995">
+          <caret line="189" column="85" selection-start-line="189" selection-start-column="85" selection-end-line="189" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/carte.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41687346" vertical-offset="1141" max-vertical-offset="3757">
-          <caret line="77" column="19" selection-start-line="77" selection-start-column="19" selection-end-line="77" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="3757">
+          <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
           <folding>
             <element signature="e#16#25#0" expanded="true" />
             <element signature="e#6463#9729#1" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/editeur.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.77838826" vertical-offset="544" max-vertical-offset="3417">
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/menu_in_game.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6277916" vertical-offset="1736" max-vertical-offset="2295">
+          <caret line="120" column="0" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

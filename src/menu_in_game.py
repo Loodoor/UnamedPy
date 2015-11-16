@@ -63,7 +63,7 @@ class Menu:
         pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
                                              MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2,
                                              MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
-        self.ecran.blit(self.police.render("Pokédex", 1, (255, 255, 255)),
+        self.ecran.blit(self.police.render("Indexer", 1, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
 
@@ -117,7 +117,7 @@ class Menu:
 
     def mouseover(self, pos: tuple):
         real_x = (pos[0] - MENU_X) // MENU_SIZE_X_CAT
-        real_y = (pos[1] - MENU_Y) // MENU_SIZE_Y_CAT
+        real_y = (pos[1] - MENU_Y) // (MENU_SIZE_Y_CAT + MENU_Y_CAT)
 
         if (real_x, real_y) == (0, 0):
             self.select = MENU_CREATURES

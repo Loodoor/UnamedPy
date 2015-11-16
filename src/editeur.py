@@ -12,7 +12,7 @@ from utils import unothing
 
 map_path = input("Path vers la map (laissez vide pour garder la valeur par défaut) : ")
 if map_path == "": map_path = os.path.join("..", "saves", "map" + EXTENSION)
-YTAILLE, XTAILLE = 24, 24
+YTAILLE, XTAILLE, zid = 24, 24, 0
 if not os.path.exists(map_path):
     YTAILLE = int(input("Taille de la map horizontalement (en cases) : "))  # ecran.get_height() // TILE_SIZE
     XTAILLE = int(input("Taille de la map verticalement (en cases)   : "))  # ecran.get_width() // TILE_SIZE

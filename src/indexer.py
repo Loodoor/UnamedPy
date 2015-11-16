@@ -187,7 +187,7 @@ class Indexer:
         titre = self.police.render("Indexeur" if self.render_creatures else "Indexer -> Types", 1, (255, 255, 255))
         self.ecran.blit(titre, (POK_X_TITRE, POK_Y_TITRE))
         pygame.draw.rect(self.ecran, (20, 20, 180), (POK_X_VIEWT, POK_Y_VIEWT, POK_SX_VIEWT, POK_SY_VIEWT))
-        tmp = self.police.render("Types" if not self.render_creatures else "Créatures", 1, (255, 255, 255))
+        tmp = self.police.render("Créatures" if not self.render_creatures else "Types", 1, (255, 255, 255))
         self.ecran.blit(tmp, (POK_X_VIEWT + (POK_SX_VIEWT - tmp.get_width()) // 2, POK_Y_VIEWT + 4))
 
         i = 0
