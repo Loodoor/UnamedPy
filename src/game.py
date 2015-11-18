@@ -289,8 +289,10 @@ class Game:
         elif self.renderer_manager.get_renderer() == RENDER_BOUTIQUE:
             raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
-            self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
-                                             self.carte_mgr.get_zid(), self.indexeur)
+            if self.equipe_mgr.is_not_empty():
+                self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
+                                                 self.carte_mgr.get_zid(), self.indexeur)
+            self.save()
             raise NotImplementedError("Un combat a été déclenché. La partie graphique n'étant pas terminée, une erreur "
                                       "vient de terminer le jeu (brutalement, mais votre partie a été sauvegardée). "
                                       "Ne vous inquiétez pas, cela veut dire que je suis en bonne voie :) !")

@@ -95,3 +95,6 @@ class EquipeManager:
 
     def get_all(self):
         return self.creatures
+
+    def is_not_empty(self):
+        return True if self.creatures else False

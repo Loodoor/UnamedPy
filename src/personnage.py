@@ -138,7 +138,7 @@ class Personnage:
         self.carte_mgr.move_of2(y - last_y)
 
     def move_in_fov(self, direction: int=HAUT, dt: int=1):
-        new_speed = self.speed * (dt / 10) / self.cur_div
+        new_speed = self.speed * (1 / dt * 10) / self.cur_div
 
         vecteur = (0, 0)
 

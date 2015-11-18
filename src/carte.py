@@ -206,7 +206,7 @@ class CartesManager:
 
     def call_trigger_at(self, x: int, y: int):
         if not self.current_carte.call_trigger_at(x, y, self.triggers_mgr):
-            if self.carte[y][x] in TILES_RDM_CREATURES:
+            if self.carte[y][x][0] in TILES_RDM_CREATURES:
                 # combat !
                 self.rd_mgr.change_renderer_for(RENDER_COMBAT)
 
