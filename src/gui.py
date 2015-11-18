@@ -5,6 +5,7 @@ import pygame
 from pygame.locals import *
 from constantes import *
 import time
+from glob import glob
 
 
 class PNJSpeaking:
@@ -53,16 +54,19 @@ class GUISauvegarde:
         self.callback = None
         self.firstcall = None
         self.has_started_saving = False
+        self.ldroite = [pygame.image.load(_).convert_alpha() for _ in
+                        glob(os.path.join("..", "assets", "personnage", "droite*.png"))]
+        self.cur_anim = 0
 
     def reinit(self):
         self.waiting = False
         self._time = 0
-        self.time_between = 10
         self.start_time = -1
         self.save_time = 3  # secondes
         self.callback = None
         self.firstcall = None
         self.has_started_saving = False
+        self.cur_anim = 0
 
     def start_saving(self, firstcall: callable, callback: callable):
         firstcall()
@@ -80,6 +84,8 @@ class GUISauvegarde:
         self._time += 0.5
         if not self._time % self.time_between:
             self.waiting = not self.waiting
+        if not self._time % (self.time_between * 2):
+            self.cur_anim = self.cur_anim + 1 if self.cur_anim + 1 < len(self.ldroite) else 0
         if time.time() >= self.start_time + self.save_time:
             self.callback() if self.callback is not None else None
         self.render()
@@ -92,3 +98,7 @@ class GUISauvegarde:
         if self.waiting:
             self.ecran.blit(self.waiter, (4 + SAVE_X + (SAVE_SX + self.texte.get_width()) // 2,
                                            SAVE_Y + 10))
+        self.ecran.blit(self.ldroite[self.cur_anim],
+                        (0 + (SAVE_SX + self.ldroite[0].get_width()) // 2,
+                        SAVE_Y + SAVE_X_PERSO_DECALAGE)
+        )
