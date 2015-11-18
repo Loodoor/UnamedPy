@@ -36,8 +36,20 @@ class BaseAnimator:
             time %= self.base_image.get_width()
             self.output.append(surf)
 
-    def draw(self):
+    def _draw(self):
         self.time += self.velocity
 
     def draw_at(self, ecran: pygame.Surface, pos: tuple=(-1, -1)):
         ecran.blit(self.output[int(self.time % len(self.output))], pos)
+
+
+class FluidesAnimator(BaseAnimator):
+    def __init__(self, base_image: pygame.Surface, velocity: float, where):
+        super().__init__(base_image, velocity, False)
+        self.where = where
+
+    def draw(self, at: list, ecran: pygame.Surface, carte_mgr):
+        self._draw()
+        for elem in at:
+            if carte_mgr.get_tile_code_at(elem[0], elem[1]) == self.where:
+                self.draw_at(ecran, elem)

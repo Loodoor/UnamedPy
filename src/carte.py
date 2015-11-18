@@ -8,8 +8,9 @@ from pygame.locals import *
 import pnj_manager
 from constantes import *
 from trigger_manager import TriggersManager
-from exceptions import FonctionnaliteNonImplementee, CarteInexistante
+from exceptions import FonctionnaliteNonImplementee, CarteInexistante, ErreurContenuCarte
 from utils import udel_same_occurence
+from animator import FluidesAnimator
 
 
 class SubCarte:
@@ -106,12 +107,14 @@ class CartesManager:
         self.current_carte = SubCarte()
         self.carte = []
         self.loaded = False
+        self.water_animator = None
 
     def general_load(self):
         for i in glob("..//assets//tiles//*.png"):
             # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
             self.images[i[18:-4]] = pygame.image.load(i).convert_alpha()
             self.lassets.append(i[18:-4])
+        self.water_animator = FluidesAnimator(self.images['3'], 2)
         self.loaded = True
 
     def load(self):
@@ -146,7 +149,7 @@ class CartesManager:
                 objet = self.carte[y][x]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
                 if not isinstance(objet, list):
-                    self.ecran.blit(self.images[objet], (xpos, ypos))
+                    raise ErreurContenuCarte
                 else:
                     if len(objet) <= 5:
                         for tile in udel_same_occurence(*objet[::-1]):
@@ -154,6 +157,9 @@ class CartesManager:
                     else:
                         for tile in udel_same_occurence(*objet[-2::-1]):
                             self.ecran.blit(self.images[tile], (xpos, ypos))
+
+    def get_tile_code_at(self, x: int, y: int):
+        return self.carte[y][x] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR
 
     def get_of1(self):
         return self.offsets[0]

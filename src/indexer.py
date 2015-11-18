@@ -214,6 +214,10 @@ class Indexer:
                             self.ecran.blit(self.police.render(txt, 1, (255, 255, 255)),
                                             (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
                             j += 1
+                        self.ecran.blit(self.police.render("Vu : " + ("oui" if vu else "non") +
+                                                           ", capturé : " + ("oui" if capture else "non"),
+                                                           1, (255, 255, 255)),
+                                        (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
                     else:
                         self.ecran.blit(self.police.render("???", 1, (255, 255, 255)),
                                         (POK_X_DESC, POK_Y_DESC + POK_ESP_Y_ITEM))

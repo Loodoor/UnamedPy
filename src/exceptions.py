@@ -34,3 +34,12 @@ class CarteInexistante(Exception):
             "La carte demandée à l'adresse '{}' semble ne pas exister. Merci de reporter cette erreur à Folaefolc, "
             "main dev' d'Unamed".format(path)
         )
+
+
+class ErreurContenuCarte(Exception):
+    def __init__(self):
+        super().__init__(
+            "Le contenu de la carte n'est pas correct. Il est apparant que la source de la carte a été modifiée de"
+            " manière très peu normale, que ce soit par une tiers personne ou un défaut logiciel. Essayez de réinstaller"
+            " le jeu."
+        )
