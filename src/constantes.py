@@ -40,6 +40,8 @@ TILE_GET_ERROR = -10
 
 TILES_RDM_CREATURES = ['6']
 
+LUCK_RDM_CREA = [0, 2]
+
 TRIGGER_ERROR = "trigger.error"
 TRIGGER_UNDEFINED = "trigger.undefined"
 TRIGGER_COMBAT_ZONE = "trigger.combat.lance."  # + ZONE ID

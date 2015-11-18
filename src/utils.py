@@ -16,6 +16,18 @@ def unothing(*args, **kwargs):
     return args, kwargs
 
 
+def ucount_in_list(*args):
+    work = {}
+
+    for elem in args:
+        if elem not in work.keys():
+            work[elem] = 1
+        else:
+            work[elem] += 1
+
+    return work
+
+
 def udel_same_occurence(*args) -> list:
     work = []
     last = ""

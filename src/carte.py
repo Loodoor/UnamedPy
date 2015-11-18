@@ -11,6 +11,7 @@ from trigger_manager import TriggersManager
 from exceptions import FonctionnaliteNonImplementee, CarteInexistante, ErreurContenuCarte
 from utils import udel_same_occurence
 from animator import FluidesAnimator
+from random import randint
 
 
 class SubCarte:
@@ -206,7 +207,7 @@ class CartesManager:
 
     def call_trigger_at(self, x: int, y: int):
         if not self.current_carte.call_trigger_at(x, y, self.triggers_mgr):
-            if self.carte[y][x][0] in TILES_RDM_CREATURES:
+            if self.carte[y][x][0] in TILES_RDM_CREATURES and randint(*LUCK_RDM_CREA):
                 # combat !
                 self.rd_mgr.change_renderer_for(RENDER_COMBAT)
 
