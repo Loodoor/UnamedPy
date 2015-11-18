@@ -9,6 +9,7 @@ from glob import glob
 import carte
 import personnage
 import renderer_manager as rd_mgr
+from gui import GUISauvegarde
 import sys
 import os
 
@@ -52,6 +53,7 @@ class Game:
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
         self.zones_manager = zones_attaques_manager.ZonesManager(self.indexeur)
+        self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr, self.police_grande)
@@ -297,9 +299,9 @@ class Game:
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:
+            self.gui_save_mgr.update()
             self.save()
             self.renderer_manager.invert_renderer()
-            print("Erreur future à corriger ici (fct render dans game.py)")
         elif self.renderer_manager.get_renderer() == RENDER_CARTE:
             raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_CREATURES:

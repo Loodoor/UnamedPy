@@ -60,6 +60,11 @@ ZONEe = "zone.e"
 ZONEf = "zone.f"
 ZONEg = "zone.g"
 
+SAVE_X = 20
+SAVE_Y = 20
+SAVE_SX = FEN_large - SAVE_X
+SAVE_SY = FEN_haut - SAVE_Y
+
 ZONE_ADV_ERROR = -2
 OBJET_GET_ERROR = -8
 
