@@ -161,12 +161,7 @@ class Game:
         raise FonctionnaliteNonImplementee
 
     def process_events_save(self, event: pygame.event, dt: int=1):
-        """
-        if event.type == KEYDOWN:
-            if event.key == self.controles[MENU]:
-                self.invert_rendering()
-        """
-        raise FonctionnaliteNonImplementee
+        pass
 
     def process_events_pokedex(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
@@ -299,9 +294,11 @@ class Game:
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:
+            if not self.gui_save_mgr.is_saving():
+                self.gui_save_mgr.start_saving(firstcall=self.save, callback=self.renderer_manager.invert_renderer)
             self.gui_save_mgr.update()
-            self.save()
-            self.renderer_manager.invert_renderer()
+            if self.gui_save_mgr.is_saved_finished():
+                self.gui_save_mgr.reinit()
         elif self.renderer_manager.get_renderer() == RENDER_CARTE:
             raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_CREATURES:

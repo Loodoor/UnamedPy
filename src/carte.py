@@ -114,7 +114,7 @@ class CartesManager:
             # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
             self.images[i[18:-4]] = pygame.image.load(i).convert_alpha()
             self.lassets.append(i[18:-4])
-        self.water_animator = FluidesAnimator(self.images['3'], 2)
+        # self.water_animator = FluidesAnimator(self.images['3'], 2)
         self.loaded = True
 
     def load(self):

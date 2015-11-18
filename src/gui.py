@@ -4,6 +4,7 @@ import os
 import pygame
 from pygame.locals import *
 from constantes import *
+import time
 
 
 class PNJSpeaking:
@@ -43,15 +44,44 @@ class GUISauvegarde:
         self.ecran = ecran
         self.police = police
         self.texte = self.police.render("Sauvegarde en cours ... Merci de patienter :)", 1, (0, 0, 0))
-        self.waiter_ = self.police.render("_", 1, (0, 0, 0))
+        self.waiter = self.police.render("_", 1, (0, 0, 0))
         self.waiting = False
-        self.time = 0
-        self.time_between = 4
+        self._time = 0
+        self.time_between = 8
+        self.start_time = -1
+        self.save_time = 3  # secondes
+        self.callback = None
+        self.firstcall = None
+        self.has_started_saving = False
+
+    def reinit(self):
+        self.waiting = False
+        self._time = 0
+        self.time_between = 10
+        self.start_time = -1
+        self.save_time = 3  # secondes
+        self.callback = None
+        self.firstcall = None
+        self.has_started_saving = False
+
+    def start_saving(self, firstcall: callable, callback: callable):
+        firstcall()
+        self.callback = callback
+        self.start_time = time.time()
+        self.has_started_saving = True
+
+    def is_saving(self):
+        return self.has_started_saving
+
+    def is_saved_finished(self):
+        return True if time.time() > self.start_time + self.save_time else False
 
     def update(self):
-        self.time += 0.5
-        if self.time % self.time_between:
+        self._time += 0.5
+        if not self._time % self.time_between:
             self.waiting = not self.waiting
+        if time.time() >= self.start_time + self.save_time:
+            self.callback() if self.callback is not None else None
         self.render()
 
     def render(self):
@@ -60,5 +90,5 @@ class GUISauvegarde:
                         (SAVE_X + (SAVE_SX - self.texte.get_width()) // 2,
                          SAVE_Y + 10))
         if self.waiting:
-            self.ecran.blit(self.waiter_, (4 + SAVE_X + (SAVE_SX + self.texte.get_width()) // 2,
+            self.ecran.blit(self.waiter, (4 + SAVE_X + (SAVE_SX + self.texte.get_width()) // 2,
                                            SAVE_Y + 10))
