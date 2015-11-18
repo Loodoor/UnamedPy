@@ -85,6 +85,8 @@ class SubCarte:
     def call_trigger_at(self, x: int, y: int, triggers_mgr: TriggersManager):
         if self.trigger_at(x, y):
             triggers_mgr.call_trigger_with_id(self.carte[y][x][TRIGGER])
+            return True
+        return False
 
     def has_object(self, x: int, y: int):
         return True if (x, y) in self.objets.keys() else False
@@ -203,7 +205,10 @@ class CartesManager:
         return self.current_carte.trigger_at(x, y)
 
     def call_trigger_at(self, x: int, y: int):
-        self.current_carte.call_trigger_at(x, y, self.triggers_mgr)
+        if not self.current_carte.call_trigger_at(x, y, self.triggers_mgr):
+            if self.carte[y][x] in TILES_RDM_CREATURES:
+                # combat !
+                self.rd_mgr.change_renderer_for(RENDER_COMBAT)
 
 
 '''

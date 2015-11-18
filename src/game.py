@@ -291,6 +291,9 @@ class Game:
         elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
             self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
                                              self.carte_mgr.get_zid(), self.indexeur)
+            raise NotImplementedError("Un combat a été déclenché. La partie graphique n'étant pas terminée, une erreur "
+                                      "vient de terminer le jeu (brutalement, mais votre partie a été sauvegardée). "
+                                      "Ne vous inquiétez pas, cela veut dire que je suis en bonne voie :) !")
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:

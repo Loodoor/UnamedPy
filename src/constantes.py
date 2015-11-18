@@ -38,6 +38,8 @@ BUILDING = 12
 BUILDING_GET_ERROR = -9
 TILE_GET_ERROR = -10
 
+TILES_RDM_CREATURES = []
+
 TRIGGER_ERROR = "trigger.error"
 TRIGGER_UNDEFINED = "trigger.undefined"
 TRIGGER_COMBAT_ZONE = "trigger.combat.lance."  # + ZONE ID

@@ -34,6 +34,8 @@ class Personnage:
         self.pos = list(pos)
         self.carte_mgr = carte_mgr
         self.inventaire = inventaire.Inventaire(self.ecran, self.police)
+        self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
+        self.same_as_before = False
 
     def inventaire_clic(self, xp: int, yp: int):
         self.inventaire.clic(xp, yp)
@@ -47,12 +49,22 @@ class Personnage:
     def inventaire_update(self):
         self.inventaire.update()
 
+    def changed_cur_case(self):
+        return not self.same_as_before
+
     def move(self, direction: int=AUCUNE, dt: int=1):
         self.direction = direction
         self.perso = self.sprites[self.direction][self.anim_cursor + 1]
         self.is_moving = True
 
         self.move_in_fov(direction, dt)
+
+        if self.last_case == (self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE):
+            self.same_as_before = True if not self.same_as_before else self.same_as_before
+        else:
+            self.same_as_before = False
+
+        self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
 
     def move_with_fov(self, direction: int=HAUT, dt: int=1):
         new_speed = self.speed * (dt / 10) / self.cur_div
@@ -190,8 +202,9 @@ class Personnage:
                     y -= decy
 
         self.pos = (x + self.carte_mgr.get_of1(), y + self.carte_mgr.get_of2())
-        self.carte_mgr.call_trigger_at(int(x // TILE_SIZE) + self.carte_mgr.get_fov()[0],
-                                       int(y // TILE_SIZE) + self.carte_mgr.get_fov()[2])
+        if self.changed_cur_case():
+            self.carte_mgr.call_trigger_at(int(x // TILE_SIZE) + self.carte_mgr.get_fov()[0],
+                                           int(y // TILE_SIZE) + self.carte_mgr.get_fov()[2])
 
     def isMoving(self):
         return self.is_moving
