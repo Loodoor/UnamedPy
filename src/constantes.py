@@ -42,6 +42,9 @@ TILES_RDM_CREATURES = ['6']
 
 LUCK_RDM_CREA = [0, 2]
 
+MENU_SIZE_BAR = 250
+MENU_BAR_Y = 275
+
 TRIGGER_ERROR = "trigger.error"
 TRIGGER_UNDEFINED = "trigger.undefined"
 TRIGGER_COMBAT_ZONE = "trigger.combat.lance."  # + ZONE ID

@@ -7,6 +7,7 @@ from zones_attaques_manager import ZonesManager, Zone
 import objets_manager
 import inventaire
 from os import path, sep
+from glob import glob
 import pickle
 import time
 import os
@@ -26,6 +27,12 @@ def ucount_in_list(*args):
             work[elem] += 1
 
     return work
+
+
+def uhas_already_played() -> bool:
+    if glob(os.path.join("..", "saves", "*" + EXTENSION)):
+        return True
+    return False
 
 
 def udel_same_occurence(*args) -> list:
