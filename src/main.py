@@ -31,13 +31,14 @@ def main():
     ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
     pygame.display.set_caption("Unamed")
     police = pygame.font.Font(POLICE_PATH, 16)
+    police_jouer = pygame.font.Font(POLICE_PATH, 20)
     police_annot = pygame.font.Font(POLICE_PATH, 12)
     police_annot.set_italic(True)
     police_title = pygame.font.Font(POLICE_PATH, 20)
     police_title.set_underline(True)
     police_title.set_bold(True)
     title = police_title.render("Unamed", 1, (255, 255, 255))
-    help_ = police.render("Appuyez sur 'J' pour lancer le jeu !", 1, (255, 255, 255))
+    jouer = police_jouer.render("Jouer !", 1, (255, 255, 255))
     bienvenue = [
         "Bienvenue à toi, chercheur !",
         "Tu vas entrer sur l'île d'Unamed, prépare toi à une toute nouvelle aventure !"
@@ -72,6 +73,11 @@ def main():
                     chargement = True
                 if event.key == K_SPACE:
                     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
+            if event.type == MOUSEBUTTONUP:
+                xp, yp = event.pos
+                if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_JOUER_SX and \
+                                        MENU_BTN_JOUER_Y <= yp <= MENU_BTN_JOUER_Y + MENU_BTN_JOUER_SY:
+                    chargement = True
 
         #Affichage
         ecran.blit(fond, (0, 0))
@@ -101,8 +107,11 @@ def main():
                 chargement = False
                 avancement = 0
                 jeu.start()
-
-        ecran.blit(help_, (FEN_large // 2 - help_.get_width() // 2, FEN_haut - 10 - help_.get_height()))
+        else:
+            pygame.draw.rect(ecran, (50, 180, 180), (MENU_BTN_JOUER_X, MENU_BTN_JOUER_Y,
+                                                     MENU_BTN_JOUER_SX, MENU_BTN_JOUER_SY))
+            ecran.blit(jouer, (MENU_BTN_JOUER_X + (MENU_BTN_JOUER_SX - jouer.get_width()) // 2 + 2,
+                               MENU_BTN_JOUER_Y + (MENU_BTN_JOUER_SY - jouer.get_height()) // 2 + 2))
 
         pygame.display.flip()
 
