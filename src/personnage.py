@@ -235,6 +235,9 @@ class Personnage:
         if os.path.exists(os.path.join("..", "saves", "perso" + EXTENSION)):
             with open(os.path.join("..", "saves", "perso" + EXTENSION), "rb") as read_perso:
                 self.pos = pickle.Unpickler(read_perso).load()
+        else:
+            # on charge une position par défaut
+            self.pos = DEFAULT_POS_AT_BEGINNING
         self.inventaire.load()
 
     def save(self):

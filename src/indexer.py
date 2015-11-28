@@ -10,12 +10,13 @@ import textwrap as tw
 
 
 class Element:
-    def __init__(self, name: str, id: int, type: int, path: str, desc: str=""):
+    def __init__(self, name: str, id: int, type: int, stade: int, path: str, desc: str=""):
         self.name = name
         self.id = id
         self.type = type
         self.path = path
         self.description = desc
+        self.stade = stade
         self.vu = False
         self.capture = False
 
@@ -24,6 +25,9 @@ class Element:
 
     def capture_(self):
         self.capture = True
+
+    def get_stade(self):
+        return self.stade
 
 
 class Typeur:
@@ -124,16 +128,16 @@ class Indexer:
         self.selected_type = -1
 
     @staticmethod
-    def add_new(name: str, id: int, type: int, path: str, desc: str=""):
+    def add_new(name: str, id: int, type: int, stade: int, path: str, desc: str=""):
         save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
         if os.path.exists(save_path):
             with open(save_path, 'rb') as rbin:
                 tod = pickle.Unpickler(rbin).load()
-                tod.append(Element(name, id, type, path, desc))
+                tod.append(Element(name, id, type, stade, path, desc))
                 pickle.Pickler(open(save_path, 'wb')).dump(tod)
         else:
             with open(save_path, 'wb') as wbin:
-                tod = [Element(name, id, type, path, desc)]
+                tod = [Element(name, id, type, stade, path, desc)]
                 pickle.Pickler(wbin).dump(tod)
 
     def load(self):
@@ -141,7 +145,7 @@ class Indexer:
             with open(self.save_path, "rb") as read_index:
                 self.indexer = pickle.Unpickler(read_index).load()
         else:
-            raise CreaturesNonTrouvees()
+            raise CreaturesNonTrouvees
         self.typeur.load()
 
     def save(self):
