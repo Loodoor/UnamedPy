@@ -14,10 +14,8 @@ import sys
 import os
 
 import indexer
-import captureurs
-import creatures_mgr
+import money_mgr
 import tab_types
-import objets_manager
 import equipe_manager
 import atk_sys
 import menu_in_game
@@ -53,6 +51,7 @@ class Game:
         self.cur_combat = None
         self.menu_in_game = menu_in_game.Menu(self.ecran, self.police_grande)
         self.zones_manager = zones_attaques_manager.ZonesManager(self.indexeur)
+        self.money = money_mgr.MoneyManager()
         self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
 
         # Entités
@@ -87,6 +86,7 @@ class Game:
         self.equipe_mgr.load()
         self.pc_mgr.load()
         self.zones_manager.load()
+        self.money.load()
 
         self.tab_types.init_tab()
 
@@ -94,6 +94,7 @@ class Game:
         print("Sauvegarde ...")
         self.carte_mgr.save()
         self.personnage.save()
+        # self.money.save()
         # self.indexeur.save()
         # self.equipe_mgr.save()
         # self.pc_mgr.save()
