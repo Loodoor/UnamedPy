@@ -230,7 +230,10 @@ class Indexer:
                                                            ", capturé : " + ("oui" if capture else "non"),
                                                            1, (255, 255, 255)),
                                         (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
-                        self.ecran.blit(self.images_crea[elem.id], (POK_X_IMG_CREA, POK_Y_IMG_CREA + j * 20 + 10))
+                        self.ecran.blit(self.images_crea[elem.id], (
+                            POK_X_IMG_CREA,
+                            POK_Y_IMG_CREA + (j + 1) * POK_ESP_Y_ITEM)
+                        )
                     else:
                         self.ecran.blit(self.police.render("???", 1, (255, 255, 255)),
                                         (POK_X_DESC, POK_Y_DESC + POK_ESP_Y_ITEM))
