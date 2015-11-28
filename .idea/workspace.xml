@@ -33,11 +33,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="indexer.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="indexer.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/indexer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6912568" vertical-offset="2110" max-vertical-offset="2941">
-              <caret line="224" column="69" selection-start-line="224" selection-start-column="69" selection-end-line="224" selection-end-column="69" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2110" max-vertical-offset="2941">
+              <caret line="232" column="82" selection-start-line="232" selection-start-column="68" selection-end-line="232" selection-end-column="82" />
               <folding>
                 <element signature="e#688#2792#0" expanded="false" />
               </folding>
@@ -45,11 +45,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="constantes.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="constantes.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/constantes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3748" max-vertical-offset="5389">
-              <caret line="230" column="23" selection-start-line="230" selection-start-column="23" selection-end-line="230" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.72131145" vertical-offset="3731" max-vertical-offset="5406">
+              <caret line="235" column="26" selection-start-line="235" selection-start-column="26" selection-end-line="235" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -82,8 +82,8 @@
         <option value="$PROJECT_DIR$/src/game.py" />
         <option value="$PROJECT_DIR$/src/personnage.py" />
         <option value="$PROJECT_DIR$/src/utils.py" />
-        <option value="$PROJECT_DIR$/src/constantes.py" />
         <option value="$PROJECT_DIR$/src/indexer.py" />
+        <option value="$PROJECT_DIR$/src/constantes.py" />
       </list>
     </option>
   </component>
@@ -495,21 +495,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/constantes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3748" max-vertical-offset="5389">
-          <caret line="230" column="23" selection-start-line="230" selection-start-column="23" selection-end-line="230" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/indexer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6912568" vertical-offset="2110" max-vertical-offset="2941">
-          <caret line="224" column="69" selection-start-line="224" selection-start-column="69" selection-end-line="224" selection-end-column="69" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2110" max-vertical-offset="2941">
+          <caret line="232" column="82" selection-start-line="232" selection-start-column="68" selection-end-line="232" selection-end-column="82" />
           <folding>
             <element signature="e#688#2792#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/constantes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.72131145" vertical-offset="3731" max-vertical-offset="5406">
+          <caret line="235" column="26" selection-start-line="235" selection-start-column="26" selection-end-line="235" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
