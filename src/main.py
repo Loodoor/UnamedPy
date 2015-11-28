@@ -14,7 +14,6 @@ from constantes import *
 import utils
 from glob import glob
 import random
-import time
 
 
 def get_alea_text(path: str="textes") -> str:

@@ -40,6 +40,15 @@ class ErreurContenuCarte(Exception):
     def __init__(self):
         super().__init__(
             "Le contenu de la carte n'est pas correct. Il est apparant que la source de la carte a été modifiée de"
-            " manière très peu normale, que ce soit par une tiers personne ou un défaut logiciel. Essayez de réinstaller"
+            " manière anormale, que ce soit par une tiers personne ou un défaut logiciel. Essayez de réinstaller"
             " le jeu."
+        )
+
+
+class AchatImpossible(Exception):
+    def __init__(self):
+        super().__init__(
+            "Il n'est apparemment pas possible d'acheter un objet dans cette boutique."
+            " Cela peut être dû à un défaut logiciel ou bien au fait que vous n'ayez pas assez"
+            " d'argent."
         )
