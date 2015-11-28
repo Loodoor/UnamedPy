@@ -17,6 +17,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Python
+*.py[cod]
+
 # =========================
 # Operating System Files
 # =========================
@@ -41,4 +44,7 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Directory of PyCharm
 .idea
+.idea/*.*
