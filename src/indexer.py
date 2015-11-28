@@ -121,6 +121,7 @@ class Indexer:
         self.max_page = 10
         self.par_page = 10
         self.indexer = []
+        self.images_crea = {}
         self.typeur = Typeur()
         self.render_creatures = True
         self.rd_mgr = render_manager
@@ -144,6 +145,9 @@ class Indexer:
         if os.path.exists(self.save_path):
             with open(self.save_path, "rb") as read_index:
                 self.indexer = pickle.Unpickler(read_index).load()
+                for elem in self.indexer:
+                    img = pygame.image.load(elem.path).convert_alpha()
+                    self.images_crea[elem.id] = pygame.transform.scale(img, (POK_SX_IMAGE_CREA, POK_SY_IMAGE_CREA))
         else:
             raise CreaturesNonTrouvees
         self.typeur.load()
@@ -181,7 +185,11 @@ class Indexer:
                 break
 
     def select_all_crea_with_stade(self, stade: int):
-        raise FonctionnaliteNonImplementee
+        work = []
+        for creature in self.indexer:
+            if creature.get_stade() == stade:
+                work.append(creature)
+        return work
 
     def update(self):
         self.render()
@@ -213,8 +221,8 @@ class Indexer:
                     self.ecran.blit(self.police.render("Description :", 1, (255, 255, 255)),
                                     (POK_X_DESC, POK_Y_DESC))
 
-                    if vu or capture:
-                        for txt in tw.wrap(elem.description, width=38):
+                    if vu or capture or True:
+                        for txt in tw.wrap(elem.description, width=33):
                             self.ecran.blit(self.police.render(txt, 1, (255, 255, 255)),
                                             (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
                             j += 1
@@ -222,6 +230,7 @@ class Indexer:
                                                            ", capturé : " + ("oui" if capture else "non"),
                                                            1, (255, 255, 255)),
                                         (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
+                        self.ecran.blit(self.images_crea[elem.id], (POK_X_IMG_CREA, POK_Y_IMG_CREA))
                     else:
                         self.ecran.blit(self.police.render("???", 1, (255, 255, 255)),
                                         (POK_X_DESC, POK_Y_DESC + POK_ESP_Y_ITEM))
