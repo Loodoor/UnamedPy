@@ -92,10 +92,10 @@ class ULoader:
         # la description peut être vide, mais c'est mieux de la remplir
 
         Indexer.add_new("", 0, T_FEU, 0, self.pack_creatures + "feu-01.png",
-                        "Cette créature vit en groupe au coeur d'un volcan dont il n'émerge que très rarement.")
+                        "Cette créature vit en groupe au coeur d'un volcan dont elle n'émerge que très rarement.")
 
         Indexer.add_new("", 1, T_LUMIERE, 0, self.pack_creatures + "lumiere-01-a1.png",
-                        "Cette créature très timide se redresse lorsqu'elle se sent menacé, et émet un vif rayon de "
+                        "Cette créature très timide se redresse lorsqu'elle se sent menacée, et émet un vif rayon de "
                         "lumière avec ses plaques ventrales pour faire fuir l'ennemi.")
         Indexer.add_new("", 2, T_LUMIERE, 1, self.pack_creatures + "lumiere-01-a2.png",
                         "Cette créature s'est entourée de fourrure isolante pour préparer la métamorphose de son corps. "
