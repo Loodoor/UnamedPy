@@ -221,7 +221,7 @@ class Indexer:
                     self.ecran.blit(self.police.render("Description :", 1, (255, 255, 255)),
                                     (POK_X_DESC, POK_Y_DESC))
 
-                    if vu or capture or True:
+                    if vu or capture:
                         for txt in tw.wrap(elem.description, width=32):
                             self.ecran.blit(self.police.render(txt, 1, (255, 255, 255)),
                                             (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
