@@ -1,10 +1,9 @@
 # coding=utf-8
 
-import os
 import pygame
 from pygame.locals import *
 from constantes import *
-import random
+from utils import upg_bar
 import creatures_mgr
 from zones_attaques_manager import ZonesManager
 
@@ -23,7 +22,7 @@ class Combat:
         self.ecran = ecran
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
-        self.adversaire = creatures_mgr.Creature(-1, -1, T_NORMAL)
+        self.adversaire = creatures_mgr.Creature(0, indexer.get_type_of(0))
         self.zones_mgr = zone
         self.zid = zone_id
         self.indexer = indexer
@@ -36,6 +35,9 @@ class Combat:
     def mon_tour(self):
         return True if not self.compteur_tour % 2 else False
 
+    def get_my_creature(self):
+        return self.creature_joueur
+
     def get_adversary(self):
         return self.adversaire
 
@@ -45,18 +47,23 @@ class Combat:
     def update(self):
         if self.is_running:
             if not self.has_started:
-                self.indexer.vu_(self.adversaire.get_id())
+                self.indexer.vu_(self.get_adversary().get_id())
                 self.has_started = True
 
             self.compteur_tour += 1
             self.render()
 
     def render(self):
-        pass
-
-    def process_events(self, events: pygame.event):
-        for event in events:
-            pass
+        # en attendant d'avoir un paysage
+        pygame.draw.rect(self.ecran, (50, 50, 180), (COMB_X, COMB_Y, COMB_SX, COMB_SY))
+        # affichage des créatures
+        self.ecran.blit(self.indexer.get_image_by_id(self.get_adversary().get_id()), (COMB_X_ADV, COMB_Y_ADV))
+        self.ecran.blit(self.indexer.get_image_by_id(self.get_my_creature().get_id()), (COMB_X_ME, COMB_Y_ME))
+        # affichage des stats
+        upg_bar(self.ecran, (0, 0, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+                self.get_adversary().get_pvs() // self.get_adversary().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
+        upg_bar(self.ecran, (0, 300, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+                self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
 
 
 class Attaque:

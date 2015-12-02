@@ -9,11 +9,15 @@ from constantes import *
 
 
 class EquipeManager:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont, render_manager, size: int=6):
+    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont, indexer, render_manager, size: int=6):
         self.size = size
         self.ecran = ecran
         self.police = police
-        self.creatures = []
+        self.creatures = [
+            # Starter de test
+            Creature(0, indexer.get_type_of(0))
+        ]
+        self.indexer = indexer
         self.path = os.path.join("..", "saves", "equipe" + EXTENSION)
         self.passe_pc_txt = self.police.render("PC", 1, (255, 255, 255))
         self.to_pc = self.police.render("-> PC", 1, (255, 255, 255))

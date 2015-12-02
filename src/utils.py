@@ -4,6 +4,7 @@ from constantes import *
 from indexer import Indexer
 from trigger_manager import Trigger, TriggersManager
 from zones_attaques_manager import ZonesManager, Zone
+import pygame
 import objets_manager
 import inventaire
 from os import path, sep
@@ -51,6 +52,11 @@ def uremove(*files):
     for file in files:
         if path.exists(file):
             os.remove(file)
+
+
+def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 128), fg_color: tuple=(50, 180, 50)):
+    pygame.draw.rect(screen, bg_color, rect_bg)
+    pygame.draw.rect(screen, fg_color, (rect_bg[0] + BAR_ESP, rect_bg[1] + BAR_ESP, progress, rect_bg[3] - BAR_ESP * 2))
 
 
 class UMoment:
@@ -217,28 +223,29 @@ class ULoader:
 
         # Création des zones par défaut
 
-        ZonesManager.add_new_zone_to_path(Zone(ZONE1, [_ for _ in range(MAX_CREATURES)], (0, 5)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE2, [_ for _ in range(MAX_CREATURES)], (4, 10)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE3, [_ for _ in range(MAX_CREATURES)], (8, 22)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE4, [_ for _ in range(MAX_CREATURES)], (17, 35)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE5, [_ for _ in range(MAX_CREATURES)], (30, 45)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE6, [_ for _ in range(MAX_CREATURES)], (40, 60)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE7, [_ for _ in range(MAX_CREATURES)], (55, 75)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE8, [_ for _ in range(MAX_CREATURES)], (70, 100)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE9, [_ for _ in range(MAX_CREATURES)], (90, 120)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEa, [_ for _ in range(MAX_CREATURES)], (110, 150)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEb, [_ for _ in range(MAX_CREATURES)], (140, 200)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEc, [_ for _ in range(MAX_CREATURES)], (180, 240)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEd, [_ for _ in range(MAX_CREATURES)], (220, 285)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEe, [_ for _ in range(MAX_CREATURES)], (265, 310)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEf, [_ for _ in range(MAX_CREATURES)], (290, 360)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEg, [_ for _ in range(MAX_CREATURES)], (330, 420)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE0, [_ for _ in range(MAX_CREATURES)], (0, 5)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE1, [_ for _ in range(MAX_CREATURES)], (4, 10)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE2, [_ for _ in range(MAX_CREATURES)], (8, 22)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE3, [_ for _ in range(MAX_CREATURES)], (17, 35)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE4, [_ for _ in range(MAX_CREATURES)], (30, 45)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE5, [_ for _ in range(MAX_CREATURES)], (40, 60)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE6, [_ for _ in range(MAX_CREATURES)], (55, 75)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE7, [_ for _ in range(MAX_CREATURES)], (70, 100)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE8, [_ for _ in range(MAX_CREATURES)], (90, 120)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE9, [_ for _ in range(MAX_CREATURES)], (110, 150)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEa, [_ for _ in range(MAX_CREATURES)], (140, 200)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEb, [_ for _ in range(MAX_CREATURES)], (180, 240)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEc, [_ for _ in range(MAX_CREATURES)], (220, 285)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEd, [_ for _ in range(MAX_CREATURES)], (265, 310)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEe, [_ for _ in range(MAX_CREATURES)], (290, 360)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEf, [_ for _ in range(MAX_CREATURES)], (330, 420)))
 
         # Fin du boulot !
         with open(self.path, 'wb') as fjob_done:
             pickle.Pickler(fjob_done).dump(UMoment("Ajout des premières créatures, "
                                                    "d'un trigger de test en (0, 0), "
                                                    "de nouveaux objets, "
+                                                   "refonte des zones id, "
                                                    "et des débuts de zones de base"))
 
     def reload(self):

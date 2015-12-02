@@ -45,7 +45,7 @@ class Game:
         # Managers
         self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager)
         self.indexeur = indexer.Indexer(self.ecran, self.police_grande, self.renderer_manager)
-        self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande, self.renderer_manager)
+        self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande, self.indexeur, self.renderer_manager)
         self.pc_mgr = computer_manager.ComputerManager(self.ecran, self.police_grande, self.renderer_manager)
         self.tab_types = tab_types.Storage()
         self.cur_combat = None
@@ -70,6 +70,9 @@ class Game:
             VALIDATION: K_RETURN
         }
         self.controles.update(controles)
+        self.controles_joy = {
+
+        }
         controles = {}  # vider le dico à chaque fois !
 
         self.__ctrls = {
@@ -283,6 +286,7 @@ class Game:
 
     def render(self, dt: int=1):
         self.carte_mgr.update() if self.renderer_manager.can_i_render() else None
+
         if self.renderer_manager.get_renderer() == RENDER_GAME:
             self.personnage.update()
         elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
@@ -290,9 +294,13 @@ class Game:
         elif self.renderer_manager.get_renderer() == RENDER_BOUTIQUE:
             raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
-            if self.equipe_mgr.is_not_empty():
+            if self.equipe_mgr.is_not_empty() and not self.cur_combat:
                 self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
                                                  self.carte_mgr.get_zid(), self.indexeur)
+                self.cur_combat.find_adv()
+                self.top, self.bottom, self.right, self.left = [False] * 4
+            if self.cur_combat:
+                self.cur_combat.update()
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:

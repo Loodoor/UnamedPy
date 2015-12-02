@@ -93,7 +93,7 @@ def main():
             pygame.draw.rect(ecran, (150, 150, 150), (FEN_large // 2 - MENU_SIZE_BAR // 2, MENU_BAR_Y, MENU_SIZE_BAR, 22))
             pygame.draw.rect(ecran, (30, 160, 30), (FEN_large // 2 - MENU_SIZE_BAR // 2 + 2, MENU_BAR_Y + 2, avancement, 18))
             ecran.blit(loading_text, (FEN_large // 2 - loading_text.get_width() // 2, MENU_SIZE_BAR))
-            avancement += 0.125
+            avancement += 0.25
             if not int(avancement) % max_len and len(load_texts) != 0 and float(int(avancement)) == avancement:
                 if len(load_texts) - 1 > 0:
                     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),

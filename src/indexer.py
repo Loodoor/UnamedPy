@@ -157,6 +157,9 @@ class Indexer:
             pickle.Pickler(save_index).dump(self.indexer)
         self.typeur.save()
 
+    def get_image_by_id(self, id: int):
+        return self.images_crea[id] if id in self.images_crea.keys() else pygame.Surface((150, 150))
+
     def next(self):
         self.page = self.page + 1 if self.page <= self.max_page else self.max_page
 
