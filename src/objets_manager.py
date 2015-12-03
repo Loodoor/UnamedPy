@@ -38,7 +38,7 @@ class Objet:
     def jeter(self):
         if self.quantite[0] > 0:
             self.quantite[0] -= 1
-            return Objet(self.nom, self.texte, self.quantite, self.action)
+            return Objet(self.nom, self.texte, [1, MAX_ITEM], self.action)
         return GLOBAL_ERROR
 
     def use(self):

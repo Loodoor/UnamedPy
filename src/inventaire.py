@@ -129,11 +129,13 @@ class Inventaire:
         if item != -1 and self.objets[self.cur_categorie][item].nombre() > 0:
             self.carte.drop_object_at(self.xp - TILE_SIZE, self.yp, self.objets[self.cur_categorie][item].jeter(),
                                       self.cur_categorie)
+            del self.objets[self.cur_categorie][item]
 
     def jeter_tout(self, item: int):
         if item != -1 and self.objets[self.cur_categorie][item].nombre() > 0:
             self.carte.drop_object_at(self.xp - TILE_SIZE, self.yp, self.objets[self.cur_categorie][item].jeter_tout(),
                                       self.cur_categorie)
+            del self.objets[self.cur_categorie][item]
 
     def load(self):
         if os.path.exists(self.path):
