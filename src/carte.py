@@ -92,8 +92,8 @@ class SubCarte:
     def has_object(self, x: int, y: int):
         return True if (x, y) in self.objets.keys() else False
 
-    def drop_object_at(self, x: int, y: int, obj):
-        self.objets[x, y] = obj
+    def drop_object_at(self, x: int, y: int, obj, qu: int):
+        self.objets[x, y] = {obj: qu}
 
 
 class CartesManager:
@@ -139,8 +139,8 @@ class CartesManager:
         self.current_carte.load(new_path)
         self.carte = self.current_carte.get_all()
 
-    def drop_object_at(self, x: int, y: int, obj):
-        self.current_carte.drop_object_at(x, y, obj)
+    def drop_object_at(self, x: int, y: int, obj, qu: int):
+        self.current_carte.drop_object_at(x, y, obj, qu)
 
     def update(self):
         self.render()
@@ -160,6 +160,8 @@ class CartesManager:
                     else:
                         for tile in udel_same_occurence(*objet[-2::-1]):
                             self.ecran.blit(self.images[tile], (xpos, ypos))
+                if self.current_carte.has_object(x, y):
+                    self.ecran.blit(self.images['10'], (xpos, ypos))
 
     def get_tile_code_at(self, x: int, y: int):
         return self.carte[y][x] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR

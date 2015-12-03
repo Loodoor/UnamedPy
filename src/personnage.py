@@ -33,7 +33,7 @@ class Personnage:
         self.is_moving = False
         self.pos = list(pos)
         self.carte_mgr = carte_mgr
-        self.inventaire = inventaire.Inventaire(self.ecran, self.police)
+        self.inventaire = inventaire.Inventaire(self.ecran, self.police, self.carte_mgr)
         self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
         self.same_as_before = False
 
@@ -47,7 +47,7 @@ class Personnage:
         self.inventaire.previous()
 
     def inventaire_update(self):
-        self.inventaire.update()
+        self.inventaire.update(*self.pos)
 
     def changed_cur_case(self):
         return not self.same_as_before

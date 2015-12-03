@@ -10,9 +10,11 @@ import textwrap as tw
 
 
 class Inventaire:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font):
+    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font, carte):
         self.ecran = ecran
         self.police = police
+        self.carte = carte
+        self.xp, self.yp = 0, 0
 
         self.path = os.path.join("..", "saves", "inventaire" + EXTENSION)
         self.cur_categorie = POCHE_COMMUNS
@@ -50,7 +52,8 @@ class Inventaire:
             tmp_poche = "ERREUR?"
         return tmp_poche
 
-    def update(self):
+    def update(self, pos_perso: tuple):
+        self.xp, self.yp = pos_perso
         self.render()
 
     def render(self):
@@ -121,11 +124,12 @@ class Inventaire:
 
     def jeter(self, item: int):
         if item != -1:
-            self.objets[self.cur_categorie][item].jeter()
+            self.carte.drop_object_at(self.xp, self.yp, self.objets[self.cur_categorie][item].jeter(), 1)
 
     def jeter_tout(self, item: int):
         if item != -1:
-            self.objets[self.cur_categorie][item].jeter_tout()
+            tmp = self.objets[self.cur_categorie][item].jeter_tout()
+            self.carte.drop_object_at(self.xp, self.yp, tmp[0], tmp[1])
 
     def load(self):
         if os.path.exists(self.path):

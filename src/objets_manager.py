@@ -1,5 +1,7 @@
 # coding=utf-8
 
+from constantes import *
+
 
 class ObjectAction:
     def __init__(self, fonction, *params):
@@ -30,11 +32,15 @@ class Objet:
         return self.texte
 
     def jeter_tout(self):
+        tmp = self.quantite
         self.quantite[0] = 0
+        return self.nom, tmp
 
     def jeter(self):
         if self.quantite[0] > 0:
             self.quantite[0] -= 1
+            return self.nom
+        return GLOBAL_ERROR
 
     def use(self):
         if self.quantite[0] > 0:
