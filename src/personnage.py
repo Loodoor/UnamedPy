@@ -47,7 +47,7 @@ class Personnage:
         self.inventaire.previous()
 
     def inventaire_update(self):
-        self.inventaire.update(*self.pos)
+        self.inventaire.update(tuple(self.pos))
 
     def changed_cur_case(self):
         return not self.same_as_before

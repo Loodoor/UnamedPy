@@ -150,6 +150,7 @@ class CartesManager:
 
     def render(self):
         tmp_map = [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.carte[int(self.fov[2]):int(self.fov[3])]]
+        objects_at = self.current_carte.get_objects()
         for y in range(len(tmp_map)):
             for x in range(len(tmp_map[y])):
                 objet = self.carte[y][x]
@@ -163,7 +164,7 @@ class CartesManager:
                     else:
                         for tile in udel_same_occurence(*objet[-2::-1]):
                             self.ecran.blit(self.images[tile], (xpos, ypos))
-                if self.current_carte.has_object(x, y):
+                if (x, y) in objects_at:
                     self.ecran.blit(self.images['10'], (xpos, ypos))
 
     def get_tile_code_at(self, x: int, y: int):
