@@ -57,11 +57,11 @@ class Personnage:
         self.perso = self.sprites[self.direction][self.anim_cursor + 1]
         self.is_moving = True
 
-        tmp_obj = self.carte_mgr.get_object_at(self.pos[0], self.pos[1])
+        self.move_in_fov(direction, dt)
+
+        tmp_obj = self.carte_mgr.get_object_at(self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE)
         if tmp_obj and tmp_obj != OBJET_GET_ERROR:
             self.inventaire.find_object(tmp_obj)
-
-        self.move_in_fov(direction, dt)
 
         if self.last_case == (self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE):
             self.same_as_before = True if not self.same_as_before else self.same_as_before

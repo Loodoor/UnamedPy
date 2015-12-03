@@ -53,12 +53,13 @@ class Combat:
                 self.indexer.vu_(self.get_adversary().get_id())
                 self.has_started = True
 
+            self.render()
+
             if self.mon_tour():
                 self.bulle_que_doit_faire.set_text("Que doit faire " + self.get_my_creature().get_pseudo() + " ?")
                 self.bulle_que_doit_faire.update()
 
             self.compteur_tour += 1
-            self.render()
 
     def render(self):
         # en attendant d'avoir un paysage
