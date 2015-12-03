@@ -31,6 +31,9 @@ class Inventaire:
             []   # Poche CT/CS
         ]
 
+    def find_object(self, obj: list):
+        self.objets[obj[1]].append(obj[0])
+
     @staticmethod
     def create_inventory_and_store(objs: list):
         tmp_path = os.path.join("..", "saves", "inventaire" + EXTENSION)
@@ -124,12 +127,12 @@ class Inventaire:
 
     def jeter(self, item: int):
         if item != -1:
-            self.carte.drop_object_at(self.xp, self.yp, self.objets[self.cur_categorie][item].jeter(), 1)
+            self.carte.drop_object_at(self.xp, self.yp, self.objets[self.cur_categorie][item].jeter(),
+                                      self.cur_categorie)
 
     def jeter_tout(self, item: int):
         if item != -1:
-            tmp = self.objets[self.cur_categorie][item].jeter_tout()
-            self.carte.drop_object_at(self.xp, self.yp, tmp[0], tmp[1])
+            self.carte.drop_object_at(self.xp, self.yp, self.objets[self.cur_categorie][item].jeter_tout(), self.cur_categorie)
 
     def load(self):
         if os.path.exists(self.path):

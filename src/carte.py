@@ -92,8 +92,8 @@ class SubCarte:
     def has_object(self, x: int, y: int):
         return True if (x, y) in self.objets.keys() else False
 
-    def drop_object_at(self, x: int, y: int, obj, qu: int):
-        self.objets[x, y] = {obj: qu}
+    def drop_object_at(self, x: int, y: int, obj, from_poche):
+        self.objets[x, y] = [obj, from_poche]
 
 
 class CartesManager:
@@ -142,8 +142,8 @@ class CartesManager:
         self.current_carte.load(new_path)
         self.carte = self.current_carte.get_all()
 
-    def drop_object_at(self, x: int, y: int, obj, qu: int):
-        self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, qu)
+    def drop_object_at(self, x: int, y: int, obj, from_poche):
+        self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, from_poche)
 
     def update(self):
         self.render()
