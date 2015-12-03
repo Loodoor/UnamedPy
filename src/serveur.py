@@ -1,5 +1,8 @@
+# coding=utf-8
+
 import json
 import socket
+from constantes import *
 
 print("Démarrage du serveur ...")
 
@@ -35,7 +38,11 @@ print("Le serveur écoute à présent sur le port {0} depuis {1}.".format(port, 
 serveur_lance = True
 
 users = {}
-commands = {}
+commands = {
+    TUDP_ASK_MESSAGES: "",
+    TUDP_ASK_POS_OTHER: "",
+    TUDP_ASK_SIDE_OTHER: ""
+}
 
 BUFFER_SIZE = 4096
 

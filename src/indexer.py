@@ -181,7 +181,7 @@ class Indexer:
                 elem.vu_()
                 break
 
-    def capture_(self, id: int):
+    def capturer(self, id: int):
         for elem in self.indexer:
             if id == elem.id:
                 elem.capture_()

@@ -42,6 +42,7 @@ class Combat:
         return self.adversaire
 
     def end_fight_for_capture(self):
+        self.indexer.capturer(self.get_adversary().get_id())
         self.is_running = False
 
     def update(self):
