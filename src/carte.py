@@ -123,10 +123,13 @@ class CartesManager:
     def load(self):
         if not self.loaded:
             self.general_load()
-        with open(self.map_path, "rb") as map_reader:
-            self.maps = pickle.Unpickler(map_reader).load()
-        self.current_carte.load(os.path.join(*self.maps[MAP_ENTRY_POINT]))
-        self.carte = self.current_carte.get_all()
+        if os.path.exists(self.map_path):
+            with open(self.map_path, "rb") as map_reader:
+                self.maps = pickle.Unpickler(map_reader).load()
+            self.current_carte.load(os.path.join(*self.maps[MAP_ENTRY_POINT]))
+            self.carte = self.current_carte.get_all()
+        else:
+            raise CarteInexistante
 
     def save(self):
         self.triggers_mgr.save()
