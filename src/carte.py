@@ -143,7 +143,7 @@ class CartesManager:
         self.carte = self.current_carte.get_all()
 
     def drop_object_at(self, x: int, y: int, obj, qu: int):
-        self.current_carte.drop_object_at(x, y, obj, qu)
+        self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, qu)
 
     def update(self):
         self.render()
