@@ -127,12 +127,12 @@ class Inventaire:
 
     def jeter(self, item: int):
         if item != -1:
-            self.carte.drop_object_at(self.xp, self.yp, self.objets[self.cur_categorie][item].jeter(),
+            self.carte.drop_object_at(self.xp - 1, self.yp, self.objets[self.cur_categorie][item].jeter(),
                                       self.cur_categorie)
 
     def jeter_tout(self, item: int):
         if item != -1:
-            self.carte.drop_object_at(self.xp, self.yp, self.objets[self.cur_categorie][item].jeter_tout(), self.cur_categorie)
+            self.carte.drop_object_at(self.xp - 1, self.yp, self.objets[self.cur_categorie][item].jeter_tout(), self.cur_categorie)
 
     def load(self):
         if os.path.exists(self.path):

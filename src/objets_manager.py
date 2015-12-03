@@ -32,12 +32,13 @@ class Objet:
         return self.texte
 
     def jeter_tout(self):
-        return self
+        tmp, self.quantite[0] = self.quantite, 0
+        return Objet(self.nom, self.texte, tmp, self.action)
 
     def jeter(self):
         if self.quantite[0] > 0:
             self.quantite[0] -= 1
-            return self
+            return Objet(self.nom, self.texte, self.quantite, self.action)
         return GLOBAL_ERROR
 
     def use(self):

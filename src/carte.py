@@ -93,7 +93,10 @@ class SubCarte:
         return True if (x, y) in self.objets.keys() else False
 
     def drop_object_at(self, x: int, y: int, obj, from_poche):
-        self.objets[x, y] = [obj, from_poche]
+        if (x, y) not in self.objets:
+            self.objets[x, y] = [obj, from_poche]
+        else:
+            self.drop_object_at(x, y - 1, obj, from_poche)
 
 
 class CartesManager:
