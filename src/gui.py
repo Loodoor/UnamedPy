@@ -8,6 +8,41 @@ import time
 from glob import glob
 
 
+class GUIBulle:
+    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str or list, font: pygame.font.SysFont):
+        self.ecran = ecran
+        self.pos = pos
+        self.texte = texte
+        self.font = font
+        self.image = pygame.image.load(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
+        self.iw, self.ih = self.image.get_size()
+        self.txt_renderer = None
+        self.create_text_renderers()
+
+    def set_text(self, new: str or list):
+        self.texte = new
+        self.create_text_renderers()
+
+    def create_text_renderers(self):
+        if not isinstance(self.texte, list):
+            self.txt_renderer = self.font.render(self.texte, 1, (10, 10, 10))
+        else:
+            self.txt_renderer = [self.font.render(t, 1, (10, 10, 10)) for t in self.texte]
+
+    def update(self, dt: int=1):
+        self.render()
+
+    def render(self):
+        self.ecran.blit(self.image, self.pos)
+        if not isinstance(self.txt_renderer, list):
+            self.ecran.blit(self.txt_renderer, (self.pos[0] + self.iw // 2 - self.txt_renderer.get_width() // 2,
+                                                self.pos[1] + self.ih // 2 - self.txt_renderer.get_height() // 2))
+        else:
+            for trender in self.txt_renderer:
+                self.ecran.blit(trender, (self.pos[0] + self.iw // 2 - trender.get_width() // 2,
+                                          self.pos[1] + self.ih // 2 - trender.get_height() // 2))
+
+
 class PNJSpeaking:
     def __init__(self, texte: str, ecran: pygame.Surface, font: pygame.font.SysFont, color: tuple=(240, 240, 240)):
         self.texte = texte

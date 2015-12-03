@@ -2,6 +2,7 @@
 
 import pygame
 from pygame.locals import *
+from gui import GUIBulle
 from constantes import *
 from utils import upg_bar
 import creatures_mgr
@@ -18,7 +19,7 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
 
 
 class Combat:
-    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer) -> None:
+    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer, font) -> None:
         self.ecran = ecran
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
@@ -28,6 +29,7 @@ class Combat:
         self.indexer = indexer
         self.has_started = False
         self.is_running = True
+        self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
 
     def find_adv(self):
         self.adversaire = self.zones_mgr.get_new_adversary(self.zid)
@@ -51,6 +53,10 @@ class Combat:
                 self.indexer.vu_(self.get_adversary().get_id())
                 self.has_started = True
 
+            if self.mon_tour():
+                self.bulle_que_doit_faire.set_text("Que doit faire " + self.get_my_creature().get_pseudo() + " ?")
+                self.bulle_que_doit_faire.update()
+
             self.compteur_tour += 1
             self.render()
 
@@ -61,9 +67,9 @@ class Combat:
         self.ecran.blit(self.indexer.get_image_by_id(self.get_adversary().get_id()), (COMB_X_ADV, COMB_Y_ADV))
         self.ecran.blit(self.indexer.get_image_by_id(self.get_my_creature().get_id()), (COMB_X_ME, COMB_Y_ME))
         # affichage des stats
-        upg_bar(self.ecran, (0, 0, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+        upg_bar(self.ecran, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
                 self.get_adversary().get_pvs() // self.get_adversary().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
-        upg_bar(self.ecran, (0, 300, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+        upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
                 self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
 
 

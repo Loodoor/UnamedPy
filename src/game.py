@@ -215,8 +215,7 @@ class Game:
 
     def process_events_combat(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
-            if event.key == self.controles[MENU]:
-                self.renderer_manager.invert_renderer()
+            pass
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
 
@@ -296,7 +295,7 @@ class Game:
         elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
             if self.equipe_mgr.is_not_empty() and not self.cur_combat:
                 self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
-                                                 self.carte_mgr.get_zid(), self.indexeur)
+                                                 self.carte_mgr.get_zid(), self.indexeur, self.police_normale)
                 self.cur_combat.find_adv()
                 self.top, self.bottom, self.right, self.left = [False] * 4
             if self.cur_combat:
