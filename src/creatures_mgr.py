@@ -17,11 +17,9 @@ class Attaque:
             ATK_PPS: pp
         }
 
-    def utiliser(self) -> tuple:
+    def utiliser(self):
         if self.attaque[ATK_PPS][ATK_PP] > 0:
             self.attaque[ATK_PPS][ATK_PP] -= 1
-            return self.attaque[ATK_DEGATS], self.attaque[ATK_TYP]
-        return ATK_IMPOSSIBLE
 
     def get_nom(self):
         return self.attaque[ATK_NOM]
@@ -62,6 +60,15 @@ class Creature:
         self.specs[SPEC_MAX_PVS] = self.specs[SPEC_PVS]  # quand on crée la créature, les pvs max = pvs actuel
         self.upgrade_range = UPGRADE_RANGE_SPEC
         self.attaques = []
+        self.dead = False
+
+    def is_dead(self):
+        return self.dead
+
+    def taper(self, dgts):
+        self.specs[SPEC_PVS] -= dgts
+        if self.get_pvs() <= 0:
+            self.dead = True
 
     def set_pseudo(self, new):
         self.specs[SPEC_NOM] = new

@@ -2,7 +2,7 @@
 
 import pygame
 from pygame.locals import *
-from gui import GUIBulle
+from gui import GUIBulle, GUIBulleWaiting
 from constantes import *
 from utils import upg_bar
 import creatures_mgr
@@ -33,6 +33,7 @@ class Combat:
         self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
         self.indic_captured = pygame.image.load(os.path.join("..", "assets", "gui", "captured.png")).convert_alpha()
         self.font = font
+        self.selected_atk = -1
 
     def find_adv(self):
         self.adversaire = self.zones_mgr.get_new_adversary(self.zid)
@@ -70,6 +71,22 @@ class Combat:
                     self.compteur_tour += 1
                     self.has_attacked = False
 
+            if self.get_adversary().is_dead():
+                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                    self.get_adversary().get_pseudo() + " est vaincu !", self.font)
+                g.update()
+                self.is_running = False
+
+    def mouseover(self, xp: int, yp: int):
+        if COMB_X_ATK <= xp <= COMB_X_ATK + COMB_SX_ATK_FIELD:
+            real_y = yp - COMB_Y_ADV
+            self.selected_atk = real_y
+
+    def clic(self, xp: int, yp: int):
+        self.mouseover(xp, yp)
+        self.get_my_creature().get_attacks().utiliser(self.get_adversary())
+        self.has_attacked = True
+
     def render(self):
         # en attendant d'avoir un paysage
         pygame.draw.rect(self.ecran, (50, 50, 180), (COMB_X, COMB_Y, COMB_SX, COMB_SY))
@@ -96,13 +113,14 @@ class Combat:
         # affichage du choix des attaques
         i = 1
         for atk in self.get_my_creature().get_attacks():
-            pygame.draw.rect(self.ecran, (180, 180, 50),
-                             (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i,
+            color = (180, 180, 50) if i - 1 != self.selected_atk else (50, 180, 180)
+            pygame.draw.rect(self.ecran, color,
+                             (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i,
                               COMB_SX_ATK_FIELD, COMB_SY_ATK_FIELD))
             self.ecran.blit(self.font.render(atk.get_nom() +
                                              ", dégâts: " + str(atk.get_dgts()), 1, (10, 10, 10)),
-                            (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))
+                            (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))
             self.ecran.blit(self.font.render("PP : " + str(atk.get_pps()[0]) + "/" + str(atk.get_pps()[1]) +
                                              ", description: " + atk.get_texte(), 1, (10, 10, 10)),
-                            (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + COMB_SY_TXT_NAME))
+                            (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + COMB_SY_TXT_NAME))
             i += 1
