@@ -7,6 +7,46 @@ from constantes import *
 import random
 
 
+class Attaque:
+    def __init__(self, nom: str, type: int, degats: int, texte: str, pp: list):
+        self.attaque = {
+            ATK_NOM: nom,
+            ATK_TYP: type,
+            ATK_DEGATS: degats,
+            ATK_TXT: texte,
+            ATK_PPS: pp
+        }
+
+    def utiliser(self) -> tuple:
+        if self.attaque[ATK_PPS][ATK_PP] > 0:
+            self.attaque[ATK_PPS][ATK_PP] -= 1
+            return self.attaque[ATK_DEGATS], self.attaque[ATK_TYP]
+        return ATK_IMPOSSIBLE
+
+    def get_nom(self):
+        return self.attaque[ATK_NOM]
+
+    def get_type(self):
+        return self.attaque[ATK_TYP]
+
+    def get_texte(self):
+        return self.attaque[ATK_TXT]
+
+    def get_dgts(self):
+        return self.attaque[ATK_DEGATS]
+
+    def get_pps(self):
+        return self.attaque[ATK_PPS]
+
+    def increase_pps(self, add):
+        self.attaque[ATK_PPS][ATK_MAX_PP] = self.attaque[ATK_PPS][ATK_MAX_PP] + add \
+            if self.attaque[ATK_PPS][ATK_MAX_PP] + add <= MAX_PP_PER_ATK else self.attaque[ATK_PPS][ATK_MAX_PP]
+        self.attaque[ATK_PPS][ATK_PP] = self.attaque[ATK_PPS][ATK_MAX_PP]
+
+    def soigne_pps(self):
+        self.attaque[ATK_PPS][ATK_PP] = self.attaque[ATK_PPS][ATK_MAX_PP]
+
+
 class Creature:
     def __init__(self, id: int, type: int, alea_niv: tuple=(10, 20), specs_range: tuple=(2, 10), pvs_range: tuple=(18, 27)) -> None:
         self.specs = {
@@ -21,7 +61,7 @@ class Creature:
         }
         self.specs[SPEC_MAX_PVS] = self.specs[SPEC_PVS]  # quand on crée la créature, les pvs max = pvs actuel
         self.upgrade_range = UPGRADE_RANGE_SPEC
-        self.attaques = {}
+        self.attaques = []
 
     def set_pseudo(self, new):
         self.specs[SPEC_NOM] = new
@@ -29,22 +69,11 @@ class Creature:
     def get_pseudo(self):
         return self.specs[SPEC_NOM] if self.specs[SPEC_NOM] != '' else "???"
 
-    def add_attack(self, name: str, type: int, dgts: int, desc: str):
-        self.attaques[name] = {
-            "type": type,
-            "degats": dgts,
-            "description": desc
-        }
+    def add_attack(self, name: str, type: int, dgts: int, desc: str, pps: list):
+        self.attaques.append(Attaque(name, type, dgts, desc, pps))
 
     def get_attacks(self):
-        work = {}
-        i = 0
-        for k, v in self.attaques.items():
-            if i == 4:
-                break
-            work[k] = v
-            i += 1
-        return work
+        return self.attaques[-4:]
 
     def get_id(self):
         return self.specs[SPEC_ID]

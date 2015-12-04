@@ -55,10 +55,10 @@ class Combat:
             if not self.has_started:
                 self.indexer.vu_(self.get_adversary().get_id())
                 self.has_started = True
-                self.get_my_creature().add_attack("test", T_EAU, 50, "TEST d'attaque de type eau")
-                self.get_my_creature().add_attack("test2", T_EAU, 50, "TEST d'attaque de type eau")
-                self.get_my_creature().add_attack("test3", T_EAU, 50, "TEST d'attaque de type eau")
-                self.get_my_creature().add_attack("test4", T_EAU, 50, "TEST d'attaque de type eau")
+                self.get_my_creature().add_attack("test", T_EAU, 50, "TEST d'attaque de type eau", [10, MAX_PP_PER_ATK])
+                self.get_my_creature().add_attack("test2", T_EAU, 50, "TEST d'attaque de type eau", [10, MAX_PP_PER_ATK])
+                self.get_my_creature().add_attack("test3", T_EAU, 50, "TEST d'attaque de type eau", [10, MAX_PP_PER_ATK])
+                self.get_my_creature().add_attack("test4", T_EAU, 50, "TEST d'attaque de type eau", [10, MAX_PP_PER_ATK])
 
             self.render()
 
@@ -95,47 +95,11 @@ class Combat:
             self.ecran.blit(self.indic_captured, (COMB_X_ADV + COMB_CHECK_SX + 10, COMB_Y_ADV - COMB_SY_TXT_NAME))
         # affichage du choix des attaques
         i = 0
-        for k, v in self.get_my_creature().get_attacks().items():
+        for atk in self.get_my_creature().get_attacks():
             pygame.draw.rect(self.ecran, (180, 180, 50), (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + 20 * i, 150, 20))
-            self.ecran.blit(self.font.render(k + " " + str(v["degats"]) + " " + v["description"], 1, (10, 10, 10)), (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + 20 * i, 150, 20))
+            self.ecran.blit(self.font.render(atk.get_nom() +
+                                             ", dégâts: " + str(atk.get_dgts()) +
+                                             ", description: " + atk.get_texte(), 1, (10, 10, 10)),
+                            (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i,
+                             COMB_SX_ATK_FIELD, COMB_SY_ATK_FIELD))
             i += 1
-
-
-class Attaque:
-    def __init__(self, nom: str, type: int, degats: int, texte: str, pp: list):
-        self.attaque = {
-            ATK_NOM: nom,
-            ATK_TYP: type,
-            ATK_DEGATS: degats,
-            ATK_TXT: texte,
-            ATK_PPS: pp
-        }
-
-    def utiliser(self) -> tuple:
-        if self.attaque[ATK_PPS][ATK_PP] > 0:
-            self.attaque[ATK_PPS][ATK_PP] -= 1
-            return self.attaque[ATK_DEGATS], self.attaque[ATK_TYP]
-        return ATK_IMPOSSIBLE
-
-    def get_nom(self):
-        return self.attaque[ATK_NOM]
-
-    def get_type(self):
-        return self.attaque[ATK_TYP]
-
-    def get_texte(self):
-        return self.attaque[ATK_TXT]
-
-    def get_dgts(self):
-        return self.attaque[ATK_DEGATS]
-
-    def get_pps(self):
-        return self.attaque[ATK_PPS]
-
-    def increase_pps(self, add):
-        self.attaque[ATK_PPS][ATK_MAX_PP] = self.attaque[ATK_PPS][ATK_MAX_PP] + add if self.attaque[ATK_PPS][ATK_MAX_PP] \
-            + add <= MAX_PP_PER_ATK else self.attaque[ATK_PPS][ATK_MAX_PP]
-        self.attaque[ATK_PPS][ATK_PP] = self.attaque[ATK_PPS][ATK_MAX_PP]
-
-    def soigne_pps(self):
-        self.attaque[ATK_PPS][ATK_PP] = self.attaque[ATK_PPS][ATK_MAX_PP]
