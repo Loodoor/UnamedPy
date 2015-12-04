@@ -76,6 +76,9 @@ class Creature:
     def get_pseudo(self):
         return self.specs[SPEC_NOM] if self.specs[SPEC_NOM] != '' else "???"
 
+    def get_type(self):
+        return self.specs[SPEC_TYP]
+
     def add_attack(self, name: str, type: int, dgts: int, desc: str, pps: list):
         self.attaques.append(Attaque(name, type, dgts, desc, pps))
 

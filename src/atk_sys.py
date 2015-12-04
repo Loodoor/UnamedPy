@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import pygame
-from pygame.locals import *
 from gui import GUIBulle, GUIBulleWaiting
 from constantes import *
 from utils import upg_bar
@@ -9,7 +8,7 @@ import creatures_mgr
 from zones_attaques_manager import ZonesManager
 
 
-def calcul_degats(degats_basiques: int, specs_atk: list, specs_def: list, coeff_types: int, my_type: int) -> int:
+def calcul_degats(degats_basiques: int, specs_atk: dict, specs_def: dict, coeff_types: int, my_type: int) -> int:
     x = 1.3 if specs_atk[ATK_TYP] == my_type else 1
     return (degats_basiques + specs_atk[SPEC_ATK] / specs_def[SPEC_DEF]) * coeff_types * x
 
@@ -19,7 +18,7 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
 
 
 class Combat:
-    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer, font) -> None:
+    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer, font, storage) -> None:
         self.ecran = ecran
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
@@ -34,6 +33,7 @@ class Combat:
         self.indic_captured = pygame.image.load(os.path.join("..", "assets", "gui", "captured.png")).convert_alpha()
         self.font = font
         self.selected_atk = -1
+        self.storage = storage
 
     def find_adv(self):
         self.adversaire = self.zones_mgr.get_new_adversary(self.zid)
@@ -68,6 +68,14 @@ class Combat:
                 self.bulle_que_doit_faire.update()
 
                 if self.has_attacked:
+                    self.get_adversary().taper(calcul_degats(self.get_my_creature().get_attacks()[self.selected_atk],
+                                                             self.get_my_creature().get_specs(),
+                                                             self.get_adversary().get_specs(),
+                                                             self.storage.get_coeff(
+                                                                 self.get_my_creature().get_type(),
+                                                                 self.get_adversary().get_type()
+                                                             ),
+                                                             self.get_my_creature().get_type()))
                     self.compteur_tour += 1
                     self.has_attacked = False
 
