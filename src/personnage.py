@@ -1,11 +1,11 @@
 # coding=utf-8
 
-import os
 import pygame
 import pickle
 from constantes import *
 from glob import glob
 from carte import CartesManager
+from gui import GUIBulleWaiting
 import inventaire
 
 
@@ -61,6 +61,9 @@ class Personnage:
 
         tmp_obj = self.carte_mgr.get_object_at(self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE)
         if tmp_obj and tmp_obj != OBJET_GET_ERROR:
+            GUIBulleWaiting(self.ecran, (), "Youpi ! Vous venez de trouver " +
+                            str(tmp_obj[0].nombre()) + " " + str(tmp_obj[0].name()) + " !",
+                            self.police).update()
             self.inventaire.find_object(tmp_obj)
 
         if self.last_case == (self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE):

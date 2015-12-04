@@ -43,6 +43,22 @@ class GUIBulle:
                                           self.pos[1] + self.ih // 2 - trender.get_height() // 2))
 
 
+class GUIBulleWaiting(GUIBulle):
+    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str or list, font: pygame.font.SysFont):
+        super().__init__(ecran, pos, texte, font)
+        self.done = False
+
+    def is_done(self):
+        return self.done
+
+    def update(self, dt: int=1):
+        ev = pygame.event.poll()
+        if ev.type == KEYUP:
+            self.done = True
+        if not self.done:
+            self.render()
+
+
 class PNJSpeaking:
     def __init__(self, texte: str, ecran: pygame.Surface, font: pygame.font.SysFont, color: tuple=(240, 240, 240)):
         self.texte = texte
