@@ -94,12 +94,15 @@ class Combat:
         if self.indexer.get_captured(self.get_adversary()):
             self.ecran.blit(self.indic_captured, (COMB_X_ADV + COMB_CHECK_SX + 10, COMB_Y_ADV - COMB_SY_TXT_NAME))
         # affichage du choix des attaques
-        i = 0
+        i = 1
         for atk in self.get_my_creature().get_attacks():
-            pygame.draw.rect(self.ecran, (180, 180, 50), (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + 20 * i, 150, 20))
+            pygame.draw.rect(self.ecran, (180, 180, 50),
+                             (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i,
+                              COMB_SX_ATK_FIELD, COMB_SY_ATK_FIELD))
             self.ecran.blit(self.font.render(atk.get_nom() +
-                                             ", dégâts: " + str(atk.get_dgts()) +
+                                             ", dégâts: " + str(atk.get_dgts()), 1, (10, 10, 10)),
+                            (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))
+            self.ecran.blit(self.font.render("PP : " + str(atk.get_pps()[0]) + "/" + str(atk.get_pps()[1]) +
                                              ", description: " + atk.get_texte(), 1, (10, 10, 10)),
-                            (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i,
-                             COMB_SX_ATK_FIELD, COMB_SY_ATK_FIELD))
+                            (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + COMB_SY_TXT_NAME))
             i += 1
