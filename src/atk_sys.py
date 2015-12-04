@@ -28,6 +28,7 @@ class Combat:
         self.zid = zone_id
         self.indexer = indexer
         self.has_started = False
+        self.has_attacked = False
         self.is_running = True
         self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
         self.indic_captured = pygame.image.load(os.path.join("..", "assets", "gui", "captured.png")).convert_alpha()
@@ -54,6 +55,10 @@ class Combat:
             if not self.has_started:
                 self.indexer.vu_(self.get_adversary().get_id())
                 self.has_started = True
+                self.get_my_creature().add_attack("test", T_EAU, 50, "TEST d'attaque de type eau")
+                self.get_my_creature().add_attack("test2", T_EAU, 50, "TEST d'attaque de type eau")
+                self.get_my_creature().add_attack("test3", T_EAU, 50, "TEST d'attaque de type eau")
+                self.get_my_creature().add_attack("test4", T_EAU, 50, "TEST d'attaque de type eau")
 
             self.render()
 
@@ -61,7 +66,9 @@ class Combat:
                 self.bulle_que_doit_faire.set_text("Que doit faire " + self.get_my_creature().get_pseudo() + " ?")
                 self.bulle_que_doit_faire.update()
 
-            self.compteur_tour += 1
+                if self.has_attacked:
+                    self.compteur_tour += 1
+                    self.has_attacked = False
 
     def render(self):
         # en attendant d'avoir un paysage
@@ -86,6 +93,12 @@ class Combat:
         # affichage d'un indicateur pour dire s'il on a déjà capturé la créature adverse ou non
         if self.indexer.get_captured(self.get_adversary()):
             self.ecran.blit(self.indic_captured, (COMB_X_ADV + COMB_CHECK_SX + 10, COMB_Y_ADV - COMB_SY_TXT_NAME))
+        # affichage du choix des attaques
+        i = 0
+        for k, v in self.get_my_creature().get_attacks().items():
+            pygame.draw.rect(self.ecran, (180, 180, 50), (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + 20 * i, 150, 20))
+            self.ecran.blit(self.font.render(k + " " + str(v["degats"]) + " " + v["description"], 1, (10, 10, 10)), (COMB_X_ADV, COMB_Y_ADV + COMB_SY_ADV + 20 * i, 150, 20))
+            i += 1
 
 
 class Attaque:

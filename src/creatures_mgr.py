@@ -21,12 +21,30 @@ class Creature:
         }
         self.specs[SPEC_MAX_PVS] = self.specs[SPEC_PVS]  # quand on crée la créature, les pvs max = pvs actuel
         self.upgrade_range = UPGRADE_RANGE_SPEC
+        self.attaques = {}
 
     def set_pseudo(self, new):
         self.specs[SPEC_NOM] = new
 
     def get_pseudo(self):
         return self.specs[SPEC_NOM] if self.specs[SPEC_NOM] != '' else "???"
+
+    def add_attack(self, name: str, type: int, dgts: int, desc: str):
+        self.attaques[name] = {
+            "type": type,
+            "degats": dgts,
+            "description": desc
+        }
+
+    def get_attacks(self):
+        work = {}
+        i = 0
+        for k, v in self.attaques.items():
+            if i == 4:
+                break
+            work[k] = v
+            i += 1
+        return work
 
     def get_id(self):
         return self.specs[SPEC_ID]
