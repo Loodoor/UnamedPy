@@ -53,7 +53,7 @@ class GUIBulleWaiting(GUIBulle):
 
     def update(self, dt: int=1):
         ev = pygame.event.poll()
-        if ev.type == KEYUP:
+        if ev.type == KEYUP and ev.key not in (K_UP, K_DOWN, K_RIGHT, K_LEFT):
             self.done = True
         if not self.done:
             self.render()
