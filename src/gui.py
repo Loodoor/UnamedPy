@@ -52,11 +52,13 @@ class GUIBulleWaiting(GUIBulle):
         return self.done
 
     def update(self, dt: int=1):
-        ev = pygame.event.poll()
-        if ev.type == KEYUP and ev.key not in (K_UP, K_DOWN, K_RIGHT, K_LEFT):
-            self.done = True
-        if not self.done:
+        while not self.done:
+            ev = pygame.event.poll()
+            if ev.type == KEYDOWN:
+                self.done = True
+
             self.render()
+            pygame.display.flip()
 
 
 class PNJSpeaking:

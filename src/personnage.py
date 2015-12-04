@@ -61,9 +61,10 @@ class Personnage:
 
         tmp_obj = self.carte_mgr.get_object_at(self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE)
         if tmp_obj and tmp_obj != OBJET_GET_ERROR:
-            GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Youpi ! Vous venez de trouver " +
-                            str(tmp_obj[0].nombre()) + " " + str(tmp_obj[0].name()) + " !",
-                            self.police).update()
+            g = GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Youpi ! Vous venez de trouver " +
+                                str(tmp_obj[0].nombre()) + " " + str(tmp_obj[0].name()) + " !",
+                                self.police)
+            g.update()
             self.inventaire.find_object(tmp_obj)
 
         if self.last_case == (self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE):

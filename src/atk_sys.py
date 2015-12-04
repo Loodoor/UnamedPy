@@ -30,6 +30,7 @@ class Combat:
         self.has_started = False
         self.is_running = True
         self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
+        self.indic_captured = pygame.image.load(os.path.join("..", "assets", "gui", "captured.png")).convert_alpha()
 
     def find_adv(self):
         self.adversaire = self.zones_mgr.get_new_adversary(self.zid)
@@ -72,6 +73,8 @@ class Combat:
                 self.get_adversary().get_pvs() // self.get_adversary().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
         upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
                 self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
+        # affichage des noms des créatures
+        # affichage d'un indicateur pour dire s'il on a déjà capturé la créature adverse ou non
 
 
 class Attaque:
