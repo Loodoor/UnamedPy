@@ -223,7 +223,7 @@ class ULoader:
 
         # Création des zones par défaut
 
-        ZonesManager.add_new_zone_to_path(Zone(ZONE0, [_ for _ in range(MAX_CREATURES)], (0, 5)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE0, [_ for _ in range(MAX_CREATURES)], (0, 4)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE1, [_ for _ in range(MAX_CREATURES)], (4, 10)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE2, [_ for _ in range(MAX_CREATURES)], (8, 22)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE3, [_ for _ in range(MAX_CREATURES)], (17, 35)))

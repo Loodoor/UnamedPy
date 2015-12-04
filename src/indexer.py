@@ -179,11 +179,12 @@ class Indexer:
         for creature in self.indexer:
             if creature.id == id:
                 return creature.capture
-        return POK_SEARCH_ERROR
+        return False
 
     def get_by_id(self, id: int):
         for creature in self.indexer:
             if creature.id == id:
+                print(type(creature))
                 return creature
         return POK_SEARCH_ERROR
 

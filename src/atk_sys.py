@@ -31,6 +31,7 @@ class Combat:
         self.is_running = True
         self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
         self.indic_captured = pygame.image.load(os.path.join("..", "assets", "gui", "captured.png")).convert_alpha()
+        self.font = font
 
     def find_adv(self):
         self.adversaire = self.zones_mgr.get_new_adversary(self.zid)
@@ -75,11 +76,16 @@ class Combat:
                 self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
         # affichage des noms des créatures
         if self.indexer.get_captured(self.get_adversary().get_id()):
-            self.ecran.blit(self.indexer.get_by_id(self.get_adversary()).pseudo(),
+            self.ecran.blit(self.indexer.get_by_id(self.get_adversary()).get_pseudo(),
                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME))
+        else:
+            self.ecran.blit(self.font.render("???", 1, (10, 10, 10)),
+                            (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
+        self.ecran.blit(self.font.render(self.get_my_creature().get_pseudo(), 1, (10, 10, 10)),
+                        (COMB_X_ME, COMB_Y_ME - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
         # affichage d'un indicateur pour dire s'il on a déjà capturé la créature adverse ou non
         if self.indexer.get_captured(self.get_adversary()):
-            self.ecran.blit(self.indic_captured, (COMB_X_ADV + COMB_CHECK_SX + 10, COMB_Y_ADV))
+            self.ecran.blit(self.indic_captured, (COMB_X_ADV + COMB_CHECK_SX + 10, COMB_Y_ADV - COMB_SY_TXT_NAME))
 
 
 class Attaque:
