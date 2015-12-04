@@ -298,8 +298,10 @@ class Game:
                                                  self.carte_mgr.get_zid(), self.indexeur, self.police_normale)
                 self.cur_combat.find_adv()
                 self.top, self.bottom, self.right, self.left = [False] * 4
-            if self.cur_combat:
+            if self.cur_combat and not self.cur_combat.is_finished():
                 self.cur_combat.update()
+            if not self.cur_combat.is_finished():
+                self.renderer_manager.invert_renderer()
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:

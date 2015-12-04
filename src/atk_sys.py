@@ -75,7 +75,11 @@ class Combat:
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     self.get_adversary().get_pseudo() + " est vaincu !", self.font)
                 g.update()
+                # gestion de l'xp à faire
                 self.is_running = False
+
+    def is_finished(self):
+        return not self.is_running
 
     def mouseover(self, xp: int, yp: int):
         if COMB_X_ATK <= xp <= COMB_X_ATK + COMB_SX_ATK_FIELD:
