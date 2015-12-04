@@ -175,6 +175,18 @@ class Indexer:
     def get_typeur(self):
         return self.typeur
 
+    def get_captured(self, id: int):
+        for creature in self.indexer:
+            if creature.id == id:
+                return creature.capture
+        return POK_SEARCH_ERROR
+
+    def get_by_id(self, id: int):
+        for creature in self.indexer:
+            if creature.id == id:
+                return creature
+        return POK_SEARCH_ERROR
+
     def vu_(self, id: int):
         for elem in self.indexer:
             if id == elem.id:

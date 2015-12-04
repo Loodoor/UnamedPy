@@ -74,7 +74,12 @@ class Combat:
         upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
                 self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
         # affichage des noms des créatures
+        if self.indexer.get_captured(self.get_adversary().get_id()):
+            self.ecran.blit(self.indexer.get_by_id(self.get_adversary()).pseudo(),
+                            (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME))
         # affichage d'un indicateur pour dire s'il on a déjà capturé la créature adverse ou non
+        if self.indexer.get_captured(self.get_adversary()):
+            self.ecran.blit(self.indic_captured, (COMB_X_ADV + COMB_CHECK_SX + 10, COMB_Y_ADV))
 
 
 class Attaque:
