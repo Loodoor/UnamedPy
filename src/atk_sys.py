@@ -85,6 +85,12 @@ class Combat:
                                         " !",
                                         self.font)
                     g.update()
+            else:
+                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                    self.get_adversary().get_pseudo() +
+                                    " ne sait pas quoi faire pour le moment !",
+                                    self.font)
+                g.update()
 
             if self.get_adversary().is_dead():
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
