@@ -219,13 +219,15 @@ class Game:
                 self.cur_combat.next()
             if event.key == self.__ctrls[PREVIOUS_PAGE]:
                 self.cur_combat.previous()
+            if event.key == self.controles[VALIDATION]:
+                self.cur_combat.valide()
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             if event.button == 1:
                 self.cur_combat.clic(xp, yp)
         if event.type == MOUSEMOTION:
             xp, yp = event.pos
-            self.cur_combat.mouse_over(xp, yp)
+            self.cur_combat.mouseover(xp, yp)
 
     def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:

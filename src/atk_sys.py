@@ -68,7 +68,7 @@ class Combat:
                 self.bulle_que_doit_faire.update()
 
                 if self.has_attacked:
-                    self.get_adversary().taper(calcul_degats(self.get_my_creature().get_attacks()[self.selected_atk],
+                    self.get_adversary().taper(calcul_degats(self.get_my_creature().get_attacks()[self.selected_atk].get_dgts(),
                                                              self.get_my_creature().get_specs(),
                                                              self.get_adversary().get_specs(),
                                                              self.storage.get_coeff(
@@ -107,6 +107,9 @@ class Combat:
 
     def previous(self):
         self.selected_atk = self.selected_atk - 1 if self.selected_atk > 0 else 3
+
+    def valide(self):
+        self.has_attacked = True
 
     def mouseover(self, xp: int, yp: int):
         if COMB_X_ATK <= xp <= COMB_X_ATK + COMB_SX_ATK_FIELD:
