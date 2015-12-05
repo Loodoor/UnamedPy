@@ -215,9 +215,16 @@ class Game:
 
     def process_events_combat(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
-            pass
+            if event.key == self.__ctrls[NEXT_PAGE]:
+                self.cur_combat.next()
+            if event.key == self.__ctrls[PREVIOUS_PAGE]:
+                self.cur_combat.previous()
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
+            if event.button != 1:
+                self.cur_combat.mouse_over(xp, yp)
+            else:
+                self.cur_combat.clic(xp, yp)
 
     def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
@@ -301,8 +308,8 @@ class Game:
                 self.top, self.bottom, self.right, self.left = [False] * 4
             if self.cur_combat and not self.cur_combat.is_finished():
                 self.cur_combat.update()
-            if not self.cur_combat.is_finished():
-                self.renderer_manager.invert_renderer()
+            if self.cur_combat.is_finished():
+                self.renderer_manager.del_last_renderer()  # et reviens au précédent en l'occurence
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:

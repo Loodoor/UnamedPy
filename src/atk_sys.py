@@ -78,6 +78,13 @@ class Combat:
                                                              self.get_my_creature().get_type()))
                     self.compteur_tour += 1
                     self.has_attacked = False
+                    g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                        self.get_my_creature().get_pseudo() +
+                                        " utilise " +
+                                        self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
+                                        " !",
+                                        self.font)
+                    g.update()
 
             if self.get_adversary().is_dead():
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
@@ -89,6 +96,12 @@ class Combat:
     def is_finished(self):
         return not self.is_running
 
+    def next(self):
+        self.selected_atk = self.selected_atk + 1 if self.selected_atk + 1 < 4 else 0
+
+    def previous(self):
+        self.selected_atk = self.selected_atk - 1 if self.selected_atk > 0 else 3
+
     def mouseover(self, xp: int, yp: int):
         if COMB_X_ATK <= xp <= COMB_X_ATK + COMB_SX_ATK_FIELD:
             real_y = yp - COMB_Y_ADV
@@ -96,8 +109,9 @@ class Combat:
 
     def clic(self, xp: int, yp: int):
         self.mouseover(xp, yp)
-        self.get_my_creature().get_attacks().utiliser(self.get_adversary())
-        self.has_attacked = True
+        if 0 <= self.selected_atk <= 3:
+            self.get_my_creature().get_attacks()[self.selected_atk].utiliser(self.get_adversary())
+            self.has_attacked = True
 
     def render(self):
         # en attendant d'avoir un paysage
