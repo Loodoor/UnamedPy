@@ -30,8 +30,9 @@ MAX_FPS = 1000000
 BUFFER_SIZE = 4096
 TUDP_NONE = "tchat.messages.fetch:Nothing"
 TUDP_ASK_MESSAGES = "tchat.messages.fetch"
-TUDP_ASK_POS_OTHER = "other.all.get.pos"
-TUDP_ASK_SIDE_OTHER = "other.all.get.side"
+UDP_ASK_POS_OTHER = "other.all.get.pos"
+UDP_ASK_SIDE_OTHER = "other.all.get.side"
+UDP_NOTHING_NEW = "network.game.changes:Nothing"
 
 TILE_SIZE = 32
 YTAILLE_carte = 1200
@@ -127,6 +128,8 @@ NEXT_PAGE = 7
 PREVIOUS_PAGE = 8
 SHOW_FPS = 9
 VALIDATION = 10
+UP_PAGE = 11
+DOWN_PAGE = 12
 
 MAX_CREATURES = 52
 MAX_CREATURES_IN_TEAM = 6

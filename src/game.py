@@ -77,7 +77,9 @@ class Game:
 
         self.__ctrls = {
             NEXT_PAGE: K_RIGHT,
-            PREVIOUS_PAGE: K_LEFT
+            PREVIOUS_PAGE: K_LEFT,
+            UP_PAGE: K_UP,
+            DOWN_PAGE: K_DOWN
         }
 
         self.load()
@@ -215,9 +217,9 @@ class Game:
 
     def process_events_combat(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
-            if event.key == self.__ctrls[NEXT_PAGE]:
+            if event.key == self.__ctrls[NEXT_PAGE] or event.key == self.__ctrls[DOWN_PAGE]:
                 self.cur_combat.next()
-            if event.key == self.__ctrls[PREVIOUS_PAGE]:
+            if event.key == self.__ctrls[PREVIOUS_PAGE] or event.key == self.__ctrls[UP_PAGE]:
                 self.cur_combat.previous()
             if event.key == self.controles[VALIDATION]:
                 self.cur_combat.valide()
