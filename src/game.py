@@ -10,6 +10,8 @@ import carte
 import personnage
 import renderer_manager as rd_mgr
 from gui import GUISauvegarde
+from network_event_listener import NetworkEventsListener
+import socket
 import sys
 import os
 
@@ -342,6 +344,32 @@ class Game:
             # FPS
             # self.fps_regulator.actualise() ; dt = self.fps_regulator.get_DeltaTime()
             dt = self.fps_regulator.tick(FPS_base)
+
+            # Evénements
+            self.process_events(pygame.event.get(), dt)
+
+            # Affichage
+            self.render(dt)
+
+            pygame.display.flip()
+
+        self.save()
+
+
+class LANGame(Game):
+    def __init__(self, ecran: pygame.Surface, s: socket.socket, p: tuple, controles: dict={}):
+        super().__init__(ecran, controles)
+        self.network_ev_listener = NetworkEventsListener(s, p)
+
+    def start(self):
+        self.prepare()
+
+        while self.continuer:
+            # FPS
+            # self.fps_regulator.actualise() ; dt = self.fps_regulator.get_DeltaTime()
+            dt = self.fps_regulator.tick(FPS_base)
+
+            self.network_ev_listener.listen()
 
             # Evénements
             self.process_events(pygame.event.get(), dt)

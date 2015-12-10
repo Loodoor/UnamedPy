@@ -28,11 +28,18 @@ FPS_base = 100
 MAX_FPS = 1000000
 
 BUFFER_SIZE = 4096
-TUDP_NONE = "tchat.messages.fetch:Nothing"
-TUDP_ASK_MESSAGES = "tchat.messages.fetch"
-UDP_ASK_POS_OTHER = "other.all.get.pos"
-UDP_ASK_SIDE_OTHER = "other.all.get.side"
+
+UDP_ASK_NEWS = "network.game.changes.fetch"
+UDP_ASK_MESSAGES = "network.tchat.messages.fetch"
+UDP_ASK_CARTE_CHANGES = "network.game.map.changes.fetch"
+UDP_ASK_PLAYERS_CHANGES = "network.game.others.fetch"
+
+UDP_MSG_NONE = "network.tchat.messages.fetch:Nothing"
 UDP_NOTHING_NEW = "network.game.changes:Nothing"
+
+UDP_CARTE_CHANGE = "network.game.map.haschanged"
+UDP_PLAYERS_CHANGE = "network.game.others.haschanged"
+UDP_MESSAGES_CHANGE = "network.tchat.haschanged"
 
 TILE_SIZE = 32
 YTAILLE_carte = 1200
