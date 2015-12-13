@@ -1,28 +1,28 @@
 # coding=utf-8
 
-import pygame
-from pygame.locals import *
-from fpsregulator import IAFPS
-from exceptions import FonctionnaliteNonImplementee
-from constantes import *
-from glob import glob
-import carte
-import personnage
-import renderer_manager as rd_mgr
-from gui import GUISauvegarde
-from network_event_listener import NetworkEventsListener
-import socket
 import sys
-import os
+import socket
+import pygame
+from glob import glob
+from pygame.locals import *
 
+import carte
 import indexer
+import atk_sys
 import money_mgr
 import tab_types
-import equipe_manager
-import atk_sys
+import personnage
+import chat_manager
 import menu_in_game
+import equipe_manager
 import computer_manager
+import renderer_manager
 import zones_attaques_manager
+from constantes import *
+from gui import GUISauvegarde
+from fpsregulator import IAFPS
+from exceptions import FonctionnaliteNonImplementee
+from network_event_listener import NetworkEventsListener
 
 
 class Game:
@@ -31,7 +31,7 @@ class Game:
         self.fps_regulator = pygame.time.Clock()
         self.continuer = 1
         self.ecran = ecran
-        self.renderer_manager = rd_mgr.RendererManager()
+        self.renderer_manager = renderer_manager.RendererManager()
         self.show_fps = False
 
         self.right = False
@@ -55,6 +55,7 @@ class Game:
         self.zones_manager = zones_attaques_manager.ZonesManager(self.indexeur)
         self.money = money_mgr.MoneyManager()
         self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
+        self.chat_mgr = chat_manager.ChatManager(self.ecran)
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr, self.police_grande)
@@ -65,7 +66,7 @@ class Game:
             BAS: K_DOWN,
             GAUCHE: K_LEFT,
             DROITE: K_RIGHT,
-            INVENTAIRE: K_RSHIFT,
+            CHAT: K_RSHIFT,
             MENU: K_ESCAPE,
             SCREENSCHOT: K_F5,
             SHOW_FPS: K_BACKSPACE,
@@ -125,6 +126,9 @@ class Game:
             elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
                 # l'inventaire
                 self.process_events_inventaire(event, dt)
+            elif self.renderer_manager.get_renderer() == RENDER_CHAT:
+                # le chat
+                self.process_events_chat(event, dt)
             elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
                 # quand on est en combat
                 self.process_events_combat(event, dt)
@@ -159,6 +163,8 @@ class Game:
                     self.screenshot()
                 if event.key == self.controles[SHOW_FPS]:
                     self.show_fps = not self.show_fps
+                if event.key == self.controles[CHAT]:
+                    pass
 
     def process_events_carte(self, event: pygame.event, dt: int=1):
         """
@@ -214,6 +220,12 @@ class Game:
             xp, yp = event.pos
             self.equipe_mgr.clic(xp, yp)
 
+    def process_events_chat(self, event: pygame.event, dt: int=1):
+        if self.chat_mgr.is_running():
+            self.chat_mgr.event(event)
+        else:
+            self.renderer_manager.invert_renderer()
+
     def process_events_boutique(self, event: pygame.event, dt: int=1):
         raise FonctionnaliteNonImplementee
 
@@ -235,7 +247,7 @@ class Game:
 
     def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
-            if event.key == self.controles[INVENTAIRE] or event.key == self.controles[MENU]:
+            if event.key == self.controles[MENU]:
                 self.renderer_manager.invert_renderer()
             if event.key == self.__ctrls[NEXT_PAGE]:
                 self.personnage.inventaire_next()
@@ -255,8 +267,8 @@ class Game:
                 self.left, self.right = True, False
             if event.key == self.controles[DROITE]:
                 self.left, self.right = False, True
-            if event.key == self.controles[INVENTAIRE]:
-                self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
+            if event.key == self.controles[CHAT]:
+                self.renderer_manager.change_renderer_for(RENDER_CHAT)
             if event.key == self.controles[MENU]:
                 self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
         if event.type == KEYUP:
@@ -304,6 +316,8 @@ class Game:
             self.personnage.update()
         elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
             self.personnage.inventaire_update()
+        elif self.renderer_manager.get_renderer() == RENDER_CHAT:
+            self.chat_mgr.update()
         elif self.renderer_manager.get_renderer() == RENDER_BOUTIQUE:
             raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_COMBAT:

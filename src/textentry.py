@@ -5,7 +5,7 @@ from pygame.locals import *
 
 
 class TextBox:
-    def __init__(self, window, **kwargs):
+    def __init__(self, window: pygame.Surface, **kwargs):
         """
         args :
             font            (default : pygame.font.SysFont("arial", 18))
@@ -13,6 +13,9 @@ class TextBox:
             color           (default : (255, 255, 255))
             x               (default : 0)
             y               (default : 0)
+            sx              (default : 120)
+            sy              (default : 35)
+            bgcolor         (default : (0, 0, 0))
         """
         self.window = window
         self.input = ""
@@ -23,8 +26,11 @@ class TextBox:
         self.color = kwargs.get("color", (255, 255, 255))
         self.pos_x = kwargs.get("x", 0)
         self.pos_y = kwargs.get("y", 0)
+        self.sx = kwargs.get("sx", 120)
+        self.sy = kwargs.get("sy", 35)
+        self.bg_color = kwargs.get("bgcolor", (0, 0, 0))
 
-    def _event(self, e):
+    def event(self, e: pygame.event):
         if e.type == QUIT:
             self.running = False
         elif e.type == KEYDOWN:
@@ -35,22 +41,29 @@ class TextBox:
             elif len(self.input) < self.max_length:
                 self.input += e.unicode
 
-    def _render(self):
+    def render(self):
+        pygame.draw.rect(self.window, self.bg_color, (self.pos_x, self.pos_y, self.sx, self.sy))
         texte = self.font.render(self.input, 1, self.color)
         text_width = texte.get_width()
-        self.window.blit(texte, (self.pos_x + (- text_width) // 2, self.pos_y))
+        self.window.blit(texte, (self.pos_x - text_width // 2, self.pos_y))
 
-    def _mainloop(self):
+    def mainloop(self):
         self.running = True
 
         while self.running:
             for event in pygame.event.get():
-                self._event(event)
+                self.event(event)
 
-            self._render()
+            self.render()
             pygame.display.flip()
 
+    def is_running(self):
+        return self.running
+
+    def reinit(self):
+        self.input = ""
+
     def get_text(self):
-        self._mainloop()
+        #self.mainloop()
 
         return self.input

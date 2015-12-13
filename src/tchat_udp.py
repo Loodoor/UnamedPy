@@ -16,7 +16,7 @@ class TchatUDP:
         self.s.sendto(json.dumps(message), self.params)
 
     def check_for_message(self):
-        self.s.sendto(json.dumps(TUDP_ASK_MESSAGES), self.params)
+        self.s.sendto(json.dumps(UDP_ASK_MESSAGES), self.params)
         responce = self.s.recv(BUFFER_SIZE)
-        if responce != TUDP_NONE:
+        if responce != UDP_MSG_NONE:
             print(responce)
