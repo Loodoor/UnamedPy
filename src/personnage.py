@@ -17,6 +17,7 @@ class Personnage:
         self.anim_cursor = PAUSE
         self.max_anim_cursor = 2
         self.speed = BASIC_SPEED
+        self.path = os.path.join("..", "saves", "pos" + EXTENSION)
         self.cur_div = DIV_DT_BASIC
         self.lhaut = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "haut*.png"))]
         self.lbas = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "bas*.png"))]
@@ -240,8 +241,8 @@ class Personnage:
         return tuple([int(i) for i in self.pos])
 
     def load(self):
-        if os.path.exists(os.path.join("..", "saves", "perso" + EXTENSION)):
-            with open(os.path.join("..", "saves", "perso" + EXTENSION), "rb") as read_perso:
+        if os.path.exists(self.path):
+            with open(self.path, "rb") as read_perso:
                 self.pos = pickle.Unpickler(read_perso).load()
         else:
             # on charge une position par défaut
@@ -249,6 +250,6 @@ class Personnage:
         self.inventaire.load()
 
     def save(self):
-        with open(os.path.join("..", "saves", "perso" + EXTENSION), "wb") as save_perso:
+        with open(self.path, "wb") as save_perso:
             pickle.Pickler(save_perso).dump(self.pos)
         self.inventaire.save()

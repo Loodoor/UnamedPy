@@ -38,15 +38,28 @@ print("Le serveur écoute à présent sur le port {0} depuis {1}.".format(port, 
 serveur_lance = True
 
 users = {}
-commands = {
-    TUDP_ASK_MESSAGES: "",
-    TUDP_ASK_POS_OTHER: "",
-    TUDP_ASK_SIDE_OTHER: ""
-}
+
+if os.path.exists("config.srv"):
+    with open("config.srv") as config:
+        predefined = eval(config.read())
+else:
+    predefined = {
+        UDP_ASK_SERV_NAME: "MyServeur",
+    }
 
 BUFFER_SIZE = 4096
 
 while serveur_lance:
     data, addr = connexion_principale.recvfrom(BUFFER_SIZE)
     if data:
-        print(json.loads(data))
+        if addr not in users.keys():
+            users[addr] = json.loads(data)
+        else:
+            datas = json.loads(data)
+            if isinstance(datas, str):
+                if datas in predefined.keys():
+                    connexion_principale.sendto(json.dumps(predefined[datas]), addr)
+                else:
+                    pass
+            else:
+                pass

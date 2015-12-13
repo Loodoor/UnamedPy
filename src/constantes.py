@@ -33,6 +33,7 @@ UDP_ASK_NEWS = "network.game.changes.fetch"
 UDP_ASK_MESSAGES = "network.tchat.messages.fetch"
 UDP_ASK_CARTE_CHANGES = "network.game.map.changes.fetch"
 UDP_ASK_PLAYERS_CHANGES = "network.game.others.fetch"
+UDP_ASK_SERV_NAME = "network.server.name.fetch"
 
 UDP_MSG_NONE = "network.tchat.messages.fetch:Nothing"
 UDP_NOTHING_NEW = "network.game.changes:Nothing"
