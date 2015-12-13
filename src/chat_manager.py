@@ -39,7 +39,7 @@ class ChatManager:
 
     def get_messages(self):
         if self.reseau_mgr.is_enabled():
-            pass
+            self.network_fetch_messages()
         return self.stack[::-1]
 
     def update_name(self, new_name: str):

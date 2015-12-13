@@ -113,7 +113,7 @@ class Combat:
 
     def mouseover(self, xp: int, yp: int):
         if COMB_X_ATK <= xp <= COMB_X_ATK + COMB_SX_ATK_FIELD:
-            real_y = yp - COMB_Y_ADV
+            real_y = (yp - COMB_Y_ADV - COMB_SY_ADV) // COMB_SY_ATK_FIELD
             self.selected_atk = real_y
 
     def clic(self, xp: int, yp: int):

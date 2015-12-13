@@ -10,7 +10,7 @@ class NetworkEventsListener:
         self._sock = s
         self._params = p
         self._buffer_size = BUFFER_SIZE
-        self._enabled = True
+        self._enabled = True if s else False
         self._recv_to_send_cmd = {
             UDP_CARTE_CHANGE: UDP_ASK_CARTE_CHANGES,
             UDP_PLAYERS_CHANGE: UDP_ASK_PLAYERS_CHANGES,

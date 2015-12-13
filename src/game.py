@@ -26,7 +26,7 @@ from network_event_listener import NetworkEventsListener
 
 
 class Game:
-    def __init__(self, ecran: pygame.Surface, s: socket.socket, p: tuple=('127.0.0.1', 5500), controles: dict={}):
+    def __init__(self, ecran: pygame.Surface, s: socket.socket=None, p: tuple=('127.0.0.1', 5500), controles: dict={}):
         # self.fps_regulator = IAFPS(FPS_base)
         self.fps_regulator = pygame.time.Clock()
         self.continuer = 1
@@ -137,7 +137,8 @@ class Game:
                 self.process_events_chat(event, dt)
             elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
                 # quand on est en combat
-                self.process_events_combat(event, dt)
+                if self.cur_combat:
+                    self.process_events_combat(event, dt)
             elif self.renderer_manager.get_renderer() == RENDER_BOUTIQUE:
                 # dans une boutique
                 self.process_events_boutique(event, dt)
