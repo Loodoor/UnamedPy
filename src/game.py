@@ -55,7 +55,7 @@ class Game:
         self.zones_manager = zones_attaques_manager.ZonesManager(self.indexeur)
         self.money = money_mgr.MoneyManager()
         self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
-        self.chat_mgr = chat_manager.ChatManager(self.ecran)
+        self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, "testeur", RANG_ADMIN)
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr, self.police_grande)
@@ -66,7 +66,7 @@ class Game:
             BAS: K_DOWN,
             GAUCHE: K_LEFT,
             DROITE: K_RIGHT,
-            CHAT: K_RSHIFT,
+            CHAT: K_KP0,
             MENU: K_ESCAPE,
             SCREENSCHOT: K_F5,
             SHOW_FPS: K_BACKSPACE,
@@ -95,6 +95,8 @@ class Game:
         self.pc_mgr.load()
         self.zones_manager.load()
         self.money.load()
+
+        self.chat_mgr.update_quit_event(self.controles[CHAT])
 
         self.tab_types.init_tab()
 
@@ -164,7 +166,10 @@ class Game:
                 if event.key == self.controles[SHOW_FPS]:
                     self.show_fps = not self.show_fps
                 if event.key == self.controles[CHAT]:
-                    pass
+                    if not self.renderer_manager.get_renderer() == RENDER_CHAT:
+                        self.renderer_manager.change_renderer_for(RENDER_CHAT)
+                    else:
+                        self.renderer_manager.invert_renderer()
 
     def process_events_carte(self, event: pygame.event, dt: int=1):
         """
@@ -267,8 +272,6 @@ class Game:
                 self.left, self.right = True, False
             if event.key == self.controles[DROITE]:
                 self.left, self.right = False, True
-            if event.key == self.controles[CHAT]:
-                self.renderer_manager.change_renderer_for(RENDER_CHAT)
             if event.key == self.controles[MENU]:
                 self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
         if event.type == KEYUP:
