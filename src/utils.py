@@ -31,9 +31,10 @@ def ucount_in_list(*args):
 
 
 def uhas_already_played() -> bool:
-    if glob(os.path.join("..", "saves", "*" + EXTENSION)):
-        return True
-    return False
+    mapping = glob(os.path.join("..", "saves", "*" + EXTENSION))
+    if not mapping or (mapping and "map" + EXTENSION in mapping and len(mapping) == 1):
+        return False
+    return True
 
 
 def udel_same_occurence(*args) -> list:

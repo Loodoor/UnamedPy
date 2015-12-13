@@ -7,13 +7,15 @@ if os.path.split(os.getcwd())[1] != "src":
     raise ErreurRepertoire("Le répertoire courant n'est pas correct, le jeu ne peut pas se lancer")
 print("Chargement ...")
 
-import game
 import pygame
-from pygame.locals import *
-from constantes import *
-import utils
-from glob import glob
 import random
+from glob import glob
+from pygame.locals import *
+
+import game
+import utils
+from constantes import *
+from textentry import TextBox
 
 
 def get_alea_text(path: str="textes") -> str:
@@ -24,11 +26,11 @@ def get_alea_text(path: str="textes") -> str:
 
 
 def main():
-    pygame.init()
-    pygame.font.init()
+    print("Initialisation de Pygame ...", pygame.init())
+    print("Initialisation de Pygame.Font ...", pygame.font.init())
 
     ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
-    pygame.display.set_caption("Unamed")
+    pygame.display.set_caption("Unamed - v" + VERSION)
     police = pygame.font.Font(POLICE_PATH, 16)
     police_jouer = pygame.font.Font(POLICE_PATH, 20)
     police_annot = pygame.font.Font(POLICE_PATH, 12)
@@ -61,7 +63,8 @@ def main():
     temp.load()
     del temp
 
-    jeu = game.Game(ecran)
+    text_box = TextBox(ecran, x=MENU_TXT_BOX_X, y=MENU_TXT_BOX_Y, sx=MENU_TXT_BOX_SX, sy=MENU_TXT_BOX_SY)
+    plz_pseudo = police.render("Pseudo :", 1, (255, 255, 255))
 
     while continuer:
         for event in pygame.event.get():
@@ -72,6 +75,8 @@ def main():
                     chargement = True
                 if event.key == K_SPACE:
                     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
+                if not has_already_played:
+                    text_box.event(event)
             if event.type == MOUSEBUTTONUP:
                 xp, yp = event.pos
                 if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_JOUER_SX and \
@@ -83,9 +88,14 @@ def main():
         ecran.blit(title, (FEN_large // 2 - title.get_width() // 2, 20))
 
         if not has_already_played:
+            i = 0
             for txt in bienvenue:
                 tmp = police.render(txt, 1, (255, 255, 255))
-                ecran.blit(tmp, (FEN_large // 2 - tmp.get_width() // 2, 100))
+                ecran.blit(tmp, (FEN_large // 2 - tmp.get_width() // 2, 100 + 20 * i))
+                i += 1
+            if text_box.is_running():
+                text_box.render()
+                ecran.blit(plz_pseudo, (MENU_X_PLZ_PSEUDO, MENU_Y_PLZ_PSEUDO + 20 * i))
         else:
             ecran.blit(alea_texte, (FEN_large // 2 - alea_texte.get_width() // 2, 75))
 
@@ -93,7 +103,7 @@ def main():
             pygame.draw.rect(ecran, (150, 150, 150), (FEN_large // 2 - MENU_SIZE_BAR // 2, MENU_BAR_Y, MENU_SIZE_BAR, 22))
             pygame.draw.rect(ecran, (30, 160, 30), (FEN_large // 2 - MENU_SIZE_BAR // 2 + 2, MENU_BAR_Y + 2, avancement, 18))
             ecran.blit(loading_text, (FEN_large // 2 - loading_text.get_width() // 2, MENU_SIZE_BAR))
-            avancement += 0.25
+            avancement += MENU_SPEED_LOADING
             if not int(avancement) % max_len and len(load_texts) != 0 and float(int(avancement)) == avancement:
                 if len(load_texts) - 1 > 0:
                     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),
@@ -105,7 +115,9 @@ def main():
             if avancement >= 246 and chargement:
                 chargement = False
                 avancement = 0
+                jeu = game.Game(ecran)
                 jeu.start()
+                del jeu
         else:
             pygame.draw.rect(ecran, (50, 180, 180), (MENU_BTN_JOUER_X, MENU_BTN_JOUER_Y,
                                                      MENU_BTN_JOUER_SX, MENU_BTN_JOUER_SY))

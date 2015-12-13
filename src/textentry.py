@@ -46,7 +46,6 @@ class TextBox:
     def render(self):
         pygame.draw.rect(self.window, self.bg_color, (self.pos_x, self.pos_y, self.sx, self.sy))
         texte = self.font.render(self.input, 1, self.color)
-        text_width = texte.get_width()
         self.window.blit(texte, (self.pos_x + 2, self.pos_y))
 
     def mainloop(self):
