@@ -59,10 +59,6 @@ def main():
     chargement = False
     avancement = 0
 
-    temp = utils.ULoader()
-    temp.load()
-    del temp
-
     text_box = TextBox(ecran, x=MENU_TXT_BOX_X, y=MENU_TXT_BOX_Y, sx=MENU_TXT_BOX_SX, sy=MENU_TXT_BOX_SY)
     plz_pseudo = police.render("Pseudo :", 1, (255, 255, 255))
 
@@ -115,6 +111,9 @@ def main():
             if avancement >= 246 and chargement:
                 chargement = False
                 avancement = 0
+                temp = utils.ULoader()
+                temp.load()
+                del temp
                 jeu = game.Game(ecran)
                 jeu.start()
                 del jeu
