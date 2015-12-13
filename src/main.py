@@ -59,7 +59,10 @@ def main():
     chargement = False
     avancement = 0
 
-    text_box = TextBox(ecran, x=MENU_TXT_BOX_X, y=MENU_TXT_BOX_Y, sx=MENU_TXT_BOX_SX, sy=MENU_TXT_BOX_SY)
+    print("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
+
+    text_box = TextBox(ecran, x=MENU_TXT_BOX_X, y=MENU_TXT_BOX_Y, sx=MENU_TXT_BOX_SX,
+                       sy=MENU_TXT_BOX_SY, color=(150, 150, 150))
     plz_pseudo = police.render("Pseudo :", 1, (255, 255, 255))
 
     while continuer:
@@ -67,9 +70,7 @@ def main():
             if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 continuer = 0
             if event.type == KEYDOWN:
-                if event.key == K_j:
-                    chargement = True
-                if event.key == K_SPACE:
+                if event.key == K_RIGHT or event.key == K_LEFT:
                     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
                 if not has_already_played:
                     text_box.event(event)

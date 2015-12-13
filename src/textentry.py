@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import time
 import pygame
 from pygame.locals import *
 
@@ -16,11 +17,15 @@ class TextBox:
             sx              (default : 120)
             sy              (default : 35)
             bgcolor         (default : (0, 0, 0))
+            cli             (default : "_")
         """
         self.window = window
         self.input = ""
         self.running = True
         self.enter = False
+        self.clignote = False
+        self.mdt = 0
+        self.tdt = 0
 
         self.font = kwargs.get("font", pygame.font.SysFont("arial", 18))
         self.max_length = kwargs.get("max_length", 32)
@@ -30,6 +35,7 @@ class TextBox:
         self.sx = kwargs.get("sx", 120)
         self.sy = kwargs.get("sy", 35)
         self.bg_color = kwargs.get("bgcolor", (0, 0, 0))
+        self.cli = self.font.render(kwargs.get("cli", "_"), 1, self.color)
 
     def event(self, e: pygame.event):
         if e.type == QUIT:
@@ -47,6 +53,14 @@ class TextBox:
         pygame.draw.rect(self.window, self.bg_color, (self.pos_x, self.pos_y, self.sx, self.sy))
         texte = self.font.render(self.input, 1, self.color)
         self.window.blit(texte, (self.pos_x + 2, self.pos_y))
+        if self.clignote:
+            self.window.blit(self.cli, (self.pos_x + 2 * 2 + texte.get_width(), self.pos_y))
+            self.clignote = False
+        self.mdt = time.time() - self.mdt
+        self.tdt += self.mdt
+        self.tdt %= 3
+        if 0 < self.tdt <= 0.5:
+            self.clignote = True
 
     def mainloop(self):
         while self.running:
