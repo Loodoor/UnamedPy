@@ -26,11 +26,12 @@ from network_event_listener import NetworkEventsListener
 
 
 class Game:
-    def __init__(self, ecran: pygame.Surface, s: socket.socket=None, p: tuple=('127.0.0.1', 5500), controles: dict={}):
+    def __init__(self, ecran: pygame.Surface, pseudo: str, s: socket.socket=None, p: tuple=('127.0.0.1', 5500), controles: dict={}):
         # self.fps_regulator = IAFPS(FPS_base)
         self.fps_regulator = pygame.time.Clock()
         self.continuer = 1
         self.ecran = ecran
+        self.pseudo = pseudo
         self.sock = s
         self.params = p
         self.network_ev_listener = NetworkEventsListener(s, p)
@@ -59,7 +60,7 @@ class Game:
         self.money = money_mgr.MoneyManager()
         self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
-                                                 "testeur", RANG_ADMIN)
+                                                 self.pseudo, RANG_ADMIN)
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr, self.police_grande)

@@ -115,7 +115,7 @@ def main():
                 temp = utils.ULoader()
                 temp.load()
                 del temp
-                jeu = game.Game(ecran)
+                jeu = game.Game(ecran, text_box.get_text())
                 jeu.start()
                 del jeu
         else:
