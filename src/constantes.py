@@ -41,6 +41,8 @@ UDP_CARTE_CHANGE = "network.game.map.haschanged"
 UDP_PLAYERS_CHANGE = "network.game.others.haschanged"
 UDP_MESSAGES_CHANGE = "network.tchat.haschanged"
 
+UDP_SEND_MSG = "network.game.message.sendingnew"
+
 TILE_SIZE = 32
 YTAILLE_carte = 1200
 XTAILLE_carte = 1200

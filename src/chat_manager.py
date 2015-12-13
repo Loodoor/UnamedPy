@@ -5,12 +5,15 @@ from pygame.locals import *
 
 import textentry
 from constantes import *
+from network_event_listener import NetworkEventsListener
 
 
 class ChatManager:
-    def __init__(self, ecran: pygame.Surface, font: pygame.font.SysFont, pseudo: str, rang: int):
+    def __init__(self, ecran: pygame.Surface, font: pygame.font.SysFont, reseau_mgr: NetworkEventsListener,
+                 pseudo: str, rang: int):
         self.ecran = ecran
         self.font = font
+        self.reseau_mgr = reseau_mgr
         self.pseudo = pseudo
         self.rang = rang
         self.stack = []
@@ -27,10 +30,16 @@ class ChatManager:
         if not self.text_entry.type_enter():
             self.text_entry.render()
         else:
+            self.reseau_mgr.chat_message(self.text_entry.get_text(), self.pseudo, self.rang)
             self.new_message(self.text_entry.get_text())
             self.text_entry.reset()
 
+    def network_fetch_messages(self):
+        self.stack = self.reseau_mgr.get_chat_messages()
+
     def get_messages(self):
+        if self.reseau_mgr.is_enabled():
+            pass
         return self.stack[::-1]
 
     def update_name(self, new_name: str):

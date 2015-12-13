@@ -26,11 +26,14 @@ from network_event_listener import NetworkEventsListener
 
 
 class Game:
-    def __init__(self, ecran: pygame.Surface, controles: dict={}):
+    def __init__(self, ecran: pygame.Surface, s: socket.socket, p: tuple=('127.0.0.1', 5500), controles: dict={}):
         # self.fps_regulator = IAFPS(FPS_base)
         self.fps_regulator = pygame.time.Clock()
         self.continuer = 1
         self.ecran = ecran
+        self.sock = s
+        self.params = p
+        self.network_ev_listener = NetworkEventsListener(s, p)
         self.renderer_manager = renderer_manager.RendererManager()
         self.show_fps = False
 
@@ -55,7 +58,8 @@ class Game:
         self.zones_manager = zones_attaques_manager.ZonesManager(self.indexeur)
         self.money = money_mgr.MoneyManager()
         self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
-        self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, "testeur", RANG_ADMIN)
+        self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
+                                                 "testeur", RANG_ADMIN)
 
         # Entités
         self.personnage = personnage.Personnage(self.ecran, self.carte_mgr, self.police_grande)
@@ -365,31 +369,7 @@ class Game:
             # Evénements
             self.process_events(pygame.event.get(), dt)
 
-            # Affichage
-            self.render(dt)
-
-            pygame.display.flip()
-
-        self.save()
-
-
-class LANGame(Game):
-    def __init__(self, ecran: pygame.Surface, s: socket.socket, p: tuple, controles: dict={}):
-        super().__init__(ecran, controles)
-        self.network_ev_listener = NetworkEventsListener(s, p)
-
-    def start(self):
-        self.prepare()
-
-        while self.continuer:
-            # FPS
-            # self.fps_regulator.actualise() ; dt = self.fps_regulator.get_DeltaTime()
-            dt = self.fps_regulator.tick(FPS_base)
-
             self.network_ev_listener.listen()
-
-            # Evénements
-            self.process_events(pygame.event.get(), dt)
 
             # Affichage
             self.render(dt)
