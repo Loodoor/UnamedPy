@@ -47,4 +47,15 @@ Temporary Items
 
 # Directory of PyCharm
 .idea
-.idea/*.*
+.idea/*.xml
+.idea/*
+.idea/workspace.xml
+
+# Files of Unamed
+saves/indexer.umd
+saves/inventaire.umd
+saves/triggers.umd
+saves/utils.umd
+saves/zones.umd
+saves/pos.umd
+saves/money.umd
