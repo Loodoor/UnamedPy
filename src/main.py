@@ -14,6 +14,7 @@ from pygame.locals import *
 
 import game
 import utils
+import pickle
 from constantes import *
 from textentry import TextBox
 
@@ -110,12 +111,15 @@ def main():
                     loading_text = police.render(open(load_texts.pop(0), encoding='utf-8').read(),
                                                  1, (255, 255, 255))
             if avancement >= 246 and chargement:
+                if not has_already_played:
+                    with open(os.path.join("..", "saves", "pseudo" + EXTENSION)) as spseud:
+                        pickle.Pickler(spseud).dump(text_box.get_text())
                 chargement = False
                 avancement = 0
                 temp = utils.ULoader()
                 temp.load()
                 del temp
-                jeu = game.Game(ecran, text_box.get_text())
+                jeu = game.Game(ecran)
                 jeu.start()
                 del jeu
         else:

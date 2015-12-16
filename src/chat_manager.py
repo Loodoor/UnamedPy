@@ -30,7 +30,7 @@ class ChatManager:
         if not self.text_entry.type_enter():
             self.text_entry.render()
         else:
-            self.reseau_mgr.chat_message(self.text_entry.get_text(), self.pseudo, self.rang)
+            self.reseau_mgr.chat_message(self.text_entry.get_text())
             self.new_message(self.text_entry.get_text())
             self.text_entry.reset()
 

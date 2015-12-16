@@ -10,13 +10,15 @@ import inventaire
 
 
 class Personnage:
-    def __init__(self, ecran: pygame.Surface, carte_mgr: CartesManager, police: pygame.font.Font, pos: tuple=(0, 0)):
+    def __init__(self, ecran: pygame.Surface, carte_mgr: CartesManager, police: pygame.font.Font,
+                 pseudo: str, pos: tuple=(0, 0)):
         self.ecran = ecran
         self.direction = BAS
         self.police = police
         self.anim_cursor = PAUSE
         self.max_anim_cursor = 2
         self.speed = BASIC_SPEED
+        self.pseudo = pseudo
         self.path = os.path.join("..", "saves", "pos" + EXTENSION)
         self.cur_div = DIV_DT_BASIC
         self.lhaut = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "haut*.png"))]
@@ -37,6 +39,9 @@ class Personnage:
         self.inventaire = inventaire.Inventaire(self.ecran, self.police, self.carte_mgr)
         self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
         self.same_as_before = False
+
+    def get_pseudo(self):
+        return self.pseudo
 
     def inventaire_clic(self, xp: int, yp: int):
         self.inventaire.clic(xp, yp)
@@ -221,6 +226,9 @@ class Personnage:
     def end_move(self):
         self.is_moving = False
 
+    def walk(self):
+        self.cur_div = DIV_DT_BASIC
+
     def run(self):
         self.cur_div = DIV_DT_COURSE if self.cur_div != DIV_DT_COURSE else DIV_DT_BASIC
 
@@ -238,7 +246,7 @@ class Personnage:
         self.ecran.blit(self.perso, self.pos)
 
     def get_pos(self):
-        return tuple([int(i) for i in self.pos])
+        return tuple(int(i) for i in self.pos)
 
     def load(self):
         if os.path.exists(self.path):

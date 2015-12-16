@@ -36,6 +36,7 @@ UDP_ASK_MESSAGES = "network.tchat.messages.fetch"
 UDP_ASK_CARTE_CHANGES = "network.game.map.changes.fetch"
 UDP_ASK_PLAYERS_CHANGES = "network.game.others.fetch"
 UDP_ASK_SERV_NAME = "network.server.name.fetch"
+UDP_ASK_MYRANG = "network.serveur.me.rang.fetch"
 
 UDP_MSG_NONE = "network.tchat.messages.fetch:Nothing"
 UDP_NOTHING_NEW = "network.game.changes:Nothing"
@@ -45,6 +46,10 @@ UDP_PLAYERS_CHANGE = "network.game.others.haschanged"
 UDP_MESSAGES_CHANGE = "network.tchat.haschanged"
 
 UDP_SEND_MSG = "network.game.message.sendingnew"
+UDP_SEND_MYPOS = "network.game.message.sendingpos"
+
+UDP_CONNECTED = "network.game.lastplayer.connected"
+UDP_LISTENNING = "network.server.islistenning"
 
 TILE_SIZE = 32
 YTAILLE_carte = 1200
@@ -173,6 +178,7 @@ CHAT_COULEUR_JOUEUR = (0, 0, 0)
 RANG_ADMIN = 64
 RANG_MODO = 32
 RANG_JOUEUR = 16
+RANG_NUL = 0
 
 RENDER_GAME = 0
 RENDER_INVENTAIRE = 1
