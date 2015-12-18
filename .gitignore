@@ -19,6 +19,10 @@ $RECYCLE.BIN/
 
 # Python
 *.py[cod]
+*.pyc
+*.pyo
+*.pyd
+__pycache__/*
 
 # =========================
 # Operating System Files
@@ -50,6 +54,7 @@ Temporary Items
 .idea/*.xml
 .idea/*
 .idea/workspace.xml
+*.xml
 
 # Files of Unamed
 saves/indexer.umd
@@ -59,3 +64,5 @@ saves/utils.umd
 saves/zones.umd
 saves/pos.umd
 saves/money.umd
+src/__pycache__/*
+src/__pycache__/*.py[cod]

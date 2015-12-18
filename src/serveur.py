@@ -54,7 +54,7 @@ else:
 
 BUFFER_SIZE = 4096
 
-news_from_user = {}
+news_ = []
 
 while serveur_lance:
     data, addr = connexion_principale.recvfrom(BUFFER_SIZE)
@@ -68,29 +68,55 @@ while serveur_lance:
                 if datas in predefined.keys():
                     connexion_principale.sendto(json.dumps(predefined[datas]), addr)
                 else:
+                    # ASK
                     if datas == UDP_ASK_CARTE_CHANGES:
+                        for elem in news_:
+                            if users[addr]['pseudo'] not in elem['sawit']:
+                                elem['sawit'].append(users[addr]['pseudo'])
                         connexion_principale.sendto(json.dumps(UDP_NOTHING_NEW), addr)
                     elif datas == UDP_ASK_PLAYERS_CHANGES:
                         connexion_principale.sendto(json.dumps(UDP_NOTHING_NEW), addr)
                     elif datas == UDP_ASK_MESSAGES:
                         connexion_principale.sendto(json.dumps(UDP_NOTHING_NEW), addr)
                     elif datas == UDP_ASK_NEWS:
-                        connexion_principale.sendto(json.dumps([UDP_NOTHING_NEW]), addr)
+                        kind = []
+                        for elem in news_:
+                            if users[addr]['pseudo'] not in elem['sawit']:
+                                kind.append(elem['type'])
+                        if kind:
+                            connexion_principale.sendto(json.dumps(kind), addr)
+                        else:
+                            connexion_principale.sendto(json.dumps([UDP_NOTHING_NEW]), addr)
                     elif datas == UDP_ASK_MYRANG:
                         if users[addr]['pseudo'] in pred_users.keys():
                             connexion_principale.sendto(json.dumps(pred_users[users[addr]['pseudo']]), addr)
                         else:
                             connexion_principale.sendto(json.dumps(RANG_JOUEUR), addr)
+                    # SEND
                     elif datas == UDP_SEND_MSG:
                         connexion_principale.sendto(json.dumps(UDP_LISTENNING), addr)
                         d_tmp, a_tmp = connexion_principale.recvfrom(BUFFER_SIZE)
                         if a_tmp == addr:
                             content = json.loads(d_tmp)
-                            news_from_user[users[addr]['pseudo']] = {
+                            news_ += {
                                 'type': UDP_MESSAGES_CHANGE,
-                                'content': content
+                                'content': content,
+                                'sawit': []
                             }
                     elif datas == UDP_SEND_MYPOS:
-                        pass
+                        connexion_principale.sendto(json.dumps(UDP_LISTENNING), addr)
+                        d_tmp, a_tmp = connexion_principale.recvfrom(BUFFER_SIZE)
+                        if a_tmp == addr:
+                            content = json.loads(d_tmp)
+                            users[addr]['pos'] = content
+                            news_ += {
+                                'type': UDP_PLAYERS_CHANGE,
+                                'content': {
+                                    'addr': addr,
+                                    'pseudo': users[addr]['pseudo'],
+                                    'pos': users[addr]['pseudo']
+                                },
+                                'sawit': []
+                            }
             elif isinstance(datas, list):
                 pass
