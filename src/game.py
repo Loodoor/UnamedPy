@@ -50,6 +50,9 @@ class Game:
         self.police_grande = pygame.font.Font(POLICE_PATH, POL_GRANDE_TAILLE)
         self.police_petite = pygame.font.Font(POLICE_PATH, POL_PETITE_TAILLE)
 
+        # Entités
+        self.personnage = personnage.Personnage(self.ecran, self.police_grande, self.pseudo)
+
         # Managers
         self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager)
         self.indexeur = indexer.Indexer(self.ecran, self.police_grande, self.renderer_manager)
@@ -61,12 +64,9 @@ class Game:
         self.zones_manager = zones_attaques_manager.ZonesManager(self.indexeur)
         self.money = money_mgr.MoneyManager()
         self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
+        self.network_ev_listener = NetworkEventsListener(s, p, self.personnage)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
                                                  self.pseudo, RANG_NUL)
-        self.network_ev_listener = NetworkEventsListener(s, p, self.personnage)
-
-        # Entités
-        self.personnage = personnage.Personnage(self.ecran, self.carte_mgr, self.police_grande, self.pseudo)
 
         # Contrôles
         self.controles = {
@@ -321,6 +321,8 @@ class Game:
 
         self.renderer_manager.clear_all()
         self.renderer_manager.ban_renderer(RENDER_COMBAT)
+
+        self.personnage.set_carte_mgr(self.carte_mgr)
 
         self.pc_mgr.add_equipe(self.equipe_mgr)
         self.equipe_mgr.add_pc(self.pc_mgr)

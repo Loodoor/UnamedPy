@@ -10,8 +10,7 @@ import inventaire
 
 
 class Personnage:
-    def __init__(self, ecran: pygame.Surface, carte_mgr: CartesManager, police: pygame.font.Font,
-                 pseudo: str, pos: tuple=(0, 0)):
+    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font, pseudo: str, pos: tuple=(0, 0)):
         self.ecran = ecran
         self.direction = BAS
         self.police = police
@@ -35,13 +34,16 @@ class Personnage:
 
         self.is_moving = False
         self.pos = list(pos)
-        self.carte_mgr = carte_mgr
+        self.carte_mgr = None
         self.inventaire = inventaire.Inventaire(self.ecran, self.police, self.carte_mgr)
         self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
         self.same_as_before = False
 
     def get_pseudo(self):
         return self.pseudo
+
+    def set_carte_mgr(self, new: CartesManager):
+        self.carte_mgr = new
 
     def inventaire_clic(self, xp: int, yp: int):
         self.inventaire.clic(xp, yp)
