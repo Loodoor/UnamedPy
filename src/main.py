@@ -112,7 +112,7 @@ def main():
                                                  1, (255, 255, 255))
             if avancement >= 246 and chargement:
                 if not has_already_played:
-                    with open(os.path.join("..", "saves", "pseudo" + EXTENSION)) as spseud:
+                    with open(os.path.join("..", "saves", "pseudo" + EXTENSION), 'w') as spseud:
                         pickle.Pickler(spseud).dump(text_box.get_text())
                 chargement = False
                 avancement = 0

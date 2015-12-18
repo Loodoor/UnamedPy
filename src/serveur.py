@@ -4,6 +4,16 @@ import json
 import socket
 from constantes import *
 
+
+def get_from_where(users: dict, news_: list, kind: str, addr):
+    work = []
+    for elem in news_:
+        if users[addr]['pseudo'] not in elem['sawit'] and elem['type'] == kind:
+            work.append(elem['content'])
+            elem['sawit'].append(users[addr]['pseudo'])
+    return work
+
+
 print("Démarrage du serveur ...")
 
 print("_" * 77 + "\n" + "|/-\\" * (79 // 4) + "\n" + "|   " * (79 // 4))
@@ -69,15 +79,18 @@ while serveur_lance:
                     connexion_principale.sendto(json.dumps(predefined[datas]), addr)
                 else:
                     # ASK
-                    if datas == UDP_ASK_CARTE_CHANGES:
-                        for elem in news_:
-                            if users[addr]['pseudo'] not in elem['sawit']:
-                                elem['sawit'].append(users[addr]['pseudo'])
-                        connexion_principale.sendto(json.dumps(UDP_NOTHING_NEW), addr)
-                    elif datas == UDP_ASK_PLAYERS_CHANGES:
-                        connexion_principale.sendto(json.dumps(UDP_NOTHING_NEW), addr)
-                    elif datas == UDP_ASK_MESSAGES:
-                        connexion_principale.sendto(json.dumps(UDP_NOTHING_NEW), addr)
+                    kind = "ask" if "fetch" in datas else ("send" if "sending" in datas else "error?")
+                    if kind == "ask":
+                        if datas == UDP_ASK_CARTE_CHANGES:
+                            work = get_from_where(users, news_, UDP_CARTE_CHANGE, addr)
+                        if datas == UDP_ASK_MESSAGES:
+                            work = get_from_where(users, news_, UDP_MESSAGES_CHANGE, addr)
+                        if datas == UDP_ASK_PLAYERS_CHANGES:
+                            work = get_from_where(users, news_, UDP_PLAYERS_CHANGE, addr)
+                        if not work:
+                            connexion_principale.sendto(json.dumps(UDP_NOTHING_NEW), addr)
+                        else:
+                            connexion_principale.sendto(json.dumps(work), addr)
                     elif datas == UDP_ASK_NEWS:
                         kind = []
                         for elem in news_:
