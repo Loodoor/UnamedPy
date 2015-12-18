@@ -97,7 +97,7 @@ class Game:
 
     def load_pseudo(self):
         if os.path.exists(os.path.join("..", "saves", "pseudo" + EXTENSION)):
-            with open(os.path.join("..", "saves", "pseudo" + EXTENSION)) as rpseud:
+            with open(os.path.join("..", "saves", "pseudo" + EXTENSION), 'rb') as rpseud:
                 self.pseudo = pickle.Unpickler(rpseud).load()
         else:
             self.pseudo = "Testeur" + str(int(random.randint() * 100))
