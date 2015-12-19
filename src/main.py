@@ -9,12 +9,13 @@ print("Chargement ...")
 
 import pygame
 import random
+import pickle
+import socket
 from glob import glob
 from pygame.locals import *
 
 import game
 import utils
-import pickle
 from constantes import *
 from textentry import TextBox
 
@@ -119,7 +120,8 @@ def main():
                 temp = utils.ULoader()
                 temp.load()
                 del temp
-                jeu = game.Game(ecran)
+                print("Entrée en mode réseau ...")
+                jeu = game.Game(ecran, s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM), p=('192.168.1.15', 5500))
                 jeu.start()
                 del jeu
         else:

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import json
+import pickle as json
 import socket
 from constantes import *
 
@@ -10,6 +10,7 @@ def get_from_where(users: dict, news_: list, kind: str, addr):
     for elem in news_:
         if users[addr]['pseudo'] not in elem['sawit'] and elem['type'] == kind:
             work.append(elem['content'])
+            print(elem['content'])
             elem['sawit'].append(users[addr]['pseudo'])
     return work
 
@@ -65,6 +66,11 @@ else:
 BUFFER_SIZE = 4096
 
 news_ = []
+askers = (
+    UDP_ASK_CARTE_CHANGES,
+    UDP_ASK_MESSAGES,
+    UDP_ASK_PLAYERS_CHANGES
+)
 
 while serveur_lance:
     data, addr = connexion_principale.recvfrom(BUFFER_SIZE)
@@ -72,6 +78,7 @@ while serveur_lance:
         if addr not in users.keys():
             users[addr] = json.loads(data)
             connexion_principale.sendto(json.dumps(UDP_CONNECTED), addr)
+            print("Un client s'est connecté ! Youpi !\t* Pseudo : {0}".format(users[addr]['pseudo']))
         else:
             datas = json.loads(data)
             if isinstance(datas, str):
@@ -79,19 +86,19 @@ while serveur_lance:
                     connexion_principale.sendto(json.dumps(predefined[datas]), addr)
                 else:
                     # ASK
-                    kind = "ask" if "fetch" in datas else ("send" if "sending" in datas else "error?")
-                    if kind == "ask":
+                    if datas in askers:
+                        work = []
                         if datas == UDP_ASK_CARTE_CHANGES:
                             work = get_from_where(users, news_, UDP_CARTE_CHANGE, addr)
-                        if datas == UDP_ASK_MESSAGES:
+                        elif datas == UDP_ASK_MESSAGES:
                             work = get_from_where(users, news_, UDP_MESSAGES_CHANGE, addr)
-                        if datas == UDP_ASK_PLAYERS_CHANGES:
+                        elif datas == UDP_ASK_PLAYERS_CHANGES:
                             work = get_from_where(users, news_, UDP_PLAYERS_CHANGE, addr)
                         if not work:
                             connexion_principale.sendto(json.dumps(UDP_NOTHING_NEW), addr)
                         else:
                             connexion_principale.sendto(json.dumps(work), addr)
-                    elif datas == UDP_ASK_NEWS:
+                    if datas == UDP_ASK_NEWS:
                         kind = []
                         for elem in news_:
                             if users[addr]['pseudo'] not in elem['sawit']:
@@ -111,18 +118,18 @@ while serveur_lance:
                         d_tmp, a_tmp = connexion_principale.recvfrom(BUFFER_SIZE)
                         if a_tmp == addr:
                             content = json.loads(d_tmp)
-                            news_ += {
+                            news_ += [{
                                 'type': UDP_MESSAGES_CHANGE,
                                 'content': content,
                                 'sawit': []
-                            }
+                            }]
                     elif datas == UDP_SEND_MYPOS:
                         connexion_principale.sendto(json.dumps(UDP_LISTENNING), addr)
                         d_tmp, a_tmp = connexion_principale.recvfrom(BUFFER_SIZE)
                         if a_tmp == addr:
                             content = json.loads(d_tmp)
                             users[addr]['pos'] = content
-                            news_ += {
+                            news_ += [{
                                 'type': UDP_PLAYERS_CHANGE,
                                 'content': {
                                     'addr': addr,
@@ -130,6 +137,6 @@ while serveur_lance:
                                     'pos': users[addr]['pseudo']
                                 },
                                 'sawit': []
-                            }
+                            }]
             elif isinstance(datas, list):
                 pass

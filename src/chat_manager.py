@@ -58,7 +58,8 @@ class ChatManager:
     def new_message(self, msg: str):
         self.stack += [
             {
-                "message": self.pseudo + " : " + msg,
+                "pseudo": self.pseudo,
+                "message": msg,
                 "rang": self.rang
             }
         ]
@@ -69,12 +70,12 @@ class ChatManager:
         i = 0
         color = (255, 255, 255)
         for msg in self.get_messages():
-            if msg["rang"] == RANG_ADMIN:
+            """if msg["rang"] == RANG_ADMIN:
                 color = CHAT_COULEUR_ADMIN
             if msg["rang"] == RANG_MODO:
                 color = CHAT_COULEUR_MODO
             if msg["rang"] == RANG_JOUEUR:
-                color = CHAT_COULEUR_JOUEUR
+                color = CHAT_COULEUR_JOUEUR"""
             self.ecran.blit(self.font.render(msg["message"], 1, color),
                             (CHAT_X_MESSAGES, CHAT_Y_MESSAGES + i * CHAT_SY_MESSAGE))
             i += 1

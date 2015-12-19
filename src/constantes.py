@@ -29,7 +29,7 @@ MAP_ENTRY_POINT = "1"
 FPS_base = 100
 MAX_FPS = 1000000
 
-BUFFER_SIZE = 4096
+BUFFER_SIZE = 8192
 
 UDP_ASK_NEWS = "network.game.changes.fetch"
 UDP_ASK_MESSAGES = "network.tchat.messages.fetch"

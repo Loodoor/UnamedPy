@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import socket
-import json
+import pickle as json
 from constantes import *
 
 
@@ -23,8 +23,8 @@ class NetworkEventsListener:
 
     def on_connect(self):
         self.send({
-            'pseudo': self.perso,
-            'pos': self.perso
+            'pseudo': self.perso.get_pseudo(),
+            'pos': self.perso.get_pos()
         })
 
     def disable(self):
@@ -55,7 +55,7 @@ class NetworkEventsListener:
         self.send(UDP_SEND_MSG)
         if self._recv() == UDP_LISTENNING:
             self.send({
-                "msg": message,
+                "message": message,
                 "pseudo": self.perso.get_pseudo(),
                 "rang": self.rang
             })
@@ -89,8 +89,8 @@ class NetworkEventsListener:
             ret = self._recv()
             changes = {}
 
-            if isinstance(ret, dict):
-                if ret[UDP_NOTHING_NEW]:
+            if isinstance(ret, list):
+                if UDP_NOTHING_NEW in ret:
                     pass
                 else:
                     for key, code in self._recv_to_send_cmd.items():
