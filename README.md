@@ -13,5 +13,7 @@ Ce jeu necessite Python 3.4 et Pygame pour fonctionner correctement
 # Que faire en cas de bug(s) ?
 
 Exploser votre PC avec une machette, tout en le trempant dans de l'acide chloridrique avec une once de merde de rinocéros (du Congo de préférence).
+
 Non, tout simplement il est possible que des bugs persistent (et signent hélas) au fur et à mesure des commits, car je ne m'amuse à faire des milliers de tests avant de push chaque commit !
+
 Si vous venez à tomber sur un de ces bugs, n'hésitez pas à créer une issue, et y intégrer le petit message d'erreur que vous donnera la console (le truc hideux tout noir avec des lettres blanches, qui s'ouvre en même temps que le jeu (voir même avant tellement que ce truc vous aime :D ))
