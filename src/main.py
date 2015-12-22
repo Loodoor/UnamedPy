@@ -42,6 +42,7 @@ def main():
     police_title.set_bold(True)
     title = police_title.render("Unamed", 1, (255, 255, 255))
     jouer = police_jouer.render("Jouer !", 1, (255, 255, 255))
+    reseau = police_jouer.render("Réseau", 1, (255, 255, 255))
     bienvenue = [
         "Bienvenue à toi, chercheur !",
         "Tu vas entrer sur l'île d'Unamed, prépare toi à une toute nouvelle aventure !"
@@ -59,6 +60,7 @@ def main():
     continuer = 1
     has_already_played = utils.uhas_already_played()
     chargement = False
+    en_reseau = False
     avancement = 0
 
     print("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
@@ -81,6 +83,10 @@ def main():
                 if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_JOUER_SX and \
                                         MENU_BTN_JOUER_Y <= yp <= MENU_BTN_JOUER_Y + MENU_BTN_JOUER_SY:
                     chargement = True
+                if MENU_BTN_RESEAU_X <= xp <= MENU_BTN_RESEAU_X + MENU_BTN_RESEAU_SX and \
+                                        MENU_BTN_RESEAU_Y <= yp <= MENU_BTN_RESEAU_Y + MENU_BTN_RESEAU_SY:
+                    chargement = True
+                    en_reseau = True
 
         #Affichage
         ecran.blit(fond, (0, 0))
@@ -120,8 +126,18 @@ def main():
                 temp = utils.ULoader()
                 temp.load()
                 del temp
-                print("Entrée en mode réseau ...")
-                jeu = game.Game(ecran, s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM), p=('192.168.1.15', 5500))
+                if en_reseau:
+                    print("Entrée en mode réseau ...")
+                    ecran.fill(0)
+                    pygame.display.flip()
+                    ip = TextBox(ecran, x=100, y=ecran.get_height() // 2,
+                                 sx=ecran.get_width(),
+                                 sy=ecran.get_height(),
+                                 placeholder="IP du serveur : ")
+                    ip.mainloop()
+                    jeu = game.Game(ecran, s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM), p=(ip.get_text(), 5500))
+                else:
+                    jeu = game.Game(ecran)
                 jeu.start()
                 del jeu
         else:
@@ -129,6 +145,10 @@ def main():
                                                      MENU_BTN_JOUER_SX, MENU_BTN_JOUER_SY))
             ecran.blit(jouer, (MENU_BTN_JOUER_X + (MENU_BTN_JOUER_SX - jouer.get_width()) // 2 + 2,
                                MENU_BTN_JOUER_Y + (MENU_BTN_JOUER_SY - jouer.get_height()) // 2 + 2))
+            pygame.draw.rect(ecran, (180, 50, 180), (MENU_BTN_RESEAU_X, MENU_BTN_RESEAU_Y,
+                                                     MENU_BTN_RESEAU_SX, MENU_BTN_RESEAU_SY))
+            ecran.blit(reseau, (MENU_BTN_RESEAU_X + (MENU_BTN_RESEAU_SX - reseau.get_width()) // 2 + 2,
+                                MENU_BTN_RESEAU_Y + (MENU_BTN_RESEAU_SY - reseau.get_height()) // 2 + 2))
 
         pygame.display.flip()
 

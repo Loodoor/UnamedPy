@@ -119,7 +119,7 @@ class Combat:
     def clic(self, xp: int, yp: int):
         self.mouseover(xp, yp)
         if 0 <= self.selected_atk <= 3:
-            self.get_my_creature().get_attacks()[self.selected_atk].utiliser(self.get_adversary())
+            self.get_adversary().taper(self.get_my_creature().get_attacks()[self.selected_atk].utiliser())
             self.has_attacked = True
 
     def render(self):

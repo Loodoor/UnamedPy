@@ -86,7 +86,6 @@ class ULoader:
             self.create()
 
     def create(self):
-        # création des créatures
         # doit être fait AVANT de faire quoi que ce soit !
         uremove(
             path.join("..", "saves", "indexer" + EXTENSION),
@@ -94,6 +93,8 @@ class ULoader:
             path.join("..", "saves", "inventaire" + EXTENSION),
             path.join("..", "saves", "zones" + EXTENSION)
         )
+        
+        # création des créatures
 
         # le nom est toujours vide, c'est le joueur qui les choisira à chaque fois
         # l'id doit etre unique

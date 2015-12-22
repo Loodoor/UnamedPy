@@ -20,6 +20,8 @@ class Attaque:
     def utiliser(self):
         if self.attaque[ATK_PPS][ATK_PP] > 0:
             self.attaque[ATK_PPS][ATK_PP] -= 1
+            return self.attaque[ATK_DEGATS]
+        return 0
 
     def get_nom(self):
         return self.attaque[ATK_NOM]
