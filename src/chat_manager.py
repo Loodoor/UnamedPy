@@ -35,7 +35,17 @@ class ChatManager:
             self.text_entry.reset()
 
     def network_fetch_messages(self):
-        self.stack = self.reseau_mgr.get_chat_messages()
+        datas = self.reseau_mgr.get_chat_messages()
+        if isinstance(datas, list):
+            self.stack = datas
+        else:
+            self.stack = [
+                {
+                    'message': "Erreur côté serveur",
+                    'pseudo': "Service",
+                    'rang': RANG_SERVICE
+                }
+            ]
 
     def get_messages(self):
         if self.reseau_mgr.is_enabled():
@@ -75,7 +85,9 @@ class ChatManager:
             if msg["rang"] == RANG_MODO:
                 color = CHAT_COULEUR_MODO
             if msg["rang"] == RANG_JOUEUR:
-                color = CHAT_COULEUR_JOUEUR"""
+                color = CHAT_COULEUR_JOUEUR
+            if msg["rang"] == RANG_SERVICE:
+                color = CHAT_COULEUR_SERVICE"""
             self.ecran.blit(self.font.render(msg["message"], 1, color),
                             (CHAT_X_MESSAGES, CHAT_Y_MESSAGES + i * CHAT_SY_MESSAGE))
             i += 1

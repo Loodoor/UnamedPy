@@ -93,7 +93,7 @@ class ULoader:
             path.join("..", "saves", "inventaire" + EXTENSION),
             path.join("..", "saves", "zones" + EXTENSION)
         )
-        
+
         # création des créatures
 
         # le nom est toujours vide, c'est le joueur qui les choisira à chaque fois

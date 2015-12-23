@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import socket
-import pickle as json
+import json
 from constantes import *
 
 
@@ -64,12 +64,15 @@ class NetworkEventsListener:
         self.send(UDP_ASK_MESSAGES)
         return self._recv()
 
+    def disconnect(self):
+        self.send(UDP_SEND_DISCONNECT)
+
     def send(self, message: str or dict or list):
         if self._enabled:
-            self._sock.sendto(json.dumps(message), self._params)
+            self._sock.sendto(json.dumps(message).encode(), self._params)
 
     def _recv(self):
-        return json.loads(self._sock.recv(self._buffer_size))
+        return json.loads(self._sock.recv(self._buffer_size).decode())
 
     def refresh_mypos(self):
         self.send(UDP_SEND_MYPOS)
@@ -94,7 +97,7 @@ class NetworkEventsListener:
                     pass
                 else:
                     for key, code in self._recv_to_send_cmd.items():
-                        if ret[key]:
+                        if key in ret:
                             self.send(code)
                             changes[key] = self._recv()
                     if changes:

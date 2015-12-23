@@ -47,6 +47,7 @@ UDP_MESSAGES_CHANGE = "network.tchat.haschanged"
 
 UDP_SEND_MSG = "network.game.message.sendingnew"
 UDP_SEND_MYPOS = "network.game.message.sendingpos"
+UDP_SEND_DISCONNECT = "network.game.me.disconnecting"
 
 UDP_CONNECTED = "network.game.lastplayer.connected"
 UDP_LISTENNING = "network.server.islistenning"
@@ -175,10 +176,13 @@ CHAT_Y_BOX = FEN_haut - CHAT_SY_BOX
 CHAT_X_MESSAGES = FEN_large - CHAT_SX
 CHAT_Y_MESSAGES = FEN_haut - CHAT_SY
 CHAT_SY_MESSAGE = 16
+CHAT_COULEUR_SERVICE = (180, 50, 180)
+CHAT_COULEUR_SERVICE = (180, 50, 180)
 CHAT_COULEUR_ADMIN = (180, 50, 50)
 CHAT_COULEUR_MODO = (50, 180, 50)
 CHAT_COULEUR_JOUEUR = (0, 0, 0)
 
+RANG_SERVICE = 128
 RANG_ADMIN = 64
 RANG_MODO = 32
 RANG_JOUEUR = 16

@@ -133,6 +133,8 @@ class Game:
     def process_events(self, events: pygame.event, dt: int=1):
         for event in events:
             if event.type == QUIT:
+                if self.network_ev_listener.enable():
+                    self.network_ev_listener.disconnect()
                 self.save()
                 sys.exit()
 
