@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import pickle as json
+import json
 import socket
 from constantes import *
 
@@ -79,7 +79,7 @@ while serveur_lance:
             connexion_principale.sendto(json.dumps(UDP_CONNECTED).encode(), addr)
             print("Un client s'est connecté ! Youpi !\t* Pseudo : {0}".format(users[addr]['pseudo']))
         else:
-            datas = json.loads(data)
+            datas = json.loads(data.decode())
             if isinstance(datas, str):
                 if datas in predefined.keys():
                     connexion_principale.sendto(json.dumps(predefined[datas].encode()), addr)
@@ -91,6 +91,7 @@ while serveur_lance:
                             work = get_from_where(users, news_, UDP_CARTE_CHANGE, addr)
                         elif datas == UDP_ASK_MESSAGES:
                             work = get_from_where(users, news_, UDP_MESSAGES_CHANGE, addr)
+                            print(work)
                         elif datas == UDP_ASK_PLAYERS_CHANGES:
                             work = get_from_where(users, news_, UDP_PLAYERS_CHANGE, addr)
                         if not work:
