@@ -10,7 +10,7 @@ def get_from_where(users: dict, news_: list, kind: str, addr):
     for elem in news_:
         if users[addr]['pseudo'] not in elem['sawit'] and elem['type'] == kind:
             work.append(elem['content'])
-            elem['sawit'].append(users[addr]['pseudo'])
+            # elem['sawit'].append(users[addr]['pseudo'])
     return work
 
 
@@ -91,7 +91,6 @@ while serveur_lance:
                             work = get_from_where(users, news_, UDP_CARTE_CHANGE, addr)
                         elif datas == UDP_ASK_MESSAGES:
                             work = get_from_where(users, news_, UDP_MESSAGES_CHANGE, addr)
-                            print(work)
                         elif datas == UDP_ASK_PLAYERS_CHANGES:
                             work = get_from_where(users, news_, UDP_PLAYERS_CHANGE, addr)
                         if not work:
@@ -114,13 +113,10 @@ while serveur_lance:
                             connexion_principale.sendto(json.dumps(RANG_JOUEUR).encode(), addr)
                     # SEND
                     elif datas == UDP_SEND_MSG:
-                        print("message en réception ...")
                         connexion_principale.sendto(json.dumps(UDP_LISTENNING).encode(), addr)
                         d_tmp, a_tmp = connexion_principale.recvfrom(BUFFER_SIZE)
                         if a_tmp == addr:
-                            print("message recu !")
                             content = json.loads(d_tmp.decode())
-                            print(content)
                             news_ += [{
                                 'type': UDP_MESSAGES_CHANGE,
                                 'content': content,
