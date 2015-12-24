@@ -53,8 +53,8 @@ class Personnage:
 
     def move(self, direction: int=AUCUNE, dt: int=1):
         self.direction = direction
-        self.player_anim.next()
-        self._actualise_sprite()
+        #self.player_anim.next()
+        #self._actualise_sprite()
         self.is_moving = True
 
         self.move_in_fov(direction, dt)
@@ -236,6 +236,7 @@ class Personnage:
             self._actualise_sprite()
         else:
             self.player_anim.next()
+            self._actualise_sprite()
         self.render()
 
     def render(self):

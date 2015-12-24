@@ -71,8 +71,10 @@ class PlayerAnimator:
     def next(self):
         if self._cur_anim == PAUSE:
             self._cur_anim = ANIM1
+
         if self._cur_anim == ANIM1:
             self._cur_anim = ANIM2
+
         if self._cur_anim == ANIM2:
             self._cur_anim = ANIM1
 
