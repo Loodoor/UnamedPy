@@ -69,6 +69,7 @@ class Creature:
         self.specs[SPEC_PVS] -= dgts
         if self.get_pvs() <= 0:
             self.dead = True
+            self.specs[SPEC_PVS] = 0
 
     def set_pseudo(self, new):
         self.specs[SPEC_NOM] = new

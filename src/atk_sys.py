@@ -93,7 +93,6 @@ class Combat:
                 g.update()
 
             if self.get_adversary().is_dead():
-                self.get_adversary().set_spec(SPEC_PVS, 0)
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     self.get_adversary().get_pseudo() + " est vaincu !", self.font)
                 g.update()
