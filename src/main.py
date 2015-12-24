@@ -76,6 +76,8 @@ def main():
             if event.type == KEYDOWN:
                 if event.key == K_RIGHT or event.key == K_LEFT:
                     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
+                if event.key == K_SPACE and chargement:
+                    avancement = 246  # pour accélérer le chargement
                 if not has_already_played:
                     text_box.event(event)
             if event.type == MOUSEBUTTONUP:
