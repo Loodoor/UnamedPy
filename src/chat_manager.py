@@ -37,7 +37,7 @@ class ChatManager:
     def network_fetch_messages(self):
         datas = self.reseau_mgr.get_chat_messages()
         if isinstance(datas, list):
-            self.stack = datas
+            self.stack.append(datas)
         else:
             self.stack = [
                 {

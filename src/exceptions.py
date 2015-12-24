@@ -52,3 +52,8 @@ class AchatImpossible(Exception):
             " Cela peut être dû à un défaut logiciel ou bien au fait que vous n'ayez pas assez"
             " d'argent."
         )
+
+
+class CategorieInexistante(Exception):
+    def __init__(self):
+        super().__init__()

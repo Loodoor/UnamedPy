@@ -1,8 +1,6 @@
 # coding=utf-8
 
-import os
-import pygame
-from pygame.locals import *
+from exceptions import CategorieInexistante
 from constantes import *
 import random
 
@@ -56,7 +54,7 @@ class Creature:
             SPEC_ID: id,
             SPEC_TYP: type,
             SPEC_NOM: '',
-            SPEC_NIV: random.randint(alea_niv[0], alea_niv[1]),
+            SPEC_NIV: random.randint(*alea_niv),
             SPEC_PVS: random.randint(*pvs_range),
         }
         self.specs[SPEC_MAX_PVS] = self.specs[SPEC_PVS]  # quand on crée la créature, les pvs max = pvs actuel
@@ -93,6 +91,8 @@ class Creature:
     def set_spec(self, categorie, new):
         if categorie in self.specs.keys():
             self.specs[categorie] = new
+        else:
+            raise CategorieInexistante
 
     def get_niv(self):
         return self.specs[SPEC_NIV]

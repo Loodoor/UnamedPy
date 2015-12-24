@@ -10,7 +10,7 @@ def get_from_where(users: dict, news_: list, kind: str, addr):
     for elem in news_:
         if users[addr]['pseudo'] not in elem['sawit'] and elem['type'] == kind:
             work.append(elem['content'])
-            # elem['sawit'].append(users[addr]['pseudo'])
+            elem['sawit'].append(users[addr]['pseudo'])
     return work
 
 
