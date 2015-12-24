@@ -3,7 +3,6 @@
 import pygame
 import pickle
 from constantes import *
-from glob import glob
 from carte import CartesManager
 from gui import GUIBulleWaiting
 import inventaire
@@ -15,16 +14,12 @@ class Personnage:
         self.ecran = ecran
         self.direction = BAS
         self.police = police
-        self.anim_cursor = PAUSE
-        self.max_anim_cursor = 2
         self.speed = BASIC_SPEED
         self.pseudo = pseudo
         self.path = os.path.join("..", "saves", "pos" + EXTENSION)
         self.cur_div = DIV_DT_BASIC
         self.player_anim = PlayerAnimator(os.path.join("..", "assets", "personnage"))
-
-        self.perso = self.sprites[self.direction][self.anim_cursor]
-
+        self.perso = self.player_anim.get_sprite_from_dir(self.direction)
         self.is_moving = False
         self.pos = list(pos)
         self.carte_mgr = None
@@ -53,9 +48,13 @@ class Personnage:
     def changed_cur_case(self):
         return not self.same_as_before
 
+    def _actualise_sprite(self):
+        self.perso = self.player_anim.get_sprite_from_dir(self.direction)
+
     def move(self, direction: int=AUCUNE, dt: int=1):
         self.direction = direction
-        self.perso = self.sprites[self.direction][self.anim_cursor + 1]
+        self.player_anim.next()
+        self._actualise_sprite()
         self.is_moving = True
 
         self.move_in_fov(direction, dt)
@@ -66,6 +65,7 @@ class Personnage:
                                 str(tmp_obj[0].nombre()) + " " + str(tmp_obj[0].name()) + " !",
                                 self.police)
             g.update()
+            del g
             self.inventaire.find_object(tmp_obj)
 
         if self.last_case == (self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE):
@@ -96,8 +96,8 @@ class Personnage:
         y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
 
         if x < 0 or y < 0 \
-                or x - self.sprites[self.direction][self.anim_cursor + 1].get_width() > self.ecran.get_width() \
-                or y - self.sprites[self.direction][self.anim_cursor + 1].get_height() > self.ecran.get_height():
+                or x - self.player_anim.get_sprite_from_dir(self.direction).get_width() > self.ecran.get_width() \
+                or y - self.player_anim.get_sprite_from_dir(self.direction).get_height() > self.ecran.get_height():
             return
 
         #Détection des collisions
@@ -232,9 +232,8 @@ class Personnage:
 
     def update(self):
         if not self.is_moving:
-            self.perso = self.sprites[self.direction][PAUSE]
-        else:
-            self.anim_cursor = (self.anim_cursor + 1) % self.max_anim_cursor
+            self.player_anim.pause()
+            self._actualise_sprite()
         self.render()
 
     def render(self):

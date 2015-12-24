@@ -60,16 +60,40 @@ class FluidesAnimator(BaseAnimator):
 class PlayerAnimator:
     def __init__(self, path: str):
         self.path = path
-        self.anims = []
+        self.anims = {}
+        self._cur_anim = PAUSE
 
         self._create_anims()
+
+    def pause(self):
+        self._cur_anim = PAUSE
+
+    def next(self):
+        if self._cur_anim == PAUSE:
+            self._cur_anim = ANIM1
+        if self._cur_anim == ANIM1:
+            self._cur_anim = ANIM2
+        if self._cur_anim == ANIM2:
+            self._cur_anim = ANIM1
+
+    def get_anim_cursor(self):
+        return self._cur_anim
+
+    def get_sprite(self, direc: int, anim_curs: int):
+        if direc in self.anims.keys():
+            if anim_curs < len(self.anims):
+                return self.anims[direc][anim_curs]
+
+    def get_sprite_from_dir(self, direc: int):
+        if direc in self.anims.keys():
+            return self.anims[direc][self._cur_anim]
 
     def _create_anims(self):
         lhaut = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "haut*.png"))]
         lbas = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "bas*.png"))]
         lgauche = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "gauche*.png"))]
         ldroite = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "droite*.png"))]
-        
+
         self.anims = {
             HAUT: lhaut,
             BAS: lbas,
