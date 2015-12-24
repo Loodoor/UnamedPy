@@ -2,6 +2,8 @@
 
 import pygame
 from exceptions import ListePleine
+import glob
+from constantes import *
 
 
 class BaseAnimator:
@@ -56,5 +58,21 @@ class FluidesAnimator(BaseAnimator):
 
 
 class PlayerAnimator:
-    def __init__(self):
-        pass
+    def __init__(self, path: str):
+        self.path = path
+        self.anims = []
+
+        self._create_anims()
+
+    def _create_anims(self):
+        lhaut = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "haut*.png"))]
+        lbas = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "bas*.png"))]
+        lgauche = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "gauche*.png"))]
+        ldroite = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "droite*.png"))]
+        
+        self.anims = {
+            HAUT: lhaut,
+            BAS: lbas,
+            GAUCHE: lgauche,
+            DROITE: ldroite
+        }

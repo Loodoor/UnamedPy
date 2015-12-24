@@ -7,6 +7,7 @@ from glob import glob
 from carte import CartesManager
 from gui import GUIBulleWaiting
 import inventaire
+from animator import PlayerAnimator
 
 
 class Personnage:
@@ -20,16 +21,8 @@ class Personnage:
         self.pseudo = pseudo
         self.path = os.path.join("..", "saves", "pos" + EXTENSION)
         self.cur_div = DIV_DT_BASIC
-        self.lhaut = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "haut*.png"))]
-        self.lbas = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "bas*.png"))]
-        self.lgauche = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "gauche*.png"))]
-        self.ldroite = [pygame.image.load(_).convert_alpha() for _ in glob(os.path.join("..", "assets", "personnage", "droite*.png"))]
-        self.sprites = {
-            HAUT: self.lhaut,
-            BAS: self.lbas,
-            GAUCHE: self.lgauche,
-            DROITE: self.ldroite
-        }
+        self.player_anim = PlayerAnimator(os.path.join("..", "assets", "personnage"))
+
         self.perso = self.sprites[self.direction][self.anim_cursor]
 
         self.is_moving = False
