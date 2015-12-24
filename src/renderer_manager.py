@@ -23,6 +23,9 @@ class RendererManager:
     def get_renderer(self):
         return self.current_renderer
 
+    def get_queue(self):
+        return self.queue
+
     def change_renderer_for(self, new_renderer: int):
         self.queue.append(self.current_renderer)
         self.current_renderer = new_renderer

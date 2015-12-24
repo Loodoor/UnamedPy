@@ -353,7 +353,8 @@ class Game:
             if self.cur_combat and not self.cur_combat.is_finished():
                 self.cur_combat.update()
             if self.cur_combat.is_finished():
-                self.renderer_manager.del_last_renderer()  # et reviens au précédent en l'occurence
+                self.renderer_manager.change_for_last_renderer()
+                print(self.renderer_manager.get_queue())
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:
