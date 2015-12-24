@@ -234,6 +234,8 @@ class Personnage:
         if not self.is_moving:
             self.player_anim.pause()
             self._actualise_sprite()
+        else:
+            self.player_anim.next()
         self.render()
 
     def render(self):
