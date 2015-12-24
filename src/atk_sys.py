@@ -101,7 +101,6 @@ class Combat:
                 # gestion de l'xp
                 level_up = self.get_my_creature().gagner_xp(self.get_adversary())
                 if not isinstance(level_up, (int, float)):
-                    print('in')
                     g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                         self.get_my_creature().get_pseudo() + " a gagné un niveau !",
                                         self.font)
@@ -111,9 +110,9 @@ class Combat:
                     for new in level_up:
                         g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                             [
-                                                "Niveau : +1 !   Attaque : +" + new[SPEC_ATK],
-                                                "Défense : +" + new[SPEC_DEF] + "   Vitesse : +" + new[SPEC_VIT],
-                                                "Points de vie : +" + new[SPEC_MAX_PVS]
+                                                "Niveau : +1 !   Attaque : +" + str(new[SPEC_ATK]) + " !",
+                                                "Défense : +" + str(new[SPEC_DEF]) + "!   Vitesse : +" + str(new[SPEC_VIT]) + " !",
+                                                "Points de vie : +" + str(new[SPEC_MAX_PVS]) + " !"
                                             ], self.font)
                         g.update()
                         del g

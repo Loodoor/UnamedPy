@@ -53,3 +53,8 @@ class FluidesAnimator(BaseAnimator):
         for elem in at:
             if carte_mgr.get_tile_code_at(elem[0], elem[1]) == self.where:
                 self.draw_at(ecran, elem)
+
+
+class PlayerAnimator:
+    def __init__(self):
+        pass
