@@ -56,6 +56,7 @@ class Creature:
             SPEC_NOM: '',
             SPEC_NIV: random.randint(*alea_niv),
             SPEC_PVS: random.randint(*pvs_range),
+            SPEC_XP: 0
         }
         self.specs[SPEC_MAX_PVS] = self.specs[SPEC_PVS]  # quand on crée la créature, les pvs max = pvs actuel
         self.upgrade_range = UPGRADE_RANGE_SPEC
@@ -64,6 +65,19 @@ class Creature:
 
     def is_dead(self):
         return self.dead
+
+    def _calc_seuil_xp(self):
+        return SPEC_SEUIL_XP_LVL_UP * math.sqrt(self.get_niv()) * 1.25
+
+    def gagner_xp(self, adv: Creature):
+        self.specs[SPEC_XP] += random.randint(
+            SPEC_XP_GAGNE * math.sqrt(adv.get_niv()) * random.randint(30, 75) / 100,
+            SPEC_XP_GAGNE * math.sqrt(adv.get_niv()) * random.randint(75, 125) / 100
+        )
+
+        if self.specs[SPEC_XP] >= self._calc_seuil_xp():
+            for _ in range(self.specs[SPEC_XP] // self._calc_seuil_xp()):
+                self._level_up()
 
     def taper(self, dgts):
         self.specs[SPEC_PVS] -= dgts
@@ -90,7 +104,8 @@ class Creature:
         return self.specs[SPEC_ID]
 
     def set_spec(self, categorie, new):
-        if categorie in self.specs.keys():
+        # on ne doit pas pouvoir manipuler l'xp
+        if categorie in self.specs.keys() and categorie != SPEC_XP:
             self.specs[categorie] = new
         else:
             raise CategorieInexistante
@@ -104,11 +119,12 @@ class Creature:
     def get_pvs(self):
         return self.specs[SPEC_PVS]
 
-    def level_up(self):
+    def _level_up(self):
         if self.specs[SPEC_NIV] + 1 <= MAX_LEVEL:
             self.specs[SPEC_NIV] += 1
             for i in [SPEC_ATK, SPEC_DEF, SPEC_VIT, SPEC_PVS]:
                 self.upgrade_spec(i)
+            self.specs[SPEC_XP] %= self._calc_seuil_xp()
 
     def upgrade_spec(self, categorie):
         if categorie in self.specs.keys():

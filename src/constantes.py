@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import os
+import math
 
 
 FEN_large = 640
@@ -362,6 +363,9 @@ SPEC_TYP = 'type'
 SPEC_NIV = 'niveau'
 SPEC_PVS = 'points de vie'
 SPEC_MAX_PVS = 'max points de vie'
+SPEC_XP = 'points experience'
+SPEC_XP_GAGNE = 25
+SPEC_SEUIL_XP_LVL_UP = 100
 MAX_VAL_SPEC = 500
 
 CAP_NOM = 'nom'
