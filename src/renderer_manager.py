@@ -34,8 +34,9 @@ class RendererManager:
         self.current_renderer = self.queue.pop()
 
     def del_last_renderer(self):
-        self.queue.pop()
-        self.current_renderer = self.queue[-1]
+        if len(self.queue) > 1:
+            self.queue.pop()
+            self.current_renderer = self.queue[-1]
 
     def invert_renderer(self):
         tmp = self.current_renderer
