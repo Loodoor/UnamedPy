@@ -77,7 +77,8 @@ class Creature:
 
         if self.specs[SPEC_XP] >= self._calc_seuil_xp():
             for _ in range(self.specs[SPEC_XP] // self._calc_seuil_xp()):
-                self._level_up()
+                yield self._level_up()
+            self.specs[SPEC_XP] %= self._calc_seuil_xp()
 
     def taper(self, dgts):
         self.specs[SPEC_PVS] -= dgts
@@ -122,14 +123,19 @@ class Creature:
     def _level_up(self):
         if self.specs[SPEC_NIV] + 1 <= MAX_LEVEL:
             self.specs[SPEC_NIV] += 1
-            for i in [SPEC_ATK, SPEC_DEF, SPEC_VIT, SPEC_PVS]:
-                self.upgrade_spec(i)
-            self.specs[SPEC_XP] %= self._calc_seuil_xp()
+            won = {}
+            for i in [SPEC_ATK, SPEC_DEF, SPEC_VIT, SPEC_MAX_PVS]:
+                won[i] = self.upgrade_spec(i)
+            return won
+        return {}
 
     def upgrade_spec(self, categorie):
         if categorie in self.specs.keys():
-            tmp = self.specs[categorie] + random.randrange(self.upgrade_range[0], self.upgrade_range[1])
+            gain = random.randrange(*self.upgrade_range)
+            tmp = self.specs[categorie] + gain
             self.specs[categorie] = tmp if tmp <= MAX_VAL_SPEC else MAX_VAL_SPEC
+            return gain
+        return -1
 
     def get_specs(self):
         return self.specs

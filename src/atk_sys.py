@@ -41,10 +41,10 @@ class Combat:
     def mon_tour(self):
         return True if not self.compteur_tour % 2 else False
 
-    def get_my_creature(self):
+    def get_my_creature(self) -> creatures_mgr.Creature:
         return self.creature_joueur
 
-    def get_adversary(self):
+    def get_adversary(self) -> creatures_mgr.Creature:
         return self.adversaire
 
     def end_fight_for_capture(self):
@@ -96,7 +96,18 @@ class Combat:
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     self.get_adversary().get_pseudo() + " est vaincu !", self.font)
                 g.update()
-                # gestion de l'xp à faire
+
+                # gestion de l'xp
+                for new in self.get_my_creature().gagner_xp(self.get_adversary()):
+                    g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                        [
+                                            self.get_my_creature().get_pseudo() + " a gagné un niveau !",
+                                            "Niveau : +1 !   Attaque : +" + new[SPEC_ATK],
+                                            "Défense : +" + new[SPEC_DEF] + "   Vitesse : +" + new[SPEC_VIT],
+                                            "Points de vie : +" + new[SPEC_MAX_PVS]
+                                        ], self.font)
+                    g.update()
+
                 self.is_running = False
 
     def is_finished(self):
