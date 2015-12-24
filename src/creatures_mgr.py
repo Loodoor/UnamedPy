@@ -69,7 +69,7 @@ class Creature:
     def _calc_seuil_xp(self):
         return SPEC_SEUIL_XP_LVL_UP * math.sqrt(self.get_niv()) * 1.25
 
-    def gagner_xp(self, adv: Creature):
+    def gagner_xp(self, adv):
         self.specs[SPEC_XP] += random.randint(
             SPEC_XP_GAGNE * math.sqrt(adv.get_niv()) * random.randint(30, 75) / 100,
             SPEC_XP_GAGNE * math.sqrt(adv.get_niv()) * random.randint(75, 125) / 100
