@@ -96,17 +96,33 @@ class Combat:
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     self.get_adversary().get_pseudo() + " est vaincu !", self.font)
                 g.update()
+                del g
 
                 # gestion de l'xp
-                for new in self.get_my_creature().gagner_xp(self.get_adversary()):
+                level_up = self.get_my_creature().gagner_xp(self.get_adversary())
+                if not isinstance(level_up, (int, float)):
+                    print('in')
                     g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                        [
-                                            self.get_my_creature().get_pseudo() + " a gagné un niveau !",
-                                            "Niveau : +1 !   Attaque : +" + new[SPEC_ATK],
-                                            "Défense : +" + new[SPEC_DEF] + "   Vitesse : +" + new[SPEC_VIT],
-                                            "Points de vie : +" + new[SPEC_MAX_PVS]
-                                        ], self.font)
+                                        self.get_my_creature().get_pseudo() + " a gagné un niveau !",
+                                        self.font)
                     g.update()
+                    del g
+
+                    for new in level_up:
+                        g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                            [
+                                                "Niveau : +1 !   Attaque : +" + new[SPEC_ATK],
+                                                "Défense : +" + new[SPEC_DEF] + "   Vitesse : +" + new[SPEC_VIT],
+                                                "Points de vie : +" + new[SPEC_MAX_PVS]
+                                            ], self.font)
+                        g.update()
+                        del g
+                else:
+                    g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                        self.get_my_creature().get_pseudo() + " a gagné {} xp !".format(level_up),
+                                        self.font)
+                    g.update()
+                    del g
 
                 self.is_running = False
 

@@ -70,15 +70,19 @@ class Creature:
         return SPEC_SEUIL_XP_LVL_UP * math.sqrt(self.get_niv()) * 1.25
 
     def gagner_xp(self, adv):
-        self.specs[SPEC_XP] += random.randint(
-            SPEC_XP_GAGNE * math.sqrt(adv.get_niv()) * random.randint(30, 75) / 100,
-            SPEC_XP_GAGNE * math.sqrt(adv.get_niv()) * random.randint(75, 125) / 100
+        gain = random.randint(
+            int(SPEC_XP_GAGNE * math.sqrt(adv.get_niv() + 1) * random.randint(30, 75) / 100),
+            int(SPEC_XP_GAGNE * math.sqrt(adv.get_niv() + 1) * random.randint(75, 125) / 100)
         )
+        self.specs[SPEC_XP] += gain
 
         if self.specs[SPEC_XP] >= self._calc_seuil_xp():
+            levels_ups = []
             for _ in range(self.specs[SPEC_XP] // self._calc_seuil_xp()):
-                yield self._level_up()
+                levels_ups.append(self._level_up())
             self.specs[SPEC_XP] %= self._calc_seuil_xp()
+        else:
+            return gain
 
     def taper(self, dgts):
         self.specs[SPEC_PVS] -= dgts
