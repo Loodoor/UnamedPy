@@ -140,10 +140,18 @@ class Combat:
         self.ecran.blit(self.indexer.get_image_by_id(self.get_adversary().get_id()), (COMB_X_ADV, COMB_Y_ADV))
         self.ecran.blit(self.indexer.get_image_by_id(self.get_my_creature().get_id()), (COMB_X_ME, COMB_Y_ME))
         # affichage des stats
-        upg_bar(self.ecran, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
-                self.get_adversary().get_pvs() // self.get_adversary().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
-        upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
-                self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
+        if not self.get_adversary().is_dead():
+            upg_bar(self.ecran, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+                    self.get_adversary().get_pvs() // self.get_adversary().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
+        else:
+            pygame.draw.rect(self.ecran, (128, 128, 128),
+                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR))
+        if not self.get_my_creature().is_dead():
+            upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+                    self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
+        else:
+            pygame.draw.rect(self.ecran, (128, 128, 128),
+                             (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR))
         # affichage des noms des créatures
         if self.indexer.get_captured(self.get_adversary().get_id()):
             self.ecran.blit(self.indexer.get_by_id(self.get_adversary()).get_pseudo(),
