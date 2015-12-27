@@ -18,6 +18,12 @@ def unothing(*args, **kwargs):
     return args, kwargs
 
 
+def uround(nb: int or float):
+    if isinstance(nb, int):
+        return nb
+    return math.floor(nb) if nb >= 0.5 else math.ceil(nb)
+
+
 def ucount_in_list(*args):
     work = {}
 

@@ -5,6 +5,7 @@ import pickle
 from constantes import *
 from carte import CartesManager
 from gui import GUIBulleWaiting
+from utils import uround
 import inventaire
 from animator import PlayerAnimator
 
@@ -174,10 +175,10 @@ class Personnage:
         x3, y3 = x1, y1 + TILE_SIZE
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
 
-        x1t, y1t = round(x1 / TILE_SIZE), round(y1 / TILE_SIZE)
-        x2t, y2t = round(x2 / TILE_SIZE), round(y2 / TILE_SIZE)
-        x3t, y3t = round(x3 / TILE_SIZE), round(y3 / TILE_SIZE)
-        x4t, y4t = round(x4 / TILE_SIZE), round(y4 / TILE_SIZE)
+        x1t, y1t = uround(x1 / TILE_SIZE), uround(y1 / TILE_SIZE)
+        x2t, y2t = uround(x2 / TILE_SIZE), uround(y2 / TILE_SIZE)
+        x3t, y3t = uround(x3 / TILE_SIZE), uround(y3 / TILE_SIZE)
+        x4t, y4t = uround(x4 / TILE_SIZE), uround(y4 / TILE_SIZE)
 
         if direction == HAUT:
             if self.carte_mgr.collide_at(x1t, y1t):
