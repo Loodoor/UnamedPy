@@ -127,6 +127,8 @@ class Indexer:
         self.rd_mgr = render_manager
         self.selected_creature = -1
         self.selected_type = -1
+        self.stade_sel = self.police.render("Stade [...]", 1, (10, 10, 10))
+        self.creas_selected = []
 
     @staticmethod
     def add_new(name: str, id: int, type: int, stade: int, path: str, desc: str=""):
@@ -201,14 +203,34 @@ class Indexer:
                 break
 
     def select_all_crea_with_stade(self, stade: int):
-        work = []
-        for creature in self.indexer:
-            if creature.get_stade() == stade:
-                work.append(creature)
-        return work
+        if 0 <= stade <= 3:
+            work = []
+            for creature in self.indexer:
+                if creature.get_stade() == stade:
+                    work.append(creature)
+            return work
+        else:
+            return self.indexer
 
     def update(self):
         self.render()
+
+    def render_sel_stade(self):
+        while 1:
+            pygame.draw.rect(self.ecran, (0, 0, 0), (POK_X_FENSST, POK_Y_FENSST, POK_SX_FENSST, POK_SY_FENSST))
+            selected = 0
+
+            ev = pygame.event.poll()
+            if ev.type == KEYDOWN:
+                if ev.unicode.isdigit():
+                    selected = int(ev.unicode)
+                if ev.key == K_RETURN:
+                    self.creas_selected = self.select_all_crea_with_stade(selected)
+                    break
+
+            self.ecran.blit(self.police.render("Stade à sélectionner : " + str(selected), 1, (255, 255, 255)), (0, 0))
+
+            pygame.display.flip()
 
     def render(self):
         pygame.draw.rect(self.ecran, (180, 20, 180), (POK_POSX, POK_POSY, POK_X_SIZE, POK_Y_SIZE))
@@ -220,7 +242,7 @@ class Indexer:
 
         i = 0
         if self.render_creatures:
-            for elem in self.indexer:
+            for elem in self.creas_selected:
                 nom = elem.name
                 vu, capture, type_ = elem.vu, elem.capture, elem.type
 
@@ -253,8 +275,11 @@ class Indexer:
                     else:
                         self.ecran.blit(self.police.render("???", 1, (255, 255, 255)),
                                         (POK_X_DESC, POK_Y_DESC + POK_ESP_Y_ITEM))
-
                 i += 1
+
+            pygame.draw.rect(self.ecran, (180, 180, 50), (POK_X_SEL_STADE, POK_Y_SEL_STADE,
+                                                          POK_SX_SEL_STADE, POK_SY_SEL_STADE))
+            self.ecran.blit(self.stade_sel, (POK_X_SEL_STADE + (POK_SX_SEL_STADE - tmp.get_width()) // 2, POK_Y_SEL_STADE + 4))
         else:
             for t_id, type_name in self.typeur.get_types().items():
                 suffixe = "er  " if i == 0 else "ème"
@@ -267,9 +292,14 @@ class Indexer:
     def clic(self, xp: int, yp: int):
         if POK_X_VIEWT <= xp <= POK_X_VIEWT + POK_SX_VIEWT and POK_Y_VIEWT <= yp <= POK_Y_VIEWT + POK_SY_VIEWT:
             self.render_creatures = not self.render_creatures
-        if self.render_creatures and POK_X_NAME_CREA <= xp <= POK_X_NAME_CREA + 200:
-            self.selected_creature = (yp - POK_Y_NAME_CREA) // POK_ESP_Y_ITEM
-            self.selected_creature = self.selected_creature if 0 <= self.selected_creature < len(self.indexer) else -1
-        if not self.render_creatures and POK_X_TYPE <= xp <= POK_X_TYPE + 200:
-            self.selected_type = (yp - POK_Y_TYPE) // POK_SY_TYPE
-            self.selected_type = self.selected_type if 0 <= self.selected_type < self.typeur.count_types() else -1
+        if self.render_creatures:
+            if POK_X_NAME_CREA <= xp <= POK_X_NAME_CREA + 200:
+                self.selected_creature = (yp - POK_Y_NAME_CREA) // POK_ESP_Y_ITEM
+                self.selected_creature = self.selected_creature if 0 <= self.selected_creature < len(self.indexer) else -1
+            if POK_X_SEL_STADE <= xp <= POK_X_SEL_STADE + POK_SX_SEL_STADE and \
+                                    POK_Y_SEL_STADE <= yp <= POK_Y_SEL_STADE + POK_SY_SEL_STADE:
+                self.render_sel_stade()
+        if not self.render_creatures:
+            if POK_X_TYPE <= xp <= POK_X_TYPE + 200:
+                self.selected_type = (yp - POK_Y_TYPE) // POK_SY_TYPE
+                self.selected_type = self.selected_type if 0 <= self.selected_type < self.typeur.count_types() else -1
