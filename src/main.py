@@ -137,9 +137,9 @@ def main():
                                  sy=ecran.get_height(),
                                  placeholder="IP du serveur : ")
                     ip.mainloop()
-                    jeu = game.Game(ecran, s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM), p=(ip.get_text(), 5500))
+                    jeu = game.Game(ecran, "first", s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM), p=(ip.get_text(), 5500))
                 else:
-                    jeu = game.Game(ecran)
+                    jeu = game.Game(ecran, "first")
                 jeu.start()
                 del jeu
         else:

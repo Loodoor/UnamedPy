@@ -257,7 +257,10 @@ class Indexer:
                 i += 1
         else:
             for t_id, type_name in self.typeur.get_types().items():
-                texte = self.police.render(str(t_id + 1) + " -> '" + type_name + "'", 1, (255, 255, 255))
+                suffixe = "er  " if i == 0 else "ème"
+                chaine = str(t_id + 1)
+                texte = self.police.render('- ' + ('0' * 1 if i <= 8 else '') + chaine + suffixe + " -> '" + type_name + "'",
+                                           1, (255, 255, 255))
                 self.ecran.blit(texte, (POK_X_TYPE, POK_Y_TYPE + i * POK_SY_TYPE))
                 i += 1
 

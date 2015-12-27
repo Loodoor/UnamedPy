@@ -28,7 +28,8 @@ from network_event_listener import NetworkEventsListener
 
 
 class Game:
-    def __init__(self, ecran: pygame.Surface, s: socket.socket=None, p: tuple=('127.0.0.1', 5500), controles: dict={}):
+    def __init__(self, ecran: pygame.Surface, perso_choice: str, s: socket.socket=None, p: tuple=('127.0.0.1', 5500),
+                 controles: dict={}):
         # self.fps_regulator = IAFPS(FPS_base)
         self.fps_regulator = pygame.time.Clock()
         self.continuer = 1
@@ -51,7 +52,7 @@ class Game:
         self.police_petite = pygame.font.Font(POLICE_PATH, POL_PETITE_TAILLE)
 
         # Entités
-        self.personnage = personnage.Personnage(self.ecran, self.police_grande, self.pseudo)
+        self.personnage = personnage.Personnage(self.ecran, self.police_grande, self.pseudo, perso_choice)
 
         # Managers
         self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager)

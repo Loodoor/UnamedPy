@@ -10,7 +10,7 @@ from animator import PlayerAnimator
 
 
 class Personnage:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font, pseudo: str, pos: tuple=(0, 0)):
+    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font, pseudo: str, choice: str, pos: tuple=(0, 0)):
         self.ecran = ecran
         self.direction = BAS
         self.police = police
@@ -18,7 +18,7 @@ class Personnage:
         self.pseudo = pseudo
         self.path = os.path.join("..", "saves", "pos" + EXTENSION)
         self.cur_div = DIV_DT_BASIC
-        self.player_anim = PlayerAnimator(os.path.join("..", "assets", "personnage"))
+        self.player_anim = PlayerAnimator(os.path.join("..", "assets", "personnages", choice))
         self.perso = self.player_anim.get_sprite_from_dir(self.direction)
         self.is_moving = False
         self.pos = list(pos)

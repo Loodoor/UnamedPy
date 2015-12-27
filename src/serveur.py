@@ -5,13 +5,13 @@ import socket
 from constantes import *
 
 
-def get_from_where(users: dict, news_: list, kind: str, addr):
-    work = []
-    for elem in news_:
-        if users[addr]['pseudo'] not in elem['sawit'] and elem['type'] == kind:
-            work.append(elem['content'])
-            elem['sawit'].append(users[addr]['pseudo'])
-    return work
+def get_from_where(usr: dict, news: list, kindof: str, address):
+    smth = []
+    for e in news:
+        if usr[address]['pseudo'] not in e['sawit'] and e['type'] == kindof:
+            smth.append(e['content'])
+            e['sawit'].append(usr[address]['pseudo'])
+    return smth
 
 
 print("Démarrage du serveur ...")
