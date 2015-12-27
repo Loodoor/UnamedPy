@@ -174,38 +174,43 @@ class Personnage:
         x3, y3 = x1, y1 + TILE_SIZE
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
 
+        x1t, y1t = round(x1 / TILE_SIZE), round(y1 / TILE_SIZE)
+        x2t, y2t = round(x2 / TILE_SIZE), round(y2 / TILE_SIZE)
+        x3t, y3t = round(x3 / TILE_SIZE), round(y3 / TILE_SIZE)
+        x4t, y4t = round(x4 / TILE_SIZE), round(y4 / TILE_SIZE)
+
         if direction == HAUT:
-            if self.carte_mgr.collide_at(x1 // TILE_SIZE, y1 // TILE_SIZE):
+            if self.carte_mgr.collide_at(x1t, y1t):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y += TILE_SIZE - decy
-            if self.carte_mgr.collide_at(x2 // TILE_SIZE, y2 // TILE_SIZE):
+            if self.carte_mgr.collide_at(x2t, y2t):
                 if x % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     y += decy
 
         if direction == GAUCHE:
-            if self.carte_mgr.collide_at(x1 // TILE_SIZE, y1 // TILE_SIZE):
+            if self.carte_mgr.collide_at(x1t, y1t):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x += TILE_SIZE - decx
-            if self.carte_mgr.collide_at(x3 // TILE_SIZE, y3 // TILE_SIZE):
+            if self.carte_mgr.collide_at(x3t, y3t):
                 if y % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     x += decx
 
         if direction == DROITE:
-            if self.carte_mgr.collide_at(x2 // TILE_SIZE, y2 // TILE_SIZE):
+            if self.carte_mgr.collide_at(x2t, y2t):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x -= decx
-            if self.carte_mgr.collide_at(x4 // TILE_SIZE, y4 // TILE_SIZE):
+            if self.carte_mgr.collide_at(x4t, y4t):
                 if y % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     x -= decx
 
         if direction == BAS:
-            if self.carte_mgr.collide_at(x3 // TILE_SIZE, y3 // TILE_SIZE):
+            if self.carte_mgr.collide_at(x3t, y3t):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y -= decy
-            if self.carte_mgr.collide_at(x4 // TILE_SIZE, y4 // TILE_SIZE):
+            if self.carte_mgr.collide_at(x4t, y4t):
                 if x % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     y -= decy
