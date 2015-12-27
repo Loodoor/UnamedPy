@@ -219,6 +219,7 @@ class Indexer:
         while 1:
             pygame.draw.rect(self.ecran, (0, 0, 0), (POK_X_FENSST, POK_Y_FENSST, POK_SX_FENSST, POK_SY_FENSST))
             selected = 0
+            tmp = self.police.render("Stade à sélectionner : " + str(selected), 1, (255, 255, 255))
 
             ev = pygame.event.poll()
             if ev.type == KEYDOWN:
@@ -228,7 +229,9 @@ class Indexer:
                     self.creas_selected = self.select_all_crea_with_stade(selected)
                     break
 
-            self.ecran.blit(self.police.render("Stade à sélectionner : " + str(selected), 1, (255, 255, 255)), (0, 0))
+            self.ecran.blit(tmp,
+                            (POK_X_FENSST + (POK_SX_FENSST - tmp.get_width()) // 2,
+                             POK_Y_FENSST + (POK_SY_FENSST - POK_ESP_Y_ITEM) // 2))
 
             pygame.display.flip()
 
