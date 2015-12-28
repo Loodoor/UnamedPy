@@ -22,6 +22,7 @@ import renderer_manager
 import zones_attaques_manager
 from constantes import *
 from gui import GUISauvegarde
+from utils import uscreenschot
 from fpsregulator import IAFPS
 from exceptions import FonctionnaliteNonImplementee
 from network_event_listener import NetworkEventsListener
@@ -127,9 +128,7 @@ class Game:
         # self.zones_manager.save()
 
     def screenshot(self):
-        path = os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png")
-        pygame.image.save(self.ecran, path)
-        print("Screenshot sauvegardée sous '" + path + "'")
+        uscreenschot(self.ecran)
 
     def process_events(self, events: pygame.event, dt: int=1):
         for event in events:

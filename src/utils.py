@@ -24,6 +24,12 @@ def uround(nb: int or float):
     return math.floor(nb) if nb >= 0.5 else math.ceil(nb)
 
 
+def uscreenschot(surface: pygame.Surface):
+    path_ = os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png")
+    pygame.image.save(surface, path_)
+    print("Screenshot sauvegardée sous '" + path_ + "'")
+
+
 def ucount_in_list(*args):
     work = {}
 

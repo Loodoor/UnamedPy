@@ -1,11 +1,11 @@
 # coding=utf-8
 
-import os
 import pygame
 from pygame.locals import *
 from constantes import *
 import time
 from glob import glob
+from utils import uscreenschot
 
 
 class GUIBulle:
@@ -47,9 +47,10 @@ class GUIBulle:
 
 
 class GUIBulleWaiting(GUIBulle):
-    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str or list, font: pygame.font.SysFont):
+    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str or list, font: pygame.font.SysFont, screenshotkey=K_F5):
         super().__init__(ecran, pos, texte, font)
         self.done = False
+        self.screenkey = screenshotkey
 
     def is_done(self):
         return self.done
@@ -58,7 +59,10 @@ class GUIBulleWaiting(GUIBulle):
         while not self.done:
             ev = pygame.event.poll()
             if ev.type == KEYDOWN:
-                self.done = True
+                if ev.key != self.screenkey:
+                    self.done = True
+                else:
+                    uscreenschot(self.ecran)
 
             self.render()
             pygame.display.flip()

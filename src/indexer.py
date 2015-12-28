@@ -282,7 +282,7 @@ class Indexer:
 
             pygame.draw.rect(self.ecran, (180, 180, 50), (POK_X_SEL_STADE, POK_Y_SEL_STADE,
                                                           POK_SX_SEL_STADE, POK_SY_SEL_STADE))
-            self.ecran.blit(self.stade_sel, (POK_X_SEL_STADE + (POK_SX_SEL_STADE - tmp.get_width()) // 2, POK_Y_SEL_STADE + 4))
+            self.ecran.blit(self.stade_sel, (POK_X_SEL_STADE - (POK_SX_SEL_STADE + tmp.get_width()) // 2, POK_Y_SEL_STADE + 4))
         else:
             for t_id, type_name in self.typeur.get_types().items():
                 suffixe = "er  " if i == 0 else "ème"

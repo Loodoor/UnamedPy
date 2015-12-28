@@ -72,7 +72,9 @@ class NetworkEventsListener:
             self._sock.sendto(json.dumps(message).encode(), self._params)
 
     def _recv(self):
-        return json.loads(self._sock.recv(self._buffer_size).decode())
+        if self._enabled:
+            return json.loads(self._sock.recv(self._buffer_size).decode())
+        return UDP_NOTHING_NEW
 
     def refresh_mypos(self):
         self.send(UDP_SEND_MYPOS)
