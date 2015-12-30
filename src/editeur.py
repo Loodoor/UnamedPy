@@ -1,17 +1,18 @@
 # coding=utf-8
 
 import pickle
-import os
 import pygame
 from glob import glob
 from pygame.locals import *
 from constantes import *
 import trigger_manager
-from utils import unothing
+from utils import unothing, udel_same_occurence
+from animator import BaseMultipleSpritesAnimator, FluidesAnimator
 
 
 map_path = input("Path vers la map (laissez vide pour garder la valeur par défaut) : ")
-if map_path == "": map_path = os.path.join("..", "saves", "map" + EXTENSION)
+if map_path == "":
+    map_path = os.path.join("..", "saves", "map" + EXTENSION)
 YTAILLE, XTAILLE, zid = 24, 24, 0
 if not os.path.exists(map_path):
     YTAILLE = int(input("Taille de la map horizontalement (en cases) : "))  # ecran.get_height() // TILE_SIZE
@@ -26,6 +27,7 @@ curpos = 0
 carte = []
 assets = {}
 lassets = []
+callback_end_rendering = []
 
 pygame.init()
 
@@ -52,23 +54,57 @@ else:
             lst.append([DEFAUT, DEFAUT, DEFAUT, DEFAUT, DEFAUT])
         carte.append(lst)
 
-for i in glob(os.path.join("..", "assets", "tiles", "*.png")):
-    assets[i[16:-4]] = pygame.image.load(i).convert_alpha()
-    lassets.append(i[16:-4])
+for i in glob(os.path.join("..", "assets", "tiles", "*")):
+    # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
+    # chargement d'une tile simple
+    if os.path.isfile(i):
+        assets[os.path.split(i)[1][:-4]] = pygame.image.load(i).convert_alpha()
+        lassets.append(os.path.split(i)[1][:-4])
+    # chargement d'une animation
+    elif os.path.isdir(i):
+        assets[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
+        lassets.append(i.split(os.sep)[-1])
+water_animator = FluidesAnimator(assets[TILE_EAU], ANIM_SPEED_EAU)
+water_animator.load()
 
 
-def render(carte, offset, offset2):
+def _draw_tile_at(at_x: int, at_y: int, tile: str, callback_end_rendering: list):
+    if tile == TILE_EAU:
+        ecran.blit(water_animator.get_anim(), (at_x, at_y))
+        if tile not in callback_end_rendering:
+            callback_end_rendering.append(tile)
+    else:
+        if isinstance(assets[tile], pygame.Surface):
+            ecran.blit(assets[tile], (at_x, at_y))
+        elif isinstance(assets[tile], BaseMultipleSpritesAnimator):
+            ecran.blit(assets[tile].get_anim(), (at_x, at_y))
+            if tile not in callback_end_rendering:
+                callback_end_rendering.append(tile)
+
+
+def _update_anims(callback_end_rendering: list):
+    for anim in callback_end_rendering:
+        if anim != TILE_EAU:
+            assets[anim].next()
+        else:
+            water_animator.next()
+
+
+def render(carte, offset, offset2, callback_end_rendering=[]):
     for y in range(len(carte)):
         for x in range(len(carte[y])):
             xpos = x * TILE_SIZE + offset
             ypos = y * TILE_SIZE + offset2
             obj = carte[y][x]
             if len(obj) <= 5:
-                for i in obj[::-1]:
-                    ecran.blit(assets[i], (xpos, ypos))
+                for tile in udel_same_occurence(*obj[::-1]):
+                    _draw_tile_at(xpos, ypos, tile, callback_end_rendering)
             else:
-                for i in obj[-2::-1]:
-                    ecran.blit(assets[i], (xpos, ypos))
+                for tile in udel_same_occurence(*obj[-2::-1]):
+                    _draw_tile_at(xpos, ypos, tile, callback_end_rendering)
+
+    _update_anims(callback_end_rendering)
+    callback_end_rendering = []
 
 
 def create_edit_zone():
@@ -116,7 +152,10 @@ def create_edit_zone():
         tmp = (curpos + i) % len(lassets)
         if tmp == curpos:
             ecran.blit(police.render("Courant -> ", 1, (255, 255, 255)), (ecran.get_width() - marge, 310 + i * 42))
-        ecran.blit(assets[lassets[tmp]], (ecran.get_width() - marge + 70, 310 + i * 42))
+        if not isinstance(assets[lassets[tmp]], BaseMultipleSpritesAnimator):
+            ecran.blit(assets[lassets[tmp]], (ecran.get_width() - marge + 70, 310 + i * 42))
+        else:
+            ecran.blit(assets[lassets[tmp]].get_anim(), (ecran.get_width() - marge + 70, 310 + i * 42))
 
 
 while continuer:
@@ -128,9 +167,9 @@ while continuer:
             continuer = 0
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 4:
-                curpos = curpos + 1 if curpos + 1 < len(lassets) else curpos
+                curpos = curpos + 1 if curpos + 1 < len(lassets) else 0
             if event.button == 5:
-                curpos = curpos - 1 if curpos - 1 >= 0 else curpos
+                curpos = curpos - 1 if curpos - 1 >= 0 else len(assets) - 1
             if event.button == 1:
                 clic = 1
                 x, y = event.pos
@@ -190,7 +229,10 @@ while continuer:
     if help_:
         create_edit_zone()
 
-    ecran.blit(assets[lassets[curpos]], pygame.mouse.get_pos())
+    if not isinstance(assets[lassets[curpos]], BaseMultipleSpritesAnimator):
+        ecran.blit(assets[lassets[curpos]], pygame.mouse.get_pos())
+    else:
+        ecran.blit(assets[lassets[curpos]].get_anim(), pygame.mouse.get_pos())
 
     pygame.display.flip()
 

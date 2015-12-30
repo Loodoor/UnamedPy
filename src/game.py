@@ -5,7 +5,6 @@ import socket
 import pygame
 import pickle
 import random
-from glob import glob
 from pygame.locals import *
 
 import carte

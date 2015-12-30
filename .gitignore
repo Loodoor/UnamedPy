@@ -49,6 +49,15 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Directory of Unamed (saves)
+saves/indexer.umd
+saves/inventaire.umd
+saves/pos.umd
+saves/pseudo.umd
+saves/triggers.umd
+saves/utils.umd
+saves/zones.umd
+
 # Directory of PyCharm
 .idea
 .idea/*.xml

@@ -3,6 +3,7 @@
 import pygame
 from exceptions import ListePleine
 import glob
+from time import time
 from constantes import *
 
 
@@ -21,7 +22,7 @@ class BaseSideAnimator:
 
         time = 0
         for i in range(self.decalage):
-            surf = pygame.Surface((30, 30))
+            surf = pygame.Surface((TILE_SIZE, TILE_SIZE))
             surf.fill((76, 76, 76))
             surf.set_colorkey((76, 76, 76))
 
@@ -46,17 +47,22 @@ class BaseSideAnimator:
 
 
 class BaseMultipleSpritesAnimator:
-    def __init__(self, path: str):
+    def __init__(self, path: str, wait: float=0.0):
         self.path = path
         self.anims = []
+        self._wait = wait
         self._cur_anim = 0
         self._max_anim = 0
+        self._last_time = 0
 
         self._create_anims()
 
     def next(self):
-        self._cur_anim += 1
-        self._cur_anim %= self._max_anim
+        if time() + self._wait >= self._last_time:
+            self._cur_anim += 1
+            self._cur_anim %= self._max_anim
+
+            self._last_time = time()
 
     def get_anim(self):
         return self.anims[self._cur_anim]

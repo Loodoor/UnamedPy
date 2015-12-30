@@ -114,7 +114,7 @@ class CartesManager:
         self.water_animator = None
 
     def _load_animators(self):
-        self.water_animator = FluidesAnimator(self.images[TILE_EAU], 2)
+        self.water_animator = FluidesAnimator(self.images[TILE_EAU], ANIM_SPEED_EAU)
         self.water_animator.load()
 
     def general_load(self):
@@ -126,7 +126,7 @@ class CartesManager:
                 self.lassets.append(os.path.split(i)[1][:-4])
             # chargement d'une animation
             elif os.path.isdir(i):
-                self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
+                self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i, wait=ANIM_DEFAULT_SPEED_MSPA)
                 self.lassets.append(i.split(os.sep)[-1])
         self._load_animators()
         self.loaded = True
@@ -174,7 +174,10 @@ class CartesManager:
 
     def _update_anims(self):
         for anim in self.callback_end_rendering:
-            self.images[anim].next()
+            if anim == TILE_EAU:
+                self.water_animator.next()
+            else:
+                self.images[anim].next()
         self.callback_end_rendering = []
 
     def render(self):
