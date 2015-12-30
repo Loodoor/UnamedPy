@@ -6,8 +6,8 @@ import glob
 from constantes import *
 
 
-class BaseAnimator:
-    def __init__(self, base_image: pygame.Surface, velocity: float, vertical):
+class BaseSideAnimator:
+    def __init__(self, base_image: pygame.Surface, velocity: float, vertical: bool):
         self.base_image = base_image
         self.velocity = velocity
         self.decalage = int(self.base_image.get_width() // self.velocity + 1)
@@ -45,16 +45,37 @@ class BaseAnimator:
         ecran.blit(self.output[int(self.time % len(self.output))], pos)
 
 
-class FluidesAnimator(BaseAnimator):
-    def __init__(self, base_image: pygame.Surface, velocity: float, where):
-        super().__init__(base_image, velocity, False)
-        self.where = where
+class BaseMultipleSpritesAnimator:
+    def __init__(self, path: str):
+        self.path = path
+        self.anims = []
+        self._cur_anim = 0
+        self._max_anim = 0
 
-    def draw(self, at: list, ecran: pygame.Surface, carte_mgr):
+        self._create_anims()
+
+    def next(self):
+        self._cur_anim += 1
+        self._cur_anim %= self._max_anim
+
+    def get_anim(self):
+        return self.anims[self._cur_anim]
+
+    def _create_anims(self):
+        for img in glob.glob(os.path.join(self.path, "*.png")):
+            self.anims.append(pygame.image.load(img).convert_alpha())
+            self._max_anim += 1
+
+
+class FluidesAnimator(BaseSideAnimator):
+    def __init__(self, base_image: pygame.Surface, velocity: float):
+        super().__init__(base_image, velocity, False)
+
+    def next(self):
         self._draw()
-        for elem in at:
-            if carte_mgr.get_tile_code_at(elem[0], elem[1]) == self.where:
-                self.draw_at(ecran, elem)
+
+    def get_current_anim(self):
+        return self.output[int(self.time % len(self.output))]
 
 
 class PlayerAnimator:

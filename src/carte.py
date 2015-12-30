@@ -1,16 +1,13 @@
 # coding=utf-8
 
-import os
 import pickle
 from glob import glob
 import pygame
-from pygame.locals import *
-import pnj_manager
 from constantes import *
 from trigger_manager import TriggersManager
 from exceptions import FonctionnaliteNonImplementee, CarteInexistante, ErreurContenuCarte
 from utils import udel_same_occurence
-from animator import FluidesAnimator
+from animator import FluidesAnimator, BaseMultipleSpritesAnimator
 from random import randint
 
 
@@ -112,15 +109,22 @@ class CartesManager:
         self.triggers_mgr = TriggersManager()
         self.current_carte = SubCarte()
         self.carte = []
+        self.callback_end_rendering = []
         self.loaded = False
         self.water_animator = None
 
     def general_load(self):
-        for i in glob("..//assets//tiles//*.png"):
+        for i in glob(os.path.join("..", "assets", "tiles", "*")):
             # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
-            self.images[i[18:-4]] = pygame.image.load(i).convert_alpha()
-            self.lassets.append(i[18:-4])
-        # self.water_animator = FluidesAnimator(self.images['3'], 2)
+            # chargement d'une tile simple
+            if os.path.isfile(i):
+                self.images[os.path.split(i)[1][:-4]] = pygame.image.load(i).convert_alpha()
+                self.lassets.append(os.path.split(i)[1][:-4])
+            # chargement d'une animation
+            elif os.path.isdir(i):
+                self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
+                self.lassets.append(i.split(os.sep)[-1])
+        self.water_animator = FluidesAnimator(self.images['3'], 2)
         self.loaded = True
 
     def load(self):
@@ -151,6 +155,19 @@ class CartesManager:
     def update(self):
         self.render()
 
+    def _draw_tile_at(self, at_x: int, at_y: int, tile: str):
+        if isinstance(self.images[tile], pygame.Surface):
+            self.ecran.blit(self.images[tile], (at_x, at_y))
+        elif isinstance(self.images[tile], BaseMultipleSpritesAnimator):
+            self.ecran.blit(self.images[tile].get_anim(), (at_x, at_y))
+            if tile not in self.callback_end_rendering:
+                self.callback_end_rendering.append(tile)
+
+    def _update_anims(self):
+        for anim in self.callback_end_rendering:
+            self.images[anim].next()
+        self.callback_end_rendering = []
+
     def render(self):
         tmp_map = [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.carte[int(self.fov[2]):int(self.fov[3])]]
         objects_at = self.current_carte.get_objects()
@@ -163,12 +180,13 @@ class CartesManager:
                 else:
                     if len(objet) <= 5:
                         for tile in udel_same_occurence(*objet[::-1]):
-                            self.ecran.blit(self.images[tile], (xpos, ypos))
+                            self._draw_tile_at(xpos, ypos, tile)
                     else:
                         for tile in udel_same_occurence(*objet[-2::-1]):
-                            self.ecran.blit(self.images[tile], (xpos, ypos))
+                            self._draw_tile_at(xpos, ypos, tile)
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images['10'], (xpos, ypos))
+        self._update_anims()
 
     def get_tile_code_at(self, x: int, y: int):
         return self.carte[y][x] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR
