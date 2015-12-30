@@ -26,6 +26,8 @@ offset2 = 0
 curpos = 0
 carte = []
 assets = {}
+objets = {}
+buildings = {}
 lassets = []
 callback_end_rendering = []
 
@@ -147,13 +149,15 @@ def create_edit_zone():
     ecran.blit(police.render("H : affiche cette aide ou non", 1, (255, 255, 255)), (ecran.get_width() - marge, 250))
     ecran.blit(police.render("T : ajoute un trigger (vide) sur la case pointée", 1, (255, 255, 255)),
                              (ecran.get_width() - marge, 270))
+    ecran.blit(police.render("B: ajoute un lien vers un bâtiment sur la case pointée", 1, (255, 255, 255)),
+                             (ecran.get_width() - marge, 310))
 
     for i in range(0, 6):
         tmp = (curpos + i) % len(lassets)
         if tmp == curpos:
             ecran.blit(police.render("Courant -> ", 1, (255, 255, 255)), (ecran.get_width() - marge, 310 + i * 42))
         if not isinstance(assets[lassets[tmp]], BaseMultipleSpritesAnimator):
-            ecran.blit(assets[lassets[tmp]], (ecran.get_width() - marge + 70, 310 + i * 42))
+            ecran.blit(assets[lassets[tmp]], (ecran.get_width() - marge + 70, 340 + i * 42))
         else:
             ecran.blit(assets[lassets[tmp]].get_anim(), (ecran.get_width() - marge + 70, 310 + i * 42))
 
@@ -165,7 +169,7 @@ while continuer:
     for event in pygame.event.get():
         if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
             continuer = 0
-        if event.type == MOUSEBUTTONDOWN:
+        if event.type == MOUSEBUTTONUP:
             if event.button == 4:
                 curpos = curpos + 1 if curpos + 1 < len(lassets) else 0
             if event.button == 5:
@@ -174,6 +178,8 @@ while continuer:
                 clic = 1
                 x, y = event.pos
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
+                if lassets[curpos] == TILE_POKEOBJ:
+                    pass
                 carte[my][mx][layer] = lassets[curpos]
         if event.type == MOUSEMOTION:
             if clic:
@@ -239,7 +245,7 @@ while continuer:
 print("Saving map ...")
 print("Carte is not None :", carte is not None)
 with open(map_path, "wb") as file:
-    pickle.Pickler(file).dump([carte, {}, {}, zid])
+    pickle.Pickler(file).dump([carte, objets, buildings, zid])
 
 print("Exited cleanly")
 pygame.quit()

@@ -7,7 +7,8 @@ import os
 def main():
     with open(os.path.join("..", "saves", "map.umd"), "wb") as map_:
         paths = {
-            "1": ["..", "saves", "map", "start.umd"]
+            "1": ["..", "saves", "map", "start.umd"],
+            "2": ["..", "saves", "map", "map1.umd"]
         }
         while True:
             number = input("Numéro de la map : ")

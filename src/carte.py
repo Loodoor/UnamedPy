@@ -23,14 +23,20 @@ class SubCarte:
         self.buildings = {}
         self.zid = -1
         self.pnjs = []
+        self.path_ = ""
 
     def load(self, path_: str):
         if os.path.exists(path_):
             with open(path_, "rb") as map_reader:
+                self.path_ = path_
                 self.carte, self.objets, self.buildings, self.zid = \
                     pickle.Unpickler(map_reader).load()
         else:
             raise CarteInexistante(path_)
+
+    def save(self):
+        with open(self.path_, "wb") as map_saver:
+            pickle.Pickler(map_saver).dump([self.carte, self.objets, self.buildings, self.zid])
 
     def create_pnj(self):
         self.pnjs.append(-1)
@@ -146,9 +152,13 @@ class CartesManager:
         self.triggers_mgr.save()
 
     def collide_at(self, x, y):
-        return self.current_carte.collide_at(x, y)
+        if self.current_carte.get_building_id_at(x, y) == BUILDING_GET_ERROR:
+            return self.current_carte.collide_at(x, y)
+        self.change_map("")  # #########################################################################################
+        return False
 
     def change_map(self, new_path: str):
+        self.current_carte.save()
         self.current_carte = SubCarte()
         self.current_carte.load(new_path)
         self.carte = self.current_carte.get_all()
