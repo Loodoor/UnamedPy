@@ -156,12 +156,17 @@ class CartesManager:
         self.render()
 
     def _draw_tile_at(self, at_x: int, at_y: int, tile: str):
-        if isinstance(self.images[tile], pygame.Surface):
-            self.ecran.blit(self.images[tile], (at_x, at_y))
-        elif isinstance(self.images[tile], BaseMultipleSpritesAnimator):
-            self.ecran.blit(self.images[tile].get_anim(), (at_x, at_y))
+        if tile == TILE_EAU:
+            self.ecran.blit(self.water_animator.get_anim(), (at_x, at_y))
             if tile not in self.callback_end_rendering:
                 self.callback_end_rendering.append(tile)
+        else:
+            if isinstance(self.images[tile], pygame.Surface):
+                self.ecran.blit(self.images[tile], (at_x, at_y))
+            elif isinstance(self.images[tile], BaseMultipleSpritesAnimator):
+                self.ecran.blit(self.images[tile].get_anim(), (at_x, at_y))
+                if tile not in self.callback_end_rendering:
+                    self.callback_end_rendering.append(tile)
 
     def _update_anims(self):
         for anim in self.callback_end_rendering:
@@ -185,7 +190,7 @@ class CartesManager:
                         for tile in udel_same_occurence(*objet[-2::-1]):
                             self._draw_tile_at(xpos, ypos, tile)
                 if (x, y) in objects_at:
-                    self.ecran.blit(self.images['10'], (xpos, ypos))
+                    self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))
         self._update_anims()
 
     def get_tile_code_at(self, x: int, y: int):

@@ -74,7 +74,7 @@ class FluidesAnimator(BaseSideAnimator):
     def next(self):
         self._draw()
 
-    def get_current_anim(self):
+    def get_anim(self):
         return self.output[int(self.time % len(self.output))]
 
 

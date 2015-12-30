@@ -54,6 +54,9 @@ UDP_CONNECTED = "network.game.lastplayer.connected"
 UDP_LISTENNING = "network.server.islistenning"
 
 TILE_SIZE = 32
+TILE_EAU = '3'
+TILE_POKEOBJ = '10'
+
 YTAILLE_carte = 1200
 XTAILLE_carte = 1200
 BUILDING = 12
