@@ -58,7 +58,7 @@ class BaseMultipleSpritesAnimator:
         self._create_anims()
 
     def next(self):
-        if time() + self._wait >= self._last_time:
+        if time() + self._wait <= self._last_time:
             self._cur_anim += 1
             self._cur_anim %= self._max_anim
 
