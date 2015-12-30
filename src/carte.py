@@ -113,6 +113,10 @@ class CartesManager:
         self.loaded = False
         self.water_animator = None
 
+    def _load_animators(self):
+        self.water_animator = FluidesAnimator(self.images[TILE_EAU], 2)
+        self.water_animator.load()
+
     def general_load(self):
         for i in glob(os.path.join("..", "assets", "tiles", "*")):
             # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
@@ -124,7 +128,7 @@ class CartesManager:
             elif os.path.isdir(i):
                 self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
                 self.lassets.append(i.split(os.sep)[-1])
-        self.water_animator = FluidesAnimator(self.images['3'], 2)
+        self._load_animators()
         self.loaded = True
 
     def load(self):
