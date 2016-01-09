@@ -22,7 +22,7 @@ class Combat:
         self.ecran = ecran
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
-        self.adversaire = creatures_mgr.Creature(0, indexer.get_type_of(0))
+        self.adversaire = creatures_mgr.Creature(0, indexer.get_type_of(0), indexer=indexer)
         self.zones_mgr = zone
         self.zid = zone_id
         self.indexer = indexer
@@ -36,7 +36,7 @@ class Combat:
         self.storage = storage
 
     def find_adv(self):
-        self.adversaire = self.zones_mgr.get_new_adversary(self.zid)
+        self.adversaire = creatures_mgr.Creature(*self.zones_mgr.get_new_adversary(self.zid), indexer=self.indexer)
 
     def mon_tour(self):
         return True if not self.compteur_tour % 2 else False
@@ -152,8 +152,8 @@ class Combat:
         # en attendant d'avoir un paysage
         pygame.draw.rect(self.ecran, (50, 50, 180), (COMB_X, COMB_Y, COMB_SX, COMB_SY))
         # affichage des créatures
-        self.ecran.blit(self.indexer.get_image_by_id(self.get_adversary().get_id()), (COMB_X_ADV, COMB_Y_ADV))
-        self.ecran.blit(self.indexer.get_image_by_id(self.get_my_creature().get_id()), (COMB_X_ME, COMB_Y_ME))
+        self.ecran.blit(self.get_adversary().get_image(), (COMB_X_ADV, COMB_Y_ADV))
+        self.ecran.blit(self.get_my_creature().get_image(), (COMB_X_ME, COMB_Y_ME))
         # affichage des stats
         if not self.get_adversary().is_dead():
             upg_bar(self.ecran, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),

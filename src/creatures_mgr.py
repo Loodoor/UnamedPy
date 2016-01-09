@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from exceptions import CategorieInexistante
+from exceptions import CategorieInexistante, ErreurDeCreationDeClass
 from constantes import *
 import random
 
@@ -46,7 +46,10 @@ class Attaque:
 
 
 class Creature:
-    def __init__(self, id: int, type: int, alea_niv: tuple=(10, 20), specs_range: tuple=(2, 10), pvs_range: tuple=(18, 27)) -> None:
+    def __init__(self, id: int, type: int, alea_niv: tuple=(10, 20), specs_range: tuple=(2, 10),
+                 pvs_range: tuple=(18, 27), indexer=None) -> None:
+        if not indexer:
+            raise ErreurDeCreationDeClass
         self.specs = {
             SPEC_ATK: random.randint(*specs_range),
             SPEC_DEF: random.randint(*specs_range),
@@ -62,6 +65,14 @@ class Creature:
         self.upgrade_range = UPGRADE_RANGE_SPEC
         self.attaques = []
         self.dead = False
+        self.__shiney = True if random.random() <= SPEC_PROBA_SHINEY else False
+        self.__image = indexer.get_image_by_id(self.specs[SPEC_ID])
+
+    def get_image(self):
+        return self.__image
+
+    def is_shiney(self):
+        return self.__shiney
 
     def is_dead(self):
         return self.dead

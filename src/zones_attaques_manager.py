@@ -3,8 +3,7 @@
 from os import path
 from constantes import *
 import pickle
-from creatures_mgr import Creature
-from random import choice, randrange
+from random import choice
 from indexer import Indexer
 
 
@@ -20,7 +19,7 @@ class Zone:
     def get_new_adversaire(self, indexer: Indexer):
         id_ = choice(self.creatures_id)
         type_ = indexer.get_type_of(id_)
-        return Creature(id_, type_, self.level_range)
+        return id_, type_, self.level_range
 
 
 class ZonesManager:

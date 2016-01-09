@@ -13,9 +13,18 @@ class FonctionnaliteNonImplementee(Exception):
 
 class CreaturesNonTrouvees(Exception):
     def __init__(self):
-        super().__init__("Désolé, aucune créature ne semble exister. Essayez de réinstaller le jeu pour "
-                         "résoudre le problème. Sinon, contactez moi sur Zeste de Savoir (.com) (Folaefolc)"
-                         " pour m'indiquer votre problème"
+        super().__init__(
+            "Désolé, aucune créature ne semble exister. Essayez de réinstaller le jeu pour "
+            "résoudre le problème. Sinon, contactez moi sur Zeste de Savoir (.com) (Folaefolc)"
+            " pour m'indiquer votre problème"
+        )
+
+
+class ErreurDeCreationDeClass(Exception):
+    def __init__(self):
+        super().__init__(
+            "Une erreur s'est produite lors de la création d'un objet de type personnalisé "
+            "(class). Merci de reporter cette erreur à Folaefolc, main dev' d'Unamed"
         )
 
 
@@ -23,7 +32,7 @@ class ListePleine(Exception):
     def __init__(self):
         super().__init__(
             "La liste étant déjà pleine, le code ne peut pas s'exécuter dans des conditions normales."
-            " Cela peu avoir pour effet de déstabiliser le gameplay ou même le jeu entier. Merci de reporter "
+            " Cela peu avoir pour effet de destabiliser le gameplay ou même le jeu entier. Merci de reporter "
             "cette erreur à Folaefolc, main dev' d'Unamed"
         )
 

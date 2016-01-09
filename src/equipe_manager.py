@@ -15,7 +15,7 @@ class EquipeManager:
         self.police = police
         self.creatures = [
             # Starter de test
-            Creature(0, indexer.get_type_of(0))
+            Creature(0, indexer.get_type_of(0), indexer=indexer)
         ]
         self.indexer = indexer
         self.path = os.path.join("..", "saves", "equipe" + EXTENSION)

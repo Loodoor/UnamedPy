@@ -378,6 +378,7 @@ SPEC_PVS = 'points de vie'
 SPEC_MAX_PVS = 'max points de vie'
 SPEC_XP = 'points experience'
 SPEC_XP_GAGNE = 25
+SPEC_PROBA_SHINEY = 0.003
 SPEC_SEUIL_XP_LVL_UP = 100
 MAX_VAL_SPEC = 500
 
