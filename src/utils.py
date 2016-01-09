@@ -30,6 +30,17 @@ def uscreenschot(surface: pygame.Surface):
     print("Screenshot sauvegardée sous '" + path_ + "'")
 
 
+def uset_image_as_shiney(base: pygame.Surface) -> pygame.Surface:
+    base.lock()
+    for pixel in range(base.get_width() * base.get_height()):
+        x, y = pixel % base.get_height(), pixel // base.get_height()
+        last_color = base.get_at((x, y))
+        new_color = pygame.Color(last_color.g, last_color.b, last_color.r, last_color.a)
+        base.set_at((x, y), new_color)
+    base.unlock()
+    return base
+
+
 def ucount_in_list(*args):
     work = {}
 

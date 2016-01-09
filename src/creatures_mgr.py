@@ -2,6 +2,7 @@
 
 from exceptions import CategorieInexistante, ErreurDeCreationDeClass
 from constantes import *
+from utils import uset_image_as_shiney
 import random
 
 
@@ -46,16 +47,17 @@ class Attaque:
 
 
 class Creature:
-    def __init__(self, id: int, type: int, alea_niv: tuple=(10, 20), specs_range: tuple=(2, 10),
+    def __init__(self, id: int, type_: int, alea_niv: tuple=(10, 20), specs_range: tuple=(2, 10),
                  pvs_range: tuple=(18, 27), indexer=None) -> None:
         if not indexer:
             raise ErreurDeCreationDeClass
+
         self.specs = {
             SPEC_ATK: random.randint(*specs_range),
             SPEC_DEF: random.randint(*specs_range),
             SPEC_VIT: random.randint(*specs_range),
             SPEC_ID: id,
-            SPEC_TYP: type,
+            SPEC_TYP: type_,
             SPEC_NOM: '',
             SPEC_NIV: random.randint(*alea_niv),
             SPEC_PVS: random.randint(*pvs_range),
@@ -66,7 +68,8 @@ class Creature:
         self.attaques = []
         self.dead = False
         self.__shiney = True if random.random() <= SPEC_PROBA_SHINEY else False
-        self.__image = indexer.get_image_by_id(self.specs[SPEC_ID])
+        self.__image = indexer.get_image_by_id(self.specs[SPEC_ID]) if not self.is_shiney() else \
+            uset_image_as_shiney(indexer.get_image_by_id(self.specs[SPEC_ID]))
 
     def get_image(self):
         return self.__image
@@ -98,6 +101,7 @@ class Creature:
             for _ in range(self.specs[SPEC_XP] // self._calc_seuil_xp()):
                 levels_ups.append(self._level_up())
             self.specs[SPEC_XP] %= self._calc_seuil_xp()
+            self.specs[SPEC_PVS] = self.specs[SPEC_MAX_PVS]
             return levels_ups
         else:
             return gain

@@ -35,6 +35,10 @@ class Combat:
         self.selected_atk = -1
         self.storage = storage
 
+    def on_start(self):
+        print("adv id", self.adversaire.get_id())
+        print("zid", self.zid)
+
     def find_adv(self):
         self.adversaire = creatures_mgr.Creature(*self.zones_mgr.get_new_adversary(self.zid), indexer=self.indexer)
 
@@ -54,6 +58,7 @@ class Combat:
     def update(self):
         if self.is_running:
             if not self.has_started:
+                self.on_start()
                 self.indexer.vu_(self.get_adversary().get_id())
                 self.has_started = True
                 self.get_my_creature().add_attack("test", T_EAU, 50, "TEST d'attaque de type eau", [10, MAX_PP_PER_ATK])
