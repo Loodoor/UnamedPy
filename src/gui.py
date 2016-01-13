@@ -57,7 +57,8 @@ class GUIBulleWaiting(GUIBulle):
         return self.done
 
     def set_text(self, new: str or list):
-        super(self).set_text(new)
+        self.texte = new
+        self.create_text_renderers()
         self.done = False
 
     def update(self, dt: int=1):
@@ -78,11 +79,22 @@ class GUIBulleAsking(GUIBulleWaiting):
                  screenshotkey=K_F5):
         super().__init__(ecran, pos, texte, font, screenshotkey)
         self.create_text_renderers()
-        self.text_box = TextBox(self.ecran, x=self.pos[0] + (self.iw - 120 + self.txt_renderer.get_width()) // 2,
+        self.text_box = TextBox(self.ecran, x=self.pos[0] + self.txt_renderer.get_width() // 2 + self.iw // 2,
                                 y=self.pos[1] + (self.ih - 35) // 2, bgcolor=(120, 120, 120))
 
     def render(self):
-        super(self).render()
+        self.ecran.blit(self.image, self.pos)
+        if not isinstance(self.txt_renderer, list):
+            self.ecran.blit(self.txt_renderer, (self.pos[0] + self.iw // 2 - self.txt_renderer.get_width() // 2,
+                                                self.pos[1] + self.ih // 2 - self.txt_renderer.get_height() // 2))
+        else:
+            i = 0
+            for trender in self.txt_renderer:
+                self.ecran.blit(trender, (self.pos[0] + self.iw // 2 - trender.get_width() // 2,
+                                          self.pos[1] + self.ih // 2 -
+                                          (trender.get_height() * len(self.txt_renderer)) + i * GUI_Y_ESP))
+                i += 1
+
         if self.text_box.is_running():
             self.text_box.update()
         else:
@@ -95,10 +107,10 @@ class GUIBulleAsking(GUIBulleWaiting):
         while not self.done:
             ev = pygame.event.poll()
             if ev.type == KEYDOWN:
-                if ev.key != self.screenkey:
-                    self.done = True
-                else:
+                if ev.key == self.screenkey:
                     uscreenschot(self.ecran)
+                else:
+                    self.text_box.event(ev)
 
             self.render()
             pygame.display.flip()

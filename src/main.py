@@ -48,6 +48,8 @@ def main():
         "Bienvenue à toi, chercheur !",
         "Tu vas entrer sur l'île d'Unamed, prépare toi à une toute nouvelle aventure !"
     ]
+    adventure = Adventure(ecran, police)
+    adventure.load()
     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
     fond = pygame.image.load(os.path.join("..", "assets", "menu", "fond.png")).convert_alpha()
     load_texts = glob(os.path.join("..", "assets", "menu", "chargement", "*.txt"))
@@ -59,16 +61,12 @@ def main():
     print("Appuyez sur 'J' pour lancer le jeu")
 
     continuer = 1
-    has_already_played = utils.uhas_already_played()
+    has_already_played = adventure.has_already_played()
     chargement = False
     en_reseau = False
     avancement = 0
 
     print("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
-
-    text_box = TextBox(ecran, x=MENU_TXT_BOX_X, y=MENU_TXT_BOX_Y, sx=MENU_TXT_BOX_SX,
-                       sy=MENU_TXT_BOX_SY, color=(150, 150, 150))
-    plz_pseudo = police.render("Pseudo :", 1, (255, 255, 255))
 
     while continuer:
         for event in pygame.event.get():
@@ -79,8 +77,6 @@ def main():
                     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
                 if event.key == K_SPACE and chargement:
                     avancement = 246  # pour accélérer le chargement
-                if not has_already_played:
-                    text_box.event(event)
             if event.type == MOUSEBUTTONUP:
                 xp, yp = event.pos
                 if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_JOUER_SX and \
@@ -101,9 +97,6 @@ def main():
                 tmp = police.render(txt, 1, (255, 255, 255))
                 ecran.blit(tmp, (FEN_large // 2 - tmp.get_width() // 2, 100 + 20 * i))
                 i += 1
-            if text_box.is_running():
-                text_box.render()
-                ecran.blit(plz_pseudo, (MENU_X_PLZ_PSEUDO, MENU_Y_PLZ_PSEUDO + 20 * i))
         else:
             ecran.blit(alea_texte, (FEN_large // 2 - alea_texte.get_width() // 2, 75))
 
@@ -122,15 +115,12 @@ def main():
                                                  1, (255, 255, 255))
             if avancement >= 246 and chargement:
                 if not has_already_played:
-                    with open(os.path.join("..", "saves", "pseudo" + EXTENSION), 'wb') as spseud:
-                        pickle.Pickler(spseud).dump(text_box.get_text())
+                    adventure.next()
                 chargement = False
                 avancement = 0
                 temp = utils.ULoader()
                 temp.load()
                 del temp
-                adventure = Adventure()
-                adventure.load()
                 if en_reseau:
                     print("Entrée en mode réseau ...")
                     ecran.fill(0)
