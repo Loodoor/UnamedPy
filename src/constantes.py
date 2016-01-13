@@ -2,6 +2,7 @@
 
 import os
 import math
+import sys
 
 
 FEN_large = 640
@@ -26,6 +27,8 @@ GLOBAL_ERROR = -1
 """
 
 ID_STARTER = 0
+
+INPUT_CHAR = ">"
 
 MAP_ENTRY_POINT = "1"
 

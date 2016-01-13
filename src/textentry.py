@@ -77,13 +77,16 @@ class TextBox:
         if 0 < self.tdt <= 0.5:
             self.clignote = True
 
+    def update(self):
+        for event in pygame.event.get():
+            self.event(event)
+
+        self.render()
+        pygame.display.flip()
+
     def mainloop(self):
         while self.running:
-            for event in pygame.event.get():
-                self.event(event)
-
-            self.render()
-            pygame.display.flip()
+            self.update()
 
     def type_enter(self):
         return self.enter

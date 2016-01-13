@@ -18,6 +18,7 @@ import game
 import utils
 from constantes import *
 from textentry import TextBox
+from aventure_manager import Adventure
 
 
 def get_alea_text(path: str="textes") -> str:
@@ -128,6 +129,8 @@ def main():
                 temp = utils.ULoader()
                 temp.load()
                 del temp
+                adventure = Adventure()
+                adventure.load()
                 if en_reseau:
                     print("Entrée en mode réseau ...")
                     ecran.fill(0)
@@ -137,9 +140,11 @@ def main():
                                  sy=ecran.get_height(),
                                  placeholder="IP du serveur : ")
                     ip.mainloop()
-                    jeu = game.Game(ecran, "first", s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM), p=(ip.get_text(), 5500))
+                    jeu = game.Game(ecran, "first", adventure=adventure,
+                                    s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM),
+                                    p=(ip.get_text(), 5500))
                 else:
-                    jeu = game.Game(ecran, "first")
+                    jeu = game.Game(ecran, "first", adventure=adventure)
                 jeu.start()
                 del jeu
         else:

@@ -3,6 +3,7 @@
 import pygame
 from pygame.locals import *
 from constantes import *
+from textentry import TextBox
 import time
 from glob import glob
 from utils import uscreenschot
@@ -54,6 +55,41 @@ class GUIBulleWaiting(GUIBulle):
 
     def is_done(self):
         return self.done
+
+    def set_text(self, new: str or list):
+        super(self).set_text(new)
+        self.done = False
+
+    def update(self, dt: int=1):
+        while not self.done:
+            ev = pygame.event.poll()
+            if ev.type == KEYDOWN:
+                if ev.key != self.screenkey:
+                    self.done = True
+                else:
+                    uscreenschot(self.ecran)
+
+            self.render()
+            pygame.display.flip()
+
+
+class GUIBulleAsking(GUIBulleWaiting):
+    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str, font: pygame.font.SysFont,
+                 screenshotkey=K_F5):
+        super().__init__(ecran, pos, texte, font, screenshotkey)
+        self.create_text_renderers()
+        self.text_box = TextBox(self.ecran, x=self.pos[0] + (self.iw - 120 + self.txt_renderer.get_width()) // 2,
+                                y=self.pos[1] + (self.ih - 35) // 2, bgcolor=(120, 120, 120))
+
+    def render(self):
+        super(self).render()
+        if self.text_box.is_running():
+            self.text_box.update()
+        else:
+            self.done = True
+
+    def get_text(self):
+        return self.text_box.get_text()
 
     def update(self, dt: int=1):
         while not self.done:

@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import sys
 import socket
 import pygame
 import pickle
@@ -23,13 +22,16 @@ from constantes import *
 from gui import GUISauvegarde
 from utils import uscreenschot
 from fpsregulator import IAFPS
+from aventure_manager import Adventure
 from exceptions import FonctionnaliteNonImplementee
 from network_event_listener import NetworkEventsListener
 
 
 class Game:
-    def __init__(self, ecran: pygame.Surface, perso_choice: str, s: socket.socket=None, p: tuple=('127.0.0.1', 5500),
-                 controles: dict={}):
+    def __init__(self, ecran: pygame.Surface, perso_choice: str, adventure: Adventure, s: socket.socket=None,
+                 p: tuple=('127.0.0.1', 5500), controles: dict={}):
+        self.adventure = adventure
+
         # self.fps_regulator = IAFPS(FPS_base)
         self.fps_regulator = pygame.time.Clock()
         self.continuer = 1
@@ -120,6 +122,7 @@ class Game:
         print("Sauvegarde ...")
         self.carte_mgr.save()
         self.personnage.save()
+        # self.adventure.save()
         # self.money.save()
         # self.indexeur.save()
         # self.equipe_mgr.save()
