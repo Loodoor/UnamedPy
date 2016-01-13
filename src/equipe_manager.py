@@ -13,10 +13,7 @@ class EquipeManager:
         self.size = size
         self.ecran = ecran
         self.police = police
-        self.creatures = [
-            # Starter de test
-            Creature(0, indexer.get_type_of(0), indexer=indexer)
-        ]
+        self.creatures = []
         self.indexer = indexer
         self.path = os.path.join("..", "saves", "equipe" + EXTENSION)
         self.passe_pc_txt = self.police.render("PC", 1, (255, 255, 255))
@@ -59,6 +56,11 @@ class EquipeManager:
         if os.path.exists(self.path):
             with open(self.path, "rb") as equipe_rb:
                 self.creatures = pickle.Unpickler(equipe_rb).load()
+        else:
+            # Starter de test
+            self.creatures.append(
+                Creature(ID_STARTER, self.indexer.get_type_of(0), indexer=self.indexer, alea_niv=0)
+            )
 
     def save(self):
         with open(self.path, "wb") as equipe_wb:

@@ -47,7 +47,7 @@ class Attaque:
 
 
 class Creature:
-    def __init__(self, id: int, type_: int, alea_niv: tuple=(10, 20), specs_range: tuple=(2, 10),
+    def __init__(self, id: int, type_: int, alea_niv: tuple or int=(10, 20) or 10, specs_range: tuple=(2, 10),
                  pvs_range: tuple=(18, 27), indexer=None) -> None:
         if not indexer:
             raise ErreurDeCreationDeClass
@@ -59,7 +59,7 @@ class Creature:
             SPEC_ID: id,
             SPEC_TYP: type_,
             SPEC_NOM: '',
-            SPEC_NIV: random.randint(*alea_niv),
+            SPEC_NIV: random.randint(*alea_niv) if isinstance(alea_niv, tuple) else alea_niv,
             SPEC_PVS: random.randint(*pvs_range),
             SPEC_XP: 0
         }
@@ -81,7 +81,7 @@ class Creature:
         return self.dead
 
     def _calc_seuil_xp(self):
-        return int(SPEC_SEUIL_XP_LVL_UP / 2 * math.sqrt(self.get_niv()) * 0.9)
+        return int(SPEC_SEUIL_XP_LVL_UP / 2 * math.sqrt(self.get_niv() + 1) * 0.9)
 
     def get_seuil_xp(self):
         return self._calc_seuil_xp()

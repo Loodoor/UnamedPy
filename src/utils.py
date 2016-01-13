@@ -249,40 +249,39 @@ class ULoader:
         # Création des zones par défaut
 
         ZonesManager.add_new_zone_to_path(Zone(ZONE0,
-                                               [_ for _ in Indexer.static_select_all_crea_with_stade(0)[:4]],
+                                               [_.id for _ in Indexer.static_select_all_crea_with_stade(0)[:4]],
                                                (0, 4)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE1,
-                                               [_ for _ in Indexer.static_select_all_crea_with_stade(0)[:8]],
+                                               [_.id for _ in Indexer.static_select_all_crea_with_stade(0)[:8]],
                                                (4, 10)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE2,
-                                               [_ for _ in Indexer.static_select_all_crea_with_stade(0)[:8].extend(
+                                               [_.id for _ in Indexer.static_select_all_crea_with_stade(0)[:8] +
                                                    Indexer.static_select_all_crea_with_stade(1)[:4]
-                                               )],
+                                               ],
                                                (8, 22)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE3,
-                                               [_ for _ in Indexer.static_select_all_crea_with_stade(0)[:11].extend(
+                                               [_.id for _ in Indexer.static_select_all_crea_with_stade(0)[:11] +
                                                    Indexer.static_select_all_crea_with_stade(1)[:6]
-                                               )],
+                                               ],
                                                (17, 35)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE4,
-                                               [_ for _ in Indexer.static_select_all_crea_with_stade(1)[:14]],
+                                               [_.id for _ in Indexer.static_select_all_crea_with_stade(1)[:14]],
                                                (30, 45)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE5,
-                                               [_ for _ in Indexer.static_select_all_crea_with_stade(1)[:14].extend(
-                                                   Indexer.static_select_all_crea_with_stade(2)[:10].extend(
-                                                       Indexer.static_select_all_crea_with_stade(3)[:5]
-                                                   )
-                                               )],
+                                               [_.id for _ in Indexer.static_select_all_crea_with_stade(1)[:14] +
+                                                   Indexer.static_select_all_crea_with_stade(2)[:10] +
+                                                   Indexer.static_select_all_crea_with_stade(3)[:5]
+                                               ],
                                                (40, 60)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE6,
-                                               [_ for _ in Indexer.static_select_all_crea_with_stade(2)[:].extend(
+                                               [_.id for _ in Indexer.static_select_all_crea_with_stade(2)[:] +
                                                    Indexer.static_select_all_crea_with_stade(3)[:9]
-                                               )],
+                                               ],
                                                (55, 75)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE7,
-                                               [_ for _ in Indexer.static_select_all_crea_with_stade(2)[:].extend(
+                                               [_.id for _ in Indexer.static_select_all_crea_with_stade(2)[:] +
                                                    Indexer.static_select_all_crea_with_stade(3)[:14]
-                                               )],
+                                               ],
                                                (70, 100)))
         ZonesManager.add_new_zone_to_path(Zone(ZONE8,
                                                [_ for _ in range(MAX_CREATURES)],
@@ -315,7 +314,7 @@ class ULoader:
                                                    "d'un trigger de test en (0, 0), "
                                                    "de nouveaux objets, "
                                                    "refonte des zones id, "
-                                                   "et des débuts de zones de base"))
+                                                   "et des zones de base"))
 
     def reload(self):
         self.load()

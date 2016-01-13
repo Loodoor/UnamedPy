@@ -227,8 +227,7 @@ class Indexer:
                 if creature.get_stade() == stade:
                     work.append(creature)
             return work
-        else:
-            return indexer
+        return indexer
 
     def update(self):
         self.render()
