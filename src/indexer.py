@@ -212,6 +212,24 @@ class Indexer:
         else:
             return self.indexer
 
+    @staticmethod
+    def static_select_all_crea_with_stade(stade: int):
+        save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
+        if os.path.exists(save_path):
+            with open(save_path, "rb") as read_index:
+                indexer = pickle.Unpickler(read_index).load()
+        else:
+            raise CreaturesNonTrouvees
+
+        if 0 <= stade <= 3:
+            work = []
+            for creature in indexer:
+                if creature.get_stade() == stade:
+                    work.append(creature)
+            return work
+        else:
+            return indexer
+
     def update(self):
         self.render()
 

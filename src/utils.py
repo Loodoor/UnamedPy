@@ -248,22 +248,66 @@ class ULoader:
 
         # Création des zones par défaut
 
-        ZonesManager.add_new_zone_to_path(Zone(ZONE0, [_ for _ in range(MAX_CREATURES)], (0, 4)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE1, [_ for _ in range(MAX_CREATURES)], (4, 10)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE2, [_ for _ in range(MAX_CREATURES)], (8, 22)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE3, [_ for _ in range(MAX_CREATURES)], (17, 35)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE4, [_ for _ in range(MAX_CREATURES)], (30, 45)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE5, [_ for _ in range(MAX_CREATURES)], (40, 60)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE6, [_ for _ in range(MAX_CREATURES)], (55, 75)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE7, [_ for _ in range(MAX_CREATURES)], (70, 100)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE8, [_ for _ in range(MAX_CREATURES)], (90, 120)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONE9, [_ for _ in range(MAX_CREATURES)], (110, 150)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEa, [_ for _ in range(MAX_CREATURES)], (140, 200)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEb, [_ for _ in range(MAX_CREATURES)], (180, 240)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEc, [_ for _ in range(MAX_CREATURES)], (220, 285)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEd, [_ for _ in range(MAX_CREATURES)], (265, 310)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEe, [_ for _ in range(MAX_CREATURES)], (290, 360)))
-        ZonesManager.add_new_zone_to_path(Zone(ZONEf, [_ for _ in range(MAX_CREATURES)], (330, 420)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE0,
+                                               [_ for _ in Indexer.static_select_all_crea_with_stade(0)[:4]],
+                                               (0, 4)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE1,
+                                               [_ for _ in Indexer.static_select_all_crea_with_stade(0)[:8]],
+                                               (4, 10)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE2,
+                                               [_ for _ in Indexer.static_select_all_crea_with_stade(0)[:8].extend(
+                                                   Indexer.static_select_all_crea_with_stade(1)[:4]
+                                               )],
+                                               (8, 22)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE3,
+                                               [_ for _ in Indexer.static_select_all_crea_with_stade(0)[:11].extend(
+                                                   Indexer.static_select_all_crea_with_stade(1)[:6]
+                                               )],
+                                               (17, 35)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE4,
+                                               [_ for _ in Indexer.static_select_all_crea_with_stade(1)[:14]],
+                                               (30, 45)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE5,
+                                               [_ for _ in Indexer.static_select_all_crea_with_stade(1)[:14].extend(
+                                                   Indexer.static_select_all_crea_with_stade(2)[:10].extend(
+                                                       Indexer.static_select_all_crea_with_stade(3)[:5]
+                                                   )
+                                               )],
+                                               (40, 60)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE6,
+                                               [_ for _ in Indexer.static_select_all_crea_with_stade(2)[:].extend(
+                                                   Indexer.static_select_all_crea_with_stade(3)[:9]
+                                               )],
+                                               (55, 75)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE7,
+                                               [_ for _ in Indexer.static_select_all_crea_with_stade(2)[:].extend(
+                                                   Indexer.static_select_all_crea_with_stade(3)[:14]
+                                               )],
+                                               (70, 100)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE8,
+                                               [_ for _ in range(MAX_CREATURES)],
+                                               (90, 120)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONE9,
+                                               [_ for _ in range(MAX_CREATURES)],
+                                               (110, 150)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEa,
+                                               [_ for _ in range(MAX_CREATURES)],
+                                               (140, 200)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEb,
+                                               [_ for _ in range(MAX_CREATURES)],
+                                               (180, 240)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEc,
+                                               [_ for _ in range(MAX_CREATURES)],
+                                               (220, 285)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEd,
+                                               [_ for _ in range(MAX_CREATURES)],
+                                               (265, 310)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEe,
+                                               [_ for _ in range(MAX_CREATURES)],
+                                               (290, 360)))
+        ZonesManager.add_new_zone_to_path(Zone(ZONEf,
+                                               [_ for _ in range(MAX_CREATURES)],
+                                               (330, 420)))
 
         # Fin du boulot !
         with open(self.path, 'wb') as fjob_done:
