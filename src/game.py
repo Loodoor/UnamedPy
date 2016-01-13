@@ -39,8 +39,6 @@ class Game:
         self.sock = s
         self.params = p
         self.renderer_manager = renderer_manager.RendererManager()
-        self.pseudo = ""
-        self.load_pseudo()
         self.show_fps = False
 
         self.right = False
@@ -54,7 +52,7 @@ class Game:
         self.police_petite = pygame.font.Font(POLICE_PATH, POL_PETITE_TAILLE)
 
         # Entités
-        self.personnage = personnage.Personnage(self.ecran, self.police_grande, self.pseudo, perso_choice)
+        self.personnage = personnage.Personnage(self.ecran, self.police_grande, perso_choice)
 
         # Managers
         self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager)
@@ -69,7 +67,7 @@ class Game:
         self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
         self.network_ev_listener = NetworkEventsListener(s, p, self.personnage)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
-                                                 self.pseudo, RANG_NUL)
+                                                 self.adventure.get_pseudo(), RANG_NUL)
 
         # Contrôles
         self.controles = {
@@ -97,13 +95,6 @@ class Game:
         }
 
         self.load()
-
-    def load_pseudo(self):
-        if os.path.exists(os.path.join("..", "saves", "pseudo" + EXTENSION)):
-            with open(os.path.join("..", "saves", "pseudo" + EXTENSION), 'rb') as rpseud:
-                self.pseudo = pickle.Unpickler(rpseud).load()
-        else:
-            self.pseudo = "Testeur" + str(int(random.randint() * 100))
 
     def load(self):
         self.carte_mgr.load()

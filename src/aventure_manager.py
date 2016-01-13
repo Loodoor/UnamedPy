@@ -25,7 +25,9 @@ class Adventure:
     def _begin(self):
         pygame.draw.rect(self.ecran, (50, 180, 50), (0, 0) + self.ecran.get_size())
         pygame.display.flip()
+        ask_for = ""
         g = GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "", self.font)
+        i = 0
         for texte in self.beginning_text:
             if texte[0] == INPUT_CHAR:
                 ask_smth = True
@@ -33,7 +35,10 @@ class Adventure:
                 g.set_text(texte[1:texte[1:].index(INPUT_CHAR) + 1])
             else:
                 ask_smth = False
-                g.set_text(texte[:-1])
+                if i != len(self.beginning_text) - 1:
+                    g.set_text(texte[:-1])
+                else:
+                    g.set_text(texte[:-1].format(self.user_pseudo))
             g.update()
 
             if ask_smth:
@@ -44,6 +49,8 @@ class Adventure:
                     self.user_pseudo = t.get_text()
                     with open(os.path.join("..", "saves", "pseudo" + EXTENSION), "wb") as pseudo_w:
                         Pickler(pseudo_w).dump(self.user_pseudo)
+
+            i += 1
         del g
 
     def next(self):
@@ -56,6 +63,9 @@ class Adventure:
 
     def set_pseudo(self, new: str):
         self.user_pseudo = new
+
+    def get_pseudo(self):
+        return self.user_pseudo
 
     def load(self):
         if os.path.exists(self.path):

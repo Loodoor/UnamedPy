@@ -80,7 +80,9 @@ class GUIBulleAsking(GUIBulleWaiting):
         super().__init__(ecran, pos, texte, font, screenshotkey)
         self.create_text_renderers()
         self.text_box = TextBox(self.ecran, x=self.pos[0] + self.txt_renderer.get_width() // 2 + self.iw // 2,
-                                y=self.pos[1] + (self.ih - 35) // 2, bgcolor=(120, 120, 120))
+                                y=self.pos[1] + (self.ih - self.txt_renderer.get_height() - 4) // 2,
+                                bgcolor=(120, 120, 120),
+                                sy=self.txt_renderer.get_height() + 4)
 
     def render(self):
         self.ecran.blit(self.image, self.pos)
@@ -163,7 +165,7 @@ class GUISauvegarde:
         self.firstcall = None
         self.has_started_saving = False
         self.ldroite = [pygame.image.load(_).convert_alpha() for _ in
-                        glob(os.path.join("..", "assets", "personnage", "droite*.png"))]
+                        glob(os.path.join("..", "assets", "personnages", "first", "droite*.png"))]
         self.cur_anim = 0
 
     def reinit(self):
