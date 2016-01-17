@@ -58,7 +58,7 @@ UDP_SEND_DISCONNECT = "network.game.me.disconnecting"
 UDP_CONNECTED = "network.game.lastplayer.connected"
 UDP_LISTENNING = "network.server.islistenning"
 
-TILE_SIZE = 32
+TILE_SIZE = 16
 TILE_EAU = '3'
 TILE_POKEOBJ = '10'
 
@@ -271,7 +271,7 @@ EXTENSION = '.umd'
 
 TRIGGER = 5
 
-BASIC_SPEED = 8
+BASIC_SPEED = 4
 DIV_DT_BASIC = 1
 DIV_DT_VELO = 0.5
 DIV_DT_COURSE = 0.8

@@ -65,6 +65,9 @@ class SubCarte:
     def get_zid(self):
         return self.zid
 
+    def size(self):
+        return len(self.carte[0]), len(self.carte)
+
     def get_object_at(self, x: int, y: int):
         if (x, y) in self.objets.keys():
             work = self.objets[x, y]
@@ -193,6 +196,8 @@ class CartesManager:
     def render(self):
         tmp_map = [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.carte[int(self.fov[2]):int(self.fov[3])]]
         objects_at = self.current_carte.get_objects()
+        if self.current_carte.size()[0] < FEN_large // TILE_SIZE and self.current_carte.size()[1] < FEN_haut // TILE_SIZE:
+            pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0) + self.ecran.get_size())
         for y in range(len(tmp_map)):
             for x in range(len(tmp_map[y])):
                 objet = self.carte[y][x]

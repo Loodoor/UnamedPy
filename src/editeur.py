@@ -155,11 +155,11 @@ def create_edit_zone():
     for i in range(0, 6):
         tmp = (curpos + i) % len(lassets)
         if tmp == curpos:
-            ecran.blit(police.render("Courant -> ", 1, (255, 255, 255)), (ecran.get_width() - marge, 310 + i * 42))
+            ecran.blit(police.render("Courant -> ", 1, (255, 255, 255)), (ecran.get_width() - marge, 350 + i * 42))
         if not isinstance(assets[lassets[tmp]], BaseMultipleSpritesAnimator):
             ecran.blit(assets[lassets[tmp]], (ecran.get_width() - marge + 70, 340 + i * 42))
         else:
-            ecran.blit(assets[lassets[tmp]].get_anim(), (ecran.get_width() - marge + 70, 310 + i * 42))
+            ecran.blit(assets[lassets[tmp]].get_anim(), (ecran.get_width() - marge + 70, 350 + i * 42))
 
 
 while continuer:
@@ -235,10 +235,12 @@ while continuer:
     if help_:
         create_edit_zone()
 
+    mouse_pos = pygame.mouse.get_pos()
+
     if not isinstance(assets[lassets[curpos]], BaseMultipleSpritesAnimator):
-        ecran.blit(assets[lassets[curpos]], pygame.mouse.get_pos())
+        ecran.blit(assets[lassets[curpos]], (mouse_pos[0] + 10, mouse_pos[1] + 10))
     else:
-        ecran.blit(assets[lassets[curpos]].get_anim(), pygame.mouse.get_pos())
+        ecran.blit(assets[lassets[curpos]].get_anim(), (mouse_pos[0] + 10, mouse_pos[1] + 10))
 
     pygame.display.flip()
 
