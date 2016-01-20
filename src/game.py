@@ -332,6 +332,7 @@ class Game:
 
         if self.renderer_manager.get_renderer() == RENDER_GAME:
             self.personnage.update()
+            self.oth_persos_mgr.draw_them()
         elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
             self.personnage.inventaire_update()
         elif self.renderer_manager.get_renderer() == RENDER_CHAT:

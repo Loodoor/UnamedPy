@@ -5,7 +5,7 @@ import socket
 from constantes import *
 
 
-def get_from_where(usr: dict, news: list, kindof: str, address):
+def get_from_where(usr: dict, news: list, kindof: str, address) -> list:
     smth = []
     for e in news:
         if usr[address]['pseudo'] not in e['sawit'] and e['type'] == kindof:
@@ -14,7 +14,7 @@ def get_from_where(usr: dict, news: list, kindof: str, address):
     return smth
 
 
-def send(co, message, addr):
+def send(co, message, addr) -> None:
     co.sendto(json.dumps(message).encode(), addr)
 
 
@@ -145,7 +145,8 @@ while serveur_lance:
                                     'pseudo': users[addr]['pseudo'],
                                     'pos': users[addr]['pseudo'],
                                     'dir': users[addr]['dir'],
-                                    'avatar': users[addr]['avatar']
+                                    'avatar': users[addr]['avatar'],
+                                    'id': users[addr]['key']
                                 },
                                 'sawit': []
                             }]

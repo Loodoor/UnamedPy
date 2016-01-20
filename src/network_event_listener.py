@@ -123,6 +123,7 @@ class NetworkEventsListener:
                             if key == UDP_CARTE_CHANGE:
                                 pass
                             if key == UDP_PLAYERS_CHANGE:
-                                pass
+                                for perso in val:
+                                    self._controlers['others'].move_this(perso)
 
             self.refresh_mypos()

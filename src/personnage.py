@@ -276,21 +276,32 @@ class OthPersonnagesManager:
         self._sprites = {}
         for directory in glob.glob(os.path.join("..", "assets", "personnages", "*")):
             self._sprites[directory] = {}
-            self._sprites[directory]['bas'] = [
+            self._sprites[directory][BAS] = [
                 pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "bas*.png"))
             ]
-            self._sprites[directory]['haut'] = [
+            self._sprites[directory][HAUT] = [
                 pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "haut*.png"))
             ]
-            self._sprites[directory]['gauche'] = [
+            self._sprites[directory][GAUCHE] = [
                 pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "gauche*.png"))
             ]
-            self._sprites[directory]['droite'] = [
+            self._sprites[directory][DROITE] = [
                 pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "droite*.png"))
             ]
 
-    def move_this(self, id_: float, new_pos: tuple):
-        self._others[id_] = new_pos
+    def add_new(self, id_: float, avatar: str, pseudo: str):
+        self._others[id_] = {}
+        self._others[id_]['avatar'] = avatar
+        self._others[id_]['pseudo'] = pseudo
+
+    def move_this(self, perso: dict):
+        id_ = perso['id']
+        if id_ not in self._others.keys():
+            self.add_new(id_, perso['avatar'], perso['pseudo'])
+        self._others[id_]["pos"] = perso['pos']
+        self._others[id_]['direction'] = perso['dir']
 
     def draw_them(self):
-        pass
+        if self._others:
+            for id_, perso in self._others.items():
+                self.ecran.blit(self._sprites[perso["avatar"]][perso['direction']], perso['pos'])
