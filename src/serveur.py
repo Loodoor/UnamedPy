@@ -7,15 +7,25 @@ from constantes import *
 
 def get_from_where(usr: dict, news: list, kindof: str, address) -> list:
     smth = []
-    for e in news:
+    todel = []
+    for i in range(len(news)):
+        e = news[i]
         if usr[address]['pseudo'] not in e['sawit'] and e['type'] == kindof:
             smth.append(e['content'])
-            e['sawit'].append(usr[address]['pseudo'])
+            news[i]['sawit'].append(usr[address]['pseudo'])
+            if len(news[i]['sawit']) == len(usr):
+                todel.append(i)
+    for elem in todel[::-1]:
+        news.pop(elem)
     return smth
 
 
 def send(co, message, addr) -> None:
-    co.sendto(json.dumps(message).encode(), addr)
+    try:
+        co.sendto(json.dumps(message).encode(), addr)
+    except OSError as e:
+        print("Le message était : ", message, ", et l'adresse : ", addr)
+        sys.exit(0)
 
 
 print("Démarrage du serveur ...")
@@ -46,7 +56,14 @@ while 1:
 
 port = int(sport)
 connexion_principale = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-connexion_principale.bind((hote, port))
+while True:
+    try:
+        connexion_principale.bind((hote, port))
+    except OSError:
+        port += 1
+        print("Connexion échouée.  |  Tentative de connexion sur le port [{}]".format(port))
+    else:
+        break
 print("Le serveur écoute à présent sur le port {0} depuis {1}.".format(port, hote))
 
 serveur_lance = True
@@ -89,7 +106,7 @@ while serveur_lance:
                 send(connexion_principale, UDP_CONNECTION_REFUSED, addr)
         else:
             datas = json.loads(data.decode())
-            if isinstance(datas, str):
+            if isinstance(datas, int):
                 if datas in predefined.keys():
                     send(connexion_principale, predefined[datas], addr)
                 else:
@@ -129,7 +146,8 @@ while serveur_lance:
                             news_ += [{
                                 'type': UDP_MESSAGES_CHANGE,
                                 'content': content,
-                                'sawit': []
+                                'sawit': [],
+                                'from': users[addr]['pseudo']
                             }]
                     elif datas == UDP_SEND_MYPOS:
                         send(connexion_principale, UDP_LISTENNING, addr)
@@ -143,12 +161,13 @@ while serveur_lance:
                                 'content': {
                                     'addr': addr,
                                     'pseudo': users[addr]['pseudo'],
-                                    'pos': users[addr]['pseudo'],
+                                    'pos': users[addr]['pos'],
                                     'dir': users[addr]['dir'],
                                     'avatar': users[addr]['avatar'],
                                     'id': users[addr]['key']
                                 },
-                                'sawit': []
+                                'sawit': [],
+                                'from': users[addr]['pseudo']
                             }]
                     elif datas == UDP_SEND_DISCONNECT:
                         print(users[addr] + " se déconnecte du serveur. Au revoir !")

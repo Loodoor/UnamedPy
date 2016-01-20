@@ -23,19 +23,21 @@ class NetworkEventsListener:
         self._connection_key = ugen_key(random() * 10000)
 
     def check_before_connecting(self) -> bool:
-        if 'perso' in self._controlers and 'others' in self._controlers:
+        if 'perso' in self._controlers and 'others' in self._controlers and 'adventure' in self._controlers:
             return True
         return False
 
     def on_connect(self):
         self.send({
-            'pseudo': self._controlers['perso'].get_pseudo(),
+            'pseudo': self._controlers['adventure'].get_pseudo(),
             'pos': self._controlers['perso'].get_pos(),
             'key': self._connection_key,
             'avatar': self._controlers['perso'].get_skin_path()
         })
+        print("Connexion")
 
     def disable(self):
+        print("Désactivation de la connexion")
         self._enabled = False
 
     def enable(self):
@@ -64,7 +66,7 @@ class NetworkEventsListener:
         if self._recv() == UDP_LISTENNING:
             self.send({
                 "message": message,
-                "pseudo": self._controlers['perso'].get_pseudo(),
+                "pseudo": self._controlers['adventure'].get_pseudo(),
                 "rang": self.rang
             })
 
@@ -81,7 +83,12 @@ class NetworkEventsListener:
 
     def _recv(self):
         if self._enabled:
-            return json.loads(self._sock.recv(self._buffer_size).decode())
+            try:
+                return json.loads(self._sock.recv(self._buffer_size).decode())
+            except ConnectionResetError:
+                print("La connexion a été fermée par le serveur. "
+                      "Contactez l'administrateur si vous pensez que cela est un problème technique")
+                self.disable()
         return UDP_NOTHING_NEW
 
     def refresh_mypos(self):
@@ -95,9 +102,13 @@ class NetworkEventsListener:
     def listen(self):
         if self._enabled:
             if not self._connected:
+                print("Connection en cours")
                 if self.check_before_connecting():
+                    print("Connexion vérifiée")
                     self.on_connect()
+                    print("En attente du serveur")
                     if self._recv() == UDP_CONNECTED:
+                        print("Connecté !")
                         self._connected = True
                     else:
                         print("Impossible de se connecter correctement au serveur, la connexion a été refusée ou a échoué")
@@ -123,7 +134,8 @@ class NetworkEventsListener:
                             if key == UDP_CARTE_CHANGE:
                                 pass
                             if key == UDP_PLAYERS_CHANGE:
-                                for perso in val:
-                                    self._controlers['others'].move_this(perso)
+                                if isinstance(val, list):
+                                    for perso in val:
+                                        self._controlers['others'].move_this(perso)
 
             self.refresh_mypos()

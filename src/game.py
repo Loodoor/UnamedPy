@@ -108,6 +108,7 @@ class Game:
 
         self.network_ev_listener.add_controler('perso', self.personnage)
         self.network_ev_listener.add_controler('others', self.oth_persos_mgr)
+        self.network_ev_listener.add_controler('adventure', self.adventure)
 
         self.tab_types.init_tab()
 
@@ -326,6 +327,8 @@ class Game:
 
         self.load()
         pygame.key.set_repeat(200, 100)
+
+        print("Le jeu démarre ...")
 
     def render(self, dt: int=1):
         self.carte_mgr.update() if self.renderer_manager.can_i_render() else None

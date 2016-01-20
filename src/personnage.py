@@ -274,25 +274,27 @@ class OthPersonnagesManager:
         self.ecran = ecran
         self._others = {}
         self._sprites = {}
-        for directory in glob.glob(os.path.join("..", "assets", "personnages", "*")):
+        for dir_ in glob.glob(os.path.join("..", "assets", "personnages", "*")):
+            directory = os.path.split(dir_)[1]
             self._sprites[directory] = {}
             self._sprites[directory][BAS] = [
-                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "bas*.png"))
+                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "bas*.png"))
             ]
             self._sprites[directory][HAUT] = [
-                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "haut*.png"))
+                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "haut*.png"))
             ]
             self._sprites[directory][GAUCHE] = [
-                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "gauche*.png"))
+                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "gauche*.png"))
             ]
             self._sprites[directory][DROITE] = [
-                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "droite*.png"))
+                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "droite*.png"))
             ]
 
     def add_new(self, id_: float, avatar: str, pseudo: str):
         self._others[id_] = {}
         self._others[id_]['avatar'] = avatar
         self._others[id_]['pseudo'] = pseudo
+        self._others[id_]['state'] = PAUSE
 
     def move_this(self, perso: dict):
         id_ = perso['id']
@@ -304,4 +306,4 @@ class OthPersonnagesManager:
     def draw_them(self):
         if self._others:
             for id_, perso in self._others.items():
-                self.ecran.blit(self._sprites[perso["avatar"]][perso['direction']], perso['pos'])
+                self.ecran.blit(self._sprites[perso["avatar"]][perso['direction']][perso['state']], perso['pos'])
