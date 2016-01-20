@@ -3,10 +3,12 @@
 import socket
 import json
 from constantes import *
+from utils import ugen_key
+from random import random
 
 
 class NetworkEventsListener:
-    def __init__(self, s: socket.socket, p: tuple, perso):
+    def __init__(self, s: socket.socket, p: tuple):
         self._sock = s
         self._params = p
         self._buffer_size = BUFFER_SIZE
@@ -14,17 +16,23 @@ class NetworkEventsListener:
         self._connected = False
         self._recv_to_send_cmd = {
             UDP_CARTE_CHANGE: UDP_ASK_CARTE_CHANGES,
-            UDP_PLAYERS_CHANGE: UDP_ASK_PLAYERS_CHANGES,
-            UDP_MESSAGES_CHANGE: UDP_ASK_MESSAGES
+            UDP_PLAYERS_CHANGE: UDP_ASK_PLAYERS_CHANGES
         }
-        self.perso = perso
         self.rang = RANG_NUL
         self._controlers = {}
+        self._connection_key = ugen_key(random() * 10000)
+
+    def check_before_connecting(self) -> bool:
+        if 'perso' in self._controlers and 'others' in self._controlers:
+            return True
+        return False
 
     def on_connect(self):
         self.send({
-            'pseudo': self.perso.get_pseudo(),
-            'pos': self.perso.get_pos()
+            'pseudo': self._controlers['perso'].get_pseudo(),
+            'pos': self._controlers['perso'].get_pos(),
+            'key': self._connection_key,
+            'avatar': self._controlers['perso'].get_skin_path()
         })
 
     def disable(self):
@@ -56,7 +64,7 @@ class NetworkEventsListener:
         if self._recv() == UDP_LISTENNING:
             self.send({
                 "message": message,
-                "pseudo": self.perso.get_pseudo(),
+                "pseudo": self._controlers['perso'].get_pseudo(),
                 "rang": self.rang
             })
 
@@ -79,16 +87,24 @@ class NetworkEventsListener:
     def refresh_mypos(self):
         self.send(UDP_SEND_MYPOS)
         if self._recv() == UDP_LISTENNING:
-            self.send(self.perso.get_pos())
+            self.send({
+                'pos': self._controlers['perso'].get_pos(),
+                'dir': self._controlers['perso'].get_dir()
+            })
 
     def listen(self):
         if self._enabled:
             if not self._connected:
-                self.on_connect()
-                if self._recv() == UDP_CONNECTED:
-                    self._connected = True
+                if self.check_before_connecting():
+                    self.on_connect()
+                    if self._recv() == UDP_CONNECTED:
+                        self._connected = True
+                    else:
+                        print("Impossible de se connecter correctement au serveur, la connexion a été refusée ou a échoué")
+                        self.disable()
                 else:
-                    print("Impossible de se connecter correctement au serveur ...")
+                    print("Impossible de se connecter correctement au serveur, des controlers sont manquant")
+                    self.disable()
 
             self.send(UDP_ASK_NEWS)
             ret = self._recv()
@@ -104,7 +120,9 @@ class NetworkEventsListener:
                             changes[key] = self._recv()
                     if changes:
                         for key, val in changes.items():
-                            # do some stuff dealing with these values
-                            pass
+                            if key == UDP_CARTE_CHANGE:
+                                pass
+                            if key == UDP_PLAYERS_CHANGE:
+                                pass
 
             self.refresh_mypos()

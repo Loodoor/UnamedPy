@@ -7,6 +7,7 @@ from carte import CartesManager
 from gui import GUIBulleWaiting
 from utils import uround
 import inventaire
+import glob
 from animator import PlayerAnimator
 
 
@@ -18,7 +19,8 @@ class Personnage:
         self.speed = BASIC_SPEED
         self.path = os.path.join("..", "saves", "pos" + EXTENSION)
         self.cur_div = DIV_DT_BASIC
-        self.player_anim = PlayerAnimator(os.path.join("..", "assets", "personnages", choice))
+        self._choice = choice
+        self.player_anim = PlayerAnimator(os.path.join("..", "assets", "personnages", self._choice))
         self.perso = self.player_anim.get_sprite_from_dir(self.direction)
         self.is_moving = False
         self.pos = list(pos)
@@ -26,6 +28,9 @@ class Personnage:
         self.inventaire = inventaire.Inventaire(self.ecran, self.police, self.carte_mgr)
         self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
         self.same_as_before = False
+
+    def get_skin_path(self):
+        return self._choice
 
     def set_carte_mgr(self, new: CartesManager):
         self.carte_mgr = new
@@ -232,6 +237,9 @@ class Personnage:
     def ride(self):
         self.cur_div = DIV_DT_VELO if self.cur_div != DIV_DT_VELO else DIV_DT_BASIC
 
+    def get_dir(self):
+        return self.direction
+
     def update(self):
         if not self.is_moving:
             self.player_anim.pause()
@@ -259,3 +267,30 @@ class Personnage:
         with open(self.path, "wb") as save_perso:
             pickle.Pickler(save_perso).dump(self.pos)
         self.inventaire.save()
+
+
+class OthPersonnagesManager:
+    def __init__(self, ecran: pygame.Surface):
+        self.ecran = ecran
+        self._others = {}
+        self._sprites = {}
+        for directory in glob.glob(os.path.join("..", "assets", "personnages", "*")):
+            self._sprites[directory] = {}
+            self._sprites[directory]['bas'] = [
+                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "bas*.png"))
+            ]
+            self._sprites[directory]['haut'] = [
+                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "haut*.png"))
+            ]
+            self._sprites[directory]['gauche'] = [
+                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "gauche*.png"))
+            ]
+            self._sprites[directory]['droite'] = [
+                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(directory, "droite*.png"))
+            ]
+
+    def move_this(self, id_: float, new_pos: tuple):
+        self._others[id_] = new_pos
+
+    def draw_them(self):
+        pass

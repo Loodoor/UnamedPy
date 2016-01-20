@@ -2,8 +2,6 @@
 
 import socket
 import pygame
-import pickle
-import random
 from pygame.locals import *
 
 import carte
@@ -56,6 +54,7 @@ class Game:
 
         # Managers
         self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager)
+        self.oth_persos_mgr = personnage.OthPersonnagesManager(self.ecran)
         self.indexeur = indexer.Indexer(self.ecran, self.police_grande, self.renderer_manager)
         self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande, self.indexeur, self.renderer_manager)
         self.pc_mgr = computer_manager.ComputerManager(self.ecran, self.police_grande, self.renderer_manager)
@@ -65,7 +64,7 @@ class Game:
         self.zones_manager = zones_attaques_manager.ZonesManager(self.indexeur)
         self.money = money_mgr.MoneyManager()
         self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
-        self.network_ev_listener = NetworkEventsListener(s, p, self.personnage)
+        self.network_ev_listener = NetworkEventsListener(s, p)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
                                                  self.adventure.get_pseudo(), RANG_NUL)
 
@@ -106,6 +105,9 @@ class Game:
         self.money.load()
 
         self.chat_mgr.update_quit_event(self.controles[CHAT])
+
+        self.network_ev_listener.add_controler('perso', self.personnage)
+        self.network_ev_listener.add_controler('others', self.oth_persos_mgr)
 
         self.tab_types.init_tab()
 

@@ -9,13 +9,20 @@ import objets_manager
 import inventaire
 from os import path, sep
 from glob import glob
+import random
 import pickle
 import time
-import os
 
 
 def unothing(*args, **kwargs):
     return args, kwargs
+
+
+def ugen_key(seed: float=1234.5) -> float:
+    key = 1.0
+    fseed = random.random()
+    key = (key * fseed) / (seed / 10 ** len(str(seed).split('.')[0])) + seed / 25 ** len(str(seed).split('.')[1]) * ((int(key) << 0x1f) ^ int(key)) + (fseed / seed)
+    return key
 
 
 def uround(nb: int or float):

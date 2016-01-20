@@ -37,26 +37,27 @@ MAX_FPS = 1000000
 
 BUFFER_SIZE = 8192
 
-UDP_ASK_NEWS = "network.game.changes.fetch"
-UDP_ASK_MESSAGES = "network.tchat.messages.fetch"
-UDP_ASK_CARTE_CHANGES = "network.game.map.changes.fetch"
-UDP_ASK_PLAYERS_CHANGES = "network.game.others.fetch"
-UDP_ASK_SERV_NAME = "network.server.name.fetch"
-UDP_ASK_MYRANG = "network.serveur.me.rang.fetch"
+UDP_ASK_NEWS = 1
+UDP_ASK_MESSAGES = 2
+UDP_ASK_CARTE_CHANGES = 3
+UDP_ASK_PLAYERS_CHANGES = 4
+UDP_ASK_SERV_NAME = 5
+UDP_ASK_MYRANG = 6
 
-UDP_MSG_NONE = "network.tchat.messages.fetch:Nothing"
-UDP_NOTHING_NEW = "network.game.changes:Nothing"
+UDP_MSG_NONE = 7
+UDP_NOTHING_NEW = 8
 
-UDP_CARTE_CHANGE = "network.game.map.haschanged"
-UDP_PLAYERS_CHANGE = "network.game.others.haschanged"
-UDP_MESSAGES_CHANGE = "network.tchat.haschanged"
+UDP_CARTE_CHANGE = 9
+UDP_PLAYERS_CHANGE = 10
+UDP_MESSAGES_CHANGE = 11
 
-UDP_SEND_MSG = "network.game.message.sendingnew"
-UDP_SEND_MYPOS = "network.game.message.sendingpos"
-UDP_SEND_DISCONNECT = "network.game.me.disconnecting"
+UDP_SEND_MSG = 12
+UDP_SEND_MYPOS = 13
+UDP_SEND_DISCONNECT = 14
 
-UDP_CONNECTED = "network.game.lastplayer.connected"
-UDP_LISTENNING = "network.server.islistenning"
+UDP_CONNECTED = 15
+UDP_LISTENNING = 16
+UDP_CONNECTION_REFUSED = 17
 
 TILE_SIZE = 16
 TILE_EAU = '3'
