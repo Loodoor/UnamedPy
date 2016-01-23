@@ -18,6 +18,30 @@ def unothing(*args, **kwargs):
     return args, kwargs
 
 
+def usep_lst_in_smallers(main: list, size: int) -> list:
+    work = []
+    new_line = []
+
+    for i in range(len(main)):
+        if (not i % size or i == len(main) - 1) and new_line:
+            work.append(new_line)
+            new_line = []
+        new_line.append(main[i])
+
+    return work
+
+
+def udir_to_vect(direction: int) -> tuple:
+    if direction == HAUT:
+        return 0, -1
+    if direction == BAS:
+        return 0, 1
+    if direction == GAUCHE:
+        return -1, 0
+    if direction == DROITE:
+        return 1, 0
+
+
 def ugen_key(seed: float=1234.5) -> float:
     key = 1.0
     fseed = random.random()

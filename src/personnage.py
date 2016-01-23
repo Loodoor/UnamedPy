@@ -5,7 +5,7 @@ import pickle
 from constantes import *
 from carte import CartesManager
 from gui import GUIBulleWaiting
-from utils import uround
+from utils import uround, udir_to_vect
 import inventaire
 import glob
 from animator import PlayerAnimator
@@ -59,7 +59,11 @@ class Personnage:
         self._actualise_sprite()
         self.is_moving = True
 
-        self.move_in_fov(direction, dt)
+        """if len(self.carte_mgr.get_carte()[0]) > FEN_large or len(self.carte_mgr.get_carte()) > FEN_haut:
+            self.move_with_fov(direction, dt)
+        else:
+            self.move_in_fov(direction, dt)"""
+        self.move_with_fov(direction, dt)
 
         tmp_obj = self.carte_mgr.get_object_at(self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE)
         if tmp_obj and tmp_obj != OBJET_GET_ERROR:
@@ -80,18 +84,9 @@ class Personnage:
     def move_with_fov(self, direction: int=HAUT, dt: int=1):
         new_speed = self.speed * (dt / 10) / self.cur_div
 
-        vecteur = (0, 0)
+        vecteur = udir_to_vect(direction)
 
-        if direction == HAUT:
-            vecteur = (0, -1)
-        if direction == BAS:
-            vecteur = (0, 1)
-        if direction == GAUCHE:
-            vecteur = (-1, 0)
-        if direction == DROITE:
-            vecteur = (1, 0)
-
-        last_x, last_y = self.pos
+        last_x, last_y = self.carte_mgr.get_ofs()
 
         x, y = self.pos[0], self.pos[1]
         x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
@@ -151,16 +146,7 @@ class Personnage:
     def move_in_fov(self, direction: int=HAUT, dt: int=1):
         new_speed = self.speed * (1 / dt * 10) / self.cur_div
 
-        vecteur = (0, 0)
-
-        if direction == HAUT:
-            vecteur = (0, -1)
-        if direction == BAS:
-            vecteur = (0, 1)
-        if direction == GAUCHE:
-            vecteur = (-1, 0)
-        if direction == DROITE:
-            vecteur = (1, 0)
+        vecteur = udir_to_vect(direction)
 
         x, y = self.pos[0], self.pos[1]
         x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
@@ -222,7 +208,7 @@ class Personnage:
             self.carte_mgr.call_trigger_at(int(x // TILE_SIZE) + self.carte_mgr.get_fov()[0],
                                            int(y // TILE_SIZE) + self.carte_mgr.get_fov()[2])
 
-    def isMoving(self):
+    def is_moving_or_not(self):
         return self.is_moving
 
     def end_move(self):

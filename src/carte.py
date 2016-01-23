@@ -109,7 +109,7 @@ class CartesManager:
     def __init__(self, ecran: pygame.Surface, renderer_manager):
         self.ecran = ecran
         self.rd_mgr = renderer_manager
-        self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
+        self.map_path = os.path.join("..", "saves", "map", "map" + EXTENSION)
         self.maps = {}
         self.fov = [0, FIRST_BASIC_FOV, 0, FIRST_BASIC_FOV2]
         self.offsets = [0, 0]
@@ -148,8 +148,14 @@ class CartesManager:
                 self.maps = pickle.Unpickler(map_reader).load()
             self.current_carte.load(os.path.join(*self.maps[MAP_ENTRY_POINT]))
             self.carte = self.current_carte.get_all()
+            self.adjust_offset()
         else:
-            raise CarteInexistante
+            raise CarteInexistante(self.map_path)
+
+    def adjust_offset(self):
+        x = (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 if FEN_large > len(self.carte[0]) * TILE_SIZE else 0
+        y = (FEN_haut - len(self.carte) * TILE_SIZE) // 2 if FEN_haut > len(self.carte) * TILE_SIZE else 0
+        self.offsets = [x, y]
 
     def save(self):
         self.triggers_mgr.save()
@@ -157,7 +163,7 @@ class CartesManager:
     def collide_at(self, x, y):
         if self.current_carte.get_building_id_at(x, y) == BUILDING_GET_ERROR:
             return self.current_carte.collide_at(x, y)
-        self.change_map("")  # #########################################################################################
+        self.change_map(os.path.join("..", "saves", "maps", "map" + self.current_carte.get_building_id_at(x, y) + EXTENSION))
         return False
 
     def change_map(self, new_path: str):
@@ -165,6 +171,7 @@ class CartesManager:
         self.current_carte = SubCarte()
         self.current_carte.load(new_path)
         self.carte = self.current_carte.get_all()
+        self.adjust_offset()
 
     def drop_object_at(self, x: int, y: int, obj, from_poche):
         self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, from_poche)
@@ -233,6 +240,9 @@ class CartesManager:
     def get_fov_carte(self):
         return [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.current_carte[int(self.fov[2]):int(self.fov[3])]]
 
+    def get_carte(self):
+        return self.current_carte.get_all()
+
     def get_zid(self):
         return self.current_carte.get_zid()
 
@@ -244,17 +254,17 @@ class CartesManager:
 
     def move_of1(self, dir: int=1):
         self.offsets[0] += dir
-        if not self.offsets[0] % TILE_SIZE:
-            if self.fov[0] - dir >= 0:
-                self.offsets[0] %= TILE_SIZE
-                self.fov[0] -= dir
+        #if not self.offsets[0] % TILE_SIZE:
+        #    if self.fov[0] - dir >= 0:
+        #        self.offsets[0] %= TILE_SIZE
+        #        self.fov[0] -= dir
 
     def move_of2(self, dir: int=1):
         self.offsets[1] += dir
-        if not self.offsets[1] % TILE_SIZE:
-            if self.fov[2] - dir >= 0:
-                self.offsets[1] %= TILE_SIZE
-                self.fov[2] -= dir
+        #if not self.offsets[1] % TILE_SIZE:
+        #    if self.fov[2] - dir >= 0:
+        #        self.offsets[1] %= TILE_SIZE
+        #        self.fov[2] -= dir
 
     def has_trigger(self, x: int=0, y: int=0):
         return self.current_carte.trigger_at(x, y)

@@ -64,7 +64,7 @@ class Game:
         self.zones_manager = zones_attaques_manager.ZonesManager(self.indexeur)
         self.money = money_mgr.MoneyManager()
         self.gui_save_mgr = GUISauvegarde(self.ecran, self.police_grande)
-        self.network_ev_listener = NetworkEventsListener(s, p)
+        self.network_ev_listener = NetworkEventsListener(self.sock, self.params)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
                                                  self.adventure.get_pseudo(), RANG_NUL)
 

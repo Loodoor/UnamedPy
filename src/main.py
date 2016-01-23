@@ -9,7 +9,6 @@ print("Chargement ...")
 
 import pygame
 import random
-import pickle
 import socket
 from glob import glob
 from pygame.locals import *
