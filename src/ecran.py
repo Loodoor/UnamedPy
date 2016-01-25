@@ -7,13 +7,12 @@ from constantes import *
 class MyScreen(pygame.Surface):
     def __init__(self, surface: pygame.Surface):
         super().__init__(surface.get_size())
-        self._surface = surface
-        self._original = self._surface
+        self._original = surface
         self._bw = False
         self._converted = {}
 
     @staticmethod
-    def _set_to_bw(surface: pygame.Surface) -> pygame.Surface:
+    def set_to_bw(surface: pygame.Surface) -> pygame.Surface:
         surface.lock()
         for pixel in range(surface.get_width() * surface.get_height()):
             x, y = pixel // surface.get_height(), pixel % surface.get_height()
@@ -32,20 +31,15 @@ class MyScreen(pygame.Surface):
     def set_bw(self, bw: bool):
         self._bw = bw
         if bw:
-            self._surface = MyScreen._set_to_bw(self._surface)
-            self._original = self._surface
             print(">> En activant cette fonctionnalité, il est fort possible que le jeu vienne à ralentir !")
-        else:
-            self._surface = self._original
 
     def blit(self, new: pygame.Surface, at: tuple=(0, 0)):
         if self._bw:
             if new not in self._converted.keys():
                 tmp = new
-                new = MyScreen._set_to_bw(new)
+                new = MyScreen.set_to_bw(new)
                 self._converted[tmp] = new
                 del tmp
-            self._surface.blit(self._converted[new], at)
+            super().blit(self._converted[new], at)
         else:
-            self._surface.blit(new, at)
-        self._original = self._surface
+            super().blit(new, at)

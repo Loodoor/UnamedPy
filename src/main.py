@@ -32,8 +32,7 @@ def main():
     print("Initialisation de Pygame ...", pygame.init())
     print("Initialisation de Pygame.Font ...", pygame.font.init())
 
-    ecran = MyScreen(pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE))
-    ecran.set_bw(True)
+    ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
     clock = pygame.time.Clock()
     pygame.display.set_caption("Unamed - v" + VERSION)
     police = pygame.font.Font(POLICE_PATH, 16)
