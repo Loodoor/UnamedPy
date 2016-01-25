@@ -66,3 +66,11 @@ class AchatImpossible(Exception):
 class CategorieInexistante(Exception):
     def __init__(self):
         super().__init__()
+
+
+class ClassNonChargee(Exception):
+    def __init__(self, class_name: str="''", method: str="''"):
+        super().__init__(
+            "La méthode load() de la class {} ayant levé cette exception aurait dû être appelée avant de vouloir "
+            "accéder à la méthode {}".format(class_name, method)
+        )

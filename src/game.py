@@ -21,6 +21,7 @@ from gui import GUISauvegarde
 from utils import uscreenschot
 from fpsregulator import IAFPS
 from aventure_manager import Adventure
+from parametres import ParametresManager
 from exceptions import FonctionnaliteNonImplementee
 from network_event_listener import NetworkEventsListener
 
@@ -67,31 +68,16 @@ class Game:
         self.network_ev_listener = NetworkEventsListener(self.sock, self.params)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
                                                  self.adventure.get_pseudo(), RANG_NUL)
+        self.parametres = ParametresManager()
+        self.parametres.load()
 
         # Contrôles
-        self.controles = {
-            HAUT: K_UP,
-            BAS: K_DOWN,
-            GAUCHE: K_LEFT,
-            DROITE: K_RIGHT,
-            CHAT: K_KP0,
-            MENU: K_ESCAPE,
-            SCREENSCHOT: K_F5,
-            SHOW_FPS: K_BACKSPACE,
-            VALIDATION: K_RETURN
-        }
+        self.controles = self.parametres.get("controls")
         self.controles.update(controles)
-        self.controles_joy = {
-
-        }
+        self.controles_joy = self.parametres.get("joy_controls")
         controles = {}  # vider le dico à chaque fois !
 
-        self.__ctrls = {
-            NEXT_PAGE: K_RIGHT,
-            PREVIOUS_PAGE: K_LEFT,
-            UP_PAGE: K_UP,
-            DOWN_PAGE: K_DOWN
-        }
+        self.__ctrls = self.parametres.get("secured_controls")
 
         self.load()
 
@@ -116,6 +102,7 @@ class Game:
         print("Sauvegarde ...")
         self.carte_mgr.save()
         self.personnage.save()
+        self.parametres.save()
         # self.adventure.save()
         # self.money.save()
         # self.indexeur.save()
