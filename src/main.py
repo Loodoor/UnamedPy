@@ -15,6 +15,7 @@ from pygame.locals import *
 
 import game
 import utils
+from ecran import MyScreen
 from constantes import *
 from textentry import TextBox
 from aventure_manager import Adventure
@@ -31,7 +32,8 @@ def main():
     print("Initialisation de Pygame ...", pygame.init())
     print("Initialisation de Pygame.Font ...", pygame.font.init())
 
-    ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
+    ecran = MyScreen(pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE))
+    ecran.set_bw(True)
     pygame.display.set_caption("Unamed - v" + VERSION)
     police = pygame.font.Font(POLICE_PATH, 16)
     police_jouer = pygame.font.Font(POLICE_PATH, 20)

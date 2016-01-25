@@ -26,6 +26,13 @@ class ParametresManager:
                 PREVIOUS_PAGE: K_LEFT,
                 UP_PAGE: K_UP,
                 DOWN_PAGE: K_DOWN
+            },
+            "b&w": False,
+            "music": True,
+            "play_anims": True,
+            "delta_time": {
+                "has_default": False,
+                "default": 1.0
             }
         }
         self.params = {}
