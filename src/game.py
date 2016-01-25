@@ -76,6 +76,7 @@ class Game:
         self.controles.update(controles)
         self.controles_joy = self.parametres.get("joy_controls")
         controles = {}  # vider le dico à chaque fois !
+        print(self.controles)
 
         self.__ctrls = self.parametres.get("secured_controls")
 
