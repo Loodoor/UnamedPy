@@ -34,6 +34,7 @@ def main():
 
     ecran = MyScreen(pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE))
     ecran.set_bw(True)
+    clock = pygame.time.Clock()
     pygame.display.set_caption("Unamed - v" + VERSION)
     police = pygame.font.Font(POLICE_PATH, 16)
     police_jouer = pygame.font.Font(POLICE_PATH, 20)
@@ -70,6 +71,7 @@ def main():
     print("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
 
     while continuer:
+        dt = clock.tick()
         for event in pygame.event.get():
             if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 continuer = 0
