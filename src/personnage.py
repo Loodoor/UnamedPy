@@ -5,7 +5,7 @@ import pickle
 from constantes import *
 from carte import CartesManager
 from gui import GUIBulleWaiting
-from utils import uround, udir_to_vect
+from utils import uround, udir_to_vect, unegate_vect
 import inventaire
 import glob
 from animator import PlayerAnimator
@@ -59,11 +59,10 @@ class Personnage:
         self._actualise_sprite()
         self.is_moving = True
 
-        """if len(self.carte_mgr.get_carte()[0]) > FEN_large or len(self.carte_mgr.get_carte()) > FEN_haut:
+        if len(self.carte_mgr.get_carte()[0]) > FEN_large or len(self.carte_mgr.get_carte()) > FEN_haut:
             self.move_with_fov(direction, dt)
         else:
-            self.move_in_fov(direction, dt)"""
-        self.move_with_fov(direction, dt)
+            self.move_in_fov(direction, dt)
 
         tmp_obj = self.carte_mgr.get_object_at(self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE)
         if tmp_obj and tmp_obj != OBJET_GET_ERROR:
@@ -84,9 +83,9 @@ class Personnage:
     def move_with_fov(self, direction: int=HAUT, dt: int=1):
         new_speed = self.speed * (dt / 10) / self.cur_div
 
-        vecteur = udir_to_vect(direction)
-
-        last_x, last_y = self.carte_mgr.get_ofs()
+        vecteur = unegate_vect(udir_to_vect(direction))
+        last_of1, last_of2 = self.carte_mgr.get_ofs()
+        new_of1, new_of2 = vecteur[0] * new_speed, vecteur[1] * new_speed
 
         x, y = self.pos[0], self.pos[1]
         x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
@@ -98,8 +97,7 @@ class Personnage:
             return
 
         #Détection des collisions
-        x1, y1 = x + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
-            y + self.carte_mgr.get_fov()[2] * TILE_SIZE
+        x1, y1 = x + self.carte_mgr.get_fov()[0] * TILE_SIZE, y + self.carte_mgr.get_fov()[2] * TILE_SIZE
         x2, y2 = x1 + TILE_SIZE, y1
         x3, y3 = x1, y1 + TILE_SIZE
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
@@ -107,41 +105,41 @@ class Personnage:
         if direction == HAUT:
             if self.carte_mgr.collide_at(x1 // TILE_SIZE, y1 // TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                y += TILE_SIZE - decy
+                new_of2 += TILE_SIZE - decy
             if self.carte_mgr.collide_at(x2 // TILE_SIZE, y2 // TILE_SIZE):
                 if x % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    y += decy
+                    new_of2 += decy
 
         if direction == GAUCHE:
             if self.carte_mgr.collide_at(x1 // TILE_SIZE, y1 // TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                x += TILE_SIZE - decx
+                new_of1 += TILE_SIZE - decx
             if self.carte_mgr.collide_at(x3 // TILE_SIZE, y3 // TILE_SIZE):
                 if y % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    x += decx
+                    new_of1 += decx
 
         if direction == DROITE:
             if self.carte_mgr.collide_at(x2 // TILE_SIZE, y2 // TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                x -= decx
+                new_of1 -= decx
             if self.carte_mgr.collide_at(x4 // TILE_SIZE, y4 // TILE_SIZE):
                 if y % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    x -= decx
+                    new_of1 -= decx
 
         if direction == BAS:
             if self.carte_mgr.collide_at(x3 // TILE_SIZE, y3 // TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                y -= decy
+                new_of2 -= decy
             if self.carte_mgr.collide_at(x4 // TILE_SIZE, y4 // TILE_SIZE):
                 if x % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    y -= decy
+                    new_of2 -= decy
 
-        self.carte_mgr.move_of1(x - last_x)
-        self.carte_mgr.move_of2(y - last_y)
+        self.carte_mgr.move_of1(new_of1)
+        self.carte_mgr.move_of2(new_of2)
 
     def move_in_fov(self, direction: int=HAUT, dt: int=1):
         new_speed = self.speed * (1 / dt * 10) / self.cur_div

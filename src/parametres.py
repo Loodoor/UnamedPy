@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import json
+import pickle
 from constantes import *
 from pygame.locals import *
 from exceptions import ClassNonChargee
@@ -40,12 +40,15 @@ class ParametresManager:
 
     def _pre_load(self):
         if not os.path.exists(self.path_to_settings):
-            with open(self.path_to_settings, "w") as wsettings:
-                json.dump(self._default_config, wsettings)
+            with open(self.path_to_settings, "wb") as wsettings:
+                pickle.Pickler(wsettings).dump(self._default_config)
+        elif os.path.exists(self.path_to_settings) and open(self.path_to_settings, 'r').read() == "":
+            os.remove(self.path_to_settings)
+            self._pre_load()
 
     def load(self):
         self._pre_load()
-        self.params = json.load(open(self.path_to_settings))
+        self.params = pickle.Unpickler(open(self.path_to_settings, 'rb')).load()
 
     def get(self, key: str):
         if self.params:
@@ -54,5 +57,5 @@ class ParametresManager:
             raise ClassNonChargee("ParametresManager", "get")
 
     def save(self):
-        with open(self.path_to_settings, "w") as wsettings:
-            json.dump(self.params, wsettings)
+        with open(self.path_to_settings, "wb") as wsettings:
+            pickle.Pickler(wsettings).dump(self.params)

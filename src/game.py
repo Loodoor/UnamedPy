@@ -76,7 +76,6 @@ class Game:
         self.controles.update(controles)
         self.controles_joy = self.parametres.get("joy_controls")
         controles = {}  # vider le dico à chaque fois !
-        print(self.controles)
 
         self.__ctrls = self.parametres.get("secured_controls")
 
@@ -360,7 +359,9 @@ class Game:
             self.pc_mgr.update()
 
         if self.show_fps:
-            self.ecran.blit(self.police_normale.render(str(self.fps_regulator.get_fps()), 1, (0, 0, 0)), (10, 10))
+            texte = self.police_normale.render("%3i FPS" % int(self.fps_regulator.get_fps()), 1, (0, 0, 0))
+            pygame.draw.rect(self.ecran, (150, 150, 150), (0, 0, 10 + texte.get_width(), 10 + texte.get_height()))
+            self.ecran.blit(texte, (5, 5))
 
     def start(self):
         self.prepare()

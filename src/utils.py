@@ -42,6 +42,10 @@ def udir_to_vect(direction: int) -> tuple:
         return 1, 0
 
 
+def unegate_vect(vect: tuple) -> tuple:
+    return -vect[0], -vect[1]
+
+
 def ugen_key(seed: float=1234.5) -> float:
     key = 1.0
     fseed = random.random()
