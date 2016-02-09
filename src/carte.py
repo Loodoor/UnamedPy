@@ -254,17 +254,17 @@ class CartesManager:
 
     def move_of1(self, dir: int=1):
         self.offsets[0] += dir
-        #if not self.offsets[0] % TILE_SIZE:
-        #    if self.fov[0] - dir >= 0:
-        #        self.offsets[0] %= TILE_SIZE
-        #        self.fov[0] -= dir
+        if not self.offsets[0] % TILE_SIZE:
+            if self.fov[0] - dir >= 0:
+                self.offsets[0] %= TILE_SIZE
+                self.fov[0] -= dir
 
     def move_of2(self, dir: int=1):
         self.offsets[1] += dir
-        #if not self.offsets[1] % TILE_SIZE:
-        #    if self.fov[2] - dir >= 0:
-        #        self.offsets[1] %= TILE_SIZE
-        #        self.fov[2] -= dir
+        if not self.offsets[1] % TILE_SIZE:
+            if self.fov[2] - dir >= 0:
+                self.offsets[1] %= TILE_SIZE
+                self.fov[2] -= dir
 
     def has_trigger(self, x: int=0, y: int=0):
         return self.current_carte.trigger_at(x, y)

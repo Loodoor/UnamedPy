@@ -34,15 +34,16 @@ class EquipeManager:
             pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), 1, (10, 10, 10))
             txt_format = self.police.render(creature.get_pseudo() + ' : niv.' + str(creature.get_niv()), 1, (10, 10, 10))
             pygame.draw.rect(self.ecran, (50, 180, 50), (FCREA_X + FCREA_MARGE_X,
-                                                         FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1),
+                                                         FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE,
                                                          FCREA_SIZE_X_CASE,
                                                          FCREA_SIZE_Y_CASE))
             self.ecran.blit(txt_format,
                             (FCREA_X + FCREA_MARGE_X + FCREA_MARGE_TXT_X,
-                             FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y))
+                             FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y + FCREA_MARGE_Y_RAPPORT_TITRE))
             self.ecran.blit(pvs_format,
                             (FCREA_X + FCREA_MARGE_X + FCREA_MARGE_TXT_X,
-                             FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y2))
+                             FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y2 + FCREA_MARGE_Y_RAPPORT_TITRE))
+        # boutons
         pygame.draw.rect(self.ecran, (50, 180, 180), (FCREA_AUTRE_MGR_X, FCREA_AUTRE_MGR_Y,
                                                       FCREA_AUTRE_MGR_SX, FCREA_AUTRE_MGR_SY))
         self.ecran.blit(self.passe_pc_txt, (FCREA_AUTRE_MGR_X - (self.passe_pc_txt.get_width() - FCREA_AUTRE_MGR_SX) // 2,

@@ -15,7 +15,7 @@ class ParametresManager:
                 GAUCHE: K_LEFT,
                 DROITE: K_RIGHT,
                 CHAT: K_KP0,
-                MENU: K_ESCAPE,
+                MENU: K_RSHIFT,
                 SCREENSCHOT: K_F5,
                 SHOW_FPS: K_BACKSPACE,
                 VALIDATION: K_RETURN
