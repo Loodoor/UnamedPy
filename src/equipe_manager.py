@@ -30,10 +30,11 @@ class EquipeManager:
         pygame.draw.rect(self.ecran, (180, 50, 50), (FCREA_X, FCREA_Y, FCREA_SIZE_X, FCREA_SIZE_Y))
         self.ecran.blit(self.titre, ((FEN_large - self.titre.get_width()) // 2, FCREA_TITRE_Y))
         for i in range(len(self.creatures)):
+            couleur_bg = (50, 180, 50) if i != self.selected_crea else (50, 180, 180)
             creature = self.creatures[i]
             pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), 1, (10, 10, 10))
             txt_format = self.police.render(creature.get_pseudo() + ' : niv.' + str(creature.get_niv()), 1, (10, 10, 10))
-            pygame.draw.rect(self.ecran, (50, 180, 50),
+            pygame.draw.rect(self.ecran, couleur_bg,
                              (FCREA_X + FCREA_MARGE_X,
                              FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE,
                              FCREA_SIZE_X_CASE,
@@ -84,9 +85,17 @@ class EquipeManager:
         if FCREA_AUTRE_MGR_X <= xp <= FCREA_AUTRE_MGR_X + FCREA_AUTRE_MGR_SX and FCREA_AUTRE_MGR_Y <= yp <= FCREA_AUTRE_MGR_Y + FCREA_AUTRE_MGR_SY:
             self.change_renderer()
         if FCREA_PASSE_CREA_TO__X <= xp <= FCREA_PASSE_CREA_TO__X + FCREA_PASSE_CREA_TO__SY and \
-                                FCREA_PASSE_CREA_TO__Y <= yp <= FCREA_PASSE_CREA_TO__Y + FCREA_PASSE_CREA_TO__SY:
+                FCREA_PASSE_CREA_TO__Y <= yp <= FCREA_PASSE_CREA_TO__Y + FCREA_PASSE_CREA_TO__SY:
             if self.selected_crea != -1:
                 self.move_creature_to_pc(self.selected_crea)
+        if FCREA_X <= xp <= FCREA_X + FCREA_SIZE_X_CASE and FCREA_Y + FCREA_IMAGE_XY_MARGE <= yp <= \
+                FCREA_Y + FCREA_IMAGE_XY_MARGE + FCREA_SIZE_Y_CASE * len(self.creatures) + FCREA_MARGE_Y * \
+                (len(self.creatures) + 1) + FCREA_MARGE_Y_RAPPORT_TITRE:
+            real_y = yp - FCREA_Y - FCREA_IMAGE_XY_MARGE - FCREA_MARGE_Y_RAPPORT_TITRE
+            real_y /= (FCREA_SIZE_Y_CASE + FCREA_MARGE_Y)
+            real_y = int(real_y)
+            if 0 <= real_y < len(self.creatures):
+                self.selected_crea = real_y
 
     def add_creature(self, new: Creature):
         if len(self.creatures) < self.size:
