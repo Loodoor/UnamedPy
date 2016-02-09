@@ -3,6 +3,7 @@
 import os
 import math
 import sys
+import pygame
 
 
 FEN_large = 640
@@ -235,6 +236,11 @@ FCREA_PASSE_CREA_TO__SX = FCREA_AUTRE_MGR_SX + 10
 FCREA_PASSE_CREA_TO__SY = FCREA_BTN_SY
 FCREA_PASSE_CREA_TO__X = FCREA_X + 10
 FCREA_PASSE_CREA_TO__Y = FCREA_SIZE_Y - 10
+FCREA_IMAGE_XY_MARGE = 2
+FCREA_IMAGE_SX = FCREA_SIZE_Y_CASE - 2 * FCREA_IMAGE_XY_MARGE  # ne pas faire attention c'est normal,
+FCREA_IMAGE_SY = FCREA_IMAGE_SX                                # si on veut avoir une image carrée
+FCREA_IMAGE_X = FCREA_SIZE_X_CASE - FCREA_IMAGE_SX
+FCREA_IMAGE_Y = FCREA_SIZE_Y_CASE - FCREA_IMAGE_SY
 
 PAUSE = 0
 ANIM1 = 1

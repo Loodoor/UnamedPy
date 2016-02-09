@@ -70,9 +70,17 @@ class Creature:
         self.__shiney = True if random.random() <= SPEC_PROBA_SHINEY else False
         self.__image = indexer.get_image_by_id(self.specs[SPEC_ID]) if not self.is_shiney() else \
             uset_image_as_shiney(indexer.get_image_by_id(self.specs[SPEC_ID]))
+        self._images_resized = {
+            self.__image.get_size(): self.__image
+        }
 
     def get_image(self):
         return self.__image
+
+    def get_image_with_size(self, size: tuple):
+        if size not in self._images_resized.keys():
+            self._images_resized[size] = pygame.transform.scale(self.__image, size)
+        return self._images_resized[size]
 
     def is_shiney(self):
         return self.__shiney
