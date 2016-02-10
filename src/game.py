@@ -267,6 +267,8 @@ class Game:
             xp, yp = event.pos
             self.personnage.inventaire_clic(xp, yp)
 
+        # joystick
+
     def process_events_game(self, event: pygame.event, dt: int=1):
         # clavier
         if event.type == KEYDOWN:
@@ -293,6 +295,7 @@ class Game:
             if event.key == self.controles[DROITE]:
                 self.right = False
                 self.personnage.end_move()
+        self.move_perso(dt)
 
         # joystick
         if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
@@ -321,7 +324,6 @@ class Game:
         else:
             self.right = False
             self.personnage.end_move()
-
         self.move_perso(dt)
 
     def move_perso(self, dt: int=1):
