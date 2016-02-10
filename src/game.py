@@ -162,19 +162,21 @@ class Game:
             self.process_events_pokedex(event, dt)
         elif self.renderer_manager.get_renderer() == RENDER_ERROR:
             # autre ...
-            raise FonctionnaliteNonImplementee("Cas non géré. Merci de reporter ce traceback à Folaefolc, main dev d'Unamed")
+            raise FonctionnaliteNonImplementee("Cas non géré. Merci de reporter ce traceback à Folaefolc, main dev' d'Unamed")
 
         # Global
-        if event.type == KEYUP:
-            if event.key == self.controles[SCREENSCHOT]:
-                self.screenshot()
-            if event.key == self.controles[SHOW_FPS]:
-                self.show_fps = not self.show_fps
-            if event.key == self.controles[CHAT]:
-                if not self.renderer_manager.get_renderer() == RENDER_CHAT:
-                    self.renderer_manager.change_renderer_for(RENDER_CHAT)
-                else:
-                    self.renderer_manager.invert_renderer()
+        if event.type == KEYUP and event.key == self.controles[SCREENSCHOT] or \
+                (self.joystick.is_button_pressed(self.controles_joy[SCREENSCHOT]["button"])):
+            self.screenshot()
+        if event.type == KEYUP and event.key == self.controles[SHOW_FPS] or \
+                (self.joystick.is_button_pressed(self.controles_joy[SHOW_FPS]["button"])):
+            self.show_fps = not self.show_fps
+        if event.type == KEYUP and event.key == self.controles[CHAT] or \
+                (self.joystick.is_button_pressed(self.controles_joy[CHAT]["button"])):
+            if not self.renderer_manager.get_renderer() == RENDER_CHAT:
+                self.renderer_manager.change_renderer_for(RENDER_CHAT)
+            else:
+                self.renderer_manager.invert_renderer()
 
     def process_events_carte(self, event: pygame.event, dt: int=1):
         """
