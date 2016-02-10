@@ -24,6 +24,7 @@ from aventure_manager import Adventure
 from parametres import ParametresManager
 from exceptions import FonctionnaliteNonImplementee
 from network_event_listener import NetworkEventsListener
+from controller import JoystickController
 
 
 class Game:
@@ -76,6 +77,7 @@ class Game:
         self.controles.update(controles)
         self.controles_joy = self.parametres.get("joy_controls")
         controles = {}  # vider le dico à chaque fois !
+        self.joystick = None
 
         self.__ctrls = self.parametres.get("secured_controls")
 
@@ -114,6 +116,9 @@ class Game:
         uscreenschot(self.ecran)
 
     def process_events(self, events: pygame.event, dt: int=1):
+        if self.joystick:
+            self.joystick.update_states()
+
         for event in events:
             if event.type == QUIT:
                 if self.network_ev_listener.enable():
@@ -313,7 +318,15 @@ class Game:
         self.equipe_mgr.add_pc(self.pc_mgr)
 
         self.load()
+
         pygame.key.set_repeat(200, 100)
+
+        pygame.joystick.init()
+        if pygame.joystick.get_count() > 0:
+            joystick = pygame.joystick.Joystick(0)
+            joystick.init()
+            self.joystick = JoystickController(joystick)
+            print("Un joystick a été trouvé")
 
         print("Le jeu démarre ...")
 
