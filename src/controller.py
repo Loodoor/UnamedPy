@@ -18,21 +18,21 @@ class JoystickController:
         """
         self.joystick = joystick
         self.state = {
-            """la valeur doit être un int, -1 / 0 / 1"""
+            # la valeur doit être un int, -1 / 0 / 1
             'axis': {
-                axe: 0 for axe in self.joystick.get_numaxes()
+                axe: 0 for axe in range(self.joystick.get_numaxes())
             },
-            """les valeurs doivent être des int, -1 / 0 / 1"""
+            # les valeurs doivent être des int, -1 / 0 / 1
             'hat': {
-                hat: (0, 0) for hat in self.joystick.get_numhats()
+                hat: (0, 0) for hat in range(self.joystick.get_numhats())
             },
-            """la valeur doit être un int, 0 / 1"""
+            # la valeur doit être un int, 0 / 1
             'button': {
-                button: 0 for button in self.joystick.get_numbuttons()
+                button: 0 for button in range(self.joystick.get_numbuttons())
             },
-            """les valeurs doivent être des int, -1 / 0 / 1"""
+            # les valeurs doivent être des int, -1 / 0 / 1
             'ball': {
-                ball: (0, 0) for ball in self.joystick.get_numballs()
+                ball: (0, 0) for ball in range(self.joystick.get_numballs())
             }
         }
 
@@ -40,9 +40,9 @@ class JoystickController:
         # axes
         for axis in self.state['axis'].keys():
             tmp = self.joystick.get_axis(axis)
-            if tmp < 0:
+            if tmp < -0.5:
                 self.state['axis'][axis] = -1
-            elif tmp > 0:
+            elif tmp >= 0.5:
                 self.state['axis'][axis] = 1
             else:
                 self.state['axis'][axis] = 0
@@ -58,8 +58,8 @@ class JoystickController:
         # balls
         for ball in self.state['ball'].keys():
             tmp_x, tmp_y = self.joystick.get_ball(ball)
-            tmp_x = -1 if tmp_x < 0 else 0 if tmp_x == 0 else 1
-            tmp_y = -1 if tmp_y < 0 else 0 if tmp_y == 0 else 1
+            tmp_x = -1 if tmp_x < -0.5 else 1 if tmp_x >= 0.5 else 0
+            tmp_y = -1 if tmp_y < -0.5 else 1 if tmp_y >= 0.5 else 0
             self.state['ball'][ball] = (tmp_x, tmp_y)
 
     def get_axis(self, axis):

@@ -115,67 +115,66 @@ class Game:
     def screenshot(self):
         uscreenschot(self.ecran)
 
-    def process_events(self, events: pygame.event, dt: int=1):
+    def process_event(self, event: pygame.event, dt: int=1):
         if self.joystick:
             self.joystick.update_states()
 
-        for event in events:
-            if event.type == QUIT:
-                if self.network_ev_listener.enable():
-                    self.network_ev_listener.disconnect()
-                self.save()
-                sys.exit()
+        if event.type == QUIT:
+            if self.network_ev_listener.enable():
+                self.network_ev_listener.disconnect()
+            self.save()
+            sys.exit()
 
-            # Différents mode de gestion des événements
-            if self.renderer_manager.get_renderer() == RENDER_GAME:
-                # le jeu en lui même
-                self.process_events_game(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
-                # l'inventaire
-                self.process_events_inventaire(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_CHAT:
-                # le chat
-                self.process_events_chat(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
-                # quand on est en combat
-                if self.cur_combat:
-                    self.process_events_combat(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_BOUTIQUE:
-                # dans une boutique
-                self.process_events_boutique(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
-                # le menu intermédiaire
-                self.process_events_menu_in_game(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_SAVE:
-                # la sauvegarde
-                self.process_events_save(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_CARTE:
-                # la mini carte
-                self.process_events_carte(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_CREATURES:
-                # quand on consulte ses creatures
-                self.process_events_creatures(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_PC:
-                # quand on est sur un PC pour gérer ses creatures
-                self.process_events_pc(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_POKEDEX:
-                # le pokedex
-                self.process_events_pokedex(event, dt)
-            elif self.renderer_manager.get_renderer() == RENDER_ERROR:
-                # autre ...
-                raise FonctionnaliteNonImplementee("Cas non géré. Merci de reporter ce traceback à Folaefolc, main dev d'Unamed")
+        # Différents mode de gestion des événements
+        if self.renderer_manager.get_renderer() == RENDER_GAME:
+            # le jeu en lui même
+            self.process_events_game(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
+            # l'inventaire
+            self.process_events_inventaire(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_CHAT:
+            # le chat
+            self.process_events_chat(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
+            # quand on est en combat
+            if self.cur_combat:
+                self.process_events_combat(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_BOUTIQUE:
+            # dans une boutique
+            self.process_events_boutique(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
+            # le menu intermédiaire
+            self.process_events_menu_in_game(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_SAVE:
+            # la sauvegarde
+            self.process_events_save(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_CARTE:
+            # la mini carte
+            self.process_events_carte(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_CREATURES:
+            # quand on consulte ses creatures
+            self.process_events_creatures(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_PC:
+            # quand on est sur un PC pour gérer ses creatures
+            self.process_events_pc(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_POKEDEX:
+            # le pokedex
+            self.process_events_pokedex(event, dt)
+        elif self.renderer_manager.get_renderer() == RENDER_ERROR:
+            # autre ...
+            raise FonctionnaliteNonImplementee("Cas non géré. Merci de reporter ce traceback à Folaefolc, main dev d'Unamed")
 
-            # Global
-            if event.type == KEYUP:
-                if event.key == self.controles[SCREENSCHOT]:
-                    self.screenshot()
-                if event.key == self.controles[SHOW_FPS]:
-                    self.show_fps = not self.show_fps
-                if event.key == self.controles[CHAT]:
-                    if not self.renderer_manager.get_renderer() == RENDER_CHAT:
-                        self.renderer_manager.change_renderer_for(RENDER_CHAT)
-                    else:
-                        self.renderer_manager.invert_renderer()
+        # Global
+        if event.type == KEYUP:
+            if event.key == self.controles[SCREENSCHOT]:
+                self.screenshot()
+            if event.key == self.controles[SHOW_FPS]:
+                self.show_fps = not self.show_fps
+            if event.key == self.controles[CHAT]:
+                if not self.renderer_manager.get_renderer() == RENDER_CHAT:
+                    self.renderer_manager.change_renderer_for(RENDER_CHAT)
+                else:
+                    self.renderer_manager.invert_renderer()
 
     def process_events_carte(self, event: pygame.event, dt: int=1):
         """
@@ -269,6 +268,7 @@ class Game:
             self.personnage.inventaire_clic(xp, yp)
 
     def process_events_game(self, event: pygame.event, dt: int=1):
+        # clavier
         if event.type == KEYDOWN:
             if event.key == self.controles[HAUT]:
                 self.top, self.bottom = True, False
@@ -293,6 +293,35 @@ class Game:
             if event.key == self.controles[DROITE]:
                 self.right = False
                 self.personnage.end_move()
+
+        # joystick
+        if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
+            self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
+
+        if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
+            self.top, self.bottom = True, False
+        else:
+            self.top = False
+            self.personnage.end_move()
+
+        if self.joystick.get_axis(self.controles_joy[BAS]["axis"]["nb"]) == self.controles_joy[BAS]["axis"]["value"]:
+            self.top, self.bottom = False, True
+        else:
+            self.bottom = False
+            self.personnage.end_move()
+
+        if self.joystick.get_axis(self.controles_joy[GAUCHE]["axis"]["nb"]) == self.controles_joy[GAUCHE]["axis"]["value"]:
+            self.left, self.right = True, False
+        else:
+            self.left = False
+            self.personnage.end_move()
+
+        if self.joystick.get_axis(self.controles_joy[DROITE]["axis"]["nb"]) == self.controles_joy[DROITE]["axis"]["value"]:
+            self.left, self.right = False, True
+        else:
+            self.right = False
+            self.personnage.end_move()
+
         self.move_perso(dt)
 
     def move_perso(self, dt: int=1):
@@ -385,7 +414,7 @@ class Game:
             dt = self.fps_regulator.tick(FPS_base)
 
             # Evénements
-            self.process_events(pygame.event.get(), dt)
+            self.process_event(pygame.event.poll(), dt)
 
             self.network_ev_listener.listen()
 
