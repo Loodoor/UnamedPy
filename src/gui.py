@@ -207,7 +207,7 @@ class GUISauvegarde:
                          SAVE_Y + 10))
         if self.waiting:
             self.ecran.blit(self.waiter, (4 + SAVE_X + (SAVE_SX + self.texte.get_width()) // 2,
-                                           SAVE_Y + 10))
+                                          SAVE_Y + 10))
         self.ecran.blit(self.ldroite[self.cur_anim],
                         (0 + (SAVE_SX + self.ldroite[0].get_width()) // 2,
                         SAVE_Y + SAVE_X_PERSO_DECALAGE)
