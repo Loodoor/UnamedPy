@@ -20,7 +20,96 @@ class ParametresManager:
                 SHOW_FPS: K_BACKSPACE,
                 VALIDATION: K_RETURN
             },
-            "joy_controls": {},
+            "joy_controls": {
+                DROITE: {
+                    "axis": {
+                        "nb": 0,
+                        "value": 1
+                    },
+                    "hat": {
+                        "nb": 0,
+                        "value": (1, 0)
+                    }
+                },
+                GAUCHE: {
+                    "axis": {
+                        "nb": 0,
+                        "value": -1
+                    },
+                    "hat": {
+                        "nb": 0,
+                        "value": (-1, 0)
+                    }
+                },
+                BAS: {
+                    "axis": {
+                        "nb": 1,
+                        "value": 1
+                    },
+                    "hat": {
+                        "nb": 0,
+                        "value": (0, 1)
+                    }
+                },
+                HAUT: {
+                    "axis": {
+                        "nb": 1,
+                        "value": -1
+                    },
+                    "hat": {
+                        "nb": 0,
+                        "value": (0, -1)
+                    }
+                },
+                CHAT: {
+                    "button": 3,
+                    "value": 1
+                },
+                MENU: {
+                    "button": 2,
+                    "value": 1
+                },
+                SCREENSCHOT: {
+                    "button": 6,
+                    "value": 1
+                },
+                SHOW_FPS: {
+                    "button": 7,
+                    "value": 1
+                },
+                VALIDATION: {
+                    "button": 0,
+                    "value": 1
+                },
+                NEXT_PAGE: {
+                    "button": 5,
+                    "value": 1
+                },
+                PREVIOUS_PAGE: {
+                    "button": 4,
+                    "value": 1
+                },
+                UP_PAGE: {
+                    "axis": {
+                        "nb": 1,
+                        "value": -1
+                    },
+                    "hat": {
+                        "nb": 0,
+                        "value": (0, -1)
+                    }
+                },
+                DOWN_PAGE: {
+                    "axis": {
+                        "nb": 1,
+                        "value": 1
+                    },
+                    "hat": {
+                        "nb": 0,
+                        "value": (0, 1)
+                    }
+                }
+            },
             "secured_controls": {
                 NEXT_PAGE: K_RIGHT,
                 PREVIOUS_PAGE: K_LEFT,
