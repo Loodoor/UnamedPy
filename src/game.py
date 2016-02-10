@@ -270,6 +270,23 @@ class Game:
             self.personnage.inventaire_clic(xp, yp)
 
         # joystick
+        if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] - 5)
+        if self.joystick.get_axis(self.controles_joy[BAS]["axis"]["nb"]) == self.controles_joy[BAS]["axis"]["value"]:
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] + 5)
+        if self.joystick.get_axis(self.controles_joy[GAUCHE]["axis"]["nb"]) == self.controles_joy[GAUCHE]["axis"]["value"]:
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] - 5, pygame.mouse.get_pos()[1])
+        if self.joystick.get_axis(self.controles_joy[DROITE]["axis"]["nb"]) == self.controles_joy[DROITE]["axis"]["value"]:
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] + 5, pygame.mouse.get_pos()[1])
+        if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
+            xp, yp = pygame.mouse.get_pos()
+            self.personnage.inventaire_clic(xp, yp)
+        if self.joystick.is_button_pressed(self.controles_joy[NEXT_PAGE]["button"]):
+            self.personnage.inventaire_next()
+        if self.joystick.is_button_pressed(self.controles_joy[PREVIOUS_PAGE]["button"]):
+            self.personnage.inventaire_previous()
+        if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
+            self.renderer_manager.invert_renderer()
 
     def process_events_game(self, event: pygame.event, dt: int=1):
         # clavier
@@ -352,14 +369,16 @@ class Game:
 
         self.load()
 
-        pygame.key.set_repeat(200, 100)
-
         pygame.joystick.init()
         if pygame.joystick.get_count() > 0:
             joystick = pygame.joystick.Joystick(0)
             joystick.init()
             self.joystick = JoystickController(joystick)
             print("Un joystick a été trouvé")
+
+        pygame.key.set_repeat(200, 100)
+        if self.joystick:
+            self.joystick.set_repeat(123)
 
         print("Le jeu démarre ...")
 
