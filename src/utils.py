@@ -53,10 +53,10 @@ def ugen_key(seed: float=1234.5) -> float:
     return key
 
 
-def uround(nb: int or float):
+def uround(nb: int or float, lim: float=0.5):
     if isinstance(nb, int):
         return nb
-    return math.floor(nb) if nb >= 0.5 else math.ceil(nb)
+    return math.floor(nb) if nb <= lim else math.ceil(nb)
 
 
 def uscreenschot(surface: pygame.Surface):

@@ -5,6 +5,7 @@ Licence MIT
 """
 
 from constantes import *
+from utils import uround
 
 
 STATE = 0
@@ -72,28 +73,28 @@ class JoystickController:
 
     def get_axis(self, axis):
         if axis in self.state['axis'].keys():
-            if self.state['axis'][axis][STATE] != 0 and not round((time.time() - self.state['axis'][axis][TIME]) % self.repeat):
+            if self.state['axis'][axis][STATE] != 0 and not uround((time.time() - self.state['axis'][axis][TIME]) % self.repeat, 0.1):
                 return self.state['axis'][axis][STATE]
             return 0
         raise ValueError("L'axe n°{} n'existe pas".format(axis))
 
     def get_hat(self, hat):
         if hat in self.state['hat'].keys():
-            if self.state['hat'][hat][STATE] != (0, 0) and not round((time.time() - self.state['hat'][hat][TIME]) % self.repeat):
+            if self.state['hat'][hat][STATE] != (0, 0) and not uround((time.time() - self.state['hat'][hat][TIME]) % self.repeat, 0.1):
                 return self.state['hat'][hat][STATE]
             return 0, 0
         raise ValueError("Le hat n°{} n'existe pas".format(hat))
 
     def get_button(self, button):
         if button in self.state['button'].keys():
-            if self.state['button'][button][STATE] != 0 and not round((time.time() - self.state['button'][button][TIME]) % self.repeat):
+            if self.state['button'][button][STATE] != 0 and not uround((time.time() - self.state['button'][button][TIME]) % self.repeat, 0.1):
                 return self.state['button'][button][STATE]
             return 0
         raise ValueError("Le bouton n°{} n'existe pas".format(button))
 
     def get_ball(self, ball):
         if ball in self.state['ball'].keys():
-            if self.state['ball'][ball][STATE] != (0, 0) and not round((time.time() - self.state['ball'][ball][TIME]) % self.repeat):
+            if self.state['ball'][ball][STATE] != (0, 0) and not uround((time.time() - self.state['ball'][ball][TIME]) % self.repeat, 0.1):
                 return self.state['ball'][ball][STATE]
             return 0, 0
         raise ValueError("La ball n°{} n'existe pas".format(ball))

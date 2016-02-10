@@ -378,7 +378,7 @@ class Game:
 
         pygame.key.set_repeat(200, 100)
         if self.joystick:
-            self.joystick.set_repeat(123)
+            self.joystick.set_repeat(231)
 
         print("Le jeu démarre ...")
 
