@@ -285,6 +285,8 @@ class Game:
                 self.cur_combat.previous()
             if event.key == self.controles[VALIDATION]:
                 self.cur_combat.valide()
+            if event.key == self.controles[MENU]:
+                self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             if event.button == 1:
@@ -304,6 +306,8 @@ class Game:
             self.cur_combat.next()
         if self.joystick.is_button_pressed(self.controles_joy[PREVIOUS_PAGE]["button"]):
             self.cur_combat.previous()
+        if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
+            self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
 
     def joystick_deplace_souris(self):
         if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
