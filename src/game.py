@@ -197,6 +197,14 @@ class Game:
             xp, yp = event.pos
             self.indexeur.clic(xp, yp)
 
+        # joystick
+        self.joystick_deplace_souris()
+        if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
+            xp, yp = pygame.mouse.get_pos()
+            self.indexeur.clic(xp, yp)
+        if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
+            self.renderer_manager.invert_renderer()
+
     def process_events_pc(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
@@ -204,6 +212,14 @@ class Game:
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.pc_mgr.clic(xp, yp)
+
+        # joystick
+        self.joystick_deplace_souris()
+        if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
+            xp, yp = pygame.mouse.get_pos()
+            self.pc_mgr.clic(xp, yp)
+        if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
+            self.renderer_manager.invert_renderer()
 
     def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
@@ -222,6 +238,18 @@ class Game:
             if tmp != RENDER_ERROR:
                 self.renderer_manager.change_renderer_for(tmp)
 
+        # joystick
+        self.joystick_deplace_souris()
+        if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
+            self.renderer_manager.invert_renderer()
+        if self.joystick.is_button_pressed(self.controles_joy[NEXT_PAGE]["button"]):
+            self.menu_in_game.next()
+        if self.joystick.is_button_pressed(self.controles_joy[PREVIOUS_PAGE]["button"]):
+            self.menu_in_game.previous()
+        if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
+            new_renderer = self.menu_in_game.valider_choix()
+            self.renderer_manager.change_renderer_for(new_renderer)
+
         self.menu_in_game.mouseover(pygame.mouse.get_pos())
 
     def process_events_creatures(self, event: pygame.event, dt: int=1):
@@ -231,6 +259,14 @@ class Game:
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.equipe_mgr.clic(xp, yp)
+
+        # joystick
+        self.joystick_deplace_souris()
+        if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
+            xp, yp = pygame.mouse.get_pos()
+            self.equipe_mgr.clic(xp, yp)
+        if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
+            self.renderer_manager.invert_renderer()
 
     def process_events_chat(self, event: pygame.event, dt: int=1):
         if self.chat_mgr.is_running():
@@ -257,6 +293,28 @@ class Game:
             xp, yp = event.pos
             self.cur_combat.mouseover(xp, yp)
 
+        # joystick
+        self.joystick_deplace_souris()
+        xp, yp = pygame.mouse.get_pos()
+        self.cur_combat.mouseover(xp, yp)
+        if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
+            xp, yp = pygame.mouse.get_pos()
+            self.cur_combat.clic(xp, yp)
+        if self.joystick.is_button_pressed(self.controles_joy[NEXT_PAGE]["button"]):
+            self.cur_combat.next()
+        if self.joystick.is_button_pressed(self.controles_joy[PREVIOUS_PAGE]["button"]):
+            self.cur_combat.previous()
+
+    def joystick_deplace_souris(self):
+        if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] - JOY_DEPLACE_SOURIS)
+        if self.joystick.get_axis(self.controles_joy[BAS]["axis"]["nb"]) == self.controles_joy[BAS]["axis"]["value"]:
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] + JOY_DEPLACE_SOURIS)
+        if self.joystick.get_axis(self.controles_joy[GAUCHE]["axis"]["nb"]) == self.controles_joy[GAUCHE]["axis"]["value"]:
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] - JOY_DEPLACE_SOURIS, pygame.mouse.get_pos()[1])
+        if self.joystick.get_axis(self.controles_joy[DROITE]["axis"]["nb"]) == self.controles_joy[DROITE]["axis"]["value"]:
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] + JOY_DEPLACE_SOURIS, pygame.mouse.get_pos()[1])
+
     def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
@@ -270,14 +328,7 @@ class Game:
             self.personnage.inventaire_clic(xp, yp)
 
         # joystick
-        if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] - JOY_DEPLACE_SOURIS)
-        if self.joystick.get_axis(self.controles_joy[BAS]["axis"]["nb"]) == self.controles_joy[BAS]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] + JOY_DEPLACE_SOURIS)
-        if self.joystick.get_axis(self.controles_joy[GAUCHE]["axis"]["nb"]) == self.controles_joy[GAUCHE]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] - JOY_DEPLACE_SOURIS, pygame.mouse.get_pos()[1])
-        if self.joystick.get_axis(self.controles_joy[DROITE]["axis"]["nb"]) == self.controles_joy[DROITE]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] + JOY_DEPLACE_SOURIS, pygame.mouse.get_pos()[1])
+        self.joystick_deplace_souris()
         if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
             xp, yp = pygame.mouse.get_pos()
             self.personnage.inventaire_clic(xp, yp)
