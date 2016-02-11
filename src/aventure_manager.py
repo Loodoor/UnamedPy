@@ -35,7 +35,7 @@ class Adventure:
                 g.set_text(texte[1:texte[1:].index(INPUT_CHAR) + 1])
             else:
                 ask_smth = False
-                if i != len(self.beginning_text) - 1:
+                if '{}' not in texte[:-1]:
                     g.set_text(texte[:-1])
                 else:
                     g.set_text(texte[:-1].format(self.user_pseudo))
