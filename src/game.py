@@ -271,13 +271,13 @@ class Game:
 
         # joystick
         if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] - 5)
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] - JOY_DEPLACE_SOURIS)
         if self.joystick.get_axis(self.controles_joy[BAS]["axis"]["nb"]) == self.controles_joy[BAS]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] + 5)
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] + JOY_DEPLACE_SOURIS)
         if self.joystick.get_axis(self.controles_joy[GAUCHE]["axis"]["nb"]) == self.controles_joy[GAUCHE]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] - 5, pygame.mouse.get_pos()[1])
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] - JOY_DEPLACE_SOURIS, pygame.mouse.get_pos()[1])
         if self.joystick.get_axis(self.controles_joy[DROITE]["axis"]["nb"]) == self.controles_joy[DROITE]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] + 5, pygame.mouse.get_pos()[1])
+            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] + JOY_DEPLACE_SOURIS, pygame.mouse.get_pos()[1])
         if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
             xp, yp = pygame.mouse.get_pos()
             self.personnage.inventaire_clic(xp, yp)
@@ -378,7 +378,7 @@ class Game:
 
         pygame.key.set_repeat(200, 100)
         if self.joystick:
-            self.joystick.set_repeat(231)
+            self.joystick.set_repeat(40)
 
         print("Le jeu démarre ...")
 
