@@ -49,27 +49,31 @@ class JoystickController:
         # axes
         for axis in self.state['axis'].keys():
             tmp = self.joystick.get_axis(axis)
+            tps = time.time() if uround((time.time() - self.state['axis'][axis]) % self.repeat, 0.1) else self.state['axis'][axis]
             if tmp < -0.5:
-                self.state['axis'][axis] = [-1, time.time()]
+                self.state['axis'][axis] = [-1, tps]
             elif tmp >= 0.5:
-                self.state['axis'][axis] = [1, time.time()]
+                self.state['axis'][axis] = [1, tps]
             else:
                 self.state['axis'][axis] = [0, time.time()]
 
         # hats
         for hat in self.state['hat'].keys():
-            self.state['hat'][hat] = [self.joystick.get_hat(hat), time.time()]
+            tps = time.time() if uround((time.time() - self.state['hat'][hat]) % self.repeat, 0.1) else self.state['hat'][hat]
+            self.state['hat'][hat] = [self.joystick.get_hat(hat), tps]
 
         # buttons
         for button in self.state['button'].keys():
-            self.state['button'][button] = [self.joystick.get_button(button), time.time()]
+            tps = time.time() if uround((time.time() - self.state['button'][button]) % self.repeat, 0.1) else self.state['button'][button]
+            self.state['button'][button] = [self.joystick.get_button(button), tps]
 
         # balls
         for ball in self.state['ball'].keys():
             tmp_x, tmp_y = self.joystick.get_ball(ball)
             tmp_x = -1 if tmp_x < -0.5 else 1 if tmp_x >= 0.5 else 0
             tmp_y = -1 if tmp_y < -0.5 else 1 if tmp_y >= 0.5 else 0
-            self.state['ball'][ball] = [(tmp_x, tmp_y), time.time()]
+            tps = time.time() if uround((time.time() - self.state['ball'][ball]) % self.repeat, 0.1) and not tmp_x and not tmp_y else self.state['ball'][ball]
+            self.state['ball'][ball] = [(tmp_x, tmp_y), tps]
 
     def get_axis(self, axis):
         if axis in self.state['axis'].keys():
