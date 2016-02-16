@@ -16,6 +16,11 @@ class Adventure:
         self.path = os.path.join("..", "saves", "adventure" + EXTENSION)
         self.beginning_text = []
         self.loaded = False
+        self.values = {}
+        self._first_creature_image = pygame.image.load(os.path.join("..", "assets", "creatures", "feu-01.png")).convert_alpha()
+
+    def get_progress(self):
+        return self.progress
 
     def has_already_played(self):
         if not self.progress:
@@ -23,22 +28,26 @@ class Adventure:
         return True
 
     def _begin(self):
-        pygame.draw.rect(self.ecran, (50, 180, 50), (0, 0) + self.ecran.get_size())
-        pygame.display.flip()
         ask_for = ""
+        name_of_image = ""
         g = GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "", self.font)
         i = 0
         for texte in self.beginning_text:
+            pygame.draw.rect(self.ecran, (50, 180, 50), (0, 0) + self.ecran.get_size())
+
             if texte[0] == INPUT_CHAR:
                 ask_smth = True
                 ask_for = texte[texte[1:].index(INPUT_CHAR) + 2:-1]
                 g.set_text(texte[1:texte[1:].index(INPUT_CHAR) + 1])
+            elif texte[0] == IMAGE_SHOW_CHAR:
+                name_of_image = texte.replace(":", "")
+                continue
             else:
                 ask_smth = False
-                if '{}' not in texte[:-1]:
+                if '{' not in texte and '}' not in texte:
                     g.set_text(texte[:-1])
                 else:
-                    g.set_text(texte[:-1].format(self.user_pseudo))
+                    g.set_text(texte[:-1].format(pseudo=self.user_pseudo))
             g.update()
 
             if ask_smth:
@@ -49,8 +58,18 @@ class Adventure:
                     self.user_pseudo = t.get_text()
                     with open(os.path.join("..", "saves", "pseudo" + EXTENSION), "wb") as pseudo_w:
                         Pickler(pseudo_w).dump(self.user_pseudo)
-
+                elif ask_for == "creature":
+                    if "creature image" in name_of_image:
+                        self.ecran.blit(self._first_creature_image, (
+                            (self.ecran.get_width() - self._first_creature_image.get_width()) // 2,
+                            (self.ecran.get_height() - self._first_creature_image.get_height()) // 2
+                        ))
+                    t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom : ", self.font)
+                    t.update()
+                    self.values["first creature name"] = t.get_text()
             i += 1
+
+            pygame.display.flip()
         del g
 
     def next(self):
@@ -66,6 +85,9 @@ class Adventure:
 
     def get_pseudo(self):
         return self.user_pseudo
+
+    def get_values(self):
+        return self.values
 
     def load(self):
         if os.path.exists(self.path):

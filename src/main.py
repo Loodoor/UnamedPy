@@ -29,7 +29,11 @@ def get_alea_text(path: str="textes") -> str:
 
 
 def main():
-    print("Initialisation de Pygame ...", pygame.init())
+    tmp = pygame.init()
+    print("Initialisation de Pygame ... {modules} ; {erreurs}".format(
+        modules="Modules chargés : {}".format(tmp[0]),
+        erreurs="Erreurs de chargement : {}".format(tmp[1])
+    ))
     print("Initialisation de Pygame.Font ...", pygame.font.init())
 
     ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)

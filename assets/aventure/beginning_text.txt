@@ -1,6 +1,10 @@
-Salut à toi ! Tu vas bientôt entrer dans le monde d'Unamed :)
-Te sens-tu prêt ?
-Voici maintenant l'étape cruciale de tout RPG :D !
+ï»¿Salut a toi ! Tu vas bientot entrer dans le monde d'Unamed :)
+Te sens-tu pret ?
+Voici maintenant l'etape cruciale de tout RPG :D !
 >Quel sera ton nom ?>pseudo
 Bien !
-A très bientot sur l'ile {} !
+Maintenant tu vas recevoir ta toute premiere creature !
+:creature image:
+>Comment souhaites-tu l'appeler ?>creature
+Voila qui est fait.
+A tres bientot sur l'ile {pseudo} !

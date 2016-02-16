@@ -98,6 +98,10 @@ class Game:
         self.network_ev_listener.add_controler('others', self.oth_persos_mgr)
         self.network_ev_listener.add_controler('adventure', self.adventure)
 
+        if self.adventure.get_progress() == 1:
+            # on vient de commencer
+            self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
+
         self.tab_types.init_tab()
 
     def save(self):
