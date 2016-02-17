@@ -1,12 +1,10 @@
 # coding=utf-8
 
-import os
-import pygame
-from pygame.locals import *
 from constantes import *
 import pickle
 import objets_manager
 import textwrap as tw
+from glob import glob
 
 
 class Inventaire:
@@ -27,7 +25,7 @@ class Inventaire:
             "utiliser": self.police.render("Utiliser", 1, (10, 10, 10))
         }
 
-        #Objets
+        # Objets
         self.objets = [
             [],  # Poche communs
             [],  # Poche capturateurs
@@ -35,6 +33,21 @@ class Inventaire:
             [],  # Poche Objets Rares
             []   # Poche CT/CS
         ]
+
+        # Poches
+        self.images_poches = {
+            os.path.split(image_path)[1].split('.')[0]: pygame.image.load(image_path).convert_alpha() for image_path in glob(
+                os.path.join("..", "assets", "inventaire", "poches", "*.png")
+            )
+        }
+
+        self._opened_from = None
+
+    def open(self, from_: int):
+        self._opened_from = from_
+
+    def close(self):
+        self._opened_from = None
 
     def find_object(self, obj: list):
         self.objets[obj[1]].append(obj[0])
@@ -55,7 +68,7 @@ class Inventaire:
         elif self.cur_categorie == POCHE_OBJETS_RARES:
             tmp_poche = "Objets Rares"
         elif self.cur_categorie == POCHE_CT_CS:
-            tmp_poche = "CT CS"
+            tmp_poche = "CT & CS"
         else:
             tmp_poche = "ERREUR?"
         return tmp_poche
@@ -91,7 +104,7 @@ class Inventaire:
                 i += 1
 
         # image de la poche
-        pygame.draw.rect(self.ecran, (0, 0, 255), (INVENT_IMAGE_X, INVENT_IMAGE_Y, INVENT_IMAGE_SIZE, INVENT_IMAGE_SIZE))
+        self.ecran.blit(self.images_poches[self.cur_categorie], (INVENT_IMAGE_X, INVENT_IMAGE_Y))
 
         # les boutons next & previous
         pygame.draw.rect(self.ecran, (180, 180, 50), (INVENT_BTN_PREVIOUS, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))

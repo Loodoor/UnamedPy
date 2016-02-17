@@ -2,6 +2,7 @@
 
 import socket
 from pygame.locals import *
+import time
 
 import carte
 import indexer
@@ -28,6 +29,8 @@ from network_event_listener import NetworkEventsListener
 
 
 class Game:
+    start_at = time.time()
+
     def __init__(self, ecran: pygame.Surface, perso_choice: str, adventure: Adventure, s: socket.socket=None,
                  p: tuple=('127.0.0.1', 5500), controles: dict={}):
         self.adventure = adventure
@@ -239,6 +242,8 @@ class Game:
             if event.key == self.controles[VALIDATION]:
                 new_renderer = self.menu_in_game.valider_choix()
                 self.renderer_manager.change_renderer_for(new_renderer)
+                if new_renderer == RENDER_INVENTAIRE:
+                    self.personnage.inventaire.open(RENDER_GAME)
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             tmp = self.menu_in_game.clic(xp, yp)
@@ -257,6 +262,8 @@ class Game:
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
                 new_renderer = self.menu_in_game.valider_choix()
                 self.renderer_manager.change_renderer_for(new_renderer)
+                if new_renderer == RENDER_INVENTAIRE:
+                    self.personnage.inventaire.open(RENDER_GAME)
 
         self.menu_in_game.mouseover(pygame.mouse.get_pos())
 
@@ -296,6 +303,7 @@ class Game:
                 self.cur_combat.valide()
             if event.key == self.controles[MENU]:
                 self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
+                self.personnage.inventaire.open(RENDER_COMBAT)
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
             if event.button == 1:
@@ -318,6 +326,7 @@ class Game:
                 self.cur_combat.previous()
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
+                self.personnage.inventaire.open(RENDER_COMBAT)
 
     def joystick_deplace_souris(self):
         if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
@@ -333,6 +342,7 @@ class Game:
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.renderer_manager.invert_renderer()
+                self.personnage.inventaire.close()
             if event.key == self.__ctrls[NEXT_PAGE]:
                 self.personnage.inventaire_next()
             if event.key == self.__ctrls[PREVIOUS_PAGE]:
@@ -497,6 +507,8 @@ class Game:
 
     def start(self):
         self.prepare()
+
+        print("Le jeu a démarré en %3.4f" % (time.time() - Game.start_at))
 
         while self.continuer:
             # FPS
