@@ -72,8 +72,7 @@ def main():
     en_reseau = False
     avancement = 0
 
-    print("Menu chargé en %3.4f" % (time.time() - start_at))
-
+    print("Menu chargé en %3.4f sec" % (time.time() - start_at))
     print("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
 
     while continuer:

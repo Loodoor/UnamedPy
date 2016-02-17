@@ -29,10 +29,10 @@ from network_event_listener import NetworkEventsListener
 
 
 class Game:
-    start_at = time.time()
-
     def __init__(self, ecran: pygame.Surface, perso_choice: str, adventure: Adventure, s: socket.socket=None,
                  p: tuple=('127.0.0.1', 5500), controles: dict={}):
+        self.__start_at__ = time.time()
+
         self.adventure = adventure
 
         # self.fps_regulator = IAFPS(FPS_base)
@@ -508,7 +508,7 @@ class Game:
     def start(self):
         self.prepare()
 
-        print("Le jeu a démarré en %3.4f" % (time.time() - Game.start_at))
+        print("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
 
         while self.continuer:
             # FPS
