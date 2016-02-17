@@ -7,11 +7,11 @@ if os.path.split(os.getcwd())[1] != "src":
     raise ErreurRepertoire("Le répertoire courant n'est pas correct, le jeu ne peut pas se lancer")
 print("Chargement ...")
 
-import pygame
 import random
 import socket
 from glob import glob
 from pygame.locals import *
+import time
 
 import game
 import utils
@@ -29,6 +29,7 @@ def get_alea_text(path: str="textes") -> str:
 
 
 def main():
+    start_at = time.time()
     tmp = pygame.init()
     print("Initialisation de Pygame ... {modules} ; {erreurs}".format(
         modules="Modules chargés : {}".format(tmp[0]),
@@ -71,6 +72,8 @@ def main():
     en_reseau = False
     avancement = 0
 
+    print("Menu chargé en %3.4f" % (time.time() - start_at))
+
     print("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
 
     while continuer:
@@ -86,10 +89,10 @@ def main():
             if event.type == MOUSEBUTTONUP:
                 xp, yp = event.pos
                 if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_JOUER_SX and \
-                                        MENU_BTN_JOUER_Y <= yp <= MENU_BTN_JOUER_Y + MENU_BTN_JOUER_SY:
+                        MENU_BTN_JOUER_Y <= yp <= MENU_BTN_JOUER_Y + MENU_BTN_JOUER_SY:
                     chargement = True
                 if MENU_BTN_RESEAU_X <= xp <= MENU_BTN_RESEAU_X + MENU_BTN_RESEAU_SX and \
-                                        MENU_BTN_RESEAU_Y <= yp <= MENU_BTN_RESEAU_Y + MENU_BTN_RESEAU_SY:
+                        MENU_BTN_RESEAU_Y <= yp <= MENU_BTN_RESEAU_Y + MENU_BTN_RESEAU_SY:
                     chargement = True
                     en_reseau = True
 
