@@ -118,6 +118,30 @@ def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 
     pygame.draw.rect(screen, fg_color, (rect_bg[0] + BAR_ESP, rect_bg[1] + BAR_ESP, progress, rect_bg[3] - BAR_ESP * 2))
 
 
+class UEnumFactory:
+    seed = 0
+
+    def __init__(self, *args):
+        self.list_value_numbers = range(len(args) + UEnumFactory.seed)
+        self.dict_attrib = dict(zip(args, self.list_value_numbers))
+        self.dict_reverse = dict(zip(self.list_value_numbers, args))
+        UEnumFactory.seed += 1
+
+    def create(self):
+        objet = UEnum()
+        objet.dict_reverse = self.dict_reverse
+        objet.__dict__.update(self.dict_attrib)
+        return objet
+
+
+class UEnum:
+    def __init__(self):
+        self.dict_reverse = {}
+
+    def __str__(self):
+        return "__dict__ : " + str(self.__dict__) + "\nself.dict_reverse : " + str(self.dict_reverse)
+
+
 class UMoment:
     def __init__(self, description_job: str=""):
         self.time = time.time()
@@ -185,60 +209,89 @@ class ULoader:
         TriggersManager.add_trigger_to_path(Trigger("trigger.test", 0, 0, TRIGGER_INFINITE_CALLS, print, "hello world !", "je suis un test de trigger !"))
 
         # Création des objets par défaut
+        global OBJETS_ID
+        temp = UEnumFactory(
+            "AntiPara",
+            "AntiBrule",
+            "AntiPoison",
+            "Attaqueplus",
+            "Defenseplus",
+            "Vitesseplus",
+            "PPplus",
+            "Elixir",
+            "ElixirAugmente",
+            "SuperElixir",
+            "HyperElixir",
+            "ElixirMax",
+            "PVplus",
+            "PotionSimple",
+            "SuperPotion",
+            "HyperPotion",
+            "MegaPotion",
+            "PotionMax",
+            "Chaussures",
+            "Velo",
+            "SimpleBall",
+            "NormalBall",
+            "SuperiorBall",
+            "UltraBall"
+        )
+        OBJETS_ID = temp.create()
+        del temp
 
         anti_para = objets_manager.Objet("Anti-Para", "L'anti-Para permet d'enlever le statut 'paralysé' d'une de vos créatures",
-                                         [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti para"))
+                                         [0, MAX_ITEM], OBJETS_ID.AntiPara)
         anti_brul = objets_manager.Objet("Anti-Brûle", "L'anti-Brûle permet d'enlever le statut 'brûlé' d'une de vos créatures",
-                                         [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti brule"))
+                                         [0, MAX_ITEM], OBJETS_ID.AntiBrule)
         anti_poison = objets_manager.Objet("Anti-Poison", "L'anti-Poison permet d'enlever le statut 'empoisonné' d'une de vos créatures",
-                                           [0, MAX_ITEM], objets_manager.ObjectAction(print, "test anti poison"))
+                                           [0, MAX_ITEM], OBJETS_ID.AntiPoison)
         att_p = objets_manager.Objet("Attaque+", "L'attaque+ augmente l'attaque d'une de vos créatures (effet à long terme)",
-                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test attaque+"))
+                                     [0, MAX_ITEM], OBJETS_ID.Attaqueplus)
         def_p = objets_manager.Objet("Défense+", "Le défense+ augmente la défense d'une de vos créatures (effet à long terme)",
-                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test defense+"))
+                                     [0, MAX_ITEM], OBJETS_ID.Defenseplus)
         vit_p = objets_manager.Objet("Vitesse+", "Le vitesse+ augmente la vitesse d'une de vos créatures (effet à long terme)",
-                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test vitesse+"))
+                                     [0, MAX_ITEM], OBJETS_ID.Vitesseplus)
         pps_p = objets_manager.Objet("PP+", "Le PP+ augmente le nombre de PP max d'une attaque d'une de vos créatures (effet à long terme)",
-                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pps+"))
+                                     [0, MAX_ITEM], OBJETS_ID.PPplus)
         regen_pps_5 = objets_manager.Objet("Elixir", "L'élixir redonne 5 PP à une attaque d'une de vos créatures",
-                                           [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 5"))
+                                           [0, MAX_ITEM], OBJETS_ID.Elixir)
         regen_pps_10 = objets_manager.Objet("Elixir Augmenté", "L'élixir augmenté redonne 10 PP à une attaque d'une de vos créatures",
-                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 10"))
+                                            [0, MAX_ITEM], OBJETS_ID.ElixirAugmente)
         regen_pps_30 = objets_manager.Objet("Super Elixir", "Le super élixir redonne 30 PP à une attaque d'une de vos créatures",
-                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 30"))
+                                            [0, MAX_ITEM], OBJETS_ID.SuperElixir)
         regen_pps_75 = objets_manager.Objet("Hyper Elixir", "L'hyper élixir redonne 75 PP à une attaque d'une de vos créatures",
-                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps 75"))
+                                            [0, MAX_ITEM], OBJETS_ID.HyperElixir)
         regen_pps_max = objets_manager.Objet("Elixir Max", "L'élixir max régénère entièrement les PP d'une attaque d'une de vos créatures",
-                                             [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pps max"))
+                                             [0, MAX_ITEM], OBJETS_ID.ElixirMax)
         pvs_p = objets_manager.Objet("PV+", "Le PV+ augmente le nombre de PV d'une de vos créatures (effet à long terme)",
-                                     [0, MAX_ITEM], objets_manager.ObjectAction(print, "test pvs"))
+                                     [0, MAX_ITEM], OBJETS_ID.PVplus)
         regen_pvs_20 = objets_manager.Objet("Potion Simple", "La potion régénère 20 PV à une de vos créatures",
-                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 20"))
+                                            [0, MAX_ITEM], OBJETS_ID.PotionSimple)
         regen_pvs_60 = objets_manager.Objet("Super Potion", "La super potion régénère 60 PV à une de vos créatures",
-                                            [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 60"))
+                                            [0, MAX_ITEM], OBJETS_ID.SuperPotion)
         regen_pvs_100 = objets_manager.Objet("Hyper Potion", "L'hyper potion régénère 100 PV à une de vos créatures",
-                                             [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 100"))
+                                             [0, MAX_ITEM], OBJETS_ID.HyperPotion)
         regen_pvs_200 = objets_manager.Objet("Méga Potion", "La méga potion régénère 200 PV à une de vos créatures",
-                                             [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs 200"))
+                                             [0, MAX_ITEM], OBJETS_ID.MegaPotion)
         regen_pvs_max = objets_manager.Objet("Potion Max", "La potion max régénère entièrement les PV d'une de vos créatures",
-                                             [0, MAX_ITEM], objets_manager.ObjectAction(print, "test regen pvs max"))
+                                             [0, MAX_ITEM], OBJETS_ID.PotionMax)
         chaussures = objets_manager.Objet("Chaussures", "Les chaussures vous permettent de vous déplacer plus vite",
-                                          [1, 1], objets_manager.ObjectAction(print, "test chaussures"))
-        velo = objets_manager.Objet("Velo", "Le vélo vous permet de vous déplacer encore vite qu'avec les Chaussures",
-                                    [0, 1], objets_manager.ObjectAction(print, "test velo"))
+                                          [1, 1], OBJETS_ID.Chaussures)
+        velo = objets_manager.Objet("Vélo", "Le vélo vous permet de vous déplacer encore vite qu'avec les Chaussures",
+                                    [0, 1], OBJETS_ID.Velo)
         simple_ball = objets_manager.Objet("Simple Ball", "La simple ball vous permet de capturer une créature. Son taux"
                                                           " de réussite est très faible", [0, MAX_ITEM],
-                                           objets_manager.ObjectAction(print, "test simple ball"))
+                                           OBJETS_ID.SimpleBall)
         normal_ball = objets_manager.Objet("Normal Ball",
                                            "La normal ball vous permet de capturer une créature. Son taux"
                                            " de réussite est faible, quoique supérieur à celui de la simple ball",
-                                           [0, MAX_ITEM], objets_manager.ObjectAction(print, "test normal ball"))
+                                           [0, MAX_ITEM], OBJETS_ID.NormalBall)
         sup_ball = objets_manager.Objet("Superior Ball", "La superior ball vous permet de capturer une créature. Son"
                                                          "taux de réussite est assez élevé.", [0, MAX_ITEM],
-                                           objets_manager.ObjectAction(print, "test superior ball"))
+                                        OBJETS_ID.SuperiorBall)
         ultra_ball = objets_manager.Objet("Ultra Ball", "L'ultra ball a un taux de réussite proche des 100%, mais est "
                                                         "très complexe à fabriquer", [0, MAX_ITEM],
-                                          objets_manager.ObjectAction(print, "test ultra ball"))
+                                          OBJETS_ID.UltraBall)
 
         objets = [
             [

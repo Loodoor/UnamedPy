@@ -28,6 +28,8 @@ GLOBAL_ERROR = -1
 -10 : TILE_GET_ERROR
 """
 
+OBJETS_ID = []
+
 ID_STARTER = 0
 
 INPUT_CHAR = ">"
