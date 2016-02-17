@@ -13,26 +13,20 @@ class Inventaire:
         self.police = police
         self.carte = carte
         self.xp, self.yp = 0, 0
-
         self.path = os.path.join("..", "saves", "inventaire" + EXTENSION)
         self.cur_categorie = POCHE_COMMUNS
         self.selected_item = -1
-
         self.titre = self.police.render("Inventaire", 1, (10, 10, 10))
         self.textes = {
             "jeter": self.police.render("Jeter", 1, (10, 10, 10)),
             "jeter tout": self.police.render("Vider", 1, (10, 10, 10)),
             "utiliser": self.police.render("Utiliser", 1, (10, 10, 10))
         }
+        self._opened_from = None
+        self.obj_messenger = None
 
         # Objets
-        self.objets = [
-            [],  # Poche communs
-            [],  # Poche capturateurs
-            [],  # Poche médicaments
-            [],  # Poche Objets Rares
-            []   # Poche CT/CS
-        ]
+        self.objets = [[], [], [], [], []]
 
         # Poches
         self.images_poches = {
@@ -41,7 +35,10 @@ class Inventaire:
             )
         }
 
-        self._opened_from = None
+    def get_obj_messenger(self):
+        if self.obj_messenger:
+            return self.obj_messenger
+        print("Pas d'objet utilisé / Impossible de créer l'obj_messenger")
 
     def open(self, from_: int):
         self._opened_from = from_
@@ -151,7 +148,7 @@ class Inventaire:
 
     def utiliser(self, item: int):
         if item != -1:
-            obj_messenger = objets_manager.ObjectMessenger(
+            self.obj_messenger = objets_manager.ObjectMessenger(
                 {
                     "name": "inventaire",
                     "renderer": RENDER_INVENTAIRE
