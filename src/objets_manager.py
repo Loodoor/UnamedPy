@@ -11,7 +11,31 @@ class ObjectTable:
             ObjectTable.instance = self
 
         self.table = {
-            # ID: dict -> {"on": ("inventaire" | "creature" | "personnage")}
+            # ID: dict -> {"on": ("inventaire" | "creature" | "adversaire" | "personnage")}
+            "AntiPara": {"on": "creature"},
+            "AntiBrule": {"on": "creature"},
+            "AntiPoison": {"on": "creature"},
+            "Attaqueplus": {"on": "creature"},
+            "Defenseplus": {"on": "creature"},
+            "Vitesseplus": {"on": "creature"},
+            "PPplus": {"on": "creature"},
+            "Elixir": {"on": "creature"},
+            "ElixirAugmente": {"on": "creature"},
+            "SuperElixir": {"on": "creature"},
+            "HyperElixir": {"on": "creature"},
+            "ElixirMax": {"on": "creature"},
+            "PVplus": {"on": "creature"},
+            "PotionSimple": {"on": "creature"},
+            "SuperPotion": {"on": "creature"},
+            "HyperPotion": {"on": "creature"},
+            "MegaPotion": {"on": "creature"},
+            "PotionMax": {"on": "creature"},
+            "Chaussures": {"on": "personnage"},
+            "Velo": {"on": "personnage"},
+            "SimpleBall": {"on": "adversaire"},
+            "NormalBall": {"on": "adversaire"},
+            "SuperiorBall": {"on": "adversaire"},
+            "UltraBall": {"on": "adversaire"}
         }
 
     @staticmethod
