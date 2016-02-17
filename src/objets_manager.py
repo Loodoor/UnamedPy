@@ -3,6 +3,17 @@
 from constantes import *
 
 
+class ObjectMessenger:
+    def __init__(self, depuis: dict, pour: dict, objet: Objet):
+        # doit etrer de la forme :
+        # {"nom": nom, "renderer": renderer}
+        # (pour depuis et pour pour)
+
+        self.depuis = depuis
+        self.pour = pour
+        self.objet = objet
+
+
 class ObjectTable:
     instance = None
 
