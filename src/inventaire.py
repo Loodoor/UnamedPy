@@ -104,7 +104,7 @@ class Inventaire:
                 i += 1
 
         # image de la poche
-        self.ecran.blit(self.images_poches[self.cur_categorie], (INVENT_IMAGE_X, INVENT_IMAGE_Y))
+        self.ecran.blit(self.images_poches[str(self.cur_categorie)], (INVENT_IMAGE_X, INVENT_IMAGE_Y))
 
         # les boutons next & previous
         pygame.draw.rect(self.ecran, (180, 180, 50), (INVENT_BTN_PREVIOUS, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
@@ -151,7 +151,17 @@ class Inventaire:
 
     def utiliser(self, item: int):
         if item != -1:
-            self.objets[self.cur_categorie][item].use()
+            obj_messenger = objets_manager.ObjectMessenger(
+                {
+                    "name": "inventaire",
+                    "renderer": RENDER_INVENTAIRE
+                },
+                {
+                    "name": "?",  # à completer avec un reversed dict (imo)
+                    "renderer": self._opened_from
+                },
+                self.objets[self.cur_categorie][item].use()
+            )
 
     def jeter(self, item: int):
         if item != -1:

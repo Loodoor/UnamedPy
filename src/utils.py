@@ -99,9 +99,7 @@ def udel_same_occurence(*args) -> list:
     work = []
     last = ""
     for i in range(len(args)):
-        if args[i] == last:
-            pass
-        else:
+        if args[1] != last:
             last = args[i]
             work.append(last)
     return work
