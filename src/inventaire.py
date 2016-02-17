@@ -21,6 +21,11 @@ class Inventaire:
         self.selected_item = -1
 
         self.titre = self.police.render("Inventaire", 1, (10, 10, 10))
+        self.textes = {
+            "jeter": self.police.render("Jeter", 1, (10, 10, 10)),
+            "jeter tout": self.police.render("Vider", 1, (10, 10, 10)),
+            "utiliser": self.police.render("Utiliser", 1, (10, 10, 10))
+        }
 
         #Objets
         self.objets = [
@@ -67,12 +72,14 @@ class Inventaire:
             item = self.police.render(texte, 1, (10, 10, 10))
             self.ecran.blit(item, (INVENT_X_ITEM, INVENT_Y_ITEM + i * INVENT_ESP_ITEM))
         if 0 <= self.selected_item < len(self.objets[self.cur_categorie]):
-            # les boutons jeter et jeter tout
+            # les boutons jeter, jeter tout et utiliser
             pygame.draw.rect(self.ecran, (180, 50, 50), (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
             pygame.draw.rect(self.ecran, (255, 50, 50), (INVENT_BTN_JETERTT_X, INVENT_BTN_JETERTT_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
+            pygame.draw.rect(self.ecran, (50, 50, 180), (INVENT_BTN_USE_X, INVENT_BTN_USE_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
             # et leur texte
-            self.ecran.blit(self.police.render("Jeter", 1, (10, 10, 10)), (INVENT_BTN_JETER_X + 2, INVENT_BTN_JETER_Y + 2))
-            self.ecran.blit(self.police.render("Vider", 1, (10, 10, 10)), (INVENT_BTN_JETERTT_X + 2, INVENT_BTN_JETERTT_Y + 2))
+            self.ecran.blit(self.textes["jeter"], (INVENT_BTN_JETER_X + 2, INVENT_BTN_JETER_Y + 2))
+            self.ecran.blit(self.textes["jeter tout"], (INVENT_BTN_JETERTT_X + 2, INVENT_BTN_JETERTT_Y + 2))
+            self.ecran.blit(self.textes["utiliser"], (INVENT_BTN_USE_X + 2, INVENT_BTN_USE_Y + 2))
             # texte d'aide
             # DECOUPER LE TEXTE CAR TROP GRAND !
             texte_aide_str = self.objets[self.cur_categorie][self.selected_item].aide()
@@ -103,20 +110,24 @@ class Inventaire:
             self.selected_item = real_y
         else:
             if INVENT_BTN_JETER_Y <= yp <= INVENT_BTN_JETER_Y + INVENT_SIZE_BTN_Y and \
-                        INVENT_BTN_JETER_X <= xp <= INVENT_BTN_JETER_X + INVENT_SIZE_BTN_X:
+                    INVENT_BTN_JETER_X <= xp <= INVENT_BTN_JETER_X + INVENT_SIZE_BTN_X:
                 # DEMANDER CONFIRMATION AVANT !
                 print("besoin de confirmation")
                 self.jeter(self.selected_item)
             elif INVENT_BTN_JETERTT_Y <= yp <= INVENT_BTN_JETERTT_Y + INVENT_SIZE_BTN_Y and \
-                        INVENT_BTN_JETERTT_X <= xp <= INVENT_BTN_JETERTT_X + INVENT_SIZE_BTN_X:
+                    INVENT_BTN_JETERTT_X <= xp <= INVENT_BTN_JETERTT_X + INVENT_SIZE_BTN_X:
                 # DEMANDER CONFIRMATION AVANT !
                 print("besoin de confirmation")
                 self.jeter_tout(self.selected_item)
+            elif INVENT_BTN_USE_Y <= yp <= INVENT_BTN_USE_Y + INVENT_SIZE_BTN_Y and \
+                    INVENT_BTN_USE_X <= xp <= INVENT_BTN_USE_X + INVENT_SIZE_BTN_X:
+                print("utilise l'objet {}".format(self.objets[self.cur_categorie][self.selected_item].name()))
+                self.utiliser(self.selected_item)
             elif INVENT_BTN_PREVIOUS <= xp <= INVENT_BTN_PREVIOUS + INVENT_BTN_PAGES_SX and \
-                INVENT_BTN_PAGES <= yp <= INVENT_BTN_PAGES + INVENT_BTN_PAGES_SY:
+                    INVENT_BTN_PAGES <= yp <= INVENT_BTN_PAGES + INVENT_BTN_PAGES_SY:
                 self.previous()
             elif INVENT_BTN_NEXT <= xp <= INVENT_BTN_NEXT + INVENT_BTN_PAGES_SX and \
-                INVENT_BTN_PAGES <= yp <= INVENT_BTN_PAGES + INVENT_BTN_PAGES_SY:
+                    INVENT_BTN_PAGES <= yp <= INVENT_BTN_PAGES + INVENT_BTN_PAGES_SY:
                 self.next()
 
     def next(self):
@@ -125,14 +136,20 @@ class Inventaire:
     def previous(self):
         self.cur_categorie = self.cur_categorie - 1 if self.cur_categorie - 1 >= 0 else len(self.objets) - 1
 
+    def utiliser(self, item: int):
+        if item != -1:
+            self.objets[self.cur_categorie][item].use()
+
     def jeter(self, item: int):
-        if item != -1 and self.objets[self.cur_categorie][item].nombre() > 0:
-            self.carte.drop_object_at(self.xp - TILE_SIZE, self.yp, self.objets[self.cur_categorie][item].jeter(),
-                                      self.cur_categorie)
+        if item != -1:
+            objet = self.objets[self.cur_categorie][item].jeter()
+            if objet != GLOBAL_ERROR:
+                self.carte.drop_object_at(self.xp - TILE_SIZE, self.yp, objet,
+                                          self.cur_categorie)
             del self.objets[self.cur_categorie][item]
 
     def jeter_tout(self, item: int):
-        if item != -1 and self.objets[self.cur_categorie][item].nombre() > 0:
+        if item != -1:
             self.carte.drop_object_at(self.xp - TILE_SIZE, self.yp, self.objets[self.cur_categorie][item].jeter_tout(),
                                       self.cur_categorie)
             del self.objets[self.cur_categorie][item]

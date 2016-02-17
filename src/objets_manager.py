@@ -41,7 +41,7 @@ class Objet:
             return Objet(self.nom, self.texte, [1, MAX_ITEM], self.action)
         return GLOBAL_ERROR
 
-    def use(self):
+    def use(self) -> bool:
         if self.quantite[0] > 0:
             self.quantite[0] -= 1
             self.action.execute()
