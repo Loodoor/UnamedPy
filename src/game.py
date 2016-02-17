@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import socket
-import pygame
 from pygame.locals import *
 
 import carte
@@ -12,6 +11,7 @@ import tab_types
 import personnage
 import chat_manager
 import menu_in_game
+import objets_manager
 import equipe_manager
 import computer_manager
 import renderer_manager
@@ -22,9 +22,9 @@ from utils import uscreenschot
 from fpsregulator import IAFPS
 from aventure_manager import Adventure
 from parametres import ParametresManager
+from controller import JoystickController
 from exceptions import FonctionnaliteNonImplementee
 from network_event_listener import NetworkEventsListener
-from controller import JoystickController
 
 
 class Game:
@@ -69,6 +69,7 @@ class Game:
         self.network_ev_listener = NetworkEventsListener(self.sock, self.params)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
                                                  self.adventure.get_pseudo(), RANG_NUL)
+        self.objets_table = objets_manager.ObjectTable()
         self.parametres = ParametresManager()
         self.parametres.load()
 
