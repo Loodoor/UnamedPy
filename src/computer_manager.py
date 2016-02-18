@@ -49,10 +49,18 @@ class ComputerManager:
             self.next()
         if FCREA_AUTRE_MGR_X <= xp <= FCREA_AUTRE_MGR_X + FCREA_AUTRE_MGR_SX and FCREA_AUTRE_MGR_Y <= yp <= FCREA_AUTRE_MGR_Y + FCREA_AUTRE_MGR_SY:
             self.change_renderer()
-        if FCREA_PASSE_CREA_TO__X <= xp <= FCREA_PASSE_CREA_TO__X + FCREA_PASSE_CREA_TO__SY and \
+        if FCREA_PASSE_CREA_TO__X <= xp <= FCREA_PASSE_CREA_TO__X + FCREA_PASSE_CREA_TO__SX and \
                 FCREA_PASSE_CREA_TO__Y <= yp <= FCREA_PASSE_CREA_TO__Y + FCREA_PASSE_CREA_TO__SY:
             if self.selected_crea != -1:
                 self.move_creature_to_equipe(self.selected_crea)
+        if FCREA_X <= xp <= FCREA_X + FCREA_SIZE_X_CASE and FCREA_Y + FCREA_IMAGE_XY_MARGE <= yp <= \
+                FCREA_Y + FCREA_IMAGE_XY_MARGE + FCREA_SIZE_Y_CASE * len(self.storage) + FCREA_MARGE_Y * \
+                (len(self.storage) + 1) + FCREA_MARGE_Y_RAPPORT_TITRE:
+            real_y = yp - FCREA_Y - FCREA_IMAGE_XY_MARGE - FCREA_MARGE_Y_RAPPORT_TITRE
+            real_y /= (FCREA_SIZE_Y_CASE + FCREA_MARGE_Y)
+            real_y = int(real_y)
+            if 0 <= real_y < len(self.storage):
+                self.selected_crea = real_y
 
     def next(self):
         self.current_page = self.current_page + 1 if self.current_page < MAX_CREATURES // 7 else self.current_page
@@ -67,21 +75,30 @@ class ComputerManager:
         pygame.draw.rect(self.ecran, (180, 50, 50), (FCREA_X, FCREA_Y, FCREA_SIZE_X, FCREA_SIZE_Y))
         self.ecran.blit(self.titre, ((FEN_large - self.titre.get_width()) // 2, FCREA_TITRE_Y))
         for i in range(len(self.storage[self.current_page:self.current_page + self.per_page])):
-            creature = self.storage[i]
+            couleur_bg = (50, 180, 50) if i != self.selected_crea else (50, 180, 180)
+            creature = self.storage[i + self.current_page * self.per_page]
             pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), 1,
                                             (10, 10, 10))
             txt_format = self.police.render(creature.get_pseudo() + ' : niv.' + str(creature.get_niv()), 1,
                                             (10, 10, 10))
-            pygame.draw.rect(self.ecran, (50, 180, 50), (FCREA_X + FCREA_MARGE_X,
-                                                         FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1),
-                                                         FCREA_SIZE_X_CASE,
-                                                         FCREA_SIZE_Y_CASE))
+            pygame.draw.rect(self.ecran, couleur_bg,
+                             (FCREA_X + FCREA_MARGE_X,
+                              FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE,
+                              FCREA_SIZE_X_CASE,
+                              FCREA_SIZE_Y_CASE))
             self.ecran.blit(txt_format,
                             (FCREA_X + FCREA_MARGE_X + FCREA_MARGE_TXT_X,
-                             FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y))
+                             FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y +
+                             FCREA_MARGE_Y_RAPPORT_TITRE))
             self.ecran.blit(pvs_format,
                             (FCREA_X + FCREA_MARGE_X + FCREA_MARGE_TXT_X,
-                             FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y2))
+                             FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y2 +
+                             FCREA_MARGE_Y_RAPPORT_TITRE))
+            # image de la créature
+            self.ecran.blit(creature.get_image_with_size((FCREA_IMAGE_SX, FCREA_IMAGE_SY)),
+                            (FCREA_X + FCREA_IMAGE_X + FCREA_IMAGE_XY_MARGE,
+                             FCREA_Y + FCREA_IMAGE_Y + (
+                                 i + 1) * FCREA_MARGE_Y + i * FCREA_SIZE_Y_CASE + FCREA_MARGE_Y_RAPPORT_TITRE - FCREA_IMAGE_XY_MARGE))
         # boutons previous et next
         pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_PREVIOUS_X, FCREA_PREVIOUS_Y, FCREA_BTN_SX, FCREA_BTN_SY))
         self.ecran.blit(self.police.render("<", 1, (255, 255, 255)), (FCREA_PREVIOUS_X + 6, FCREA_PREVIOUS_Y + 2))
@@ -95,7 +112,7 @@ class ComputerManager:
         pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_PASSE_CREA_TO__X, FCREA_PASSE_CREA_TO__Y,
                                                       FCREA_PASSE_CREA_TO__SX, FCREA_PASSE_CREA_TO__SY))
         self.ecran.blit(self.to_equipe, (FCREA_PASSE_CREA_TO__X - (self.to_equipe.get_width() - FCREA_PASSE_CREA_TO__SX) // 2,
-                                 FCREA_PASSE_CREA_TO__Y + 2))
+                                         FCREA_PASSE_CREA_TO__Y + 2))
 
     def move_creature_to_equipe(self, which: int):
         if self.equipe.add_creature(self.storage[which]):
@@ -104,6 +121,8 @@ class ComputerManager:
     def add_creature(self, new: Creature):
         if len(self.storage) < self.max_size:
             self.storage.append(new)
+            return True
+        return False
 
     def get_creature(self, index: int):
         return self.storage[index] if 0 <= index < len(self.storage) else PC_GET__ERROR

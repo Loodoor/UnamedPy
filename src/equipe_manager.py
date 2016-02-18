@@ -89,7 +89,7 @@ class EquipeManager:
     def clic(self, xp: int, yp: int):
         if FCREA_AUTRE_MGR_X <= xp <= FCREA_AUTRE_MGR_X + FCREA_AUTRE_MGR_SX and FCREA_AUTRE_MGR_Y <= yp <= FCREA_AUTRE_MGR_Y + FCREA_AUTRE_MGR_SY:
             self.change_renderer()
-        if FCREA_PASSE_CREA_TO__X <= xp <= FCREA_PASSE_CREA_TO__X + FCREA_PASSE_CREA_TO__SY and \
+        if FCREA_PASSE_CREA_TO__X <= xp <= FCREA_PASSE_CREA_TO__X + FCREA_PASSE_CREA_TO__SX and \
                 FCREA_PASSE_CREA_TO__Y <= yp <= FCREA_PASSE_CREA_TO__Y + FCREA_PASSE_CREA_TO__SY:
             if self.selected_crea != -1:
                 self.move_creature_to_pc(self.selected_crea)
@@ -105,8 +105,9 @@ class EquipeManager:
     def add_creature(self, new: Creature):
         if len(self.creatures) < self.size:
             self.creatures.append(new)
+            return True
         else:
-            self.pc.add_creature(new)
+            return self.pc.add_creature(new)
 
     def move_locals_creatures(self, first: int, second: int):
         self.creatures[first], self.creatures[second] = self.creatures[first] = self.creatures[second]
