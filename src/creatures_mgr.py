@@ -154,7 +154,17 @@ class Creature:
     def set_spec(self, categorie, new):
         # on ne doit pas pouvoir manipuler l'xp
         if categorie in self.specs.keys() and categorie != SPEC_XP:
-            self.specs[categorie] = new
+            if categorie in [SPEC_ATK, SPEC_DEF, SPEC_VIT]:
+                self.temp_specs.append(categorie)
+                self.specs[categorie] = new
+            if categorie in [SPEC_PPS, SPEC_PVS]:
+                if categorie == SPEC_PPS:
+                    new = new if new <= self.specs[SPEC_MAX_PPS] else self.specs[SPEC_MAX_PPS]
+                if categorie == SPEC_PVS:
+                    new = new if new <= self.specs[SPEC_MAX_PVS] else self.specs[SPEC_MAX_PVS]
+                self.specs[categorie] = new
+            if categorie == SPEC_ETAT:
+                self.specs[categorie] = new
         else:
             raise CategorieInexistante
 
