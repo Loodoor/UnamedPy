@@ -131,7 +131,6 @@ class Inventaire:
                 self.jeter_tout(self.selected_item)
             elif INVENT_BTN_USE_Y <= yp <= INVENT_BTN_USE_Y + INVENT_SIZE_BTN_Y and \
                     INVENT_BTN_USE_X <= xp <= INVENT_BTN_USE_X + INVENT_SIZE_BTN_X:
-                print("utilise l'objet {}".format(self.objets[self.cur_categorie][self.selected_item].name()))
                 self.utiliser(self.selected_item)
             elif INVENT_BTN_PREVIOUS <= xp <= INVENT_BTN_PREVIOUS + INVENT_BTN_PAGES_SX and \
                     INVENT_BTN_PAGES <= yp <= INVENT_BTN_PAGES + INVENT_BTN_PAGES_SY:
@@ -149,15 +148,15 @@ class Inventaire:
     def utiliser(self, item: int):
         if item != -1:
             self.obj_messenger = objets_manager.ObjectMessenger(
-                {
+                depuis={
                     "name": "inventaire",
                     "renderer": RENDER_INVENTAIRE
                 },
-                {
-                    "name": "?",  # à completer avec un reversed dict (imo)
+                pour={
+                    "name": "NA",  # à compléter avec un reversed dict (imo)
                     "renderer": self._opened_from
                 },
-                self.objets[self.cur_categorie][item].use()
+                objet=self.objets[self.cur_categorie][item].use()
             )
 
     def jeter(self, item: int):
