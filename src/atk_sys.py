@@ -18,7 +18,8 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
 
 
 class Combat:
-    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer, font, storage) -> None:
+    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer, font, storage,
+                 renderer_manager):
         self.ecran = ecran
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
@@ -34,6 +35,7 @@ class Combat:
         self.font = font
         self.selected_atk = -1
         self.storage = storage
+        self.renderer_manager = renderer_manager
 
     def on_start(self):
         print("adv id", self.adversaire.get_id())
@@ -55,6 +57,11 @@ class Combat:
         self.indexer.capturer(self.get_adversary().get_id())
         self.is_running = False
 
+    def _is_active(self):
+        if self.renderer_manager.get_renderer() != RENDER_COMBAT:
+            return False
+        return True
+
     def update(self):
         if self.is_running:
             if not self.has_started:
@@ -69,27 +76,7 @@ class Combat:
             self.render()
 
             if self.mon_tour():
-                self.bulle_que_doit_faire.set_text("Que doit faire " + self.get_my_creature().get_pseudo() + " ?")
-                self.bulle_que_doit_faire.update()
-
-                if self.has_attacked:
-                    self.get_adversary().taper(calcul_degats(self.get_my_creature().get_attacks()[self.selected_atk].get_dgts(),
-                                                             self.get_my_creature().get_specs(),
-                                                             self.get_adversary().get_specs(),
-                                                             self.storage.get_coeff(
-                                                                 self.get_my_creature().get_type(),
-                                                                 self.get_adversary().get_type()
-                                                             ),
-                                                             self.get_my_creature().get_type()))
-                    self.compteur_tour += 1
-                    self.has_attacked = False
-                    g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                        self.get_my_creature().get_pseudo() +
-                                        " utilise " +
-                                        self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
-                                        " !",
-                                        self.font)
-                    g.update()
+                self._manage_my_turn()
             else:
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     self.get_adversary().get_pseudo() +
@@ -98,37 +85,64 @@ class Combat:
                 g.update()
 
             if self.get_adversary().is_dead():
+                self._manage_adversary_death()
+
+    def _manage_my_turn(self):
+        self.bulle_que_doit_faire.set_text("Que doit faire " + self.get_my_creature().get_pseudo() + " ?")
+        self.bulle_que_doit_faire.update()
+
+        if self.has_attacked:
+            self.get_adversary().taper(calcul_degats(self.get_my_creature().get_attacks()[self.selected_atk].get_dgts(),
+                                                     self.get_my_creature().get_specs(),
+                                                     self.get_adversary().get_specs(),
+                                                     self.storage.get_coeff(
+                                                         self.get_my_creature().get_type(),
+                                                         self.get_adversary().get_type()
+                                                     ),
+                                                     self.get_my_creature().get_type()))
+            self.compteur_tour += 1
+            self.has_attacked = False
+            g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                self.get_my_creature().get_pseudo() +
+                                " utilise " +
+                                self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
+                                " !",
+                                self.font)
+            g.update()
+
+    def _manage_adversary_death(self):
+        g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                            self.get_adversary().get_pseudo() + " est vaincu !", self.font)
+
+        g.update()
+        del g
+
+        # gestion de l'xp
+        level_up = self.get_my_creature().gagner_xp(self.get_adversary())
+        if not isinstance(level_up, (int, float)):
+            g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                self.get_my_creature().get_pseudo() + " a gagné un niveau !",
+                                self.font)
+            g.update()
+            del g
+
+            for new in level_up:
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                    self.get_adversary().get_pseudo() + " est vaincu !", self.font)
+                                    [
+                                        "Niveau : +1 !   Attaque : +" + str(new[SPEC_ATK]) + " !",
+                                        "Défense : +" + str(new[SPEC_DEF]) + "!   Vitesse : +" + str(new[SPEC_VIT]) + " !",
+                                        "Points de vie : +" + str(new[SPEC_MAX_PVS]) + " !"
+                                    ], self.font)
                 g.update()
                 del g
+        else:
+            g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                self.get_my_creature().get_pseudo() + " a gagné {} xp !".format(level_up),
+                                self.font)
+            g.update()
+            del g
 
-                # gestion de l'xp
-                level_up = self.get_my_creature().gagner_xp(self.get_adversary())
-                if not isinstance(level_up, (int, float)):
-                    g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                        self.get_my_creature().get_pseudo() + " a gagné un niveau !",
-                                        self.font)
-                    g.update()
-                    del g
-
-                    for new in level_up:
-                        g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                            [
-                                                "Niveau : +1 !   Attaque : +" + str(new[SPEC_ATK]) + " !",
-                                                "Défense : +" + str(new[SPEC_DEF]) + "!   Vitesse : +" + str(new[SPEC_VIT]) + " !",
-                                                "Points de vie : +" + str(new[SPEC_MAX_PVS]) + " !"
-                                            ], self.font)
-                        g.update()
-                        del g
-                else:
-                    g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                        self.get_my_creature().get_pseudo() + " a gagné {} xp !".format(level_up),
-                                        self.font)
-                    g.update()
-                    del g
-
-                self.is_running = False
+        self.is_running = False
 
     def is_finished(self):
         return not self.is_running

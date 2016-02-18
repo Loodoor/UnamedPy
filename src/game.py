@@ -477,7 +477,7 @@ class Game:
             if self.equipe_mgr.is_not_empty() and not self.cur_combat:
                 self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
                                                  self.carte_mgr.get_zid(), self.indexeur, self.police_normale,
-                                                 self.tab_types)
+                                                 self.tab_types, self.renderer_manager)
                 self.cur_combat.find_adv()
                 self.top, self.bottom, self.right, self.left = [False] * 4
             if self.cur_combat and not self.cur_combat.is_finished():
