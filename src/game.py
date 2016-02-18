@@ -389,9 +389,14 @@ class Game:
                 done = True
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_COMBAT:
             if self.cur_combat:
-                if random.randint(0, 100) <= self.personnage.inventaire.get_obj_messenger().objet["capture"]:
+                passed = 0
+                for test in range(MAX_ESSAIS_BALL):
+                    if random.random() <= self.personnage.inventaire.get_obj_messenger().objet["capture"]:
+                        passed += 1
+                if passed / MAX_ESSAIS_BALL >= PERCENT_CAPTURE_NECESSAIRE:
+                    self.renderer_manager.unlock_special()
+                    self.personnage.inventaire.clear_obj_messenger()
                     self.cur_combat.end_fight_for_capture()
-            done = True
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_CREATURES:
             if self.equipe_mgr.is_a_creature_selected():
                 cat, new = self.personnage.inventaire.get_obj_messenger().objet["spec"], \
@@ -515,7 +520,7 @@ class Game:
             if self.equipe_mgr.is_not_empty() and not self.cur_combat:
                 self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
                                                  self.carte_mgr.get_zid(), self.indexeur, self.police_normale,
-                                                 self.tab_types, self.renderer_manager)
+                                                 self.tab_types, self.renderer_manager, self.equipe_mgr)
                 self.cur_combat.find_adv()
                 self.top, self.bottom, self.right, self.left = [False] * 4
             if self.cur_combat and not self.cur_combat.is_finished():

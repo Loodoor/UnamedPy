@@ -51,7 +51,7 @@ class Creature:
             SPEC_XP: 0
         }
         self.specs[SPEC_MAX_PVS] = self.specs[SPEC_PVS]  # quand on crée la créature, les pvs max = pvs actuel
-        self.specs[SPEC_MAX_PPS] = self.specs[SPEC_PVS]
+        self.specs[SPEC_MAX_PPS] = self.specs[SPEC_PPS]
         self.temp_specs = []
         self.upgrade_range = UPGRADE_RANGE_SPEC
         self.attaques = []
@@ -120,8 +120,8 @@ class Creature:
 
     def attaquer(self, attaque_nb: int) -> int:
         if 0 <= attaque_nb < MAX_ATK:
-            if self.specs[SPEC_PPS][0] > 0:
-                self.specs[SPEC_PPS][0] -= 1
+            if self.specs[SPEC_PPS] > 0:
+                self.specs[SPEC_PPS] -= 1
                 return self.attaques[attaque_nb].utiliser()
             return 0
         raise ValueError("Le numéro de l'attaque demandée n'est pas disponnible ({})".format(attaque_nb))
@@ -147,6 +147,9 @@ class Creature:
 
     def get_pps(self):
         return self.specs[SPEC_PPS]
+
+    def get_max_pps(self):
+        return self.specs[SPEC_MAX_PPS]
 
     def get_id(self):
         return self.specs[SPEC_ID]

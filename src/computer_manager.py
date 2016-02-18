@@ -104,8 +104,6 @@ class ComputerManager:
     def add_creature(self, new: Creature):
         if len(self.storage) < self.max_size:
             self.storage.append(new)
-            return True
-        return False
 
     def get_creature(self, index: int):
         return self.storage[index] if 0 <= index < len(self.storage) else PC_GET__ERROR

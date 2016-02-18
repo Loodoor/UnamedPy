@@ -19,7 +19,7 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
 
 class Combat:
     def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer, font, storage,
-                 renderer_manager):
+                 renderer_manager, equipe):
         self.ecran = ecran
         self.compteur_tour = 0
         self.creature_joueur = creature_joueur
@@ -36,6 +36,7 @@ class Combat:
         self.selected_atk = -1
         self.storage = storage
         self.renderer_manager = renderer_manager
+        self.equipe = equipe
 
     def on_start(self):
         print("adv id", self.adversaire.get_id())
@@ -61,6 +62,7 @@ class Combat:
         g.update()
         del g
         self.indexer.capturer(self.get_adversary().get_id())
+        self.equipe.add_creature(self.get_adversary())
         self.is_running = False
 
     def _is_active(self):
@@ -238,7 +240,10 @@ class Combat:
             self.ecran.blit(self.font.render(atk.get_nom() +
                                              ", dégâts: " + str(atk.get_dgts()), 1, (10, 10, 10)),
                             (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))
-            self.ecran.blit(self.font.render("PP : " + str(atk.get_pps()[0]) + "/" + str(atk.get_pps()[1]) +
-                                             ", description: " + atk.get_texte(), 1, (10, 10, 10)),
+            self.ecran.blit(self.font.render("Description: " + atk.get_texte(), 1, (10, 10, 10)),
                             (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + COMB_SY_TXT_NAME))
             i += 1
+        # affichage du nombre PPS
+        self.ecran.blit(self.font.render("PP : " + str(self.get_my_creature().get_pps()) + "/" +
+                                         str(self.get_my_creature().get_max_pps()), 1, (10, 10, 10)),
+                        (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + COMB_SY_ATK_FIELD))

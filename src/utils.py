@@ -220,17 +220,17 @@ class ULoader:
         velo = objets_manager.Objet("Vélo", "Le vélo vous permet de vous déplacer encore vite qu'avec les Chaussures",
                                     [0, 1], OBJETS_ID.Velo)
         simple_ball = objets_manager.Objet("Simple Ball", "La simple ball vous permet de capturer une créature. Son taux"
-                                                          " de réussite est très faible", [0, MAX_ITEM],
+                                                          " de réussite est très faible", [1, MAX_ITEM],
                                            OBJETS_ID.SimpleBall)
         normal_ball = objets_manager.Objet("Normal Ball",
                                            "La normal ball vous permet de capturer une créature. Son taux"
                                            " de réussite est faible, quoique supérieur à celui de la simple ball",
-                                           [0, MAX_ITEM], OBJETS_ID.NormalBall)
+                                           [1, MAX_ITEM], OBJETS_ID.NormalBall)
         sup_ball = objets_manager.Objet("Superior Ball", "La superior ball vous permet de capturer une créature. Son"
-                                                         "taux de réussite est assez élevé.", [0, MAX_ITEM],
+                                                         "taux de réussite est assez élevé.", [1, MAX_ITEM],
                                         OBJETS_ID.SuperiorBall)
         ultra_ball = objets_manager.Objet("Ultra Ball", "L'ultra ball a un taux de réussite proche des 100%, mais est "
-                                                        "très complexe à fabriquer", [0, MAX_ITEM],
+                                                        "très complexe à fabriquer", [1, MAX_ITEM],
                                           OBJETS_ID.UltraBall)
 
         objets = [

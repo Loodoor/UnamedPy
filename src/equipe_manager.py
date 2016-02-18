@@ -105,8 +105,8 @@ class EquipeManager:
     def add_creature(self, new: Creature):
         if len(self.creatures) < self.size:
             self.creatures.append(new)
-            return True
-        return False
+        else:
+            self.pc.add_creature(new)
 
     def move_locals_creatures(self, first: int, second: int):
         self.creatures[first], self.creatures[second] = self.creatures[first] = self.creatures[second]
