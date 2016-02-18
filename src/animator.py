@@ -101,10 +101,10 @@ class PlayerAnimator:
         self._cur_anim = PAUSE
 
     def next(self):
-        self._cur_anim = self._correspondances[self._cur_anim]
+        self._cur_anim += 1
 
     def get_anim_cursor(self):
-        return self._cur_anim
+        return self._cur_anim % 3
 
     def get_sprite(self, direc: int, anim_curs: int):
         if direc in self.anims.keys():
@@ -113,7 +113,7 @@ class PlayerAnimator:
 
     def get_sprite_from_dir(self, direc: int):
         if direc in self.anims.keys():
-            return self.anims[direc][self._cur_anim]
+            return self.anims[direc][self.get_anim_cursor()]
 
     def _create_anims(self):
         lhaut = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "haut*.png"))]

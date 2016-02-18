@@ -81,7 +81,7 @@ class Personnage:
         self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
 
     def move_with_fov(self, direction: int=HAUT, dt: int=1):
-        new_speed = self.speed * (dt / 10) / self.cur_div
+        new_speed = self.speed * (dt / 50) / self.cur_div
 
         vecteur = unegate_vect(udir_to_vect(direction))
         last_of1, last_of2 = self.carte_mgr.get_ofs()
@@ -142,7 +142,7 @@ class Personnage:
         self.carte_mgr.move_of2(new_of2)
 
     def move_in_fov(self, direction: int=HAUT, dt: int=1):
-        new_speed = self.speed * (1 / dt * 10) / self.cur_div
+        new_speed = self.speed * (dt / 50) / self.cur_div
 
         vecteur = udir_to_vect(direction)
 

@@ -455,7 +455,7 @@ class Game:
             self.joystick = JoystickController(joystick)
             print("Un joystick a été trouvé")
 
-        pygame.key.set_repeat(200, 200)
+        pygame.key.set_repeat(200, 100)
         if self.joystick:
             self.joystick.set_repeat(40)
 
