@@ -7,6 +7,30 @@ import sys
 import pygame
 
 
+class UEnumFactory:
+    seed = 0
+
+    def __init__(self, *args):
+        self.list_value_numbers = range(len(args) + UEnumFactory.seed)
+        self.dict_attrib = dict(zip(args, self.list_value_numbers))
+        self.dict_reverse = dict(zip(self.list_value_numbers, args))
+        UEnumFactory.seed += 1
+
+    def create(self):
+        objet = UEnum()
+        objet.dict_reverse = self.dict_reverse
+        objet.__dict__.update(self.dict_attrib)
+        return objet
+
+
+class UEnum:
+    def __init__(self):
+        self.dict_reverse = {}
+
+    def __str__(self):
+        return "__dict__ : " + str(self.__dict__) + "\nself.dict_reverse : " + str(self.dict_reverse)
+
+
 FEN_large = 640
 FEN_haut = 640
 FEN_taille = (FEN_large, FEN_haut)
@@ -28,7 +52,34 @@ GLOBAL_ERROR = -1
 -10 : TILE_GET_ERROR
 """
 
-OBJETS_ID = []
+temp = UEnumFactory(
+    "AntiPara",
+    "AntiBrule",
+    "AntiPoison",
+    "Attaqueplus",
+    "Defenseplus",
+    "Vitesseplus",
+    "PPplus",
+    "Elixir",
+    "ElixirAugmente",
+    "SuperElixir",
+    "HyperElixir",
+    "ElixirMax",
+    "PVplus",
+    "PotionSimple",
+    "SuperPotion",
+    "HyperPotion",
+    "MegaPotion",
+    "PotionMax",
+    "Chaussures",
+    "Velo",
+    "SimpleBall",
+    "NormalBall",
+    "SuperiorBall",
+    "UltraBall"
+)
+OBJETS_ID = temp.create()
+del temp
 
 ID_STARTER = 0
 

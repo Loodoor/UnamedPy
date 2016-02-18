@@ -116,30 +116,6 @@ def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 
     pygame.draw.rect(screen, fg_color, (rect_bg[0] + BAR_ESP, rect_bg[1] + BAR_ESP, progress, rect_bg[3] - BAR_ESP * 2))
 
 
-class UEnumFactory:
-    seed = 0
-
-    def __init__(self, *args):
-        self.list_value_numbers = range(len(args) + UEnumFactory.seed)
-        self.dict_attrib = dict(zip(args, self.list_value_numbers))
-        self.dict_reverse = dict(zip(self.list_value_numbers, args))
-        UEnumFactory.seed += 1
-
-    def create(self):
-        objet = UEnum()
-        objet.dict_reverse = self.dict_reverse
-        objet.__dict__.update(self.dict_attrib)
-        return objet
-
-
-class UEnum:
-    def __init__(self):
-        self.dict_reverse = {}
-
-    def __str__(self):
-        return "__dict__ : " + str(self.__dict__) + "\nself.dict_reverse : " + str(self.dict_reverse)
-
-
 class UMoment:
     def __init__(self, description_job: str=""):
         self.time = time.time()
@@ -207,36 +183,6 @@ class ULoader:
         TriggersManager.add_trigger_to_path(Trigger("trigger.test", 0, 0, TRIGGER_INFINITE_CALLS, print, "hello world !", "je suis un test de trigger !"))
 
         # Création des objets par défaut
-        global OBJETS_ID
-        temp = UEnumFactory(
-            "AntiPara",
-            "AntiBrule",
-            "AntiPoison",
-            "Attaqueplus",
-            "Defenseplus",
-            "Vitesseplus",
-            "PPplus",
-            "Elixir",
-            "ElixirAugmente",
-            "SuperElixir",
-            "HyperElixir",
-            "ElixirMax",
-            "PVplus",
-            "PotionSimple",
-            "SuperPotion",
-            "HyperPotion",
-            "MegaPotion",
-            "PotionMax",
-            "Chaussures",
-            "Velo",
-            "SimpleBall",
-            "NormalBall",
-            "SuperiorBall",
-            "UltraBall"
-        )
-        OBJETS_ID = temp.create()
-        del temp
-
         anti_para = objets_manager.Objet("Anti-Para", "L'anti-Para permet d'enlever le statut 'paralysé' d'une de vos créatures",
                                          [0, MAX_ITEM], OBJETS_ID.AntiPara)
         anti_brul = objets_manager.Objet("Anti-Brûle", "L'anti-Brûle permet d'enlever le statut 'brûlé' d'une de vos créatures",
