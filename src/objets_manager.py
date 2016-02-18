@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from constantes import *
-from gui import GUIBulle
 
 
 class ObjectTable:
@@ -87,7 +86,7 @@ class Objet:
 
 
 class ObjectMessenger:
-    def __init__(self, depuis: dict, pour: dict, objet: Objet, ballon_message: GUIBulle):
+    def __init__(self, depuis: dict, pour: dict, objet: Objet, ballon_message):
         # doit etrer de la forme :
         # {"nom": nom, "renderer": renderer}
         # (pour depuis et pour pour)

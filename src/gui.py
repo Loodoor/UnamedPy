@@ -1,12 +1,10 @@
 # coding=utf-8
 
-import pygame
 from pygame.locals import *
 from constantes import *
 from textentry import TextBox
 import time
 from glob import glob
-from utils import uscreenschot
 
 
 class GUIBulle:
@@ -67,8 +65,6 @@ class GUIBulleWaiting(GUIBulle):
             if ev.type == KEYDOWN:
                 if ev.key != self.screenkey:
                     self.done = True
-                else:
-                    uscreenschot(self.ecran)
 
             self.render()
             pygame.display.flip()
@@ -109,9 +105,7 @@ class GUIBulleAsking(GUIBulleWaiting):
         while not self.done:
             ev = pygame.event.poll()
             if ev.type == KEYDOWN:
-                if ev.key == self.screenkey:
-                    uscreenschot(self.ecran)
-                else:
+                if ev.key != self.screenkey:
                     self.text_box.event(ev)
 
             self.render()

@@ -5,6 +5,7 @@ import pickle
 import objets_manager
 import textwrap as tw
 from glob import glob
+from gui import GUIBulle
 
 
 class Inventaire:
@@ -157,7 +158,7 @@ class Inventaire:
                     "renderer": objets_manager.ObjectTable.get_object_action(self.objets[self.cur_categorie][item])
                 },
                 objet=self.objets[self.cur_categorie][item].use(),
-                ballon_message=objets_manager.GUIBulle(self.ecran, (POS_BULLE_X, POS_BULLE_Y), msg, self.police)
+                ballon_message=GUIBulle(self.ecran, (POS_BULLE_X, POS_BULLE_Y), msg, self.police)
             )
 
     def jeter(self, item: int):
