@@ -55,12 +55,12 @@ class ComputerManager:
                 self.move_creature_to_equipe(self.selected_crea)
         if FCREA_X <= xp <= FCREA_X + FCREA_SIZE_X_CASE and FCREA_Y + FCREA_IMAGE_XY_MARGE <= yp <= \
                 FCREA_Y + FCREA_IMAGE_XY_MARGE + FCREA_SIZE_Y_CASE * len(self.storage) + FCREA_MARGE_Y * \
-                (len(self.storage) + 1) + FCREA_MARGE_Y_RAPPORT_TITRE:
+                (len(self.storage[self.current_page:self.current_page + self.per_page]) + 1) + FCREA_MARGE_Y_RAPPORT_TITRE:
             real_y = yp - FCREA_Y - FCREA_IMAGE_XY_MARGE - FCREA_MARGE_Y_RAPPORT_TITRE
             real_y /= (FCREA_SIZE_Y_CASE + FCREA_MARGE_Y)
             real_y = int(real_y)
             if 0 <= real_y < len(self.storage):
-                self.selected_crea = real_y
+                self.selected_crea = real_y + self.current_page * self.per_page
 
     def next(self):
         self.current_page = self.current_page + 1 if self.current_page < MAX_CREATURES // 7 else self.current_page

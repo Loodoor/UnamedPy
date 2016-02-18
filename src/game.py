@@ -381,10 +381,10 @@ class Game:
     def _manage_object_action(self):
         done = False
         if self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_GAME:
-            if self.personnage.inventaire.get_obj_messenger().objet.action_id == OBJETS_ID.Chaussures:
+            if self.personnage.inventaire.get_obj_messenger().objet["id"] == OBJETS_ID.Chaussures:
                 self.personnage.run()
                 done = True
-            if self.personnage.inventaire.get_obj_messenger().objet.action_id == OBJETS_ID.Velo:
+            if self.personnage.inventaire.get_obj_messenger().objet["id"] == OBJETS_ID.Velo:
                 self.personnage.ride()
                 done = True
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_COMBAT:
