@@ -94,6 +94,7 @@ class PlayerAnimator:
             ANIM1: ANIM2,
             ANIM2: ANIM1
         }
+        self._moves = {key: value for key, value in self._correspondances if key != PAUSE}
 
         self._create_anims()
 
