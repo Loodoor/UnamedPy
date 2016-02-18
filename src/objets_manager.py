@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from constantes import *
+from gui import GUIBulle
 
 
 class ObjectTable:
@@ -12,30 +13,30 @@ class ObjectTable:
 
         self.table = {
             # ID: dict -> {"on": ("inventaire" | "creature" | "adversaire" | "personnage")}
-            "AntiPara": {"on": "creature"},
-            "AntiBrule": {"on": "creature"},
-            "AntiPoison": {"on": "creature"},
-            "Attaqueplus": {"on": "creature"},
-            "Defenseplus": {"on": "creature"},
-            "Vitesseplus": {"on": "creature"},
-            "PPplus": {"on": "creature"},
-            "Elixir": {"on": "creature"},
-            "ElixirAugmente": {"on": "creature"},
-            "SuperElixir": {"on": "creature"},
-            "HyperElixir": {"on": "creature"},
-            "ElixirMax": {"on": "creature"},
-            "PVplus": {"on": "creature"},
-            "PotionSimple": {"on": "creature"},
-            "SuperPotion": {"on": "creature"},
-            "HyperPotion": {"on": "creature"},
-            "MegaPotion": {"on": "creature"},
-            "PotionMax": {"on": "creature"},
-            "Chaussures": {"on": "personnage"},
-            "Velo": {"on": "personnage"},
-            "SimpleBall": {"on": "adversaire"},
-            "NormalBall": {"on": "adversaire"},
-            "SuperiorBall": {"on": "adversaire"},
-            "UltraBall": {"on": "adversaire"}
+            OBJETS_ID.AntiPara: {"on": RENDER_CREATURES},
+            OBJETS_ID.AntiBrule: {"on": RENDER_CREATURES},
+            OBJETS_ID.AntiPoison: {"on": RENDER_CREATURES},
+            OBJETS_ID.Attaqueplus: {"on": RENDER_CREATURES},
+            OBJETS_ID.Defenseplus: {"on": RENDER_CREATURES},
+            OBJETS_ID.Vitesseplus: {"on": RENDER_CREATURES},
+            OBJETS_ID.PPplus: {"on": RENDER_CREATURES},
+            OBJETS_ID.Elixir: {"on": RENDER_CREATURES},
+            OBJETS_ID.ElixirAugmente: {"on": RENDER_CREATURES},
+            OBJETS_ID.SuperElixir: {"on": RENDER_CREATURES},
+            OBJETS_ID.HyperElixir: {"on": RENDER_CREATURES},
+            OBJETS_ID.ElixirMax: {"on": RENDER_CREATURES},
+            OBJETS_ID.PVplus: {"on": RENDER_CREATURES},
+            OBJETS_ID.PotionSimple: {"on": RENDER_CREATURES},
+            OBJETS_ID.SuperPotion: {"on": RENDER_CREATURES},
+            OBJETS_ID.HyperPotion: {"on": RENDER_CREATURES},
+            OBJETS_ID.MegaPotion: {"on": RENDER_CREATURES},
+            OBJETS_ID.PotionMax: {"on": RENDER_CREATURES},
+            OBJETS_ID.Chaussures: {"on": RENDER_GAME},
+            OBJETS_ID.Velo: {"on": RENDER_GAME},
+            OBJETS_ID.SimpleBall: {"on": RENDER_COMBAT},
+            OBJETS_ID.NormalBall: {"on": RENDER_COMBAT},
+            OBJETS_ID.SuperiorBall: {"on": RENDER_COMBAT},
+            OBJETS_ID.UltraBall: {"on": RENDER_COMBAT}
         }
 
     @staticmethod
@@ -86,7 +87,7 @@ class Objet:
 
 
 class ObjectMessenger:
-    def __init__(self, depuis: dict, pour: dict, objet: Objet):
+    def __init__(self, depuis: dict, pour: dict, objet: Objet, ballon_message: GUIBulle):
         # doit etrer de la forme :
         # {"nom": nom, "renderer": renderer}
         # (pour depuis et pour pour)
@@ -94,3 +95,8 @@ class ObjectMessenger:
         self.depuis = depuis
         self.pour = pour
         self.objet = objet
+
+        self.ballon_msg = ballon_message
+
+        # dict de "retour" de message
+        self.values = {}

@@ -364,7 +364,12 @@ class Game:
             if self.joystick.is_button_pressed(self.controles_joy[PREVIOUS_PAGE]["button"]):
                 self.personnage.inventaire_previous()
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
-                self.renderer_manager.invert_renderer()
+                self.renderer_manager.change_for_last_renderer()
+                self.personnage.inventaire.close()
+
+        if self.personnage.inventaire.get_obj_messenger():
+            self.renderer_manager.change_renderer_for(self.personnage.inventaire.get_obj_messenger().pour["renderer"])
+            self.personnage.inventaire.close()
 
     def process_events_game(self, event: pygame.event, dt: int=1):
         # clavier
