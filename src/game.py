@@ -368,7 +368,7 @@ class Game:
                 self.personnage.inventaire.close()
 
         if self.personnage.inventaire.get_obj_messenger():
-            self.renderer_manager.change_renderer_for(self.personnage.inventaire.get_obj_messenger().pour["renderer"])
+            self.renderer_manager.change_for_special_renderer(self.personnage.inventaire.get_obj_messenger().pour["renderer"])
             self.personnage.inventaire.close()
 
     def process_events_game(self, event: pygame.event, dt: int=1):
@@ -511,9 +511,6 @@ class Game:
             texte = self.police_normale.render("%3i FPS" % int(self.fps_regulator.get_fps()), 1, (0, 0, 0))
             pygame.draw.rect(self.ecran, (150, 150, 150), (0, 0, 10 + texte.get_width(), 10 + texte.get_height()))
             self.ecran.blit(texte, (5, 5))
-
-        if self.renderer_manager.is_current_special():
-            self.personnage.inventaire.get_obj_messenger().ballon_msg.update()
 
     def start(self):
         self.prepare()

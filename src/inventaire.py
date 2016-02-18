@@ -148,18 +148,20 @@ class Inventaire:
     def utiliser(self, item: int):
         if item != -1:
             msg = ""
-            self.obj_messenger = objets_manager.ObjectMessenger(
-                depuis={
-                    "name": "NA",
-                    "renderer": self._opened_from
-                },
-                pour={
-                    "name": "NA",
-                    "renderer": objets_manager.ObjectTable.get_object_action(self.objets[self.cur_categorie][item])
-                },
-                objet=self.objets[self.cur_categorie][item].use(),
-                ballon_message=GUIBulle(self.ecran, (POS_BULLE_X, POS_BULLE_Y), msg, self.police)
-            )
+            object_used = self.objets[self.cur_categorie][item].use()
+            if object_used:
+                self.obj_messenger = objets_manager.ObjectMessenger(
+                    depuis={
+                        "name": "NA",
+                        "renderer": self._opened_from
+                    },
+                    pour={
+                        "name": "NA",
+                        "renderer": object_used["on"]
+                    },
+                    objet=object_used,
+                    ballon_message=GUIBulle(self.ecran, (POS_BULLE_X, POS_BULLE_Y), msg, self.police)
+                )
 
     def jeter(self, item: int):
         if item != -1:

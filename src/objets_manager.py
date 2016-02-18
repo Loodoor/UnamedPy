@@ -11,7 +11,7 @@ class ObjectTable:
             ObjectTable.instance = self
 
         self.table = {
-            # ID: dict -> {"on": ("inventaire" | "creature" | "adversaire" | "personnage")}
+            # ID: dict -> {"on": ("creature" | "adversaire" | "personnage")}
             OBJETS_ID.AntiPara: {"on": RENDER_CREATURES},
             OBJETS_ID.AntiBrule: {"on": RENDER_CREATURES},
             OBJETS_ID.AntiPoison: {"on": RENDER_CREATURES},
@@ -82,7 +82,7 @@ class Objet:
         if self.quantite[0] > 0:
             self.quantite[0] -= 1
             return ObjectTable.get_object_action(self.action_id)
-        return False
+        return None
 
 
 class ObjectMessenger:
