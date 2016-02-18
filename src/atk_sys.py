@@ -91,6 +91,11 @@ class Combat:
         self.bulle_que_doit_faire.set_text("Que doit faire " + self.get_my_creature().get_pseudo() + " ?")
         self.bulle_que_doit_faire.update()
 
+        obj_messenger = self.indexer.get_obj_messenger()
+        if obj_messenger:
+            # gestion de l'utilisation des objets
+            pass
+
         if self.has_attacked:
             self.get_adversary().taper(calcul_degats(self.get_my_creature().get_attacks()[self.selected_atk].get_dgts(),
                                                      self.get_my_creature().get_specs(),

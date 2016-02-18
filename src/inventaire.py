@@ -38,7 +38,6 @@ class Inventaire:
     def get_obj_messenger(self):
         if self.obj_messenger:
             return self.obj_messenger
-        print("Pas d'objet utilisé / Impossible de créer l'obj_messenger")
 
     def open(self, from_: int):
         self._opened_from = from_
