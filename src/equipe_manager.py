@@ -84,7 +84,7 @@ class EquipeManager:
         self.pc = new_pc
 
     def change_renderer(self):
-        self.rd_mgr.change_without_logging(RENDER_PC)
+        self.rd_mgr.change_without_logging_last(RENDER_PC)
 
     def clic(self, xp: int, yp: int):
         if FCREA_AUTRE_MGR_X <= xp <= FCREA_AUTRE_MGR_X + FCREA_AUTRE_MGR_SX and FCREA_AUTRE_MGR_Y <= yp <= FCREA_AUTRE_MGR_Y + FCREA_AUTRE_MGR_SY:

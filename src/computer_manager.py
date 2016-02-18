@@ -40,7 +40,7 @@ class ComputerManager:
         self.render()
 
     def change_renderer(self):
-        self.rd_mgr.change_without_logging(RENDER_CREATURES)
+        self.rd_mgr.change_without_logging_last(RENDER_CREATURES)
 
     def clic(self, xp: int, yp: int):
         if FCREA_PREVIOUS_X <= xp <= FCREA_PREVIOUS_X + FCREA_BTN_SX and FCREA_PREVIOUS_Y <= yp <= FCREA_PREVIOUS_Y + FCREA_BTN_SY:
