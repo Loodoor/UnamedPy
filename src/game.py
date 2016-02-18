@@ -2,7 +2,6 @@
 
 import socket
 from pygame.locals import *
-import time
 
 import carte
 import indexer
@@ -187,12 +186,15 @@ class Game:
                 self.renderer_manager.invert_renderer()
 
     def process_events_carte(self, event: pygame.event, dt: int=1):
-        """
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
-                self.invert_rendering()
-        """
-        raise FonctionnaliteNonImplementee
+                self.renderer_manager.invert_renderer()
+
+        # joystick
+        if self.joystick:
+            self.joystick_deplace_souris()
+            if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
+                self.renderer_manager.invert_renderer()
 
     def process_events_save(self, event: pygame.event, dt: int=1):
         pass
@@ -302,7 +304,7 @@ class Game:
             if event.key == self.controles[VALIDATION]:
                 self.cur_combat.valide()
             if event.key == self.controles[MENU]:
-                self.renderer_manager.change_without_logging(RENDER_INVENTAIRE)
+                self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
                 self.personnage.inventaire.open(RENDER_COMBAT)
         if event.type == MOUSEBUTTONUP:
             xp, yp = event.pos
@@ -325,7 +327,7 @@ class Game:
             if self.joystick.is_button_pressed(self.controles_joy[PREVIOUS_PAGE]["button"]):
                 self.cur_combat.previous()
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
-                self.renderer_manager.change_without_logging(RENDER_INVENTAIRE)
+                self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
                 self.personnage.inventaire.open(RENDER_COMBAT)
 
     def joystick_deplace_souris(self):
@@ -341,7 +343,7 @@ class Game:
     def process_events_inventaire(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
-                self.renderer_manager.invert_renderer()
+                self.renderer_manager.change_for_last_renderer()
                 self.personnage.inventaire.close()
             if event.key == self.__ctrls[NEXT_PAGE]:
                 self.personnage.inventaire_next()
