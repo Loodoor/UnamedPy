@@ -1,8 +1,5 @@
 # coding=utf-8
 
-import pygame
-import os
-from pygame.locals import *
 from creatures_mgr import Creature
 import pickle
 from constantes import *
@@ -23,7 +20,7 @@ class EquipeManager:
         self.selected_crea = -1
         self.pc = None
 
-    def get_selected_creature(self):
+    def get_selected_creature(self) -> Creature:
         if self.selected_crea != -1:
             return self.creatures[self.selected_crea]
         return None

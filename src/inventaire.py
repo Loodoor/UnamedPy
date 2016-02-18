@@ -40,6 +40,9 @@ class Inventaire:
         if self.obj_messenger:
             return self.obj_messenger
 
+    def clear_obj_messenger(self):
+        self.obj_messenger = None
+
     def open(self, from_: int):
         self._opened_from = from_
 
@@ -147,7 +150,6 @@ class Inventaire:
 
     def utiliser(self, item: int):
         if item != -1:
-            msg = ""
             object_used = self.objets[self.cur_categorie][item].use()
             if object_used:
                 self.obj_messenger = objets_manager.ObjectMessenger(
@@ -159,8 +161,7 @@ class Inventaire:
                         "name": "NA",
                         "renderer": object_used["on"]
                     },
-                    objet=object_used,
-                    ballon_message=GUIBulle(self.ecran, (POS_BULLE_X, POS_BULLE_Y), msg, self.police)
+                    objet=object_used
                 )
 
     def jeter(self, item: int):

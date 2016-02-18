@@ -12,30 +12,28 @@ class ObjectTable:
 
         self.table = {
             # ID: dict -> {"on": ("creature" | "adversaire" | "personnage")}
-            OBJETS_ID.AntiPara: {"on": RENDER_CREATURES},
-            OBJETS_ID.AntiBrule: {"on": RENDER_CREATURES},
-            OBJETS_ID.AntiPoison: {"on": RENDER_CREATURES},
-            OBJETS_ID.Attaqueplus: {"on": RENDER_CREATURES},
-            OBJETS_ID.Defenseplus: {"on": RENDER_CREATURES},
-            OBJETS_ID.Vitesseplus: {"on": RENDER_CREATURES},
-            OBJETS_ID.PPplus: {"on": RENDER_CREATURES},
-            OBJETS_ID.Elixir: {"on": RENDER_CREATURES},
-            OBJETS_ID.ElixirAugmente: {"on": RENDER_CREATURES},
-            OBJETS_ID.SuperElixir: {"on": RENDER_CREATURES},
-            OBJETS_ID.HyperElixir: {"on": RENDER_CREATURES},
-            OBJETS_ID.ElixirMax: {"on": RENDER_CREATURES},
-            OBJETS_ID.PVplus: {"on": RENDER_CREATURES},
-            OBJETS_ID.PotionSimple: {"on": RENDER_CREATURES},
-            OBJETS_ID.SuperPotion: {"on": RENDER_CREATURES},
-            OBJETS_ID.HyperPotion: {"on": RENDER_CREATURES},
-            OBJETS_ID.MegaPotion: {"on": RENDER_CREATURES},
-            OBJETS_ID.PotionMax: {"on": RENDER_CREATURES},
+            OBJETS_ID.AntiPara: {"on": RENDER_CREATURES, "spec": SPEC_ETAT, "new": SPEC_ETATS.normal},
+            OBJETS_ID.AntiBrule: {"on": RENDER_CREATURES, "spec": SPEC_ETAT, "new": SPEC_ETATS.normal},
+            OBJETS_ID.AntiPoison: {"on": RENDER_CREATURES, "spec": SPEC_ETAT, "new": SPEC_ETATS.normal},
+            OBJETS_ID.Attaqueplus: {"on": RENDER_CREATURES, "spec": SPEC_ATK, "new": +10},
+            OBJETS_ID.Defenseplus: {"on": RENDER_CREATURES, "spec": SPEC_DEF, "new": +10},
+            OBJETS_ID.Vitesseplus: {"on": RENDER_CREATURES, "spec": SPEC_VIT, "new": +10},
+            OBJETS_ID.Elixir: {"on": RENDER_CREATURES, "spec": SPEC_PPS, "new": +5},
+            OBJETS_ID.ElixirAugmente: {"on": RENDER_CREATURES, "spec": SPEC_PPS, "new": +10},
+            OBJETS_ID.SuperElixir: {"on": RENDER_CREATURES, "spec": SPEC_PPS, "new": +30},
+            OBJETS_ID.HyperElixir: {"on": RENDER_CREATURES, "spec": SPEC_PPS, "new": +75},
+            OBJETS_ID.ElixirMax: {"on": RENDER_CREATURES, "spec": SPEC_PPS, "new": +999999},
+            OBJETS_ID.PotionSimple: {"on": RENDER_CREATURES, "spec": SPEC_PVS, "new": +20},
+            OBJETS_ID.SuperPotion: {"on": RENDER_CREATURES, "spec": SPEC_PVS, "new": +60},
+            OBJETS_ID.HyperPotion: {"on": RENDER_CREATURES, "spec": SPEC_PVS, "new": +100},
+            OBJETS_ID.MegaPotion: {"on": RENDER_CREATURES, "spec": SPEC_PVS, "new": +200},
+            OBJETS_ID.PotionMax: {"on": RENDER_CREATURES, "spec": SPEC_PVS, "new": +999999},
             OBJETS_ID.Chaussures: {"on": RENDER_GAME},
             OBJETS_ID.Velo: {"on": RENDER_GAME},
-            OBJETS_ID.SimpleBall: {"on": RENDER_COMBAT},
-            OBJETS_ID.NormalBall: {"on": RENDER_COMBAT},
-            OBJETS_ID.SuperiorBall: {"on": RENDER_COMBAT},
-            OBJETS_ID.UltraBall: {"on": RENDER_COMBAT}
+            OBJETS_ID.SimpleBall: {"on": RENDER_COMBAT, "capture": 0.15},
+            OBJETS_ID.NormalBall: {"on": RENDER_COMBAT, "capture": 0.35},
+            OBJETS_ID.SuperiorBall: {"on": RENDER_COMBAT, "capture": 0.6},
+            OBJETS_ID.UltraBall: {"on": RENDER_COMBAT, "capture": 1}
         }
 
     @staticmethod
@@ -86,7 +84,7 @@ class Objet:
 
 
 class ObjectMessenger:
-    def __init__(self, depuis: dict, pour: dict, objet: Objet, ballon_message):
+    def __init__(self, depuis: dict, pour: dict, objet: Objet):
         # doit etrer de la forme :
         # {"nom": nom, "renderer": renderer}
         # (pour depuis et pour pour)
@@ -94,8 +92,3 @@ class ObjectMessenger:
         self.depuis = depuis
         self.pour = pour
         self.objet = objet
-
-        self.ballon_msg = ballon_message
-
-        # dict de "retour" de message
-        self.values = {}

@@ -54,6 +54,12 @@ class Combat:
         return self.adversaire
 
     def end_fight_for_capture(self):
+        g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                            "Bravo ! Vous venez de capturer une nouvelle créature !",
+                            self.font)
+
+        g.update()
+        del g
         self.indexer.capturer(self.get_adversary().get_id())
         self.is_running = False
 
@@ -68,12 +74,14 @@ class Combat:
                 self.on_start()
                 self.indexer.vu_(self.get_adversary().get_id())
                 self.has_started = True
-                self.get_my_creature().add_attack("test", T_EAU, 50, "TEST d'attaque de type eau", [10, MAX_PP_PER_ATK])
-                self.get_my_creature().add_attack("test2", T_EAU, 50, "TEST d'attaque de type eau", [10, MAX_PP_PER_ATK])
-                self.get_my_creature().add_attack("test3", T_EAU, 50, "TEST d'attaque de type eau", [10, MAX_PP_PER_ATK])
-                self.get_my_creature().add_attack("test4", T_EAU, 50, "TEST d'attaque de type eau", [10, MAX_PP_PER_ATK])
+                self.get_my_creature().add_attack("test", T_EAU, 50, "TEST d'attaque de type eau")
+                self.get_my_creature().add_attack("test2", T_EAU, 50, "TEST d'attaque de type eau")
+                self.get_my_creature().add_attack("test3", T_EAU, 50, "TEST d'attaque de type eau")
+                self.get_my_creature().add_attack("test4", T_EAU, 50, "TEST d'attaque de type eau")
 
             self.render()
+
+            self._gerer_etats()
 
             if self.mon_tour():
                 self._manage_my_turn()
@@ -87,33 +95,46 @@ class Combat:
             if self.get_adversary().is_dead():
                 self._manage_adversary_death()
 
+    def _gerer_etats(self):
+        for crea in [self.get_my_creature(), self.get_adversary()]:
+            if crea.get_state() == SPEC_ETATS.brule:
+                crea.taper(SPEC_DGT_BRULURE(crea.get_niv()))
+            if crea.get_state() == SPEC_ETATS.poisone:
+                crea.taper(SPEC_DGT_POISON(crea.get_niv()))
+
     def _manage_my_turn(self):
-        self.bulle_que_doit_faire.set_text("Que doit faire " + self.get_my_creature().get_pseudo() + " ?")
-        self.bulle_que_doit_faire.update()
+        can_attack = True
+        if self.get_my_creature().get_state() == SPEC_ETATS.paralise:
+            can_attack = SPEC_LUCK_OF_ATTACK(self.get_my_creature().get_vit())
 
-        obj_messenger = self.indexer.get_obj_messenger()
-        if obj_messenger:
-            # gestion de l'utilisation des objets
-            pass
+        if can_attack:
+            self.bulle_que_doit_faire.set_text("Que doit faire " + self.get_my_creature().get_pseudo() + " ?")
+            self.bulle_que_doit_faire.update()
 
-        if self.has_attacked:
-            self.get_adversary().taper(calcul_degats(self.get_my_creature().get_attacks()[self.selected_atk].get_dgts(),
-                                                     self.get_my_creature().get_specs(),
-                                                     self.get_adversary().get_specs(),
-                                                     self.storage.get_coeff(
-                                                         self.get_my_creature().get_type(),
-                                                         self.get_adversary().get_type()
-                                                     ),
-                                                     self.get_my_creature().get_type()))
-            self.compteur_tour += 1
-            self.has_attacked = False
+            if self.has_attacked:
+                self.get_adversary().taper(calcul_degats(self.get_my_creature().get_attacks()[self.selected_atk].get_dgts(),
+                                                         self.get_my_creature().get_specs(),
+                                                         self.get_adversary().get_specs(),
+                                                         self.storage.get_coeff(
+                                                             self.get_my_creature().get_type(),
+                                                             self.get_adversary().get_type()
+                                                         ),
+                                                         self.get_my_creature().get_type()))
+                self.compteur_tour += 1
+                self.has_attacked = False
+                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                    self.get_my_creature().get_pseudo() +
+                                    " utilise " +
+                                    self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
+                                    " !",
+                                    self.font)
+                g.update()
+        else:
             g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                self.get_my_creature().get_pseudo() +
-                                " utilise " +
-                                self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
-                                " !",
+                                self.get_my_creature().get_pseudo() + " est paralisé ! Il n'a pas pu attaquer",
                                 self.font)
             g.update()
+            del g
 
     def _manage_adversary_death(self):
         g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
@@ -158,6 +179,12 @@ class Combat:
     def previous(self):
         self.selected_atk = self.selected_atk - 1 if self.selected_atk > 0 else 3
 
+    def attaquer(self):
+        if 0 <= self.selected_atk <= MAX_ATK - 1:
+            dgts = self.get_my_creature().attaquer(self.selected_atk)
+            self.get_adversary().taper(dgts)
+            self.valide()
+
     def valide(self):
         self.has_attacked = True
 
@@ -168,9 +195,7 @@ class Combat:
 
     def clic(self, xp: int, yp: int):
         self.mouseover(xp, yp)
-        if 0 <= self.selected_atk <= 3:
-            self.get_adversary().taper(self.get_my_creature().get_attacks()[self.selected_atk].utiliser())
-            self.has_attacked = True
+        self.attaquer()
 
     def render(self):
         # en attendant d'avoir un paysage

@@ -5,6 +5,7 @@ import time
 import math
 import sys
 import pygame
+import random
 
 
 class UEnumFactory:
@@ -59,13 +60,11 @@ temp = UEnumFactory(
     "Attaqueplus",
     "Defenseplus",
     "Vitesseplus",
-    "PPplus",
     "Elixir",
     "ElixirAugmente",
     "SuperElixir",
     "HyperElixir",
     "ElixirMax",
-    "PVplus",
     "PotionSimple",
     "SuperPotion",
     "HyperPotion",
@@ -437,20 +436,37 @@ INVENT_BTN_PAGES = INVENT_IMAGE_Y + INVENT_POSY + INVENT_IMAGE_SIZE
 INVENT_TXT_POCHE_X = INVENT_POSX + (INVENT_BTN_NEXT + INVENT_BTN_PAGES_SX - INVENT_BTN_PREVIOUS) // 2 + INVENT_BTN_PAGES_SX
 INVENT_TXT_POCHE_Y = INVENT_BTN_PAGES
 
+tmp = UEnumFactory(
+    "normal",
+    "paralise",
+    "poisone",
+    "brule"
+)
+SPEC_ETATS = tmp.create()
+del tmp
+SPEC_DGT_BRULURE = lambda niveau: niveau // 2 * 3
+SPEC_DGT_POISON = lambda niveau: niveau // 2 * 4
+SPEC_LUCK_OF_ATTACK = lambda vit: random.randint(0, 100) + vit >= 50
+
 SPEC_ATK = 'attaque'
 SPEC_DEF = 'defense'
 SPEC_VIT = 'vitesse'
 SPEC_NOM = 'pseudo'
+SPEC_ETAT = 'etat'
 SPEC_ID = "unique_id"
 SPEC_TYP = 'type'
 SPEC_NIV = 'niveau'
 SPEC_PVS = 'points de vie'
 SPEC_MAX_PVS = 'max points de vie'
 SPEC_XP = 'points experience'
+SPEC_PPS = 'points de pouvoir'
+SPEC_MAX_PPS = 'max points de pouvoir'
 SPEC_XP_GAGNE = 25
 SPEC_PROBA_SHINEY = 0.003
 SPEC_SEUIL_XP_LVL_UP = 100
 MAX_VAL_SPEC = 500
+MAX_ATK = 4
+DEFAULT_PPS = 35
 
 GUI_Y_ESP = 23
 
@@ -465,10 +481,7 @@ ATK_NOM = 'nom'
 ATK_TYP = 'type'
 ATK_DEGATS = 'degats'
 ATK_TXT = 'texte'
-ATK_PPS = 'points de pouvoir'
 ATK_IMPOSSIBLE = -4
-ATK_PP = 0
-ATK_MAX_PP = 1
 
 PC_MAX_CREA = 150
 PC_CREA_PER_BOX = 30

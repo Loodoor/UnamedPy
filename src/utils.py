@@ -195,8 +195,6 @@ class ULoader:
                                      [0, MAX_ITEM], OBJETS_ID.Defenseplus)
         vit_p = objets_manager.Objet("Vitesse+", "Le vitesse+ augmente la vitesse d'une de vos créatures (effet à long terme)",
                                      [0, MAX_ITEM], OBJETS_ID.Vitesseplus)
-        pps_p = objets_manager.Objet("PP+", "Le PP+ augmente le nombre de PP max d'une attaque d'une de vos créatures (effet à long terme)",
-                                     [0, MAX_ITEM], OBJETS_ID.PPplus)
         regen_pps_5 = objets_manager.Objet("Elixir", "L'élixir redonne 5 PP à une attaque d'une de vos créatures",
                                            [0, MAX_ITEM], OBJETS_ID.Elixir)
         regen_pps_10 = objets_manager.Objet("Elixir Augmenté", "L'élixir augmenté redonne 10 PP à une attaque d'une de vos créatures",
@@ -207,8 +205,6 @@ class ULoader:
                                             [0, MAX_ITEM], OBJETS_ID.HyperElixir)
         regen_pps_max = objets_manager.Objet("Elixir Max", "L'élixir max régénère entièrement les PP d'une attaque d'une de vos créatures",
                                              [0, MAX_ITEM], OBJETS_ID.ElixirMax)
-        pvs_p = objets_manager.Objet("PV+", "Le PV+ augmente le nombre de PV d'une de vos créatures (effet à long terme)",
-                                     [0, MAX_ITEM], OBJETS_ID.PVplus)
         regen_pvs_20 = objets_manager.Objet("Potion Simple", "La potion régénère 20 PV à une de vos créatures",
                                             [0, MAX_ITEM], OBJETS_ID.PotionSimple)
         regen_pvs_60 = objets_manager.Objet("Super Potion", "La super potion régénère 60 PV à une de vos créatures",
@@ -254,13 +250,11 @@ class ULoader:
                 att_p,
                 def_p,
                 vit_p,
-                pps_p,
                 regen_pps_5,
                 regen_pps_10,
                 regen_pps_30,
                 regen_pps_75,
                 regen_pps_max,
-                pvs_p,
                 regen_pvs_20,
                 regen_pvs_60,
                 regen_pvs_100,
