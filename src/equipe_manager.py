@@ -23,6 +23,14 @@ class EquipeManager:
         self.selected_crea = -1
         self.pc = None
 
+    def get_selected_creature(self):
+        if self.selected_crea != -1:
+            return self.creatures[self.selected_crea]
+        return None
+
+    def is_a_creature_selected(self):
+        return self.get_selected_creature() is not None
+
     def update(self):
         self.render()
 

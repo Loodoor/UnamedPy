@@ -10,6 +10,9 @@ class RendererManager:
         self.forbidden_renderers = []
         self._special = False
 
+    def unlock_special(self):
+        self.change_for_last_renderer()
+
     def is_current_special(self) -> bool:
         return self._special
 

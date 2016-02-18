@@ -185,6 +185,17 @@ class Game:
             else:
                 self.renderer_manager.invert_renderer()
 
+        # Gestion des objets
+        if self.personnage.inventaire.get_obj_messenger():
+            to_go = self.personnage.inventaire.get_obj_messenger().pour["renderer"]
+            if not self.renderer_manager.is_current_special() or self.renderer_manager.get_renderer() != to_go:
+                if to_go == RENDER_COMBAT and not self.cur_combat:
+                    pass
+                else:
+                    self.renderer_manager.change_for_special_renderer(to_go)
+                self.personnage.inventaire.close()
+            self._manage_object_action()
+
     def process_events_carte(self, event: pygame.event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
@@ -367,9 +378,23 @@ class Game:
                 self.renderer_manager.change_for_last_renderer()
                 self.personnage.inventaire.close()
 
-        if self.personnage.inventaire.get_obj_messenger():
-            self.renderer_manager.change_for_special_renderer(self.personnage.inventaire.get_obj_messenger().pour["renderer"])
-            self.personnage.inventaire.close()
+    def _manage_object_action(self):
+        done = False
+        if self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_GAME:
+            if self.personnage.inventaire.get_obj_messenger().objet.action_id == OBJETS_ID.Chaussures:
+                self.personnage.run()
+                done = True
+            if self.personnage.inventaire.get_obj_messenger().objet.action_id == OBJETS_ID.Velo:
+                self.personnage.ride()
+                done = True
+        elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_COMBAT:
+            done = True
+        elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_CREATURES:
+            if self.equipe_mgr.is_a_creature_selected():
+                done = True
+
+        if done:
+            self.renderer_manager.unlock_special()
 
     def process_events_game(self, event: pygame.event, dt: int=1):
         # clavier
