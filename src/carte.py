@@ -2,7 +2,6 @@
 
 import pickle
 from glob import glob
-import pygame
 from constantes import *
 from trigger_manager import TriggersManager
 from exceptions import FonctionnaliteNonImplementee, CarteInexistante, ErreurContenuCarte
