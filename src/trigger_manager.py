@@ -14,7 +14,7 @@ class InGameAction:
 
 
 class Trigger:
-    def __init__(self, map: str, id_: str=TRIGGER_UNDEFINED, at_x: int=-1, at_y: int=-1, how_many_calls: int=1,
+    def __init__(self, map_: str, id_: str=TRIGGER_UNDEFINED, at_x: int=-1, at_y: int=-1, how_many_calls: int=1,
                  action: callable or InGameAction=print or InGameAction(), *args):
         self.id = id_
         self.at_x = at_x
@@ -23,7 +23,7 @@ class Trigger:
         self.calls = self.max_calls
         self.action = action
         self.args = args
-        self.map = map
+        self.map = map_
 
     def get_id(self):
         return self.id
