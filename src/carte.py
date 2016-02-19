@@ -63,7 +63,7 @@ class SubCarte:
 
     def get_building_id_at(self, x: int, y: int):
         if self.building_at(x, y):
-            return self.buildings[x, y]
+            return str(self.buildings[x, y])
         return BUILDING_GET_ERROR
 
     def get_zid(self):

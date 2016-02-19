@@ -9,9 +9,12 @@ from utils import unothing, udel_same_occurence
 from animator import BaseMultipleSpritesAnimator, FluidesAnimator
 
 
+print("Chemin vers le dossier des cartes : {}".format(os.path.join("..", "saves", "map")))
+
 map_path = input("Path vers la map (laissez vide pour garder la valeur par défaut) : ")
 if map_path == "":
-    map_path = os.path.join("..", "saves", "start" + EXTENSION)
+    map_path = os.path.join("..", "saves", "map", "start" + EXTENSION)
+    print("Chargement de la map par défaut")
 YTAILLE, XTAILLE, zid = 24, 24, 0
 if not os.path.exists(map_path):
     YTAILLE = int(input("Taille de la map horizontalement (en cases) : "))  # ecran.get_height() // TILE_SIZE
@@ -209,6 +212,19 @@ while continuer:
                     ecran = pygame.display.set_mode((0, 0))
             if event.key == K_h:
                 help_ = not help_
+            if event.key == K_b:
+                x, y = pygame.mouse.get_pos()
+                mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
+
+                if fullscreen:
+                    fullscreen = not fullscreen
+                    if fullscreen:
+                        ecran = pygame.display.set_mode((0, 0), FULLSCREEN)
+                    else:
+                        ecran = pygame.display.set_mode((0, 0))
+
+                id_map = input("Id de la map à charger (la map d'id 1 est située ici : {})\n> ".format(os.path.sep("..", "saves", "map", "map1" + EXTENSION)))
+                buildings[mx, my] = id_map
             if event.key == K_t:
                 x, y = pygame.mouse.get_pos()
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
