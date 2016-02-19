@@ -21,7 +21,7 @@ class BaseSideAnimator:
             raise ListePleine
 
         time = 0
-        for i in range(self.decalage):
+        for _ in range(self.decalage):
             surf = pygame.Surface((TILE_SIZE, TILE_SIZE))
             surf.fill((76, 76, 76))
             surf.set_colorkey((76, 76, 76))
