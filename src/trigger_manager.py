@@ -5,9 +5,17 @@ from constantes import *
 import pickle
 
 
+class InGameAction:
+    def __init__(self, id_: str=""):
+        self.id = id_
+
+    def exec(self, *args):
+        pass
+
+
 class Trigger:
     def __init__(self, id_: str=TRIGGER_UNDEFINED, at_x: int=-1, at_y: int=-1, how_many_calls: int=1,
-                 action: callable=print, *args):
+                 action: callable or InGameAction=print or InGameAction(), *args):
         self.id = id_
         self.at_x = at_x
         self.at_y = at_y
@@ -28,10 +36,16 @@ class Trigger:
     def call(self):
         if self.max_calls != -1:
             if self.max_calls - 1 >= 0:
-                self.action(*self.args)
+                if isinstance(self.action, callable):
+                    self.action(*self.args)
+                else:
+                    self.action.exec(*self.args)
                 self.calls -= 1
         else:
-            self.action(*self.args)
+            if isinstance(self.action, callable):
+                self.action(*self.args)
+            else:
+                self.action.exec(*self.args)
 
     def at_pos(self):
         return self.at_x, self.at_y

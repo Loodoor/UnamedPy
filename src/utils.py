@@ -180,7 +180,7 @@ class ULoader:
         # Création des triggers
         # toujours définir un ID (str)
 
-        TriggersManager.add_trigger_to_path(Trigger("trigger.test", 0, 0, TRIGGER_INFINITE_CALLS, print, "hello world !", "je suis un test de trigger !"))
+        TriggersManager.add_trigger_to_path(Trigger("trigger.test", 0, 10, TRIGGER_INFINITE_CALLS, print, "hello world !", "je suis un test de trigger !"))
 
         # Création des objets par défaut
         anti_para = objets_manager.Objet("Anti-Para", "L'anti-Para permet d'enlever le statut 'paralysé' d'une de vos créatures",
