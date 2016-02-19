@@ -168,7 +168,7 @@ class CartesManager:
         if self.current_carte.get_building_id_at(x, y) == BUILDING_GET_ERROR:
             return self.current_carte.collide_at(x, y)
         print("batiment trouvé !!")
-        self.change_map(os.path.join("..", "saves", "maps", "map" + self.current_carte.get_building_id_at(x, y) + EXTENSION))
+        self.change_map(os.path.join("..", "saves", "map", "map" + self.current_carte.get_building_id_at(x, y) + EXTENSION))
         return False
 
     def change_map(self, new_path: str):
