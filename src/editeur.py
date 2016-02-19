@@ -223,7 +223,7 @@ while continuer:
                     else:
                         ecran = pygame.display.set_mode((0, 0))
 
-                id_map = input("Id de la map à charger (la map d'id 1 est située ici : {})\n> ".format(os.path.sep("..", "saves", "map", "map1" + EXTENSION)))
+                id_map = input("Id de la map à charger (la map d'id 1 est située ici : {})\n> ".format(os.path.join("..", "saves", "map", "map1" + EXTENSION)))
                 buildings[mx, my] = id_map
             if event.key == K_t:
                 x, y = pygame.mouse.get_pos()
