@@ -131,7 +131,7 @@ class ParametresManager:
         if not os.path.exists(self.path_to_settings):
             with open(self.path_to_settings, "wb") as wsettings:
                 pickle.Pickler(wsettings).dump(self._default_config)
-        elif os.path.exists(self.path_to_settings) and open(self.path_to_settings, 'r').read() == "":
+        elif open(self.path_to_settings, 'rb').read() == "":
             os.remove(self.path_to_settings)
             self._pre_load()
 

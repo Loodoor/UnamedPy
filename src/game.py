@@ -477,6 +477,9 @@ class Game:
         if self.left:
             self.personnage.move(GAUCHE, dt)
 
+    def reset_moves(self):
+        self.top, self.bottom, self.right, self.left = [False] * 4
+
     def prepare(self):
         # Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
@@ -518,6 +521,7 @@ class Game:
             raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
             if self.equipe_mgr.is_not_empty() and not self.cur_combat:
+                self.reset_moves()
                 self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
                                                  self.carte_mgr.get_zid(), self.indexeur, self.police_normale,
                                                  self.tab_types, self.renderer_manager, self.equipe_mgr)
