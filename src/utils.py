@@ -337,10 +337,10 @@ class ULoader:
         # Fin du boulot !
         with open(self.path, 'wb') as fjob_done:
             pickle.Pickler(fjob_done).dump(UMoment("Ajout des premières créatures, "
-                                                   "d'un trigger de test en (0, 0), "
-                                                   "de nouveaux objets, "
-                                                   "refonte des zones id, "
-                                                   "et des zones de base"))
+                                                   "d'un trigger de test en (0, 10), "
+                                                   "de nouveaux objets, refonte des zones id, "
+                                                   "refonte des zones de base, "
+                                                   "et nouveau système de fonctionnement des objets"))
 
     def reload(self):
         self.load()
