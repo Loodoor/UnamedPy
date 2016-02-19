@@ -1,4 +1,4 @@
-# Unamed
+# Unamed [![Codacy Badge](https://api.codacy.com/project/badge/grade/30083498352b4bfba20970a153d5444e)](https://www.codacy.com/app/urworld/Unamed)
 
 Unamed est un projet de Pokémon like ARPG dungeon crawler (qui sera jouable en réseau !)
 
