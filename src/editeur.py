@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import pickle
-import pygame
 from glob import glob
 from pygame.locals import *
 from constantes import *
@@ -148,9 +147,9 @@ def create_edit_zone():
                (ecran.get_width() - marge, 230))
     ecran.blit(police.render("H : affiche cette aide ou non", 1, (255, 255, 255)), (ecran.get_width() - marge, 250))
     ecran.blit(police.render("T : ajoute un trigger (vide) sur la case pointée", 1, (255, 255, 255)),
-                             (ecran.get_width() - marge, 270))
+                            (ecran.get_width() - marge, 270))
     ecran.blit(police.render("B: ajoute un lien vers un bâtiment sur la case pointée", 1, (255, 255, 255)),
-                             (ecran.get_width() - marge, 310))
+                            (ecran.get_width() - marge, 310))
 
     for i in range(0, 6):
         tmp = (curpos + i) % len(lassets)
@@ -221,13 +220,13 @@ while continuer:
                     else:
                         ecran = pygame.display.set_mode((0, 0))
 
-                id = input("ID (str) du trigger à poser : ")
+                id_ = input("ID (str) du trigger à poser : ")
                 calls = int(input("Nombre d'appels : "))
 
-                carte[my][mx].append(id)
+                carte[my][mx].append(id_)
 
                 trigger_manager.TriggersManager.add_trigger_to_path(
-                    trigger_manager.Trigger(id, mx, my, calls, unothing, id)
+                    trigger_manager.Trigger(id_, mx, my, calls, unothing, id)
                 )
 
     render(carte, offset, offset2)
