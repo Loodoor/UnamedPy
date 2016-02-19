@@ -51,7 +51,10 @@ class Personnage:
         return not self.same_as_before
 
     def _actualise_sprite(self):
-        self.perso = self.player_anim.get_sprite_from_dir(self.direction)
+        if self.is_moving:
+            self.perso = self.player_anim.get_sprite_moving_from_dir(self.direction)
+        else:
+            self.perso = self.player_anim.get_sprite_pause(self.direction)
 
     def move(self, direction: int=AUCUNE, dt: int=1):
         self.direction = direction
@@ -210,6 +213,7 @@ class Personnage:
 
     def end_move(self):
         self.is_moving = False
+        self.player_anim.pause()
 
     def walk(self):
         self.cur_div = DIV_DT_BASIC
@@ -245,6 +249,7 @@ class Personnage:
             # on charge une position par défaut
             self.pos = DEFAULT_POS_AT_BEGINNING
         self.inventaire.load()
+        self.player_anim.set_speed(20)
 
     def save(self):
         with open(self.path, "wb") as save_perso:

@@ -1,9 +1,7 @@
 # coding=utf-8
 
-import pygame
 from exceptions import ListePleine
 import glob
-from time import time
 from constantes import *
 
 
@@ -20,23 +18,23 @@ class BaseSideAnimator:
         if self.output:
             raise ListePleine
 
-        time = 0
+        time_ = 0
         for _ in range(self.decalage):
             surf = pygame.Surface((TILE_SIZE, TILE_SIZE))
             surf.fill((76, 76, 76))
             surf.set_colorkey((76, 76, 76))
 
             if not self.vertical:
-                surf.blit(self.base_image, (time - self.base_image.get_width(), 0))
-                surf.blit(self.base_image, (time, 0))
+                surf.blit(self.base_image, (time_ - self.base_image.get_width(), 0))
+                surf.blit(self.base_image, (time_, 0))
             else:
-                surf.blit(self.base_image, (0, time - self.base_image.get_height()))
-                surf.blit(self.base_image, (0, time))
+                surf.blit(self.base_image, (0, time_ - self.base_image.get_height()))
+                surf.blit(self.base_image, (0, time_))
 
             surf.convert_alpha()
 
-            time += self.velocity
-            time %= self.base_image.get_width()
+            time_ += self.velocity
+            time_ %= self.base_image.get_width()
             self.output.append(surf)
 
     def _draw(self):
@@ -58,11 +56,11 @@ class BaseMultipleSpritesAnimator:
         self._create_anims()
 
     def next(self):
-        if self._last_time + self._wait <= time():
+        if self._last_time + self._wait <= time.time():
             self._cur_anim += 1
             self._cur_anim %= self._max_anim
 
-            self._last_time = time()
+            self._last_time = time.time()
 
     def get_anim(self):
         return self.anims[self._cur_anim]
@@ -95,26 +93,44 @@ class PlayerAnimator:
             ANIM2: ANIM1
         }
         self._moves = {key: value for key, value in self._correspondances.items() if key != PAUSE}
+        self._speed = 1
+        self._count = 0
 
         self._create_anims()
+
+    def set_speed(self, speed: int):
+        self._speed = speed
 
     def pause(self):
         self._cur_anim = PAUSE
 
     def next(self):
-        self._cur_anim += 1
+        self._count += 1
+        if not self._count % self._speed:
+            self._cur_anim += 1
+            self._count = 1
 
     def get_anim_cursor(self):
         return self._cur_anim % 3
+
+    def get_sprite_pause(self, direc: int):
+        if direc in self.anims.keys():
+            # ici on assume complètement qu'il est en mouvement
+            return self.anims[direc][PAUSE]
+        raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
 
     def get_sprite(self, direc: int, anim_curs: int):
         if direc in self.anims.keys():
             if anim_curs < len(self.anims):
                 return self.anims[direc][anim_curs]
+            raise ValueError("L'animation demandée n'existe pas (n°{})".format(anim_curs))
+        raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
 
-    def get_sprite_from_dir(self, direc: int):
+    def get_sprite_moving_from_dir(self, direc: int):
         if direc in self.anims.keys():
-            return self.anims[direc][self.get_anim_cursor()]
+            # ici on assume complètement qu'il est en mouvement
+            return self.anims[direc][(self.get_anim_cursor() % 2) + 1]
+        raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
 
     def _create_anims(self):
         lhaut = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "haut*.png"))]

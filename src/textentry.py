@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import time
 import pygame
 from pygame.locals import *
 
@@ -27,7 +26,6 @@ class TextBox:
         self.enter = False
         self.clignote = False
         self.mdt = 0
-        self.tdt = 0
 
         self.font = kwargs.get("font", pygame.font.SysFont("arial", 18))
         self.max_length = kwargs.get("max_length", 32)
@@ -62,7 +60,6 @@ class TextBox:
             if self.clignote:
                 self.window.blit(self.cli, (self.pos_x + 2 * 2 + self.placeholder.get_width() + texte.get_width(),
                                             self.pos_y))
-                self.clignote = False
         else:
             self.window.blit(self.placeholder, (self.window.get_width() // 2 - self.placeholder.get_width(),
                                                 self.window.get_height() // 2 - self.placeholder.get_height() // 2))
@@ -70,12 +67,10 @@ class TextBox:
             if self.clignote:
                 self.window.blit(self.cli, (self.pos_x + 2 * 2 + self.placeholder.get_width() + texte.get_width(),
                                             self.pos_y))
-                self.clignote = False
-        self.mdt = time.time() - self.mdt
-        self.tdt += self.mdt
-        self.tdt %= 3
-        if 0 < self.tdt <= 0.5:
-            self.clignote = True
+        self.mdt += 1
+        if not self.mdt % 75:
+            self.clignote = not self.clignote
+            self.mdt = 1
 
     def update(self):
         for event in pygame.event.get():
