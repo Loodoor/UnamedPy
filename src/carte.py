@@ -4,8 +4,9 @@ import pickle
 from glob import glob
 from constantes import *
 from trigger_manager import TriggersManager
-from exceptions import FonctionnaliteNonImplementee, CarteInexistante, ErreurContenuCarte
+from exceptions import CarteInexistante, ErreurContenuCarte
 from utils import udel_same_occurence
+from pnj_manager import PNJ
 from animator import FluidesAnimator, BaseMultipleSpritesAnimator
 from random import randint
 
@@ -28,18 +29,21 @@ class SubCarte:
         if os.path.exists(path_):
             with open(path_, "rb") as map_reader:
                 self.path_ = path_
-                self.carte, self.objets, self.buildings, self.zid = \
-                    pickle.Unpickler(map_reader).load()
+                try:
+                    self.carte, self.objets, self.buildings, self.zid, self.pnjs = \
+                        pickle.Unpickler(map_reader).load()
+                except ValueError:
+                    self.carte, self.objets, self.buildings, self.zid = pickle.Unpickler(map_reader).load()
+                    print("[!] Impossible de charger les PNJ pour cette map")
         else:
             raise CarteInexistante(path_)
 
     def save(self):
         with open(self.path_, "wb") as map_saver:
-            pickle.Pickler(map_saver).dump([self.carte, self.objets, self.buildings, self.zid])
+            pickle.Pickler(map_saver).dump([self.carte, self.objets, self.buildings, self.zid, self.pnjs])
 
-    def create_pnj(self):
-        self.pnjs.append(-1)
-        raise FonctionnaliteNonImplementee
+    def create_pnj(self, pnj: PNJ):
+        self.pnjs.append(pnj)
 
     def add_building(self, x: int, y: int, id_: int):
         self.buildings[x, y] = id_
