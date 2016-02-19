@@ -20,6 +20,7 @@ from constantes import *
 from gui import GUISauvegarde
 from utils import uscreenschot
 # from fpsregulator import IAFPS
+from creatures_mgr import Creature
 from aventure_manager import Adventure
 from parametres import ParametresManager
 from controller import JoystickController
@@ -84,8 +85,6 @@ class Game:
 
         self.__ctrls = self.parametres.get("secured_controls")
 
-        self.load()
-
     def load(self):
         self.carte_mgr.load()
         self.personnage.load()
@@ -103,6 +102,7 @@ class Game:
 
         if self.adventure.get_progress() == 1:
             # on vient de commencer
+            self.equipe_mgr.add_creature(Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))
             self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
 
         self.tab_types.init_tab()

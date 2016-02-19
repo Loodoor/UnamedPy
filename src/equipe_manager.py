@@ -70,11 +70,6 @@ class EquipeManager:
         if os.path.exists(self.path):
             with open(self.path, "rb") as equipe_rb:
                 self.creatures = pickle.Unpickler(equipe_rb).load()
-        else:
-            # Starter de test
-            self.creatures.append(
-                Creature(ID_STARTER, self.indexer.get_type_of(0), indexer=self.indexer, alea_niv=0)
-            )
 
     def save(self):
         with open(self.path, "wb") as equipe_wb:
