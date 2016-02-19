@@ -13,13 +13,14 @@ buffer_for_file = []
 def get_from_where(usr: dict, news: list, kindof: str, address) -> list:
     smth = []
     todel = []
-    for i in range(len(news)):
-        e = news[i]
+    i = 0
+    for e in news:
         if usr[address]['pseudo'] not in e['sawit'] and e['type'] == kindof:
             smth.append(e['content'])
             news[i]['sawit'].append(usr[address]['pseudo'])
             if len(news[i]['sawit']) == len(usr):
                 todel.append(i)
+        i += 1
     for elem in todel[::-1]:
         news.pop(elem)
     return smth

@@ -52,8 +52,8 @@ class NetworkEventsListener:
     def get_params(self):
         return self._params
 
-    def add_controler(self, type: str, controler: object):
-        self._controlers[type] = controler
+    def add_controler(self, type_: str, controler: object):
+        self._controlers[type_] = controler
 
     def _ask_rang(self):
         if self.rang == RANG_NUL:
