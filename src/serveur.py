@@ -75,7 +75,7 @@ def save_logs() -> bool:
                 "***\t***\t***"
             ]
         with open(os.path.join("..", "serverlogs", "log{}.log".format(log_nb)), "w") as file:
-            print("\t * Enregistrement {] ...".format(log_nb))
+            print("\t * Enregistrement {} ...".format(log_nb))
             file.writelines(header + logs)
         log_nb += 1
     print("\t * Logs créés et sauvegardés")
