@@ -21,7 +21,7 @@ class Personnage:
         self.cur_div = DIV_DT_BASIC
         self._choice = choice
         self.player_anim = PlayerAnimator(os.path.join("..", "assets", "personnages", self._choice))
-        self.perso = self.player_anim.get_sprite_from_dir(self.direction)
+        self.perso = self.player_anim.get_sprite_pause(self.direction)
         self.is_moving = False
         self.pos = list(pos)
         self.carte_mgr = None
