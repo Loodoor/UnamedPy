@@ -72,7 +72,7 @@ def save_logs() -> bool:
                 "Utilisateurs préenregistrés : {}".format(pred_users),
                 "Taille maximale d'un packet : {}".format(BUFFER_SIZE),
                 "Nombre de joueurs au moment de la sauvegarde : {}".format(len(users)),
-                "Nombre de mises à jour de données à faire aux clients au moment de la sauvegarde : ".format(len(news)),
+                "Nombre de mises à jour de données à faire aux clients au moment de la sauvegarde : {}".format(len(news)),
                 "***\t***\t***"
             ]
         with open(os.path.join("..", "serverlogs", "log{}.log".format(log_nb)), "w") as file:
