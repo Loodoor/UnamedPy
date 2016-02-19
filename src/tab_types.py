@@ -1,10 +1,6 @@
 # coding=utf-8
 
-import os
-import pygame
 from constantes import *
-from pygame.locals import *
-import pickle
 
 
 class Storage:

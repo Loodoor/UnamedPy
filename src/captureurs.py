@@ -1,8 +1,5 @@
 # coding=utf-8
 
-import os
-import pygame
-from pygame.locals import *
 from constantes import *
 import random
 from creatures_mgr import Creature

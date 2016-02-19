@@ -4,7 +4,6 @@ __author__ = 'Moustillon'
 
 import time
 from constantes import MAX_FPS
-from math import trunc
 
 
 class IAFPS:

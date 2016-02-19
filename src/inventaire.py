@@ -5,7 +5,6 @@ import pickle
 import objets_manager
 import textwrap as tw
 from glob import glob
-from gui import GUIBulle
 
 
 class Inventaire:

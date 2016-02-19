@@ -1,10 +1,8 @@
 # coding=utf-8
 
-import pygame
-import os
 import pickle
 from pygame.locals import *
-from exceptions import CreaturesNonTrouvees, FonctionnaliteNonImplementee
+from exceptions import CreaturesNonTrouvees
 from constantes import *
 import textwrap as tw
 

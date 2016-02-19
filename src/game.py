@@ -19,7 +19,7 @@ import zones_attaques_manager
 from constantes import *
 from gui import GUISauvegarde
 from utils import uscreenschot
-from fpsregulator import IAFPS
+# from fpsregulator import IAFPS
 from aventure_manager import Adventure
 from parametres import ParametresManager
 from controller import JoystickController
@@ -389,10 +389,7 @@ class Game:
                 done = True
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_COMBAT:
             if self.cur_combat:
-                passed = 0
-                for test in range(MAX_ESSAIS_BALL):
-                    if random.random() <= self.personnage.inventaire.get_obj_messenger().objet["capture"]:
-                        passed += 1
+                passed = len([1 for _ in range(MAX_ESSAIS_BALL) if random.random() <= self.personnage.inventaire.get_obj_messenger().objet["capture"]])
                 if passed / MAX_ESSAIS_BALL >= PERCENT_CAPTURE_NECESSAIRE:
                     self.renderer_manager.unlock_special()
                     self.personnage.inventaire.clear_obj_messenger()

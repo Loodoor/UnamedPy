@@ -1,13 +1,12 @@
 # coding=utf-8
 
-import os
+from constantes import *
 from exceptions import ErreurRepertoire
 
 if os.path.split(os.getcwd())[1] != "src":
     raise ErreurRepertoire("Le répertoire courant n'est pas correct, le jeu ne peut pas se lancer")
 print("Chargement ...")
 
-import random
 import socket
 from glob import glob
 from pygame.locals import *
@@ -15,8 +14,7 @@ import time
 
 import game
 import utils
-from ecran import MyScreen
-from constantes import *
+# from ecran import MyScreen
 from textentry import TextBox
 from aventure_manager import Adventure
 
