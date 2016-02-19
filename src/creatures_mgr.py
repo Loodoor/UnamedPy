@@ -7,10 +7,10 @@ import random
 
 
 class Attaque:
-    def __init__(self, nom: str, type: int, degats: int, texte: str):
+    def __init__(self, nom: str, type_: int, degats: int, texte: str):
         self.attaque = {
             ATK_NOM: nom,
-            ATK_TYP: type,
+            ATK_TYP: type_,
             ATK_DEGATS: degats,
             ATK_TXT: texte,
         }
@@ -32,7 +32,7 @@ class Attaque:
 
 
 class Creature:
-    def __init__(self, id: int, type_: int, alea_niv: tuple or int=(10, 20) or 10, specs_range: tuple=(2, 10),
+    def __init__(self, id_: int, type_: int, alea_niv: tuple or int=(10, 20) or 10, specs_range: tuple=(2, 10),
                  pvs_range: tuple=(18, 27), indexer=None) -> None:
         if not indexer:
             raise ErreurDeCreationDeClass
@@ -41,7 +41,7 @@ class Creature:
             SPEC_ATK: random.randint(*specs_range),
             SPEC_DEF: random.randint(*specs_range),
             SPEC_VIT: random.randint(*specs_range),
-            SPEC_ID: id,
+            SPEC_ID: id_,
             SPEC_TYP: type_,
             SPEC_PPS: DEFAULT_PPS,
             SPEC_NOM: '',
@@ -139,8 +139,8 @@ class Creature:
     def get_type(self):
         return self.specs[SPEC_TYP]
 
-    def add_attack(self, name: str, type: int, dgts: int, desc: str):
-        self.attaques.append(Attaque(name, type, dgts, desc))
+    def add_attack(self, name: str, type_: int, dgts: int, desc: str):
+        self.attaques.append(Attaque(name, type_, dgts, desc))
 
     def get_attacks(self):
         return self.attaques[-4:]

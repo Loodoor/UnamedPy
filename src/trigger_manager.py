@@ -6,9 +6,9 @@ import pickle
 
 
 class Trigger:
-    def __init__(self, id: str=TRIGGER_UNDEFINED, at_x: int=-1, at_y: int=-1, how_many_calls: int=1,
+    def __init__(self, id_: str=TRIGGER_UNDEFINED, at_x: int=-1, at_y: int=-1, how_many_calls: int=1,
                  action: callable=print, *args):
-        self.id = id
+        self.id = id_
         self.at_x = at_x
         self.at_y = at_y
         self.max_calls = how_many_calls
@@ -80,9 +80,9 @@ class TriggersManager:
                     if not trigger.get_left_calls():
                         self.already_used.append(trigger.get_id())
 
-    def call_trigger_with_id(self, id: str):
+    def call_trigger_with_id(self, id_: str):
         for trigger in self.triggers:
-            if trigger.get_id() == id and trigger.get_id() not in self.already_used:
+            if trigger.get_id() == id_ and trigger.get_id() not in self.already_used:
                 trigger.call()
                 if not trigger.get_left_calls():
                     self.already_used.append(trigger.get_id())

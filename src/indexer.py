@@ -10,10 +10,10 @@ import textwrap as tw
 
 
 class Element:
-    def __init__(self, name: str, id: int, type: int, stade: int, path: str, desc: str=""):
+    def __init__(self, name: str, id_: int, type_: int, stade: int, path: str, desc: str=""):
         self.name = name
-        self.id = id
-        self.type = type
+        self.id = id_
+        self.type = type_
         self.path = path
         self.description = desc
         self.stade = stade
@@ -83,16 +83,16 @@ class Typeur:
         for k, v in self.types.items():
             self.user_types[k] = v['user']
 
-    def change_name(self, type: int, new_name: str):
-        if type in self.types.keys():
+    def change_name(self, type_: int, new_name: str):
+        if type_ in self.types.keys():
             self.types[type]['user'] = new_name
         self.__create_user_type()
 
-    def get_name(self, type: int):
-        return self.types[type]['user']
+    def get_name(self, type_: int):
+        return self.types[type_]['user']
 
-    def get_default_name(self, type: int):
-        return self.types[type]['default']
+    def get_default_name(self, type_: int):
+        return self.types[type_]['default']
 
     def get_types(self):
         return self.user_types
@@ -131,16 +131,16 @@ class Indexer:
         self.creas_selected = []
 
     @staticmethod
-    def add_new(name: str, id: int, type: int, stade: int, path: str, desc: str=""):
+    def add_new(name: str, id_: int, type_: int, stade: int, path: str, desc: str=""):
         save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
         if os.path.exists(save_path):
             with open(save_path, 'rb') as rbin:
                 tod = pickle.Unpickler(rbin).load()
-                tod.append(Element(name, id, type, stade, path, desc))
+                tod.append(Element(name, id_, type_, stade, path, desc))
                 pickle.Pickler(open(save_path, 'wb')).dump(tod)
         else:
             with open(save_path, 'wb') as wbin:
-                tod = [Element(name, id, type, stade, path, desc)]
+                tod = [Element(name, id_, type_, stade, path, desc)]
                 pickle.Pickler(wbin).dump(tod)
 
     def load(self):
@@ -159,8 +159,8 @@ class Indexer:
             pickle.Pickler(save_index).dump(self.indexer)
         self.typeur.save()
 
-    def get_image_by_id(self, id: int):
-        return self.images_crea[id] if id in self.images_crea.keys() else pygame.Surface((150, 150))
+    def get_image_by_id(self, id_: int):
+        return self.images_crea[id_] if id_ in self.images_crea.keys() else pygame.Surface((150, 150))
 
     def next(self):
         self.page = self.page + 1 if self.page <= self.max_page else self.max_page
@@ -168,37 +168,36 @@ class Indexer:
     def previous(self):
         self.page = self.page - 1 if self.page - 1 >= 0 else 0
 
-    def get_type_of(self, id: int):
+    def get_type_of(self, id_: int):
         for creature in self.indexer:
-            if creature.id == id:
+            if creature.id == id_:
                 return creature.type
         return POK_SEARCH_ERROR
 
     def get_typeur(self):
         return self.typeur
 
-    def get_captured(self, id: int):
+    def get_captured(self, id_: int):
         for creature in self.indexer:
-            if creature.id == id:
+            if creature.id == id_:
                 return creature.capture
         return False
 
-    def get_by_id(self, id: int):
+    def get_by_id(self, id_: int):
         for creature in self.indexer:
-            if creature.id == id:
-                print(type(creature))
+            if creature.id == id_:
                 return creature
         return POK_SEARCH_ERROR
 
-    def vu_(self, id: int):
+    def vu_(self, id_: int):
         for elem in self.indexer:
-            if id == elem.id:
+            if id_ == elem.id:
                 elem.vu_()
                 break
 
-    def capturer(self, id: int):
+    def capturer(self, id_: int):
         for elem in self.indexer:
-            if id == elem.id:
+            if id_ == elem.id:
                 elem.capture_()
                 break
 
@@ -317,7 +316,7 @@ class Indexer:
                 self.selected_creature = (yp - POK_Y_NAME_CREA) // POK_ESP_Y_ITEM
                 self.selected_creature = self.selected_creature if 0 <= self.selected_creature < len(self.indexer) else -1
             if POK_X_SEL_STADE <= xp <= POK_X_SEL_STADE + POK_SX_SEL_STADE and \
-                                    POK_Y_SEL_STADE <= yp <= POK_Y_SEL_STADE + POK_SY_SEL_STADE:
+                    POK_Y_SEL_STADE <= yp <= POK_Y_SEL_STADE + POK_SY_SEL_STADE:
                 self.render_sel_stade()
         if not self.render_creatures:
             if POK_X_TYPE <= xp <= POK_X_TYPE + 200:

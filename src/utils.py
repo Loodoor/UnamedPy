@@ -98,9 +98,9 @@ def uhas_already_played() -> bool:
 def udel_same_occurence(*args) -> list:
     work = []
     last = ""
-    for i in range(len(args)):
-        if args[i] != last:
-            last = args[i]
+    for elem in args:
+        if elem != last:
+            last = elem
             work.append(last)
     return work
 
