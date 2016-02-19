@@ -95,7 +95,7 @@ class SubCarte:
 
     def call_trigger_at(self, x: int, y: int, triggers_mgr: TriggersManager):
         if self.trigger_at(x, y):
-            triggers_mgr.call_trigger_with_id(self.carte[y][x][TRIGGER])
+            triggers_mgr.call_trigger_with_id(self.carte[y][x][TRIGGER], self.path_)
             return True
         return False
 

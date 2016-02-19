@@ -14,7 +14,7 @@ class InGameAction:
 
 
 class Trigger:
-    def __init__(self, id_: str=TRIGGER_UNDEFINED, at_x: int=-1, at_y: int=-1, how_many_calls: int=1,
+    def __init__(self, map: str, id_: str=TRIGGER_UNDEFINED, at_x: int=-1, at_y: int=-1, how_many_calls: int=1,
                  action: callable or InGameAction=print or InGameAction(), *args):
         self.id = id_
         self.at_x = at_x
@@ -23,6 +23,7 @@ class Trigger:
         self.calls = self.max_calls
         self.action = action
         self.args = args
+        self.map = map
 
     def get_id(self):
         return self.id
@@ -33,7 +34,7 @@ class Trigger:
     def get_left_calls(self):
         return self.calls
 
-    def call(self):
+    def call(self, cur_map: str):
         if self.max_calls != -1:
             if self.max_calls - 1 >= 0:
                 if isinstance(self.action, callable):
@@ -56,7 +57,7 @@ class Trigger:
 
     def compute_to_dict(self):
         """Préférer l'usage de cette méthode plutôt que de compute_to_list"""
-        return {self.id: [self.at_x, self.at_y, self.action, self.args]}
+        return {self.id: [self.at_x, self.at_y, self.action, self.args], "map": self.map}
 
     def compute_to_list(self):
         return [self.id, self.at_x, self.at_y, self.action, self.args]
@@ -86,18 +87,18 @@ class TriggersManager:
                 return trigger.get_id()
         return TRIGGER_ERROR
 
-    def call_trigger_at_pos(self, at_x: int, at_y: int):
+    def call_trigger_at_pos(self, at_x: int, at_y: int, cur_map: str):
         for trigger in self.triggers:
             if trigger.at_pos() == (at_x, at_y):
                 if trigger.get_id() not in self.already_used:
-                    trigger.call()
+                    trigger.call(cur_map)
                     if not trigger.get_left_calls():
                         self.already_used.append(trigger.get_id())
 
-    def call_trigger_with_id(self, id_: str):
+    def call_trigger_with_id(self, id_: str, cur_map: str):
         for trigger in self.triggers:
             if trigger.get_id() == id_ and trigger.get_id() not in self.already_used:
-                trigger.call()
+                trigger.call(cur_map)
                 if not trigger.get_left_calls():
                     self.already_used.append(trigger.get_id())
 

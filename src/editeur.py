@@ -242,7 +242,7 @@ while continuer:
                 carte[my][mx].append(id_)
 
                 trigger_manager.TriggersManager.add_trigger_to_path(
-                    trigger_manager.Trigger(id_, mx, my, calls, unothing, id)
+                    trigger_manager.Trigger(id_, mx, my, calls, unothing, id_, map_path)
                 )
 
     render(carte, offset, offset2)
