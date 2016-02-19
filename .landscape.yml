@@ -5,4 +5,7 @@ pep8:
 doc-warnings: no
 test-warnings: no
 max-line-length: 120
-autodetect: yes
+autodetect: no
+strictness: high
+uses:
+    - pygame
