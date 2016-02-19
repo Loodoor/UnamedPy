@@ -84,7 +84,6 @@ class Personnage:
         new_speed = self.speed * (dt / 50) / self.cur_div
 
         vecteur = unegate_vect(udir_to_vect(direction))
-        last_of1, last_of2 = self.carte_mgr.get_ofs()
         new_of1, new_of2 = vecteur[0] * new_speed, vecteur[1] * new_speed
 
         x, y = self.pos[0], self.pos[1]
