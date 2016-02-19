@@ -11,7 +11,7 @@ from animator import BaseMultipleSpritesAnimator, FluidesAnimator
 
 map_path = input("Path vers la map (laissez vide pour garder la valeur par défaut) : ")
 if map_path == "":
-    map_path = os.path.join("..", "saves", "map" + EXTENSION)
+    map_path = os.path.join("..", "saves", "start" + EXTENSION)
 YTAILLE, XTAILLE, zid = 24, 24, 0
 if not os.path.exists(map_path):
     YTAILLE = int(input("Taille de la map horizontalement (en cases) : "))  # ecran.get_height() // TILE_SIZE
