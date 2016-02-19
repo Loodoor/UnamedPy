@@ -29,12 +29,13 @@ class SubCarte:
         if os.path.exists(path_):
             with open(path_, "rb") as map_reader:
                 self.path_ = path_
+                load = pickle.Unpickler(map_reader).load()
                 try:
-                    self.carte, self.objets, self.buildings, self.zid, self.pnjs = \
-                        pickle.Unpickler(map_reader).load()
+                    self.carte, self.objets, self.buildings, self.zid, self.pnjs = load
                 except ValueError:
-                    self.carte, self.objets, self.buildings, self.zid = pickle.Unpickler(map_reader).load()
+                    self.carte, self.objets, self.buildings, self.zid = load
                     print("[!] Impossible de charger les PNJ pour cette map")
+                del load
         else:
             raise CarteInexistante(path_)
 
