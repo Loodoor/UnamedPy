@@ -39,6 +39,7 @@ class Inventaire:
     def get_obj_messenger(self):
         if self.obj_messenger:
             return self.obj_messenger
+        return None
 
     def clear_obj_messenger(self):
         self.obj_messenger = None

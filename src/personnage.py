@@ -94,8 +94,8 @@ class Personnage:
         y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
 
         if x < 0 or y < 0 \
-                or x - self.player_anim.get_sprite_from_dir(self.direction).get_width() > self.ecran.get_width() \
-                or y - self.player_anim.get_sprite_from_dir(self.direction).get_height() > self.ecran.get_height():
+                or x - self.player_anim.get_sprite_pause(self.direction).get_width() > self.ecran.get_width() \
+                or y - self.player_anim.get_sprite_pause(self.direction).get_height() > self.ecran.get_height():
             return
 
         #Détection des collisions
@@ -240,6 +240,10 @@ class Personnage:
 
     def get_pos(self):
         return tuple(int(i) for i in self.pos)
+
+    def get_pos_in_tiles(self):
+        pos_px = self.get_pos()
+        return pos_px[0] // TILE_SIZE, pos_px[1] // TILE_SIZE
 
     def load(self):
         if os.path.exists(self.path):

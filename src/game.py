@@ -549,7 +549,9 @@ class Game:
 
         if self.show_fps:
             texte = self.police_normale.render("%3i FPS" % int(self.fps_regulator.get_fps()), 1, (0, 0, 0))
-            pygame.draw.rect(self.ecran, (150, 150, 150), (0, 0, 10 + texte.get_width(), 10 + texte.get_height()))
+            pygame.draw.rect(self.ecran, (150, 150, 150),
+                            (self.ecran.get_width() - 10 + texte.get_width(), 0,
+                             10 + texte.get_width(), 10 + texte.get_height()))
             self.ecran.blit(texte, (5, 5))
 
     def start(self):
@@ -569,6 +571,24 @@ class Game:
 
             # Affichage
             self.render(dt)
+
+            # Debug info
+            debug.onscreen_debug(self.ecran, self.police_normale,
+                                 "Renderer: {}".format(self.renderer_manager.get_renderer()),
+                                 "Delatime : %3.1f ms" % dt,
+                                 "Zone id: {}".format(self.carte_mgr.get_zid()),
+                                 "Créatures (poche): {} | Créatures (pc): {}".format(len(self.equipe_mgr.get_all()), len(self.pc_mgr.get_all())),
+                                 "Objet messenger : {}".format(self.personnage.inventaire.get_obj_messenger()),
+                                 "-- Personnage --",
+                                 "Direction: {}".format(self.personnage.get_dir()),
+                                 "Position: {}".format(self.personnage.get_pos()),
+                                 "Position (cases): {}".format(self.personnage.get_pos_in_tiles()),
+                                 "UP: {} | DOWN: {}".format(self.top, self.bottom),
+                                 "RIGHT: {} | LEFT: {}".format(self.right, self.left),
+                                 "-- Réseau --",
+                                 "En réseau: {}".format(self.sock is not None),
+                                 "Params: {}".format(self.params if self.sock is not None else "NA"),
+                                 line_width=200)
 
             pygame.display.flip()
 

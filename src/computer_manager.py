@@ -127,5 +127,13 @@ class ComputerManager:
     def get_creature(self, index: int):
         return self.storage[index] if 0 <= index < len(self.storage) else PC_GET__ERROR
 
+    def get_all(self):
+        return self.storage
+
+    def get_selected_creature(self):
+        if self.selected_crea != -1:
+            return self.storage[self.selected_crea]
+        raise ValueError("Impossible d'obtenir la créature demandée")
+
     def pop_creature(self, index: int):
         return self.storage.pop(index) if 0 <= index < len(self.storage) else PC_POP__ERROR
