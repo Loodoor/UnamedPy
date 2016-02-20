@@ -7,16 +7,17 @@ import os
 def main():
     with open(os.path.join("..", "saves", "map", "map.umd"), "wb") as map_:
         paths = {
-            "1": ["..", "saves", "map", "start.umd"],
+            "1": ["..", "saves", "map", "map0.umd"],
             "2": ["..", "saves", "map", "map1.umd"]
         }
-        while True:
+        done = input("Continuer [O/N] ? > ").lower() == 'n'
+        while not done:
             number = input("Numéro de la map : ")
             path_ = input("Chemin vers la carte (séparateur : espace) : ").split()
             if number not in paths.keys():
                 paths[number] = path_
                 if not input("Continuer (Entrée pour arrêter) ?").strip():
-                    break
+                    done = False
             else:
                 print("Code déjà utilisé !")
         print("Sauvegarde ...")
