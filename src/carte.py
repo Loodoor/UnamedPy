@@ -9,6 +9,7 @@ from utils import udel_same_occurence
 from pnj_manager import PNJ
 from animator import FluidesAnimator, BaseMultipleSpritesAnimator
 from random import randint
+import debug
 
 
 class SubCarte:
@@ -34,7 +35,7 @@ class SubCarte:
                     self.carte, self.objets, self.buildings, self.zid, self.pnjs = load
                 except ValueError:
                     self.carte, self.objets, self.buildings, self.zid = load
-                    print("[!] Impossible de charger les PNJ pour cette map")
+                    debug.println("[!] Impossible de charger les PNJ pour cette map")
                 del load
         else:
             raise CarteInexistante(path_)

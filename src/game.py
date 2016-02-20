@@ -4,6 +4,7 @@ import socket
 from pygame.locals import *
 
 import carte
+import debug
 import indexer
 import atk_sys
 import money_mgr
@@ -108,7 +109,7 @@ class Game:
         self.tab_types.init_tab()
 
     def save(self):
-        print("Sauvegarde ...")
+        debug.println("Sauvegarde ...")
         self.carte_mgr.save()
         self.personnage.save()
         self.parametres.save()
@@ -496,13 +497,13 @@ class Game:
             joystick = pygame.joystick.Joystick(0)
             joystick.init()
             self.joystick = JoystickController(joystick)
-            print("Un joystick a été trouvé")
+            debug.println("Un joystick a été trouvé")
 
         pygame.key.set_repeat(200, 100)
         if self.joystick:
             self.joystick.set_repeat(40)
 
-        print("Le jeu démarre ...")
+        debug.println("Le jeu démarre ...")
 
     def render(self, dt: int=1):
         self.carte_mgr.update() if self.renderer_manager.can_i_render() else None
@@ -554,7 +555,7 @@ class Game:
     def start(self):
         self.prepare()
 
-        print("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
+        debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
 
         while self.continuer:
             # FPS

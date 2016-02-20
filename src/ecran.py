@@ -2,6 +2,7 @@
 
 import pygame
 from constantes import *
+import debug
 
 
 class MyScreen(pygame.Surface):
@@ -22,7 +23,7 @@ class MyScreen(pygame.Surface):
                 new_color = pygame.Color(f, f, f, last_color.a)
                 surface.set_at((x, y), new_color)
             except IndexError:
-                print("[!] Essaie de modification d'un pixel trop lointain ...")
+                debug.println("[!] Essaie de modification d'un pixel trop lointain ...")
                 sys.exit(0)
         surface.unlock()
 
@@ -31,7 +32,7 @@ class MyScreen(pygame.Surface):
     def set_bw(self, bw: bool):
         self._bw = bw
         if bw:
-            print(">> En activant cette fonctionnalité, il est fort possible que le jeu vienne à ralentir !")
+            debug.println(">> En activant cette fonctionnalité, il est fort possible que le jeu vienne à ralentir !")
 
     def blit(self, new: pygame.Surface, at: tuple=(0, 0)):
         if self._bw:

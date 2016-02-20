@@ -12,6 +12,7 @@ from glob import glob
 import random
 import pickle
 import time
+import debug
 
 
 def unothing(*args, **kwargs):
@@ -133,11 +134,11 @@ class ULoader:
     def load(self):
         if not path.exists(self.path):
             self.create()
-            print("J'ai fini mon travail")
+            debug.println("J'ai fini mon travail")
         else:
-            print("Le fichier indiquant une manipulation existe déjà.\nRemarque(s) :")
+            debug.println("Le fichier indiquant une manipulation existe déjà.\nRemarque(s) :")
             with open(self.path, 'rb') as rlast_job_done:
-                print(pickle.Unpickler(rlast_job_done).load())
+                debug.println(pickle.Unpickler(rlast_job_done).load())
             self.create()
 
     def create(self):

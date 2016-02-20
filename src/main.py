@@ -2,10 +2,11 @@
 
 from constantes import *
 from exceptions import ErreurRepertoire
+import debug
 
 if os.path.split(os.getcwd())[1] != "src":
     raise ErreurRepertoire("Le répertoire courant n'est pas correct, le jeu ne peut pas se lancer")
-print("Chargement ...")
+debug.println("Chargement ...")
 
 import socket
 from glob import glob
@@ -29,11 +30,11 @@ def get_alea_text(path: str="textes") -> str:
 def main():
     start_at = time.time()
     tmp = pygame.init()
-    print("Initialisation de Pygame ... {modules} ; {erreurs}".format(
+    debug.println("Initialisation de Pygame ... {modules} ; {erreurs}".format(
         modules="Modules chargés : {}".format(tmp[0]),
         erreurs="Erreurs de chargement : {}".format(tmp[1])
     ))
-    print("Initialisation de Pygame.Font ...", pygame.font.init())
+    debug.println("Initialisation de Pygame.Font ...", pygame.font.init())
 
     ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
     clock = pygame.time.Clock()
@@ -62,7 +63,7 @@ def main():
                                       encoding='utf-8').read(),
                                  1, (255, 255, 255))
 
-    print("Appuyez sur 'J' pour lancer le jeu")
+    debug.println("Appuyez sur 'J' pour lancer le jeu")
 
     continuer = 1
     has_already_played = adventure.has_already_played()
@@ -70,8 +71,8 @@ def main():
     en_reseau = False
     avancement = 0
 
-    print("Menu chargé en %3.4f sec" % (time.time() - start_at))
-    print("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
+    debug.println("Menu chargé en %3.4f sec" % (time.time() - start_at))
+    debug.println("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
 
     while continuer:
         dt = clock.tick()
@@ -128,7 +129,7 @@ def main():
                 temp.load()
                 del temp
                 if en_reseau:
-                    print("Entrée en mode réseau ...")
+                    debug.println("Entrée en mode réseau ...")
                     ecran.fill(0)
                     pygame.display.flip()
                     ip = TextBox(ecran, x=100, y=ecran.get_height() // 2,
@@ -157,7 +158,7 @@ def main():
 
     pygame.quit()
 
-    print("Le programme s'est terminé proprement")
+    debug.println("Le programme s'est terminé proprement")
 
 if __name__ == '__main__':
     main()

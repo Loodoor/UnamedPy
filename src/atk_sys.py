@@ -1,11 +1,11 @@
 # coding=utf-8
 
-import pygame
 from gui import GUIBulle, GUIBulleWaiting
 from constantes import *
 from utils import upg_bar
 import creatures_mgr
 from zones_attaques_manager import ZonesManager
+import debug
 
 
 def calcul_degats(degats_basiques: int, specs_atk: dict, specs_def: dict, coeff_types: int, my_type: int) -> int:
@@ -39,8 +39,8 @@ class Combat:
         self.equipe = equipe
 
     def on_start(self):
-        print("adv id", self.adversaire.get_id())
-        print("zid", self.zid)
+        debug.println("adv id", self.adversaire.get_id())
+        debug.println("zid", self.zid)
 
     def find_adv(self):
         self.adversaire = creatures_mgr.Creature(*self.zones_mgr.get_new_adversary(self.zid), indexer=self.indexer)

@@ -4,6 +4,7 @@ from constantes import *
 from pickle import Pickler, Unpickler
 from gui import GUIBulleWaiting, GUIBulleAsking
 import pygame
+import debug
 
 
 # Attention, y a du hardcode dans l'air ^^'
@@ -78,7 +79,7 @@ class Adventure:
                 self._begin()
             self.progress += 1
         else:
-            print("Merci de charger l'AdventureManager avant d'utiliser cette méthode")
+            debug.println("Merci de charger l'AdventureManager avant d'utiliser cette méthode")
 
     def set_pseudo(self, new: str):
         self.user_pseudo = new
@@ -99,7 +100,7 @@ class Adventure:
             with open(os.path.join("..", "assets", "aventure", "beginning_text.txt")) as begin_read:
                 self.beginning_text = begin_read.readlines()
         except OSError:
-            print("Un fichier de sauvegarde n'existe pas. Impossible de continuer.")
+            debug.println("Un fichier de sauvegarde n'existe pas. Impossible de continuer.")
             sys.exit(0)
         self.loaded = True
 
