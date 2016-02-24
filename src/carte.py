@@ -114,7 +114,7 @@ class CartesManager:
     def __init__(self, ecran: pygame.Surface, renderer_manager):
         self.ecran = ecran
         self.rd_mgr = renderer_manager
-        self.map_path = os.path.join("..", "saves", "map", "map" + EXTENSION)
+        self.map_path = os.path.join("..", "assets", "map", "map" + EXTENSION)
         self.maps = {}
         self.fov = [0, FIRST_BASIC_FOV, 0, FIRST_BASIC_FOV2]
         self.offsets = [0, 0]
@@ -168,7 +168,7 @@ class CartesManager:
     def collide_at(self, x, y):
         if self.current_carte.get_building_id_at(x, y) == BUILDING_GET_ERROR:
             return self.current_carte.collide_at(x, y)
-        self.change_map(os.path.join("..", "saves", "map", "map" + self.current_carte.get_building_id_at(x, y) + EXTENSION))
+        self.change_map(os.path.join("..", "assets", "map", "map" + self.current_carte.get_building_id_at(x, y) + EXTENSION))
         return False
 
     def change_map(self, new_path: str):

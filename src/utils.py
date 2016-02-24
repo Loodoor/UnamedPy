@@ -91,7 +91,7 @@ def ucount_in_list(*args):
 
 def uhas_already_played() -> bool:
     mapping = glob(os.path.join("..", "saves", "*" + EXTENSION))
-    if not mapping or (mapping and os.path.join("..", "saves", "map" + EXTENSION) in mapping and len(mapping) == 1):
+    if not mapping:
         return False
     return True
 

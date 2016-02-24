@@ -5,10 +5,10 @@ import os
 
 
 def main():
-    with open(os.path.join("..", "saves", "map", "map.umd"), "wb") as map_:
+    with open(os.path.join("..", "assets", "map", "map.umd"), "wb") as map_:
         paths = {
-            "1": ["..", "saves", "map", "map0.umd"],
-            "2": ["..", "saves", "map", "map1.umd"]
+            "1": ["..", "assets", "map", "map0.umd"],
+            "2": ["..", "assets", "map", "map1.umd"]
         }
         done = input("Continuer [O/N] ? > ").lower() == 'n'
         while not done:

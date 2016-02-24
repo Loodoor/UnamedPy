@@ -1,6 +1,6 @@
 import os
 
-path = os.path.join("..", "saves", "map.umd")
+path = os.path.join("..", "assets", "map.umd")
 
 if os.path.exists(path):
     os.remove(path)

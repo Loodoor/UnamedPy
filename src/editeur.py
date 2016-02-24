@@ -9,11 +9,11 @@ from utils import unothing, udel_same_occurence
 from animator import BaseMultipleSpritesAnimator, FluidesAnimator
 
 
-print("Chemin vers le dossier des cartes : {}".format(os.path.join("..", "saves", "map")))
+print("Chemin vers le dossier des cartes : {}".format(os.path.join("..", "assets", "map")))
 
 map_path = input("Path vers la map (laissez vide pour garder la valeur par défaut) : ")
 if map_path == "":
-    map_path = os.path.join("..", "saves", "map", "start" + EXTENSION)
+    map_path = os.path.join("..", "assets", "map", "map0" + EXTENSION)
     print("Chargement de la map par défaut")
 YTAILLE, XTAILLE, zid = 24, 24, 0
 if not os.path.exists(map_path):
