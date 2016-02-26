@@ -11,9 +11,9 @@ class RendererManager:
         self._special = False
 
     def unlock_special(self):
-        print(self.current_renderer)
-        self.change_for_last_renderer()
-        print(self.current_renderer)
+        self.queue.pop()
+        self.current_renderer = self.queue.pop()
+        self._special = False
 
     def is_current_special(self) -> bool:
         return self._special
@@ -41,9 +41,9 @@ class RendererManager:
         self._special = False
 
     def change_for_special_renderer(self, new_renderer: int):
-        self._special = True
         self.queue.append(self.current_renderer)
         self.current_renderer = new_renderer
+        self._special = True
 
     def change_without_logging_last(self, new_renderer: int):
         self.current_renderer = new_renderer

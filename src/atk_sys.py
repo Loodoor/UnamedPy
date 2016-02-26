@@ -220,7 +220,7 @@ class Combat:
                              (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR))
         # affichage des noms des créatures
         if self.indexer.get_captured(self.get_adversary().get_id()):
-            self.ecran.blit(self.indexer.get_by_id(self.get_adversary()).get_pseudo(),
+            self.ecran.blit(self.indexer.get_by_id(self.get_adversary().get_id()).name,
                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME))
         else:
             self.ecran.blit(self.font.render("???", 1, (10, 10, 10)),

@@ -193,7 +193,8 @@ class Game:
                 if to_go == RENDER_COMBAT and not self.cur_combat:
                     pass
                 else:
-                    self.renderer_manager.change_for_special_renderer(to_go)
+                    if not self.renderer_manager.is_current_special():
+                        self.renderer_manager.change_for_special_renderer(to_go)
                 self.personnage.inventaire.close()
             self._manage_object_action()
 
@@ -380,31 +381,31 @@ class Game:
                 self.personnage.inventaire.close()
 
     def _manage_object_action(self):
-        done = False
+        def done(self):
+            self.renderer_manager.unlock_special()
+            self.personnage.inventaire.clear_obj_messenger()
+            self.render()
+
         if self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_GAME:
             if self.personnage.inventaire.get_obj_messenger().objet["id"] == OBJETS_ID.Chaussures:
                 self.personnage.run()
-                done = True
+                done(self)
             if self.personnage.inventaire.get_obj_messenger().objet["id"] == OBJETS_ID.Velo:
                 self.personnage.ride()
-                done = True
+                done(self)
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_COMBAT:
             if self.cur_combat:
                 passed = len([1 for _ in range(MAX_ESSAIS_BALL) if random.random() <= self.personnage.inventaire.get_obj_messenger().objet["capture"]])
+                done(self)
                 if passed / MAX_ESSAIS_BALL >= PERCENT_CAPTURE_NECESSAIRE:
                     self.cur_combat.end_fight_for_capture()
-                done = True
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_CREATURES:
             if self.equipe_mgr.is_a_creature_selected():
                 cat, new = self.personnage.inventaire.get_obj_messenger().objet["spec"], \
                     self.personnage.inventaire.get_obj_messenger().objet["new"]
                 new += self.equipe_mgr.get_selected_creature().get_specs()[cat]
                 self.equipe_mgr.get_selected_creature().set_spec(categorie=cat, new=new)
-                done = True
-
-        if done:
-            self.renderer_manager.unlock_special()
-            self.personnage.inventaire.clear_obj_messenger()
+                done(self)
 
     def process_events_game(self, event: pygame.event, dt: int=1):
         # clavier
