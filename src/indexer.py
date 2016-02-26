@@ -164,6 +164,7 @@ class Indexer:
                 for elem in self.indexer:
                     img = pygame.image.load(elem.path).convert_alpha()
                     self.images_crea[elem.id] = pygame.transform.scale(img, (POK_SX_IMAGE_CREA, POK_SY_IMAGE_CREA))
+                self.creas_selected = self.indexer
         else:
             raise CreaturesNonTrouvees
         self.typeur.load()
@@ -247,7 +248,7 @@ class Indexer:
         self.render()
 
     def render_sel_stade(self):
-        while 1:
+        while True:
             pygame.draw.rect(self.ecran, (0, 0, 0), (POK_X_FENSST, POK_Y_FENSST, POK_SX_FENSST, POK_SY_FENSST))
             selected = 0
             tmp = self.police.render("Stade à sélectionner : " + str(selected), 1, (255, 255, 255))
@@ -282,9 +283,9 @@ class Indexer:
 
                 if not vu and not capture:
                     nom = "???"
-                    type_ = "???"
+                    type_ = "NA"
 
-                self.ecran.blit(self.police.render(str(nom) + " - Type : " + str(type_), 1, (255, 255, 255)),
+                self.ecran.blit(self.police.render("Nom : {} - Type : {}".format(nom, type_), 1, (255, 255, 255)),
                                 (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
 
                 if self.selected_creature == i:
