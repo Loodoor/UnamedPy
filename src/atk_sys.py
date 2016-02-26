@@ -243,10 +243,11 @@ class Combat:
 
         # affichage des noms des créatures
         if self.indexer.get_captured(self.get_adversary().get_id()):
-            self.ecran.blit(self.indexer.get_by_id(self.get_adversary().get_id()).name,
+            self.ecran.blit("{} :: niv. {}".format(self.indexer.get_by_id(self.get_adversary().get_id()).name, self.get_adversary().get_niv()),
                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME))
         else:
-            self.ecran.blit(self.font.render("???", 1, (10, 10, 10)),
+            self.ecran.blit(self.font.render("??? :: niv. {}".format(self.get_adversary().get_niv()),
+                                             1, (10, 10, 10)),
                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
         self.ecran.blit(self.font.render("{} :: niv. {}".format(self.get_my_creature().get_pseudo(), self.get_my_creature().get_niv()),
                                          1, (10, 10, 10)),
