@@ -13,7 +13,7 @@ def println(*args, sep=" ", end="\r\n"):
 
 
 def onscreen_debug(ecran: pygame.Surface, font: pygame.font.SysFont, *debug_infos, **kwargs):
-    if DEBUG_LEVEL == 2:
+    if DEBUG_LEVEL >= 2:
         start_y = kwargs.get("y", 0)
         start_x = kwargs.get("x", 0)
         line_height = kwargs.get("line_height", 18)

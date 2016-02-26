@@ -11,7 +11,9 @@ class RendererManager:
         self._special = False
 
     def unlock_special(self):
+        print(self.current_renderer)
         self.change_for_last_renderer()
+        print(self.current_renderer)
 
     def is_current_special(self) -> bool:
         return self._special

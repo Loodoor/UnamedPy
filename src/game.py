@@ -392,9 +392,8 @@ class Game:
             if self.cur_combat:
                 passed = len([1 for _ in range(MAX_ESSAIS_BALL) if random.random() <= self.personnage.inventaire.get_obj_messenger().objet["capture"]])
                 if passed / MAX_ESSAIS_BALL >= PERCENT_CAPTURE_NECESSAIRE:
-                    self.renderer_manager.unlock_special()
-                    self.personnage.inventaire.clear_obj_messenger()
                     self.cur_combat.end_fight_for_capture()
+                done = True
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_CREATURES:
             if self.equipe_mgr.is_a_creature_selected():
                 cat, new = self.personnage.inventaire.get_obj_messenger().objet["spec"], \
@@ -479,7 +478,7 @@ class Game:
         self.top, self.bottom, self.right, self.left = [False] * 4
 
     def prepare(self):
-        # Variables ayant besoin d'être rechargés avant le lancement du jeu (en cas de lancement multiple du jeu)
+        # Variables ayant besoin d'être rechargées avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
 
         self.renderer_manager.clear_all()
