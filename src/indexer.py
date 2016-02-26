@@ -33,43 +33,53 @@ class Typeur:
         self.types = {
             T_TENEBRE: {
                 'default': "ténèbre",
-                'user': ''
+                'user': '',
+                'saw': 0
             },
             T_LUMIERE: {
                 'default': "lumière",
-                'user': ''
+                'user': '',
+                'saw': 0
             },
             T_FEU: {
                 'default': "feu",
-                'user': ''
+                'user': '',
+                'saw': 0
             },
             T_NORMAL: {
                 'default': "normal",
-                'user': ''
+                'user': '',
+                'saw': 0
             },
             T_AIR: {
                 'default': "air",
-                'user': ''
+                'user': '',
+                'saw': 0
             },
             T_EAU: {
                 'default': "eau",
-                'user': ''
+                'user': '',
+                'saw': 0
             },
             T_ELEC: {
                 'default': "électrique",
-                'user': ''
+                'user': '',
+                'saw': 0
             },
             T_PLANTE: {
                 'default': "plante",
-                'user': ''
+                'user': '',
+                'saw': 0
             },
             T_PLASMA: {
                 'default': "plasma",
-                'user': ''
+                'user': '',
+                'saw': 0
             },
             T_TERRE: {
                 'default': "terre",
-                'user': ''
+                'user': '',
+                'saw': 0
             }
         }
         self.path = os.path.join("..", "saves", "types" + EXTENSION)
@@ -94,6 +104,12 @@ class Typeur:
 
     def get_types(self):
         return self.user_types
+
+    def get_views_on(self, type_: int):
+        return self.types[type_]['saw']
+
+    def saw_type(self, type_: int):
+        self.types[type_]['saw'] += 1
 
     @staticmethod
     def count_types():
@@ -191,6 +207,7 @@ class Indexer:
         for elem in self.indexer:
             if id_ == elem.id:
                 elem.vu_()
+                self.typeur.saw_type(elem.type)
                 break
 
     def capturer(self, id_: int):
@@ -301,7 +318,8 @@ class Indexer:
             for t_id, type_name in self.typeur.get_types().items():
                 suffixe = "er  " if i == 0 else "ème"
                 chaine = str(t_id + 1)
-                texte = self.police.render('- ' + ('0' * 1 if i <= 8 else '') + chaine + suffixe + " -> '" + type_name + "'",
+                texte = self.police.render('- ' + ('0' * 1 if i <= 8 else '') + "{}{} -> '{}', vu {} fois"
+                                           .format(chaine, suffixe, type_name, self.typeur.get_views_on(t_id)),
                                            1, (255, 255, 255))
                 self.ecran.blit(texte, (POK_X_TYPE, POK_Y_TYPE + i * POK_SY_TYPE))
                 i += 1
