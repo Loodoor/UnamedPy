@@ -252,6 +252,9 @@ class Combat:
         self.ecran.blit(self.font.render("{} :: niv. {}".format(self.get_my_creature().get_pseudo(), self.get_my_creature().get_niv()),
                                          1, (10, 10, 10)),
                         (COMB_X_ME, COMB_Y_ME - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 4))
+        etat = "Empoisonné" if self.get_my_creature().get_state() == SPEC_ETATS.poisone else "Brûlé" if self.get_my_creature().get_state() == SPEC_ETATS.brule else "Normal"
+        self.ecran.blit(self.font.render(etat, 1, (10, 10, 10)),
+                        (COMB_X_ME, COMB_Y_ME - COMB_SY_TXT_NAME - 4))
 
         # affichage d'un indicateur pour dire s'il on a déjà capturé la créature adverse ou non
         if self.indexer.get_captured(self.get_adversary()):
