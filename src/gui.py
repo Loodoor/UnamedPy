@@ -15,7 +15,7 @@ class GUIBulle:
         self.font = font
         self.image = pygame.image.load(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
         self.iw, self.ih = self.image.get_size()
-        self.txt_renderer = self.font.render("", 1, (10, 10, 10))
+        self.txt_renderer = self.font.render(" ", 1, (10, 10, 10))
         self.create_text_renderers()
 
     def set_text(self, new: str or list):
@@ -78,7 +78,8 @@ class GUIBulleAsking(GUIBulleWaiting):
         self.text_box = TextBox(self.ecran, x=self.pos[0] + self.txt_renderer.get_width() // 2 + self.iw // 2,
                                 y=self.pos[1] + (self.ih - self.txt_renderer.get_height() - 4) // 2,
                                 bgcolor=(120, 120, 120),
-                                sy=self.txt_renderer.get_height() + 4)
+                                sy=self.txt_renderer.get_height() + 4,
+                                font=self.font)
 
     def render(self):
         self.ecran.blit(self.image, self.pos)
