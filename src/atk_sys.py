@@ -209,9 +209,11 @@ class Combat:
     def render(self):
         # en attendant d'avoir un paysage
         pygame.draw.rect(self.ecran, (50, 50, 180), (COMB_X, COMB_Y, COMB_SX, COMB_SY))
+
         # affichage des créatures
         self.ecran.blit(self.get_adversary().get_image(), (COMB_X_ADV, COMB_Y_ADV))
         self.ecran.blit(self.get_my_creature().get_image(), (COMB_X_ME, COMB_Y_ME))
+
         # affichage des stats
         if not self.get_adversary().is_dead():
             upg_bar(self.ecran, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
@@ -224,7 +226,14 @@ class Combat:
                     self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
         else:
             pygame.draw.rect(self.ecran, (128, 128, 128),
-                             (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR))
+                             (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR * 2, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR))
+        self.ecran.blit(self.font.render("PV: {}".format(self.get_my_creature().get_pvs()), 1, (10, 10, 10)),
+                        (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 8))
+
+        # xp de ma créature
+        upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_XP_BAR, COMB_SX_XP_BAR, COMB_SY_XP_BAR),
+                self.get_my_creature().get_xp() // self.get_my_creature().get_seuil_xp() * (COMB_SX_XP_BAR - BAR_ESP * 2))
+
         # affichage des noms des créatures
         if self.indexer.get_captured(self.get_adversary().get_id()):
             self.ecran.blit(self.indexer.get_by_id(self.get_adversary().get_id()).name,
@@ -233,10 +242,12 @@ class Combat:
             self.ecran.blit(self.font.render("???", 1, (10, 10, 10)),
                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
         self.ecran.blit(self.font.render(self.get_my_creature().get_pseudo(), 1, (10, 10, 10)),
-                        (COMB_X_ME, COMB_Y_ME - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
+                        (COMB_X_ME, COMB_Y_ME - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 4))
+
         # affichage d'un indicateur pour dire s'il on a déjà capturé la créature adverse ou non
         if self.indexer.get_captured(self.get_adversary()):
             self.ecran.blit(self.indic_captured, (COMB_X_ADV + COMB_CHECK_SX + 10, COMB_Y_ADV - COMB_SY_TXT_NAME))
+
         # affichage du choix des attaques
         i = 1
         for atk in self.get_my_creature().get_attacks():
@@ -250,6 +261,7 @@ class Combat:
             self.ecran.blit(self.font.render("Description: " + atk.get_texte(), 1, (10, 10, 10)),
                             (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + COMB_SY_TXT_NAME))
             i += 1
+
         # affichage du nombre PPS
         self.ecran.blit(self.font.render("PP : " + str(self.get_my_creature().get_pps()) + "/" +
                                          str(self.get_my_creature().get_max_pps()), 1, (10, 10, 10)),

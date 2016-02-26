@@ -93,7 +93,7 @@ class Typeur:
 
     def change_name(self, type_: int, new_name: str):
         if type_ in self.types.keys():
-            self.types[type]['user'] = new_name
+            self.types[type_]['user'] = new_name
         self.__create_user_type()
 
     def get_name(self, type_: int):
@@ -285,7 +285,7 @@ class Indexer:
         if self.render_creatures:
             for elem in self.creas_selected:
                 nom = elem.name
-                vu, capture, type_ = elem.vu, elem.capture, elem.type
+                vu, capture, type_ = elem.vu, elem.capture, self.typeur.get_name(elem.type)
 
                 if not vu and not capture:
                     nom = "???"
