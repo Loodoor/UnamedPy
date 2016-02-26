@@ -92,7 +92,7 @@ class Typeur:
             self.user_types[k] = v['user']
 
     def change_name(self, type_: int, new_name: str):
-        if type_ in self.types.keys():
+        if type_ in self.types.keys() and not self.types[type_]['user']:
             self.types[type_]['user'] = new_name
         self.__create_user_type()
 

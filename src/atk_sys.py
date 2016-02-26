@@ -48,6 +48,12 @@ class Combat:
         name_for_crea = t.get_text()
         del t
         self.indexer.add_name_to_crea(self.adversaire.get_id(), name_for_crea)
+        if not self.indexer.get_typeur().get_name(self.get_adversary().get_type()):
+            g = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour ce type de créature : ", self.font)
+            g.update()
+            type_name = g.get_text()
+            del g
+            self.indexer.get_typeur().change_name(self.get_adversary().get_type(), type_name)
 
     def find_adv(self):
         self.adversaire = creatures_mgr.Creature(*self.zones_mgr.get_new_adversary(self.zid), indexer=self.indexer)
@@ -232,7 +238,8 @@ class Combat:
 
         # xp de ma créature
         upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_XP_BAR, COMB_SX_XP_BAR, COMB_SY_XP_BAR),
-                self.get_my_creature().get_xp() // self.get_my_creature().get_seuil_xp() * (COMB_SX_XP_BAR - BAR_ESP * 2))
+                int(self.get_my_creature().get_xp() / self.get_my_creature().get_seuil_xp() * (COMB_SX_XP_BAR - BAR_ESP * 2)),
+                esp=1)
 
         # affichage des noms des créatures
         if self.indexer.get_captured(self.get_adversary().get_id()):
