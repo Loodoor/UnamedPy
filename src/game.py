@@ -105,6 +105,7 @@ class Game:
             # on vient de commencer
             self.equipe_mgr.add_creature(Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))
             self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
+            self.indexeur.add_name_to_crea(self.equipe_mgr.get_creature(0).get_id(), self.adventure.get_values()['first creature name'])
 
         self.tab_types.init_tab()
 
@@ -528,6 +529,7 @@ class Game:
             if self.cur_combat and not self.cur_combat.is_finished():
                 self.cur_combat.update()
             if self.cur_combat.is_finished():
+                self.cur_combat.on_end()
                 self.renderer_manager.change_for_last_renderer()
                 self.cur_combat = None
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:

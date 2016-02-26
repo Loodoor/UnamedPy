@@ -174,6 +174,12 @@ class Indexer:
             pickle.Pickler(save_index).dump(self.indexer)
         self.typeur.save()
 
+    def add_name_to_crea(self, id_: int, name: str):
+        for creature in self.indexer:
+            if creature.id == id_:
+                creature.name = name.upper()
+                break
+
     def get_image_by_id(self, id_: int):
         return self.images_crea[id_] if id_ in self.images_crea.keys() else pygame.Surface((150, 150))
 

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from gui import GUIBulle, GUIBulleWaiting
+from gui import GUIBulle, GUIBulleWaiting, GUIBulleAsking
 from constantes import *
 from utils import upg_bar
 import creatures_mgr
@@ -41,6 +41,13 @@ class Combat:
     def on_start(self):
         debug.println("adv id", self.adversaire.get_id())
         debug.println("zid", self.zid)
+
+    def on_end(self):
+        t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour cette créature : ", self.font)
+        t.update()
+        name_for_crea = t.get_text()
+        del t
+        self.indexer.add_name_to_crea(self.adversaire.get_id(), name_for_crea)
 
     def find_adv(self):
         self.adversaire = creatures_mgr.Creature(*self.zones_mgr.get_new_adversary(self.zid), indexer=self.indexer)

@@ -84,7 +84,7 @@ class Creature:
         return self.dead
 
     def _calc_seuil_xp(self):
-        return int(SPEC_SEUIL_XP_LVL_UP / 2 * math.sqrt(self.get_niv() + 1) * 0.9)
+        return int(SPEC_SEUIL_XP_LVL_UP / 2 * math.sqrt(self.get_niv() + 1) * 1.2)
 
     def get_seuil_xp(self):
         return self._calc_seuil_xp()
