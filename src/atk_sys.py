@@ -248,7 +248,8 @@ class Combat:
         else:
             self.ecran.blit(self.font.render("???", 1, (10, 10, 10)),
                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
-        self.ecran.blit(self.font.render(self.get_my_creature().get_pseudo(), 1, (10, 10, 10)),
+        self.ecran.blit(self.font.render("{} :: niv. {}".format(self.get_my_creature().get_pseudo(), self.get_my_creature().get_niv()),
+                                         1, (10, 10, 10)),
                         (COMB_X_ME, COMB_Y_ME - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 4))
 
         # affichage d'un indicateur pour dire s'il on a déjà capturé la créature adverse ou non
