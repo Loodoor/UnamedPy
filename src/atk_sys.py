@@ -45,7 +45,7 @@ class Combat:
         self.has_started = True
 
     def on_end(self):
-        if not self.indexer.get_viewed(self.get_adversary().get_id()) or not self.indexer.get_captured(self.get_adversary().get_id()):
+        if not self.indexer.get_viewed(self.get_adversary().get_id()):
             t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour cette créature : ", self.font)
             t.update()
             name_for_crea = t.get_text()
