@@ -123,7 +123,7 @@ class Creature:
             if self.specs[SPEC_PPS] > 0:
                 self.specs[SPEC_PPS] -= 1
                 return self.attaques[attaque_nb].utiliser()
-            return 0
+            return -1
         raise ValueError("Le numéro de l'attaque demandée n'est pas disponnible ({})".format(attaque_nb))
 
     def lutte(self) -> int:

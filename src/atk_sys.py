@@ -199,10 +199,20 @@ class Combat:
         self.selected_atk = self.selected_atk - 1 if self.selected_atk > 0 else 3
 
     def attaquer(self):
-        if 0 <= self.selected_atk <= MAX_ATK - 1:
+        if 0 <= self.selected_atk <= len(self.get_my_creature().get_attacks()) - 1:
             dgts = self.get_my_creature().attaquer(self.selected_atk)
-            self.get_adversary().taper(dgts)
-            self.valide()
+            if dgts != -1:
+                self.get_adversary().taper(dgts)
+                self.valide()
+            else:
+                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                    [
+                                        "{} n'a plus de PP pour attaquer !".format(self.get_my_creature().get_pseudo()),
+                                        "{} utilise lutte !".format(self.get_my_creature().get_pseudo())
+                                    ], self.font)
+                g.update()
+                del g
+                self.get_adversary().taper(self.get_my_creature().lutte())
 
     def valide(self):
         self.has_attacked = True
@@ -246,7 +256,7 @@ class Combat:
                 esp=1)
 
         # affichage des noms des créatures
-        if self.indexer.get_captured(self.get_adversary().get_id()) or self.indexer.get_viewed(self.get_adversary().get_id()):
+        if self.indexer.get_viewed(self.get_adversary().get_id()):
             self.ecran.blit(self.font.render("{} :: niv. {}".format(
                             self.indexer.get_by_id(self.get_adversary().get_id()).name,
                             self.get_adversary().get_niv()), 1, (10, 10, 10)),
