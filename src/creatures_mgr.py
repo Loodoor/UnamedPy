@@ -7,16 +7,20 @@ import random
 
 
 class Attaque:
-    def __init__(self, nom: str, type_: int, degats: int, texte: str):
+    def __init__(self, nom: str, type_: int, degats: int, texte: str, cout: int=1):
         self.attaque = {
             ATK_NOM: nom,
             ATK_TYP: type_,
             ATK_DEGATS: degats,
             ATK_TXT: texte,
+            ATK_COUT: cout
         }
 
     def utiliser(self):
         return self.attaque[ATK_DEGATS]
+
+    def get_cout(self):
+        return self.attaque[ATK_COUT]
 
     def get_nom(self):
         return self.attaque[ATK_NOM]
@@ -121,7 +125,7 @@ class Creature:
     def attaquer(self, attaque_nb: int) -> int:
         if 0 <= attaque_nb < MAX_ATK:
             if self.specs[SPEC_PPS] > 0:
-                self.specs[SPEC_PPS] -= 1
+                self.specs[SPEC_PPS] -= self.attaques[attaque_nb].get_cout()
                 return self.attaques[attaque_nb].utiliser()
             return -1
         raise ValueError("Le numéro de l'attaque demandée n'est pas disponnible ({})".format(attaque_nb))

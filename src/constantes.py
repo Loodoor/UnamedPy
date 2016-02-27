@@ -487,6 +487,7 @@ ATK_NOM = 'nom'
 ATK_TYP = 'type'
 ATK_DEGATS = 'degats'
 ATK_TXT = 'texte'
+ATK_COUT = 'cout de l\'attaque'
 ATK_IMPOSSIBLE = -4
 
 PC_MAX_CREA = 150
