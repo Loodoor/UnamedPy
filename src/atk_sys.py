@@ -29,6 +29,7 @@ class Combat:
         self.indexer = indexer
         self.has_started = False
         self.has_attacked = False
+        self.has_captured = False
         self.is_running = True
         self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
         self.indic_captured = pygame.image.load(os.path.join("..", "assets", "gui", "captured.png")).convert_alpha()
@@ -41,19 +42,25 @@ class Combat:
     def on_start(self):
         debug.println("adv id", self.adversaire.get_id())
         debug.println("zid", self.zid)
+        self.has_started = True
 
     def on_end(self):
-        t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour cette créature : ", self.font)
-        t.update()
-        name_for_crea = t.get_text()
-        del t
-        self.indexer.add_name_to_crea(self.adversaire.get_id(), name_for_crea)
+        if not self.indexer.get_viewed(self.get_adversary().get_id()) or not self.indexer.get_captured(self.get_adversary().get_id()):
+            t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour cette créature : ", self.font)
+            t.update()
+            name_for_crea = t.get_text()
+            del t
+            self.indexer.add_name_to_crea(self.adversaire.get_id(), name_for_crea)
         if not self.indexer.get_typeur().get_name(self.get_adversary().get_type()):
             g = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour ce type de créature : ", self.font)
             g.update()
             type_name = g.get_text()
             del g
             self.indexer.get_typeur().change_name(self.get_adversary().get_type(), type_name)
+
+        self.indexer.vu_(self.get_adversary().get_id())
+        if self.has_captured:
+            self.indexer.capturer(self.get_adversary().get_id())
 
     def find_adv(self):
         self.adversaire = creatures_mgr.Creature(*self.zones_mgr.get_new_adversary(self.zid), indexer=self.indexer)
@@ -74,7 +81,7 @@ class Combat:
 
         g.update()
         del g
-        self.indexer.capturer(self.get_adversary().get_id())
+        self.has_captured = True
         self.equipe.add_creature(self.get_adversary())
         self.is_running = False
 
@@ -87,8 +94,6 @@ class Combat:
         if self.is_running:
             if not self.has_started:
                 self.on_start()
-                self.indexer.vu_(self.get_adversary().get_id())
-                self.has_started = True
 
             self.render()
 
@@ -241,9 +246,11 @@ class Combat:
                 esp=1)
 
         # affichage des noms des créatures
-        if self.indexer.get_captured(self.get_adversary().get_id()):
-            self.ecran.blit("{} :: niv. {}".format(self.indexer.get_by_id(self.get_adversary().get_id()).name, self.get_adversary().get_niv()),
-                            (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME))
+        if self.indexer.get_captured(self.get_adversary().get_id()) or self.indexer.get_viewed(self.get_adversary().get_id()):
+            self.ecran.blit(self.font.render("{} :: niv. {}".format(
+                            self.indexer.get_by_id(self.get_adversary().get_id()).name,
+                            self.get_adversary().get_niv()), 1, (10, 10, 10)),
+                            (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
         else:
             self.ecran.blit(self.font.render("??? :: niv. {}".format(self.get_adversary().get_niv()),
                                              1, (10, 10, 10)),

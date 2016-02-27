@@ -204,6 +204,12 @@ class Indexer:
                 return creature.capture
         return False
 
+    def get_viewed(self, id_: int):
+        for creature in self.indexer:
+            if creature.id == id_:
+                return creature.vu
+        return False
+
     def get_by_id(self, id_: int):
         for creature in self.indexer:
             if creature.id == id_:
