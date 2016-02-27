@@ -89,10 +89,6 @@ class Combat:
                 self.on_start()
                 self.indexer.vu_(self.get_adversary().get_id())
                 self.has_started = True
-                self.get_my_creature().add_attack("test", T_EAU, 50, "TEST d'attaque de type eau")
-                self.get_my_creature().add_attack("test2", T_EAU, 50, "TEST d'attaque de type eau")
-                self.get_my_creature().add_attack("test3", T_EAU, 50, "TEST d'attaque de type eau")
-                self.get_my_creature().add_attack("test4", T_EAU, 50, "TEST d'attaque de type eau")
 
             self.render()
 
@@ -106,6 +102,8 @@ class Combat:
                                     " ne sait pas quoi faire pour le moment !",
                                     self.font)
                 g.update()
+                del g
+                self.compteur_tour += 1
 
             if self.get_adversary().is_dead():
                 self._manage_adversary_death()
@@ -135,7 +133,6 @@ class Combat:
                                                              self.get_adversary().get_type()
                                                          ),
                                                          self.get_my_creature().get_type()))
-                self.compteur_tour += 1
                 self.has_attacked = False
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     self.get_my_creature().get_pseudo() +
@@ -144,12 +141,14 @@ class Combat:
                                     " !",
                                     self.font)
                 g.update()
+                self.compteur_tour += 1
         else:
             g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                 self.get_my_creature().get_pseudo() + " est paralisé ! Il n'a pas pu attaquer",
                                 self.font)
             g.update()
             del g
+            self.compteur_tour += 1
 
     def _manage_adversary_death(self):
         g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
