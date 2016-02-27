@@ -130,14 +130,6 @@ class Combat:
             self.bulle_que_doit_faire.update()
 
             if self.has_attacked:
-                self.get_adversary().taper(calcul_degats(self.get_my_creature().get_attacks()[self.selected_atk].get_dgts(),
-                                                         self.get_my_creature().get_specs(),
-                                                         self.get_adversary().get_specs(),
-                                                         self.storage.get_coeff(
-                                                             self.get_my_creature().get_type(),
-                                                             self.get_adversary().get_type()
-                                                         ),
-                                                         self.get_my_creature().get_type()))
                 self.has_attacked = False
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     self.get_my_creature().get_pseudo() +
@@ -203,7 +195,15 @@ class Combat:
         if 0 <= self.selected_atk <= len(self.get_my_creature().get_attacks()) - 1:
             dgts = self.get_my_creature().attaquer(self.selected_atk)
             if dgts != -1:
-                self.get_adversary().taper(dgts)
+                self.get_adversary().taper(
+                    calcul_degats(dgts,
+                                  self.get_my_creature().get_specs(),
+                                  self.get_adversary().get_specs(),
+                                  self.storage.get_coeff(
+                                      self.get_my_creature().get_type(),
+                                      self.get_adversary().get_type()
+                                  ),
+                                  self.get_my_creature().get_type()))
                 self.valide()
             else:
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
@@ -213,7 +213,16 @@ class Combat:
                                     ], self.font)
                 g.update()
                 del g
-                self.get_adversary().taper(self.get_my_creature().lutte())
+
+                self.get_adversary().taper(
+                    calcul_degats(self.get_my_creature().lutte(),
+                                  self.get_my_creature().get_specs(),
+                                  self.get_adversary().get_specs(),
+                                  self.storage.get_coeff(
+                                      self.get_my_creature().get_type(),
+                                      self.get_adversary().get_type()
+                                  ),
+                                  self.get_my_creature().get_type()))
 
     def valide(self):
         self.has_attacked = True
