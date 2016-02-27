@@ -164,6 +164,7 @@ class Combat:
 
         # gestion de l'xp
         level_up = self.get_my_creature().gagner_xp(self.get_adversary())
+        self.render()  # mise à jour de la barre d'xp
         if not isinstance(level_up, (int, float)):
             g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                 self.get_my_creature().get_pseudo() + " a gagné un niveau !",
