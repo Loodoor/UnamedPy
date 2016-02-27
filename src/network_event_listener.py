@@ -88,7 +88,7 @@ class NetworkEventsListener:
                 return json.loads(self._sock.recv(self._buffer_size).decode())
             except ConnectionResetError:
                 debug.println("La connexion a été fermée par le serveur. "
-                      "Contactez l'administrateur si vous pensez que cela est un problème technique")
+                              "Contactez l'administrateur si vous pensez que cela est un problème technique")
                 self.disable()
         return UDP_NOTHING_NEW
 

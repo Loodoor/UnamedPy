@@ -128,11 +128,10 @@ class Game:
         if self.joystick:
             self.joystick.update_states()
 
-        if event.type == QUIT:
+        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
             if self.network_ev_listener.enable():
                 self.network_ev_listener.disconnect()
-            self.save()
-            sys.exit()
+            self.continuer = False
 
         # Différents mode de gestion des événements
         if self.renderer_manager.get_renderer() == RENDER_GAME:
@@ -594,4 +593,13 @@ class Game:
 
             pygame.display.flip()
 
-        self.save()
+        print('out')
+
+        self.renderer_manager.change_renderer_for(RENDER_SAVE)
+        while True:
+            dt = self.fps_regulator.tick(FPS_base)
+            self.render(dt)
+
+            pygame.event.poll()
+
+            pygame.display.flip()
