@@ -131,13 +131,6 @@ class Combat:
 
             if self.has_attacked:
                 self.has_attacked = False
-                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                    self.get_my_creature().get_pseudo() +
-                                    " utilise " +
-                                    self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
-                                    " !",
-                                    self.font)
-                g.update()
                 self.compteur_tour += 1
         else:
             g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
@@ -195,25 +188,26 @@ class Combat:
         if 0 <= self.selected_atk <= len(self.get_my_creature().get_attacks()) - 1:
             dgts = self.get_my_creature().attaquer(self.selected_atk)
             if dgts != -1:
-                self.get_adversary().taper(
-                    calcul_degats(dgts,
-                                  self.get_my_creature().get_specs(),
-                                  self.get_adversary().get_specs(),
-                                  self.storage.get_coeff(
-                                      self.get_my_creature().get_type(),
-                                      self.get_adversary().get_type()
-                                  ),
-                                  self.get_my_creature().get_type()))
-                self.valide()
-            else:
+                self.get_adversary().taper(calcul_degats(dgts,
+                                                         self.get_my_creature().get_specs(),
+                                                         self.get_adversary().get_specs(),
+                                                         self.storage.get_coeff(
+                                                             self.get_my_creature().get_type(),
+                                                             self.get_adversary().get_type()
+                                                         ),
+                                                         self.get_my_creature().get_type()))
+
+                self.render()
+
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                    [
-                                        "{} n'a plus de PP pour attaquer !".format(self.get_my_creature().get_pseudo()),
-                                        "{} utilise lutte !".format(self.get_my_creature().get_pseudo())
-                                    ], self.font)
+                                    self.get_my_creature().get_pseudo() +
+                                    " utilise " +
+                                    self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
+                                    " !",
+                                    self.font)
                 g.update()
                 del g
-
+            else:
                 self.get_adversary().taper(
                     calcul_degats(self.get_my_creature().lutte(),
                                   self.get_my_creature().get_specs(),
@@ -223,9 +217,20 @@ class Combat:
                                       self.get_adversary().get_type()
                                   ),
                                   self.get_my_creature().get_type()))
+                self.render()
+
+                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                    [
+                                        "{} n'a plus de PP pour attaquer !".format(self.get_my_creature().get_pseudo()),
+                                        "{} utilise lutte !".format(self.get_my_creature().get_pseudo())
+                                    ], self.font)
+                g.update()
+                del g
 
     def valide(self):
-        self.has_attacked = True
+        if 0 <= self.selected_atk < len(self.get_my_creature().get_attacks()):
+            self.has_attacked = True
+            self.attaquer()
 
     def mouseover(self, xp: int, yp: int):
         if COMB_X_ATK <= xp <= COMB_X_ATK + COMB_SX_ATK_FIELD:
@@ -234,7 +239,7 @@ class Combat:
 
     def clic(self, xp: int, yp: int):
         self.mouseover(xp, yp)
-        self.attaquer()
+        self.valide()
 
     def render(self):
         # en attendant d'avoir un paysage
