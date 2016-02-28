@@ -27,6 +27,9 @@ class Element:
     def get_stade(self):
         return self.stade
 
+    def get_type(self):
+        return self.type
+
 
 class Typeur:
     def __init__(self):
@@ -255,6 +258,30 @@ class Indexer:
                     work.append(creature)
             return work
         return indexer
+
+    @staticmethod
+    def static_select_all_crea_with_type(type_: int):
+        save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
+        if os.path.exists(save_path):
+            with open(save_path, "rb") as read_index:
+                indexer = pickle.Unpickler(read_index).load()
+        else:
+            raise CreaturesNonTrouvees
+
+        work = []
+        for creature in indexer:
+            if creature.get_type() == type_:
+                work.append(creature)
+        return work
+
+    @staticmethod
+    def static_select_all_crea_with_type_and_stade(type_: int, stade: int):
+        tmp = Indexer.static_select_all_crea_with_type(type_)
+        work = []
+        for creature in tmp:
+            if creature.get_stade() == stade:
+                work.append(creature)
+        return work
 
     def update(self):
         self.render()
