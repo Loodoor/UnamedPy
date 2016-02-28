@@ -156,27 +156,32 @@ class ULoader:
         # l'id doit etre unique
         # la description peut être vide, mais c'est mieux de la remplir
 
-        Indexer.add_new("", 0, T_FEU, 0, self.pack_creatures + "feu-01.png",
-                        "Cette créature vit en groupe au coeur d'un volcan dont elle n'émerge que très rarement.")
-
-        Indexer.add_new("", 1, T_LUMIERE, 0, self.pack_creatures + "lumiere-01-a1.png",
-                        "Cette créature très timide se redresse lorsqu'elle se sent menacée, et émet un vif rayon de "
-                        "lumière avec ses plaques ventrales pour faire fuir l'ennemi.")
-        Indexer.add_new("", 2, T_LUMIERE, 1, self.pack_creatures + "lumiere-01-a2.png",
-                        "Cette créature s'est entourée de fourrure isolante pour préparer la métamorphose de son corps. "
-                        "Pour se protéger, elle peut émettre de la lumière à travers son cocon et utiliser ses pattes "
-                        "qui n'ont pas encore fini d'évoluer.")
-        Indexer.add_new("", 3, T_LUMIERE, 2, self.pack_creatures + "lumiere-01-a3.png",
-                        "La lumière intense émise par cette créature et les motifs sur ses ailes créent des jeux "
-                        "d'ombres monstrueux qui effraient ses prédateurs.")
-
-        Indexer.add_new("", 4, T_TENEBRE, 0, self.pack_creatures + "tenebre-01-a1.png",
-                        "Cette créature suit ses proies en glissant silencieusement au sol et sur les murs. "
-                        "Quand elle est suffisamment près, elle les avale tout rond.")
-        Indexer.add_new("", 5, T_TENEBRE, 1, self.pack_creatures + "tenebre-01-a2.png",
-                        "Cette créature avale ses proies en les recouvrant de son corps gluant.")
-        Indexer.add_new("", 6, T_TENEBRE, 2, self.pack_creatures + "tenebre-01-a3.png",
-                        "Cette créature jaillit de l'ombre pour saisir ses proies jusqu'à plusieurs mètres de distance.")
+        with open(path.join("..", "assets", "configuration", "creatures" + EXTENSION), "r", encoding="utf-8") as file:
+            for line in file.readlines():
+                if line[0] != "#":
+                    work = line.split('::')
+                    type_ = T_NORMAL  # defaut
+                    if work[1] == "FEU":
+                        type_ = T_FEU
+                    if work[1] == "EAU":
+                        type_ = T_EAU
+                    if work[1] == "PLANTE":
+                        type_ = T_PLANTE
+                    if work[1] == "ELEC":
+                        type_ = T_ELEC
+                    if work[1] == "AIR":
+                        type_ = T_AIR
+                    if work[1] == "NORMAL":
+                        type_ = T_NORMAL
+                    if work[1] == "TERRE":
+                        type_ = T_TERRE
+                    if work[1] == "PLASMA":
+                        type_ = T_PLASMA
+                    if work[1] == "LUMIERE":
+                        type_ = T_LUMIERE
+                    if work[1] == "TENEBRE":
+                        type_ = T_TENEBRE
+                    Indexer.add_new("", int(work[0]), type_, int(work[2]), self.pack_creatures + work[3], work[4])
 
         # Création des triggers
         # toujours définir un ID (str)

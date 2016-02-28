@@ -97,7 +97,7 @@ class Adventure:
                 self.user_pseudo = tmp['pseudo']
                 self.progress = tmp['progress']
         try:
-            with open(os.path.join("..", "assets", "aventure", "beginning_text.txt")) as begin_read:
+            with open(os.path.join("..", "assets", "aventure", "beginning_text.txt"), "r", encoding="utf-8") as begin_read:
                 self.beginning_text = begin_read.readlines()
         except OSError:
             debug.println("Un fichier de sauvegarde n'existe pas. Impossible de continuer.")
