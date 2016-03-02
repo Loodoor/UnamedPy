@@ -45,10 +45,14 @@ class BaseSideAnimator:
 
 
 class BaseMultipleSpritesAnimator:
-    def __init__(self, path: str, wait: float=0.0):
+    def __init__(self, path: str):
         self.path = path
         self.anims = []
-        self._wait = wait
+        if os.path.exists(os.path.join(path, "config.txt")):
+            self._config_file = eval(open(os.path.join(path, "config.txt"), "r", encoding="utf-8").read())
+        else:
+            self._config_file = {}
+        self._wait = self._config_file.get("anim_time", ANIM_DEFAULT_SPEED_MSPA)
         self._cur_anim = 0
         self._max_anim = 0
         self._last_time = 0

@@ -140,7 +140,7 @@ class CartesManager:
                 self.lassets.append(os.path.split(i)[1][:-4])
             # chargement d'une animation
             elif os.path.isdir(i):
-                self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i, wait=ANIM_DEFAULT_SPEED_MSPA)
+                self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
                 self.lassets.append(i.split(os.sep)[-1])
         self._load_animators()
         self.loaded = True
