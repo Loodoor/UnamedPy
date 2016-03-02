@@ -19,6 +19,7 @@ class Adventure:
         self.loaded = False
         self.values = {}
         self._first_creature_image = pygame.image.load(os.path.join("..", "assets", "creatures", "feu-01.png")).convert_alpha()
+        self._image_prof = pygame.image.load(os.path.join("..", "assets", "aventure", "professeur.png")).convert_alpha()
 
     def get_progress(self):
         return self.progress
@@ -49,6 +50,18 @@ class Adventure:
                     g.set_text(texte[:-1])
                 else:
                     g.set_text(texte[:-1].format(pseudo=self.user_pseudo))
+
+            if "creature image" in name_of_image:
+                self.ecran.blit(self._first_creature_image, (
+                    (self.ecran.get_width() - self._first_creature_image.get_width()) // 2,
+                    (self.ecran.get_height() - self._first_creature_image.get_height()) // 2
+                ))
+            if "image prof" in name_of_image:
+                self.ecran.blit(self._image_prof, (
+                    (self.ecran.get_width() - self._image_prof.get_width()) // 2,
+                    (self.ecran.get_height() - self._image_prof.get_height() - BULLE_SY) // 2
+                ))
+
             g.update()
 
             if ask_smth:
@@ -60,11 +73,6 @@ class Adventure:
                     with open(os.path.join("..", "saves", "pseudo" + EXTENSION), "wb") as pseudo_w:
                         Pickler(pseudo_w).dump(self.user_pseudo)
                 elif ask_for == "creature":
-                    if "creature image" in name_of_image:
-                        self.ecran.blit(self._first_creature_image, (
-                            (self.ecran.get_width() - self._first_creature_image.get_width()) // 2,
-                            (self.ecran.get_height() - self._first_creature_image.get_height()) // 2
-                        ))
                     t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom : ", self.font)
                     t.update()
                     self.values["first creature name"] = t.get_text()

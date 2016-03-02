@@ -1,10 +1,18 @@
+:image prof:
 Salut à toi ! Tu vas bientôt entrer dans le monde d'Unamed :)
+:image prof:
 Te sens-tu prêt ?
+:image prof:
 Voici maintenant l'étape cruciale de tout RPG :D !
+:image prof:
 >Quel sera ton nom ?>pseudo
+:image prof:
 Bien !
+:image prof:
 Maintenant tu vas reçevoir ta toute première créature !
 :creature image:
 >Comment souhaites-tu l'appeler ?>creature
+:image prof:
 Voilà qui est fait.
+:image prof:
 A très bientot sur l'île {pseudo} !
