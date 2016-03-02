@@ -156,8 +156,10 @@ def create_edit_zone():
                             (ecran.get_width() - marge, 310))
 
 
+def draw_tiles_tool_bar():
     y = ecran.get_height() - TILE_SIZE - 4
-    pygame.draw.rect(ecran, (128, 128, 128), ((ecran.get_width() - 41 * (TILE_SIZE + 2)) // 2, y - 4, (TILE_SIZE + 2) * 40, TILE_SIZE + 8))
+    pygame.draw.rect(ecran, (128, 128, 128),
+                     ((ecran.get_width() - 41 * (TILE_SIZE + 2)) // 2, y - 4, (TILE_SIZE + 2) * 40, TILE_SIZE + 8))
     for i in range(0, 20):
         tmp = (curpos + i - 10) % len(lassets)
         x = (ecran.get_width() - 20 * (TILE_SIZE + 2)) // 2 + (TILE_SIZE + 2) * (i - 10)
@@ -254,6 +256,7 @@ while continuer:
 
     if help_:
         create_edit_zone()
+    draw_tiles_tool_bar()
 
     mouse_pos = pygame.mouse.get_pos()
 
