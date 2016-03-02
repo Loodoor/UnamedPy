@@ -30,6 +30,7 @@ carte = []
 assets = {}
 objets = {}
 buildings = {}
+pnj = []
 lassets = []
 callback_end_rendering = []
 
@@ -50,7 +51,7 @@ police = pygame.font.SysFont("comicsansms", 12)
 
 if os.path.exists(map_path):
     with open(map_path, "rb") as file:
-        carte, objets, buildings, zid = pickle.Unpickler(file).load()
+        carte, objets, buildings, zid, pnj = pickle.Unpickler(file).load()
 else:
     for i in range(YTAILLE):
         lst = []
@@ -154,14 +155,18 @@ def create_edit_zone():
     ecran.blit(police.render("B: ajoute un lien vers un bâtiment sur la case pointée", 1, (255, 255, 255)),
                             (ecran.get_width() - marge, 310))
 
-    for i in range(0, 6):
-        tmp = (curpos + i) % len(lassets)
+
+    y = ecran.get_height() - TILE_SIZE - 4
+    pygame.draw.rect(ecran, (128, 128, 128), ((ecran.get_width() - 41 * (TILE_SIZE + 2)) // 2, y - 4, (TILE_SIZE + 2) * 40, TILE_SIZE + 8))
+    for i in range(0, 20):
+        tmp = (curpos + i - 10) % len(lassets)
+        x = (ecran.get_width() - 20 * (TILE_SIZE + 2)) // 2 + (TILE_SIZE + 2) * (i - 10)
         if tmp == curpos:
-            ecran.blit(police.render("Courant -> ", 1, (255, 255, 255)), (ecran.get_width() - marge, 350 + i * 42))
+            pygame.draw.rect(ecran, (50, 50, 180), (x - 2 + (TILE_SIZE + 2) * i, y - 2, TILE_SIZE + 4, TILE_SIZE + 4))
         if not isinstance(assets[lassets[tmp]], BaseMultipleSpritesAnimator):
-            ecran.blit(assets[lassets[tmp]], (ecran.get_width() - marge + 70, 340 + i * 42))
+            ecran.blit(assets[lassets[tmp]], (x + (TILE_SIZE + 2) * i, y))
         else:
-            ecran.blit(assets[lassets[tmp]].get_anim(), (ecran.get_width() - marge + 70, 350 + i * 42))
+            ecran.blit(assets[lassets[tmp]].get_anim(), (x + (TILE_SIZE + 2) * i, y))
 
 
 while continuer:
@@ -262,7 +267,7 @@ while continuer:
 print("Saving map ...")
 print("Carte is not None :", carte is not None)
 with open(map_path, "wb") as file:
-    pickle.Pickler(file).dump([carte, objets, buildings, zid])
+    pickle.Pickler(file).dump([carte, objets, buildings, zid, pnj])
 
 print("Exited cleanly")
 pygame.quit()
