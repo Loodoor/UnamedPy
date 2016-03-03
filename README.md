@@ -10,6 +10,10 @@ Il vous faudra de la patience pour venir à bout des dongeons, de bons captureur
 
 Ce jeu necessite Python 3.4 et Pygame pour fonctionner correctement
 
+# Crédits
+
+Un énorme merci à Wesley FG qui a créé toutes les tiles utilisées (uniquement les tiles, pas les personnages), originellement pour le projet Pokémon Marnian
+
 # Que faire en cas de bug(s) ?
 
 Exploser votre PC avec une machette, tout en le trempant dans de l'acide chloridrique avec une once de merde de rinocéros (du Congo de préférence).
@@ -20,8 +24,10 @@ Si vous venez à tomber sur un de ces bugs, n'hésitez pas à créer une issue, 
 
 # Des liens
 
-https://zestedesavoir.com/forums/sujet/4155/unamed/
+Le projet sur :
 
-https://openclassrooms.com/forum/sujet/arpg-pygame-2d-unamed
+* [ZesteDeSavoir](https://zestedesavoir.com/forums/sujet/4155/unamed/)
 
-https://trello.com/b/9rBszau2/unamed
+* [OpenClassrooms](https://openclassrooms.com/forum/sujet/arpg-pygame-2d-unamed)
+
+* [Trello](https://trello.com/b/9rBszau2/unamed)
