@@ -153,12 +153,14 @@ def create_edit_zone():
     ecran.blit(police.render("H : affiche cette aide ou non", 1, (255, 255, 255)), (ecran.get_width() - marge, 250))
     ecran.blit(police.render("T : ajoute un trigger (vide) sur la case pointée", 1, (255, 255, 255)),
                             (ecran.get_width() - marge, 270))
-    ecran.blit(police.render("B: ajoute un lien vers un bâtiment sur la case pointée", 1, (255, 255, 255)),
+    ecran.blit(police.render("B : ajoute un lien vers un bâtiment sur la case pointée", 1, (255, 255, 255)),
                             (ecran.get_width() - marge, 310))
-    ecran.blit(police.render("G: agrandi la carte en X ou Y d'un nombre choisi", 1, (255, 255, 255)),
-                            (ecran.get_width() - marge, 350))
-    ecran.blit(police.render("P: diminue la carte en X ou Y d'un nombre choisi", 1, (255, 255, 255)),
-               (ecran.get_width() - marge, 370))
+    ecran.blit(police.render("D : détruit un lien vers un bâtiment sur la case pointée", 1, (255, 255, 255)),
+                            (ecran.get_width() - marge, 330))
+    ecran.blit(police.render("G : agrandi la carte en X ou Y d'un nombre choisi", 1, (255, 255, 255)),
+                            (ecran.get_width() - marge, 370))
+    ecran.blit(police.render("P : diminue la carte en X ou Y d'un nombre choisi", 1, (255, 255, 255)),
+               (ecran.get_width() - marge, 390))
 
 
 def draw_tiles_tool_bar():
@@ -297,6 +299,10 @@ while continuer:
 
                 id_map = input("Id de la map à charger (la map d'id 1 est située ici : {})\n> ".format(os.path.join("..", "saves", "map", "map1" + EXTENSION)))
                 buildings[mx, my] = id_map
+            if event.key == K_d:
+                x, y = pygame.mouse.get_pos()
+                mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
+                del buildings[mx, my]
             if event.key == K_t:
                 x, y = pygame.mouse.get_pos()
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
