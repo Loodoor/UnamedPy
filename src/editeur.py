@@ -119,7 +119,12 @@ def create_edit_zone():
 
     if 0 <= pygame.mouse.get_pos()[1] // TILE_SIZE - offset2 // TILE_SIZE < len(carte) and \
             0 <= pygame.mouse.get_pos()[0] // TILE_SIZE - offset // TILE_SIZE < len(carte[0]):
-        t = carte[pygame.mouse.get_pos()[1] // TILE_SIZE - offset2 // TILE_SIZE][pygame.mouse.get_pos()[0] // TILE_SIZE - offset // TILE_SIZE]
+        y = pygame.mouse.get_pos()[1] // TILE_SIZE - offset2 // TILE_SIZE
+        x = pygame.mouse.get_pos()[0] // TILE_SIZE - offset // TILE_SIZE
+        if 0 <= x < len(carte[0]) and 0 <= y < len(carte):
+            t = carte[y][x]
+        else:
+            t = []
     else:
         t = []
 
@@ -185,7 +190,7 @@ while continuer:
     for event in pygame.event.get():
         if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
             continuer = 0
-        if event.type == MOUSEBUTTONUP:
+        if event.type == MOUSEBUTTONDOWN:
             if event.button == 4:
                 curpos = curpos + 1 if curpos + 1 < len(lassets) else 0
             if event.button == 5:
@@ -247,7 +252,10 @@ while continuer:
                             carte.insert(0, [DEFAUT, DEFAUT, DEFAUT, DEFAUT, DEFAUT])
                     if cote == "bas":
                         for _ in range(nombre):
-                            carte.append([DEFAUT, DEFAUT, DEFAUT, DEFAUT, DEFAUT])
+                            t = []
+                            for x in range(len(carte[0])):
+                                t.append([DEFAUT, DEFAUT, DEFAUT, DEFAUT, DEFAUT])
+                            carte.append(t)
             if event.key == K_p:
                 if fullscreen:
                     fullscreen = not fullscreen
