@@ -11,8 +11,9 @@ from animator import BaseMultipleSpritesAnimator, FluidesAnimator
 
 print("Chemin vers le dossier des cartes : {}".format(os.path.join("..", "assets", "map")))
 
-map_path = input("Path vers la map (laissez vide pour garder la valeur par défaut) : ")
-if map_path == "":
+map_num = input("Numéro vers la map (laissez vide pour garder la valeur par défaut) : ")
+map_path = os.path.join("..", "assets", "map", "map" + map_num + EXTENSION)
+if map_num == "":
     map_path = os.path.join("..", "assets", "map", "map0" + EXTENSION)
     print("Chargement de la map par défaut")
 YTAILLE, XTAILLE, zid = 24, 24, 0
@@ -154,6 +155,10 @@ def create_edit_zone():
                             (ecran.get_width() - marge, 270))
     ecran.blit(police.render("B: ajoute un lien vers un bâtiment sur la case pointée", 1, (255, 255, 255)),
                             (ecran.get_width() - marge, 310))
+    ecran.blit(police.render("G: agrandi la carte en X ou Y d'un nombre choisi", 1, (255, 255, 255)),
+                            (ecran.get_width() - marge, 350))
+    ecran.blit(police.render("P: diminue la carte en X ou Y d'un nombre choisi", 1, (255, 255, 255)),
+               (ecran.get_width() - marge, 370))
 
 
 def draw_tiles_tool_bar():
@@ -188,7 +193,7 @@ while continuer:
                 x, y = event.pos
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
                 if lassets[curpos] == TILE_POKEOBJ:
-                    pass
+                    print('Ajouter un objet')
                 carte[my][mx][layer] = lassets[curpos]
         if event.type == MOUSEMOTION:
             if clic:
@@ -211,6 +216,66 @@ while continuer:
                 layer = layer + 1 if layer < 4 else 4
             if event.key == K_MINUS or event.key == K_KP_MINUS:
                 layer = layer - 1 if layer > 0 else 0
+            if event.key == K_g:
+                if fullscreen:
+                    fullscreen = not fullscreen
+                    if fullscreen:
+                        ecran = pygame.display.set_mode((0, 0), FULLSCREEN)
+                    else:
+                        ecran = pygame.display.set_mode((0, 0))
+                print("Agrandissement de la carte")
+                if input("Etes vous sûr [O/N] ? ").lower() == 'o':
+                    cote = input("Quel coté agrandir [gauche/droite/haut/bas] ? ").lower()
+                    while cote not in ['gauche', 'droite', 'haut', 'bas']:
+                        cote = input("Quel coté agrandir [gauche/droite/haut/bas] ? ").lower()
+                    nombre = input("De combien de cases ? ")
+                    while not nombre.isdigit():
+                        nombre = input("De combien de cases ? ")
+                    nombre = int(nombre)
+                    if cote == "gauche":
+                        for _ in range(nombre):
+                            for y in range(len(carte)):
+                                carte[y].insert(0, [DEFAUT, DEFAUT, DEFAUT, DEFAUT, DEFAUT])
+                    if cote == "droite":
+                        for _ in range(nombre):
+                            for y in range(len(carte)):
+                                carte[y].append([DEFAUT, DEFAUT, DEFAUT, DEFAUT, DEFAUT])
+                    if cote == "haut":
+                        for _ in range(nombre):
+                            carte.insert(0, [DEFAUT, DEFAUT, DEFAUT, DEFAUT, DEFAUT])
+                    if cote == "bas":
+                        for _ in range(nombre):
+                            carte.append([DEFAUT, DEFAUT, DEFAUT, DEFAUT, DEFAUT])
+            if event.key == K_p:
+                if fullscreen:
+                    fullscreen = not fullscreen
+                    if fullscreen:
+                        ecran = pygame.display.set_mode((0, 0), FULLSCREEN)
+                    else:
+                        ecran = pygame.display.set_mode((0, 0))
+                print("Rétrécissement de la carte")
+                if input("Etes vous sûr [O/N] ? ").lower() == 'o':
+                    cote = input("Quel coté rétrécir [gauche/droite/haut/bas] ? ").lower()
+                    while cote not in ['gauche', 'droite', 'haut', 'bas']:
+                        cote = input("Quel coté rétrécir [gauche/droite/haut/bas] ? ").lower()
+                    nombre = input("De combien de cases ? ")
+                    while not nombre.isdigit():
+                        nombre = input("De combien de cases ? ")
+                    nombre = int(nombre)
+                    if cote == "gauche":
+                        for _ in range(nombre):
+                            for y in range(len(carte)):
+                                carte[y].pop(0)
+                    if cote == "droite":
+                        for _ in range(nombre):
+                            for y in range(len(carte)):
+                                carte[y].pop()
+                    if cote == "haut":
+                        for _ in range(nombre):
+                            carte.pop(0)
+                    if cote == "bas":
+                        for _ in range(nombre):
+                            carte.pop()
             if event.key == K_RETURN:
                 fullscreen = not fullscreen
                 if fullscreen:
