@@ -201,7 +201,8 @@ while continuer:
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
                 if lassets[curpos] == TILE_POKEOBJ:
                     print('Ajouter un objet')
-                carte[my][mx][layer] = lassets[curpos]
+                if 0 <= mx < len(carte[0]) and 0 <= my < len(carte):
+                    carte[my][mx][layer] = lassets[curpos]
         if event.type == MOUSEMOTION:
             if clic:
                 x, y = event.pos
@@ -294,6 +295,13 @@ while continuer:
                     ecran = pygame.display.set_mode((0, 0))
             if event.key == K_h:
                 help_ = not help_
+            if event.key == K_s:
+                print("Saving map ...")
+                print("Carte is not None :", carte is not None)
+                with open(map_path, "wb") as file:
+                    pickle.Pickler(file).dump([carte, objets, buildings, zid, pnj])
+
+                print("Exited cleanly")
             if event.key == K_b:
                 x, y = pygame.mouse.get_pos()
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
