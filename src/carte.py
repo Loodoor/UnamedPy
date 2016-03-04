@@ -179,8 +179,11 @@ class CartesManager:
     def collide_at(self, x, y):
         if self.current_carte.get_building_id_at(x, y) == BUILDING_GET_ERROR:
             return self.current_carte.collide_at(x, y)
-        self.change_map(os.path.join("..", "assets", "map", "map" + self.current_carte.get_building_id_at(x, y) + EXTENSION))
-        return False
+        return True
+
+    def check_changing_map(self, x, y):
+        if self.current_carte.get_building_id_at(x, y) != BUILDING_GET_ERROR:
+            self.change_map(os.path.join("..", "assets", "map", "map" + self.current_carte.get_building_id_at(x, y) + EXTENSION))
 
     def change_map(self, new_path: str):
         depuis = os.path.split(self.current_carte.path_)[1].split('.')[0][3:]
@@ -196,8 +199,12 @@ class CartesManager:
         else:
             spawn_tiles_pos = [p * TILE_SIZE for p in tmp]
             origin_view = spawn_tiles_pos[0] - FEN_large // 2, spawn_tiles_pos[1] - FEN_haut // 2
-            self.adjust_offset()
-            self.perso.pos = tmp[0] * TILE_SIZE, tmp[1] * TILE_SIZE
+            self.offsets = [
+                -origin_view[0],
+                -origin_view[1]
+            ]
+            self.perso.pos = tmp[0] * TILE_SIZE - origin_view[0], tmp[1] * TILE_SIZE - origin_view[1]
+            print(self.perso.pos)
 
     def drop_object_at(self, x: int, y: int, obj, from_poche):
         self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, from_poche)

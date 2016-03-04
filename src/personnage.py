@@ -83,6 +83,9 @@ class Personnage:
 
         self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
 
+        self.carte_mgr.check_changing_map((self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE,
+                                          (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE)
+
     def move_with_fov(self, direction: int=HAUT, dt: int=1):
         new_speed = self.speed * (dt / 50) / self.cur_div
 
