@@ -24,6 +24,7 @@ class SubCarte:
         self.buildings = {}
         self.zid = -1
         self.pnjs = []
+        self.spawns = {}
         self.path_ = ""
 
     def load(self, path_: str):
@@ -32,17 +33,17 @@ class SubCarte:
                 self.path_ = path_
                 load = pickle.Unpickler(map_reader).load()
                 try:
-                    self.carte, self.objets, self.buildings, self.zid, self.pnjs = load
+                    self.carte, self.objets, self.buildings, self.zid, self.pnjs, self.spawns = load
                 except ValueError:
-                    self.carte, self.objets, self.buildings, self.zid = load
-                    debug.println("[!] Impossible de charger les PNJ pour cette map")
+                    self.carte, self.objets, self.buildings, self.zid, self.pnjs = load
+                    debug.println("[!] Impossible de charger les spawn pour cette map")
                 del load
         else:
             raise CarteInexistante(path_)
 
     def save(self):
         with open(self.path_, "wb") as map_saver:
-            pickle.Pickler(map_saver).dump([self.carte, self.objets, self.buildings, self.zid, self.pnjs])
+            pickle.Pickler(map_saver).dump([self.carte, self.objets, self.buildings, self.zid, self.pnjs, self.spawns])
 
     def create_pnj(self, pnj: PNJ):
         self.pnjs.append(pnj)
@@ -61,6 +62,12 @@ class SubCarte:
 
     def building_at(self, x: int, y: int):
         return True if (x, y) in self.buildings.keys() else False
+
+    def get_spawn_pos_with_id(self, id_: int):
+        for pos, map_id in self.spawns.items():
+            if map_id == id_:
+                return pos
+        return None
 
     def get_building_id_at(self, x: int, y: int):
         if self.building_at(x, y):
@@ -125,7 +132,12 @@ class CartesManager:
         self.carte = []
         self.callback_end_rendering = []
         self.loaded = False
+        self.perso = None
         self.water_animator = None
+
+    def add_perso(self, new):
+        if not self.perso:
+            self.perso = new
 
     def _load_animators(self):
         self.water_animator = FluidesAnimator(self.images[TILE_EAU], ANIM_SPEED_EAU)
@@ -172,11 +184,22 @@ class CartesManager:
         return False
 
     def change_map(self, new_path: str):
+        depuis = os.path.split(self.current_carte.path_)[1].split('.')[0][3:]
         self.current_carte.save()
         self.current_carte = SubCarte()
         self.current_carte.load(new_path)
         self.carte = self.current_carte.get_all()
+        tmp = self.current_carte.get_spawn_pos_with_id(depuis)
+        print(tmp)
         self.adjust_offset()
+        if True:#FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
+            self.perso.pos = tmp[0] * TILE_SIZE + (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 + self.offsets[0], \
+                tmp[1] * TILE_SIZE + (FEN_haut - len(self.carte) * TILE_SIZE) // 2 + self.offsets[1]
+        else:
+            self.fov[0] = (tmp[0] - FEN_large // 2) // TILE_SIZE
+            self.fov[2] = (tmp[1] - FEN_haut // 2) // TILE_SIZE
+            self.perso.pos = tmp[0] * TILE_SIZE - self.fov[0] * TILE_SIZE, \
+                tmp[1] * TILE_SIZE - self.fov[2] * TILE_SIZE
 
     def drop_object_at(self, x: int, y: int, obj, from_poche):
         self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, from_poche)
@@ -207,7 +230,7 @@ class CartesManager:
 
     def render(self):
         pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0) + self.ecran.get_size())
-        tmp_map = [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.carte[int(self.fov[2]):int(self.fov[3])]]
+        tmp_map = [ligne[int(self.fov[0]):] for ligne in self.carte[int(self.fov[2]):]]
         objects_at = self.current_carte.get_objects()
         if self.current_carte.size()[0] < FEN_large // TILE_SIZE and self.current_carte.size()[1] < FEN_haut // TILE_SIZE:
             pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0) + self.ecran.get_size())
@@ -244,7 +267,7 @@ class CartesManager:
         return self.fov
 
     def get_fov_carte(self):
-        return [ligne[int(self.fov[0]):int(self.fov[1])] for ligne in self.current_carte[int(self.fov[2]):int(self.fov[3])]]
+        return [ligne[int(self.fov[0]):] for ligne in self.current_carte[int(self.fov[2]):]]
 
     def get_carte(self):
         return self.current_carte.get_all()

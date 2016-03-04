@@ -101,6 +101,8 @@ class Game:
         self.network_ev_listener.add_controler('others', self.oth_persos_mgr)
         self.network_ev_listener.add_controler('adventure', self.adventure)
 
+        self.carte_mgr.add_perso(self.personnage)
+
         if self.adventure.get_progress() == 1:
             # on vient de commencer
             self.equipe_mgr.add_creature(Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))

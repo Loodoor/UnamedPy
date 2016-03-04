@@ -33,6 +33,7 @@ objets = {}
 buildings = {}
 pnj = []
 lassets = []
+spawns = {}
 callback_end_rendering = []
 
 pygame.init()
@@ -52,7 +53,7 @@ police = pygame.font.SysFont("comicsansms", 12)
 
 if os.path.exists(map_path):
     with open(map_path, "rb") as file:
-        carte, objets, buildings, zid, pnj = pickle.Unpickler(file).load()
+        carte, objets, buildings, zid, pnj, spawns = pickle.Unpickler(file).load()
 else:
     for i in range(YTAILLE):
         lst = []
@@ -170,6 +171,8 @@ def create_edit_zone():
                (ecran.get_width() - marge, 390))
     ecran.blit(police.render("S : sauvegarde la map", 1, (255, 255, 255)),
                (ecran.get_width() - marge, 430))
+    ecran.blit(police.render("N : ajout d'un point de spawn", 1, (255, 255, 255)),
+               (ecran.get_width() - marge, 470))
 
 
 def draw_tiles_tool_bar():
@@ -228,6 +231,19 @@ while continuer:
                 layer = layer + 1 if layer < 4 else 4
             if event.key == K_MINUS or event.key == K_KP_MINUS:
                 layer = layer - 1 if layer > 0 else 0
+            if event.key == K_n:
+                x, y = pygame.mouse.get_pos()
+                mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
+                print("Ajout d'un point de spawn")
+                if fullscreen:
+                    fullscreen = not fullscreen
+                    if fullscreen:
+                        ecran = pygame.display.set_mode((0, 0), FULLSCREEN)
+                    else:
+                        ecran = pygame.display.set_mode((0, 0))
+                if input("Etes vous sûr [O/N] ? ").lower() == 'o':
+                    map_id = input("Map id du spawn > ")
+                    spawns[mx, my] = map_id
             if event.key == K_g:
                 if fullscreen:
                     fullscreen = not fullscreen
@@ -303,7 +319,7 @@ while continuer:
                 print("Saving map ...")
                 print("Carte is not None :", carte is not None)
                 with open(map_path, "wb") as file:
-                    pickle.Pickler(file).dump([carte, objets, buildings, zid, pnj])
+                    pickle.Pickler(file).dump([carte, objets, buildings, zid, pnj, spawns])
 
                 print("Exited cleanly")
             if event.key == K_b:
@@ -372,7 +388,7 @@ while continuer:
 print("Saving map ...")
 print("Carte is not None :", carte is not None)
 with open(map_path, "wb") as file:
-    pickle.Pickler(file).dump([carte, objets, buildings, zid, pnj])
+    pickle.Pickler(file).dump([carte, objets, buildings, zid, pnj, spawns])
 
 print("Exited cleanly")
 pygame.quit()
