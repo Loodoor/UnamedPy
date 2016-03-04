@@ -170,8 +170,6 @@ def create_edit_zone():
                (ecran.get_width() - marge, 390))
     ecran.blit(police.render("S : sauvegarde la map", 1, (255, 255, 255)),
                (ecran.get_width() - marge, 430))
-    ecran.blit(police.render("N : ajout d'un point de spawn", 1, (255, 255, 255)),
-               (ecran.get_width() - marge, 430))
 
 
 def draw_tiles_tool_bar():
@@ -230,8 +228,6 @@ while continuer:
                 layer = layer + 1 if layer < 4 else 4
             if event.key == K_MINUS or event.key == K_KP_MINUS:
                 layer = layer - 1 if layer > 0 else 0
-            if event.key == K_n:
-                print("Ajout d'un point de spawn")
             if event.key == K_g:
                 if fullscreen:
                     fullscreen = not fullscreen
