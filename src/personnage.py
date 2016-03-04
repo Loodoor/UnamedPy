@@ -98,8 +98,8 @@ class Personnage:
                 or y - self.player_anim.get_sprite_pause(self.direction).get_height() > self.ecran.get_height():
             return
 
-        #Détection des collisions
-        x1, y1 = x + self.carte_mgr.get_fov()[0] * TILE_SIZE, y + self.carte_mgr.get_fov()[2] * TILE_SIZE
+        # Détection des collisions
+        x1, y1 = x, y
         x2, y2 = x1 + TILE_SIZE, y1
         x3, y3 = x1, y1 + TILE_SIZE
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
@@ -156,8 +156,7 @@ class Personnage:
             return
 
         #Détection des collisions
-        x1, y1 = x + self.carte_mgr.get_fov()[0] * TILE_SIZE, \
-            y + self.carte_mgr.get_fov()[2] * TILE_SIZE
+        x1, y1 = x, y
         x2, y2 = x1 + TILE_SIZE, y1
         x3, y3 = x1, y1 + TILE_SIZE
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
@@ -205,8 +204,7 @@ class Personnage:
 
         self.pos = (x + self.carte_mgr.get_of1(), y + self.carte_mgr.get_of2())
         if self.changed_cur_case():
-            self.carte_mgr.call_trigger_at(int(x // TILE_SIZE) + self.carte_mgr.get_fov()[0],
-                                           int(y // TILE_SIZE) + self.carte_mgr.get_fov()[2])
+            self.carte_mgr.call_trigger_at(int(x // TILE_SIZE), int(y // TILE_SIZE))
 
     def is_moving_or_not(self):
         return self.is_moving

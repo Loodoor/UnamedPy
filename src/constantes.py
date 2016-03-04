@@ -32,7 +32,7 @@ class UEnum:
         return "__dict__ : " + str(self.__dict__) + "\nself.dict_reverse : " + str(self.dict_reverse)
 
 
-DEBUG_LEVEL = 1
+DEBUG_LEVEL = 2
 
 FEN_large = 640
 FEN_haut = 640
@@ -498,7 +498,7 @@ PC_NBR_BOX = PC_MAX_CREA // PC_CREA_PER_BOX
 PC_GET__ERROR = -5
 PC_POP__ERROR = -6
 
-FIRST_BASIC_FOV = FEN_large // TILE_SIZE + 1
-FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE + 1
+FIRST_BASIC_FOV = FEN_large // TILE_SIZE
+FIRST_BASIC_FOV2 = FEN_haut // TILE_SIZE
 
 COLLIDE_ITEM = lambda c: bool(int(c) % 2)

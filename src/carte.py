@@ -123,7 +123,6 @@ class CartesManager:
         self.rd_mgr = renderer_manager
         self.map_path = os.path.join("..", "assets", "map", "map" + EXTENSION)
         self.maps = {}
-        self.fov = [0, FIRST_BASIC_FOV, 0, FIRST_BASIC_FOV2]
         self.offsets = [0, 0]
         self.images = {}
         self.lassets = []
@@ -170,8 +169,8 @@ class CartesManager:
             raise CarteInexistante(self.map_path)
 
     def adjust_offset(self):
-        x = (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 if FEN_large > len(self.carte[0]) * TILE_SIZE else 0
-        y = (FEN_haut - len(self.carte) * TILE_SIZE) // 2 if FEN_haut > len(self.carte) * TILE_SIZE else 0
+        x = (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 if FEN_large >= len(self.carte[0]) * TILE_SIZE else 0
+        y = (FEN_haut - len(self.carte) * TILE_SIZE) // 2 if FEN_haut >= len(self.carte) * TILE_SIZE else 0
         self.offsets = [x, y]
 
     def save(self):
@@ -190,16 +189,15 @@ class CartesManager:
         self.current_carte.load(new_path)
         self.carte = self.current_carte.get_all()
         tmp = self.current_carte.get_spawn_pos_with_id(depuis)
-        print(tmp)
-        self.adjust_offset()
-        if True:#FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
+        if FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
+            self.adjust_offset()
             self.perso.pos = tmp[0] * TILE_SIZE + (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 + self.offsets[0], \
                 tmp[1] * TILE_SIZE + (FEN_haut - len(self.carte) * TILE_SIZE) // 2 + self.offsets[1]
         else:
-            self.fov[0] = (tmp[0] - FEN_large // 2) // TILE_SIZE
-            self.fov[2] = (tmp[1] - FEN_haut // 2) // TILE_SIZE
-            self.perso.pos = tmp[0] * TILE_SIZE - self.fov[0] * TILE_SIZE, \
-                tmp[1] * TILE_SIZE - self.fov[2] * TILE_SIZE
+            spawn_tiles_pos = [p * TILE_SIZE for p in tmp]
+            origin_view = spawn_tiles_pos[0] - FEN_large // 2, spawn_tiles_pos[1] - FEN_haut // 2
+            self.adjust_offset()
+            self.perso.pos = tmp[0] * TILE_SIZE, tmp[1] * TILE_SIZE
 
     def drop_object_at(self, x: int, y: int, obj, from_poche):
         self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, from_poche)
@@ -230,12 +228,11 @@ class CartesManager:
 
     def render(self):
         pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0) + self.ecran.get_size())
-        tmp_map = [ligne[int(self.fov[0]):] for ligne in self.carte[int(self.fov[2]):]]
         objects_at = self.current_carte.get_objects()
         if self.current_carte.size()[0] < FEN_large // TILE_SIZE and self.current_carte.size()[1] < FEN_haut // TILE_SIZE:
             pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0) + self.ecran.get_size())
-        for y in range(len(tmp_map)):
-            for x in range(len(tmp_map[y])):
+        for y in range(len(self.carte)):
+            for x in range(len(self.carte[y])):
                 objet = self.carte[y][x]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
                 if not isinstance(objet, list):
@@ -263,12 +260,6 @@ class CartesManager:
     def get_ofs(self):
         return self.offsets
 
-    def get_fov(self):
-        return self.fov
-
-    def get_fov_carte(self):
-        return [ligne[int(self.fov[0]):] for ligne in self.current_carte[int(self.fov[2]):]]
-
     def get_carte(self):
         return self.current_carte.get_all()
 
@@ -283,17 +274,9 @@ class CartesManager:
 
     def move_of1(self, dir_: int=1):
         self.offsets[0] += dir_
-        if not self.offsets[0] % TILE_SIZE:
-            if self.fov[0] - dir_ >= 0:
-                self.offsets[0] %= TILE_SIZE
-                self.fov[0] -= dir_
 
     def move_of2(self, dir_: int=1):
         self.offsets[1] += dir_
-        if not self.offsets[1] % TILE_SIZE:
-            if self.fov[2] - dir_ >= 0:
-                self.offsets[1] %= TILE_SIZE
-                self.fov[2] -= dir_
 
     def has_trigger(self, x: int=0, y: int=0):
         return self.current_carte.trigger_at(x, y)

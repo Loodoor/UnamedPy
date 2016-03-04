@@ -579,9 +579,13 @@ class Game:
             debug.onscreen_debug(self.ecran, self.police_normale,
                                  "Renderer: {}".format(self.renderer_manager.get_renderer()),
                                  "Delatime : %3.1f ms" % dt,
-                                 "Zone id: {}".format(self.carte_mgr.get_zid()),
-                                 "Créatures (poche): {} | Créatures (pc): {}".format(len(self.equipe_mgr.get_all()), len(self.pc_mgr.get_all())),
+                                 "Créatures (poche): {}".format(len(self.equipe_mgr.get_all())),
+                                 "Créatures (pc): {}".format(len(self.pc_mgr.get_all())),
                                  "Objet messenger : {}".format(self.personnage.inventaire.get_obj_messenger()),
+                                 "-- Carte --",
+                                 "Zone id: {}".format(self.carte_mgr.get_zid()),
+                                 "Map id : {}".format(os.path.split(self.carte_mgr.current_carte.path_)[1].split('.')[0][3:]),
+                                 "Offsets : {}".format(self.carte_mgr.get_ofs()),
                                  "-- Personnage --",
                                  "Direction: {}".format(self.personnage.get_dir()),
                                  "Position: {}".format(self.personnage.get_pos()),
@@ -591,7 +595,7 @@ class Game:
                                  "-- Réseau --",
                                  "En réseau: {}".format(self.sock is not None),
                                  "Params: {}".format(self.params if self.sock is not None else "NA"),
-                                 line_width=200)
+                                 line_width=150)
 
             pygame.display.flip()
 
