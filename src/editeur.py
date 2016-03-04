@@ -108,13 +108,15 @@ def render(carte, offset, offset2, callback_end_rendering=[]):
             else:
                 for tile in udel_same_occurence(*obj[-2::-1]):
                     _draw_tile_at(xpos, ypos, tile, callback_end_rendering)
+            if (x, y) in buildings.keys():
+                ecran.blit(police.render("B", 1, (0, 0, 0)), (xpos + 4, ypos))
 
     _update_anims(callback_end_rendering)
     callback_end_rendering = []
 
 
 def create_edit_zone():
-    xsize = 300
+    xsize = 320
     marge = xsize - 10
 
     if 0 <= pygame.mouse.get_pos()[1] // TILE_SIZE - offset2 // TILE_SIZE < len(carte) and \
@@ -166,6 +168,8 @@ def create_edit_zone():
                             (ecran.get_width() - marge, 370))
     ecran.blit(police.render("P : diminue la carte en X ou Y d'un nombre choisi", 1, (255, 255, 255)),
                (ecran.get_width() - marge, 390))
+    ecran.blit(police.render("S : sauvegarde la map", 1, (255, 255, 255)),
+               (ecran.get_width() - marge, 430))
 
 
 def draw_tiles_tool_bar():
@@ -351,6 +355,17 @@ while continuer:
         ecran.blit(assets[lassets[curpos]], (mouse_pos[0] + 10, mouse_pos[1] + 10))
     else:
         ecran.blit(assets[lassets[curpos]].get_anim(), (mouse_pos[0] + 10, mouse_pos[1] + 10))
+    pygame.draw.rect(ecran, (128, 128, 128), (mouse_pos[0] + 15 + TILE_SIZE, mouse_pos[1] + 15 + TILE_SIZE, 70, 20))
+    x, y = pygame.mouse.get_pos()
+    x //= TILE_SIZE
+    y //= TILE_SIZE
+    x -= offset // TILE_SIZE
+    y -= offset2 // TILE_SIZE
+    obj = 1
+    if 0 <= x < len(carte[0]) and 0 <= y < len(carte):
+        obj = carte[y][x][0]
+    ecran.blit(police.render("Bloquant" if int(obj) % 2 else 'Non bloquant', 1, (255, 255, 255)),
+               (mouse_pos[0] + 17 + TILE_SIZE, mouse_pos[1] + 17 + TILE_SIZE))
 
     pygame.display.flip()
 
