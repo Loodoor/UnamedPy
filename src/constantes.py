@@ -32,13 +32,13 @@ class UEnum:
         return "__dict__ : " + str(self.__dict__) + "\nself.dict_reverse : " + str(self.dict_reverse)
 
 
-DEBUG_LEVEL = 2
+DEBUG_LEVEL = 1
 
 FEN_large = 640
 FEN_haut = 640
 FEN_taille = (FEN_large, FEN_haut)
 
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 GLOBAL_ERROR = -1
 

@@ -94,9 +94,6 @@ class Personnage:
         x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
         y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
 
-        if x < 0 or y < 0 or x > self.ecran.get_width() + 1 or y > self.ecran.get_height() + 1:
-            return
-
         #Détection des collisions
         x1, y1 = x, y
         x2, y2 = x1 + TILE_SIZE, y1
