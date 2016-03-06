@@ -14,6 +14,9 @@ Ce jeu necessite Python 3.4 et Pygame pour fonctionner correctement
 
 Un énorme merci à Wesley FG qui a créé toutes les tiles utilisées (uniquement les tiles, pas les personnages), originellement pour le projet Pokémon Marnian
 
+
+World Map faite par Sansonic
+
 # Que faire en cas de bug(s) ?
 
 Exploser votre PC avec une machette, tout en le trempant dans de l'acide chloridrique avec une once de merde de rinocéros (du Congo de préférence).
