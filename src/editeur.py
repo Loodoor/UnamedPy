@@ -18,8 +18,8 @@ if map_num == "":
     print("Chargement de la map par défaut")
 YTAILLE, XTAILLE, zid = 24, 24, 0
 if not os.path.exists(map_path):
-    YTAILLE = int(input("Taille de la map horizontalement (en cases) : "))  # ecran.get_height() // TILE_SIZE
-    XTAILLE = int(input("Taille de la map verticalement (en cases)   : "))  # ecran.get_width() // TILE_SIZE
+    XTAILLE = int(input("Taille de la map horizontalement (en cases) : "))  # ecran.get_height() // TILE_SIZE
+    YTAILLE = int(input("Taille de la map verticalement (en cases)   : "))  # ecran.get_width() // TILE_SIZE
     zid = int(input("ZID de la carte : "))
 
 DEFAUT = '0'
@@ -35,6 +35,8 @@ pnj = []
 lassets = []
 spawns = {}
 callback_end_rendering = []
+
+TILE_SIZE += 2
 
 pygame.init()
 
@@ -110,7 +112,9 @@ def render(carte, offset, offset2, callback_end_rendering=[]):
                 for tile in udel_same_occurence(*obj[-2::-1]):
                     _draw_tile_at(xpos, ypos, tile, callback_end_rendering)
             if (x, y) in buildings.keys():
-                ecran.blit(police.render("B", 1, (0, 0, 0)), (xpos + 4, ypos))
+                ecran.blit(police.render(">{}".format(buildings[x, y]), 1, (0, 0, 0)), (xpos, ypos))
+            if (x, y) in spawns.keys():
+                ecran.blit(police.render("-{}".format(spawns[x, y]), 1, (0, 0, 0)), (xpos, ypos))
 
     _update_anims(callback_end_rendering)
     callback_end_rendering = []
@@ -173,6 +177,8 @@ def create_edit_zone():
                (ecran.get_width() - marge, 430))
     ecran.blit(police.render("N : ajout d'un point de spawn", 1, (255, 255, 255)),
                (ecran.get_width() - marge, 470))
+    ecran.blit(police.render("R : rempli un ensemble de cases avec celle choisie", 1, (255, 255, 255)),
+               (ecran.get_width() - marge, 500))
 
 
 def draw_tiles_tool_bar():
@@ -188,6 +194,13 @@ def draw_tiles_tool_bar():
             ecran.blit(assets[lassets[tmp]], (x + (TILE_SIZE + 2) * i, y))
         else:
             ecran.blit(assets[lassets[tmp]].get_anim(), (x + (TILE_SIZE + 2) * i, y))
+
+
+def fill_map_with_case(start, new, layer):
+    for y, line in enumerate(carte):
+        for x, case in enumerate(line):
+            if case[layer] == start:
+                carte[y][x][layer] = new
 
 
 while continuer:
@@ -214,7 +227,8 @@ while continuer:
             if clic:
                 x, y = event.pos
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
-                carte[my][mx][layer] = lassets[curpos]
+                if 0 <= mx < len(carte[0]) and 0 <= my < len(carte):
+                    carte[my][mx][layer] = lassets[curpos]
         if event.type == MOUSEBUTTONUP:
             if event.button == 1:
                 clic = 0
@@ -231,6 +245,12 @@ while continuer:
                 layer = layer + 1 if layer < 4 else 4
             if event.key == K_MINUS or event.key == K_KP_MINUS:
                 layer = layer - 1 if layer > 0 else 0
+            if event.key == K_r:
+                x, y = pygame.mouse.get_pos()
+                mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
+                if 0 <= mx < len(carte[0]) and 0 <= my < len(carte):
+                    print("filling")
+                    fill_map_with_case(carte[my][mx][0], lassets[curpos], layer)
             if event.key == K_n:
                 x, y = pygame.mouse.get_pos()
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
