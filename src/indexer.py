@@ -321,13 +321,12 @@ class Indexer:
                 vu, capture, type_ = elem.vu, elem.capture, self.typeur.get_name(elem.type)
 
                 if not vu and not capture:
-                    nom = "???"
-                    type_ = "NA"
+                    continue
 
                 self.ecran.blit(self.police.render("Nom : {} - Type : {}".format(nom, type_), 1, (255, 255, 255)),
                                 (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
 
-                if self.selected_creature == i:
+                if self.selected_creature == i and (vu or capture):
                     j = 1
 
                     self.ecran.blit(self.police.render("Description :", 1, (255, 255, 255)),
@@ -356,6 +355,8 @@ class Indexer:
             self.ecran.blit(self.stade_sel, (POK_X_SEL_STADE + (POK_SX_SEL_STADE - self.stade_sel.get_width()) // 2, POK_Y_SEL_STADE + 4))
         else:
             for t_id, type_name in self.typeur.get_types().items():
+                if not type_name:
+                    continue
                 suffixe = "er  " if i == 0 else "ème"
                 chaine = str(t_id + 1)
                 texte = self.police.render('- ' + ('0' * 1 if i <= 8 else '') + "{}{} -> '{}', vu {} fois"

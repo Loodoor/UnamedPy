@@ -82,10 +82,11 @@ class Inventaire:
         pygame.draw.rect(self.ecran, (50, 180, 70), (INVENT_POSX, INVENT_POSY, INVENT_X_SIZE, INVENT_Y_SIZE))
         self.ecran.blit(self.titre, (FEN_large // 2 - self.titre.get_size()[0] // 2, 30))
         for i in range(len(self.objets[self.cur_categorie])):
-            texte = self.objets[self.cur_categorie][i].name() + ' : ' + str(self.objets[self.cur_categorie][i].tot_quantite())
-            item = self.police.render(texte, 1, (10, 10, 10))
-            self.ecran.blit(item, (INVENT_X_ITEM, INVENT_Y_ITEM + i * INVENT_ESP_ITEM))
-        if 0 <= self.selected_item < len(self.objets[self.cur_categorie]):
+            if self.objets[self.cur_categorie][i].nombre():
+                texte = self.objets[self.cur_categorie][i].name() + ' : ' + str(self.objets[self.cur_categorie][i].tot_quantite())
+                item = self.police.render(texte, 1, (10, 10, 10))
+                self.ecran.blit(item, (INVENT_X_ITEM, INVENT_Y_ITEM + i * INVENT_ESP_ITEM))
+        if 0 <= self.selected_item < len(self.objets[self.cur_categorie]) and self.objets[self.cur_categorie][self.selected_item].nombre():
             # les boutons jeter, jeter tout et utiliser
             pygame.draw.rect(self.ecran, (180, 50, 50), (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
             pygame.draw.rect(self.ecran, (255, 50, 50), (INVENT_BTN_JETERTT_X, INVENT_BTN_JETERTT_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))

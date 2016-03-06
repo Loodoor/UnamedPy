@@ -242,6 +242,8 @@ class CartesManager:
             for x in range(len(self.carte[y])):
                 objet = self.carte[y][x]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
+                if xpos < -TILE_SIZE or xpos > FEN_large or ypos < -TILE_SIZE or ypos > FEN_haut:
+                    continue
                 if not isinstance(objet, list):
                     raise ErreurContenuCarte
                 else:
