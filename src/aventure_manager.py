@@ -20,6 +20,7 @@ class Adventure:
         self.values = {}
         self._first_creature_image = pygame.image.load(os.path.join("..", "assets", "creatures", "feu-01.png")).convert_alpha()
         self._image_prof = pygame.image.load(os.path.join("..", "assets", "aventure", "professeur.png")).convert_alpha()
+        self._world_map = pygame.image.load(os.path.join("..", "assets", "aventure", "worldmap.png")).convert_alpha()
 
     def get_progress(self):
         return self.progress
@@ -61,7 +62,11 @@ class Adventure:
                     (self.ecran.get_width() - self._image_prof.get_width()) // 2,
                     (self.ecran.get_height() - self._image_prof.get_height() - BULLE_SY) // 2
                 ))
-
+            if "worldmap" in name_of_image:
+                self.ecran.blit(self._world_map, (
+                    (self.ecran.get_width() - self._world_map.get_width()) // 2,
+                    (self.ecran.get_height() - self._world_map.get_height()) // 2
+                ))
             g.update()
 
             if ask_smth:
