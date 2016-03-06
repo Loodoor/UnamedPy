@@ -281,10 +281,10 @@ class CartesManager:
             return object_ if object_ != OBJET_GET_ERROR else None
         return None
 
-    def move_of1(self, dir_: int=1):
+    def move_of1(self, dir_: int):
         self.offsets[0] += dir_
 
-    def move_of2(self, dir_: int=1):
+    def move_of2(self, dir_: int):
         self.offsets[1] += dir_
 
     def has_trigger(self, x: int=0, y: int=0):

@@ -90,8 +90,6 @@ class Personnage:
         inverse_dir = unegate_vect(udir_to_vect(direction))
         new_of1, new_of2 = inverse_dir[0] * new_speed, inverse_dir[1] * new_speed
 
-        print(new_of1, new_of2)
-
         x, y = self.pos[0], self.pos[1]
         x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
         y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
@@ -146,15 +144,15 @@ class Personnage:
                     y -= decy
                     new_of2 -= decy
 
-        if len(self.carte_mgr.get_carte()) * TILE_SIZE <= FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE <= FEN_large:
+        if len(self.carte_mgr.get_carte()) * TILE_SIZE < FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE < FEN_large:
             self.pos = (x + self.carte_mgr.get_of1(), y + self.carte_mgr.get_of2())
-        elif len(self.carte_mgr.get_carte()) * TILE_SIZE <= FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE > FEN_large:
+        elif len(self.carte_mgr.get_carte()) * TILE_SIZE < FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE >= FEN_large:
             self.pos = (self.pos[0], y + self.carte_mgr.get_of2())
             self.carte_mgr.move_of1(new_of1)
-        elif len(self.carte_mgr.get_carte()) * TILE_SIZE > FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE <= FEN_large:
+        elif len(self.carte_mgr.get_carte()) * TILE_SIZE >= FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE < FEN_large:
             self.pos = (x + self.carte_mgr.get_of1(), self.pos[1])
             self.carte_mgr.move_of2(new_of2)
-        elif len(self.carte_mgr.get_carte()) * TILE_SIZE > FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE > FEN_large:
+        else:
             self.carte_mgr.move_of1(new_of1)
             self.carte_mgr.move_of2(new_of2)
 
