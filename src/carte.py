@@ -194,8 +194,9 @@ class CartesManager:
         tmp = self.current_carte.get_spawn_pos_with_id(depuis)
         if FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
             self.adjust_offset()
-            self.perso.pos = tmp[0] * TILE_SIZE + (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 + self.offsets[0], \
-                tmp[1] * TILE_SIZE + (FEN_haut - len(self.carte) * TILE_SIZE) // 2 + self.offsets[1]
+            if not tmp:
+                raise ReferenceError("Il manque un point d'entrée sur la map {}".format(new_path))
+            self.perso.pos = tmp[0] * TILE_SIZE + self.offsets[0], tmp[1] * TILE_SIZE + self.offsets[1]
         else:
             spawn_tiles_pos = [p * TILE_SIZE for p in tmp]
             origin_view = spawn_tiles_pos[0] - FEN_large // 2, spawn_tiles_pos[1] - FEN_haut // 2
@@ -204,7 +205,6 @@ class CartesManager:
                 -origin_view[1]
             ]
             self.perso.pos = tmp[0] * TILE_SIZE - origin_view[0], tmp[1] * TILE_SIZE - origin_view[1]
-            print(self.perso.pos)
 
     def drop_object_at(self, x: int, y: int, obj, from_poche):
         self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, from_poche)
