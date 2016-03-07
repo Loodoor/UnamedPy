@@ -204,7 +204,6 @@ class CartesManager:
                 origin_view = spawn_tiles_pos[0] - FEN_large // 2, (self.current_carte.size()[1] - FEN_haut) // 2
             else:
                 origin_view = spawn_tiles_pos[0] - FEN_large // 2, (FEN_haut - self.current_carte.size()[1]) // 2
-            debug.println("case 1", origin_view)
             self.offsets = [
                 -origin_view[0],
                 -origin_view[1]
@@ -214,14 +213,12 @@ class CartesManager:
                 origin_view = (self.current_carte.size()[0] - FEN_large) // 2, spawn_tiles_pos[1] - FEN_haut // 2
             else:
                 origin_view = (FEN_large - self.current_carte.size()[0]) // 2, spawn_tiles_pos[1] - FEN_haut // 2
-            debug.println("case 2", origin_view)
             self.offsets = [
                 -origin_view[0],
                 -origin_view[1]
             ]
         else:
             origin_view = spawn_tiles_pos[0] - FEN_large // 2, spawn_tiles_pos[1] - FEN_haut // 2
-            debug.println("case 3", origin_view)
             self.offsets = [
                 -origin_view[0],
                 -origin_view[1]
