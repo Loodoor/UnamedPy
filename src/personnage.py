@@ -8,7 +8,6 @@ from utils import udir_to_vect, unegate_vect
 import inventaire
 import glob
 from animator import PlayerAnimator
-import debug
 
 
 class Personnage:
