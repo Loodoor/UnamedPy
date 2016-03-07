@@ -73,6 +73,7 @@ class Game:
         self.network_ev_listener = NetworkEventsListener(self.sock, self.params)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
                                                  self.adventure.get_pseudo(), RANG_NUL)
+        self.mini_map = carte.CarteRenderer(self.ecran, self.carte_mgr)
         self.objets_table = objets_manager.ObjectTable()
         self.parametres = ParametresManager()
         self.parametres.load()
@@ -542,7 +543,7 @@ class Game:
             if self.gui_save_mgr.is_saved_finished():
                 self.gui_save_mgr.reinit()
         elif self.renderer_manager.get_renderer() == RENDER_CARTE:
-            raise FonctionnaliteNonImplementee
+            self.mini_map.update()
         elif self.renderer_manager.get_renderer() == RENDER_CREATURES:
             self.equipe_mgr.update()
         elif self.renderer_manager.get_renderer() == RENDER_POKEDEX:

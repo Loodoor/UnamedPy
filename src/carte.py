@@ -192,6 +192,7 @@ class CartesManager:
         self.current_carte.load(new_path)
         self.carte = self.current_carte.get_all()
         tmp = self.current_carte.get_spawn_pos_with_id(depuis)
+
         if FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
             self.adjust_offset()
             if not tmp:
@@ -200,6 +201,7 @@ class CartesManager:
         else:
             spawn_tiles_pos = [p * TILE_SIZE for p in tmp]
             origin_view = spawn_tiles_pos[0] - FEN_large // 2, spawn_tiles_pos[1] - FEN_haut // 2
+            debug.println(spawn_tiles_pos, origin_view)
             self.offsets = [
                 -origin_view[0],
                 -origin_view[1]
@@ -234,16 +236,17 @@ class CartesManager:
         self.callback_end_rendering = []
 
     def render(self):
-        pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0) + self.ecran.get_size())
         objects_at = self.current_carte.get_objects()
-        if self.current_carte.size()[0] < FEN_large // TILE_SIZE and self.current_carte.size()[1] < FEN_haut // TILE_SIZE:
-            pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0) + self.ecran.get_size())
+        pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0) + self.ecran.get_size())
         for y in range(len(self.carte)):
             for x in range(len(self.carte[y])):
                 objet = self.carte[y][x]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
+
                 if xpos < -TILE_SIZE or xpos > FEN_large or ypos < -TILE_SIZE or ypos > FEN_haut:
+                    # optimisation
                     continue
+
                 if not isinstance(objet, list):
                     raise ErreurContenuCarte
                 else:
@@ -253,6 +256,7 @@ class CartesManager:
                     else:
                         for tile in udel_same_occurence(*objet[-2::-1]):
                             self._draw_tile_at(xpos, ypos, tile)
+                # objets
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))
         self._update_anims()
@@ -301,11 +305,11 @@ class CarteRenderer:
     def __init__(self, ecran: pygame.Surface, carte_mgr: CartesManager):
         self.ecran = ecran
         self.carte_mgr = carte_mgr
-        self.carte_img = os.path.join("..", "assets", "gui", "carte.png")
+        self.carte_img = pygame.image.load(os.path.join("..", "assets", "aventure", "worldmap.png")).convert_alpha()
+        self.carte_mgr = pygame.transform.scale(self.carte_img, (MAP_RDR_SX, MAP_RDR_SY))
 
     def update(self):
         self.render()
 
     def render(self):
-        pygame.draw.rect(self.ecran, (20, 180, 20), (MAP_RDR_POSX, MAP_RDR_POSY, MAP_RDR_SX, MAP_RDR_SY))
-        self.ecran.blit(self.carte_mgr, (MAP_RDR_CARTEX, MAP_RDR_CARTEX))
+        self.ecran.blit(self.carte_mgr, (MAP_RDR_POSX, MAP_RDR_POSY))
