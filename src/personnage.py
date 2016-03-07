@@ -104,45 +104,45 @@ class Personnage:
             if self.carte_mgr.collide_at(x1 / TILE_SIZE, y1 / TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y += TILE_SIZE - decy
-                new_of2 += decy
+                new_of2 -= decy
             if self.carte_mgr.collide_at(x2 / TILE_SIZE, y2 / TILE_SIZE):
                 if x % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     y += decy
-                    new_of2 += decy
+                    new_of2 -= decy
 
         if direction == GAUCHE:
             if self.carte_mgr.collide_at(x1 / TILE_SIZE, y1 / TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x += TILE_SIZE - decx
-                new_of1 += decx
+                new_of1 -= decx
             if self.carte_mgr.collide_at(x3 / TILE_SIZE, y3 / TILE_SIZE):
                 if y % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     x += decx
-                    new_of1 += decx
+                    new_of1 -= decx
 
         if direction == DROITE:
             if self.carte_mgr.collide_at(x2 / TILE_SIZE, y2 / TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x -= decx
-                new_of1 -= decx
+                new_of1 += decx
             if self.carte_mgr.collide_at(x4 / TILE_SIZE, y4 / TILE_SIZE):
                 if y % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     x -= decx
-                    new_of1 -= decx
+                    new_of1 += decx
 
         if direction == BAS:
             if self.carte_mgr.collide_at(x3 / TILE_SIZE, y3 / TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y -= decy
-                new_of2 -= decy
+                new_of2 += decy
             if self.carte_mgr.collide_at(x4 / TILE_SIZE, y4 / TILE_SIZE):
                 if x % TILE_SIZE:
                     decx, decy = x % TILE_SIZE, y % TILE_SIZE
                     y -= decy
-                    new_of2 -= decy
+                    new_of2 += decy
 
         if len(self.carte_mgr.get_carte()) * TILE_SIZE < FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE < FEN_large:
             self.pos = (x + self.carte_mgr.get_of1(), y + self.carte_mgr.get_of2())
