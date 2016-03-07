@@ -193,20 +193,40 @@ class CartesManager:
         self.carte = self.current_carte.get_all()
         tmp = self.current_carte.get_spawn_pos_with_id(depuis)
 
+        if not tmp:
+            raise ReferenceError("Il manque un point d'entrée sur la map {}".format(new_path))
+        spawn_tiles_pos = [p * TILE_SIZE for p in tmp]
+
         if FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
             self.adjust_offset()
-            if not tmp:
-                raise ReferenceError("Il manque un point d'entrée sur la map {}".format(new_path))
-            self.perso.pos = tmp[0] * TILE_SIZE + self.offsets[0], tmp[1] * TILE_SIZE + self.offsets[1]
-        else:
-            spawn_tiles_pos = [p * TILE_SIZE for p in tmp]
-            origin_view = spawn_tiles_pos[0] - FEN_large // 2, spawn_tiles_pos[1] - FEN_haut // 2
-            debug.println(spawn_tiles_pos, origin_view)
+        elif FEN_large > len(self.carte[0] * TILE_SIZE) and FEN_haut <= len(self.carte) * TILE_SIZE:
+            if spawn_tiles_pos[1] < (self.current_carte.size()[1] * TILE_SIZE) // 2:
+                origin_view = spawn_tiles_pos[0] - FEN_large // 2, (self.current_carte.size()[1] - FEN_haut) // 2
+            else:
+                origin_view = spawn_tiles_pos[0] - FEN_large // 2, (FEN_haut - self.current_carte.size()[1]) // 2
+            debug.println("case 1", origin_view)
             self.offsets = [
                 -origin_view[0],
                 -origin_view[1]
             ]
-            self.perso.pos = tmp[0] * TILE_SIZE - origin_view[0], tmp[1] * TILE_SIZE - origin_view[1]
+        elif FEN_large <= len(self.carte[0] * TILE_SIZE) and FEN_haut > len(self.carte) * TILE_SIZE:
+            if spawn_tiles_pos[0] < (self.current_carte.size()[0] * TILE_SIZE) // 2:
+                origin_view = (self.current_carte.size()[0] - FEN_large) // 2, spawn_tiles_pos[1] - FEN_haut // 2
+            else:
+                origin_view = (FEN_large - self.current_carte.size()[0]) // 2, spawn_tiles_pos[1] - FEN_haut // 2
+            debug.println("case 2", origin_view)
+            self.offsets = [
+                -origin_view[0],
+                -origin_view[1]
+            ]
+        else:
+            origin_view = spawn_tiles_pos[0] - FEN_large // 2, spawn_tiles_pos[1] - FEN_haut // 2
+            debug.println("case 3", origin_view)
+            self.offsets = [
+                -origin_view[0],
+                -origin_view[1]
+            ]
+        self.perso.pos = tmp[0] * TILE_SIZE + self.offsets[0], tmp[1] * TILE_SIZE + self.offsets[1]
 
     def drop_object_at(self, x: int, y: int, obj, from_poche):
         self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, from_poche)
