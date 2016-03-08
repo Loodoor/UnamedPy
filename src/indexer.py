@@ -5,6 +5,7 @@ from pygame.locals import *
 from exceptions import CreaturesNonTrouvees
 from constantes import *
 import textwrap as tw
+import atk_sys
 
 
 class Element:
@@ -146,6 +147,48 @@ class Indexer:
         self.selected_type = -1
         self.stade_sel = self.police.render("Stade [...]", 1, (10, 10, 10))
         self.creas_selected = []
+        self._attaque_table = None
+
+    @staticmethod
+    def static_select_all_crea_with_stade(stade: int):
+        save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
+        if os.path.exists(save_path):
+            with open(save_path, "rb") as read_index:
+                indexer = pickle.Unpickler(read_index).load()
+        else:
+            raise CreaturesNonTrouvees
+
+        if 0 <= stade <= 3:
+            work = []
+            for creature in indexer:
+                if creature.get_stade() == stade:
+                    work.append(creature)
+            return work
+        return indexer
+
+    @staticmethod
+    def static_select_all_crea_with_type(type_: int):
+        save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
+        if os.path.exists(save_path):
+            with open(save_path, "rb") as read_index:
+                indexer = pickle.Unpickler(read_index).load()
+        else:
+            raise CreaturesNonTrouvees
+
+        work = []
+        for creature in indexer:
+            if creature.get_type() == type_:
+                work.append(creature)
+        return work
+
+    @staticmethod
+    def static_select_all_crea_with_type_and_stade(type_: int, stade: int):
+        tmp = Indexer.static_select_all_crea_with_type(type_)
+        work = []
+        for creature in tmp:
+            if creature.get_stade() == stade:
+                work.append(creature)
+        return work
 
     @staticmethod
     def add_new(name: str, id_: int, type_: int, stade: int, path: str, desc: str=""):
@@ -176,6 +219,9 @@ class Indexer:
         with open(self.save_path, "wb") as save_index:
             pickle.Pickler(save_index).dump(self.indexer)
         self.typeur.save()
+
+    def add_attacks_table(self, table: atk_sys.AttaquesTable):
+        self._attaque_table = table
 
     def add_name_to_crea(self, id_: int, name: str):
         for creature in self.indexer:
@@ -241,47 +287,6 @@ class Indexer:
             return work
         else:
             return self.indexer
-
-    @staticmethod
-    def static_select_all_crea_with_stade(stade: int):
-        save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
-        if os.path.exists(save_path):
-            with open(save_path, "rb") as read_index:
-                indexer = pickle.Unpickler(read_index).load()
-        else:
-            raise CreaturesNonTrouvees
-
-        if 0 <= stade <= 3:
-            work = []
-            for creature in indexer:
-                if creature.get_stade() == stade:
-                    work.append(creature)
-            return work
-        return indexer
-
-    @staticmethod
-    def static_select_all_crea_with_type(type_: int):
-        save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
-        if os.path.exists(save_path):
-            with open(save_path, "rb") as read_index:
-                indexer = pickle.Unpickler(read_index).load()
-        else:
-            raise CreaturesNonTrouvees
-
-        work = []
-        for creature in indexer:
-            if creature.get_type() == type_:
-                work.append(creature)
-        return work
-
-    @staticmethod
-    def static_select_all_crea_with_type_and_stade(type_: int, stade: int):
-        tmp = Indexer.static_select_all_crea_with_type(type_)
-        work = []
-        for creature in tmp:
-            if creature.get_stade() == stade:
-                work.append(creature)
-        return work
 
     def update(self):
         self.render()

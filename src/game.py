@@ -75,6 +75,7 @@ class Game:
                                                  self.adventure.get_pseudo(), RANG_NUL)
         self.mini_map = carte.CarteRenderer(self.ecran, self.carte_mgr)
         self.objets_table = objets_manager.ObjectTable()
+        self.attaques_table = atk_sys.AttaquesTable()
         self.parametres = ParametresManager()
         self.parametres.load()
 
@@ -95,6 +96,7 @@ class Game:
         self.pc_mgr.load()
         self.zones_manager.load()
         self.money.load()
+        self.attaques_table.load()
 
         self.chat_mgr.update_quit_event(self.controles[CHAT])
 

@@ -18,9 +18,62 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
 
 
 class AttaquesTable:
-    def __init__(self, path: str):
+    def __init__(self):
         self.table = []
-        self.path = path
+        self.path = os.path.join("..", "assets", "configuration", "attaques" + EXTENSION)
+
+    def get_attack_from_name(self, name: str):
+        for attack in self.table:
+            if attack.get_nom() == name:
+                return attack
+        return GLOBAL_ERROR
+
+    def get_all_attacks_with_type(self, type_: int):
+        work = []
+        for attack in self.table:
+            if attack.get_type() == type_:
+                work.append(attack)
+        return work
+
+    def load(self):
+        try:
+            with open(self.path, 'r') as file:
+                datas = file.readlines()
+        except OSError:
+            datas = []
+
+        self._traiter_datas(datas)
+
+    def _traiter_datas(self, datas: list):
+        for line in datas:
+            if line[0] != "#":
+                work = line.split('::')
+                type_ = T_NORMAL  # defaut
+                if work[1] == "FEU":
+                    type_ = T_FEU
+                if work[1] == "EAU":
+                    type_ = T_EAU
+                if work[1] == "PLANTE":
+                    type_ = T_PLANTE
+                if work[1] == "ELEC":
+                    type_ = T_ELEC
+                if work[1] == "AIR":
+                    type_ = T_AIR
+                if work[1] == "NORMAL":
+                    type_ = T_NORMAL
+                if work[1] == "TERRE":
+                    type_ = T_TERRE
+                if work[1] == "PLASMA":
+                    type_ = T_PLASMA
+                if work[1] == "LUMIERE":
+                    type_ = T_LUMIERE
+                if work[1] == "TENEBRE":
+                    type_ = T_TENEBRE
+                try:
+                    cout = int(work[3])
+                except ValueError:
+                    cout = 1
+                self.table.append(creatures_mgr.Attaque(work[0], type_, work[2], cout))
 
 
 class Combat:
