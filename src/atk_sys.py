@@ -228,6 +228,7 @@ class Combat:
             g.update()
             del g
 
+            level_up = False
             for new in level_up:
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     [
@@ -237,6 +238,11 @@ class Combat:
                                     ], self.font)
                 g.update()
                 del g
+                level_up = True
+            if level_up:
+                id_ = self.indexer.get_evolve_by_id_level(self.get_my_creature().get_id(), self.get_my_creature().get_niv())
+                if id_:
+                    self.get_my_creature().evolve_in(id_)
         else:
             g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                 self.get_my_creature().get_pseudo() + " a gagné {} xp !".format(level_up),

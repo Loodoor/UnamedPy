@@ -59,10 +59,19 @@ class Creature:
         self.temp_specs = []
         self.upgrade_range = UPGRADE_RANGE_SPEC
         self.attaques = []
+        self.indexer = indexer
         self.dead = False
         self.__shiney = True if random.random() <= SPEC_PROBA_SHINEY else False
-        self.__image = indexer.get_image_by_id(self.specs[SPEC_ID]) if not self.is_shiney() else \
-            uset_image_as_shiney(indexer.get_image_by_id(self.specs[SPEC_ID]))
+        self.__image = self.indexer.get_image_by_id(self.specs[SPEC_ID]) if not self.is_shiney() else \
+            uset_image_as_shiney(self.indexer.get_image_by_id(self.specs[SPEC_ID]))
+        self._images_resized = {
+            self.__image.get_size(): self.__image
+        }
+
+    def evolve_in(self, id_: int):
+        self.specs[SPEC_ID] = id_
+        self.__image = self.indexer.get_image_by_id(self.specs[SPEC_ID]) if not self.is_shiney() else \
+            uset_image_as_shiney(self.indexer.get_image_by_id(self.specs[SPEC_ID]))
         self._images_resized = {
             self.__image.get_size(): self.__image
         }

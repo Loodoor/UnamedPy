@@ -8,7 +8,7 @@ import textwrap as tw
 
 
 class Element:
-    def __init__(self, name: str, id_: int, type_: int, stade: int, path: str, desc: str=""):
+    def __init__(self, name: str, id_: int, type_: int, stade: int, path: str, desc: str, evolve_id: int, evolve_niv: int):
         self.name = name
         self.id = id_
         self.type = type_
@@ -17,6 +17,8 @@ class Element:
         self.stade = stade
         self.vu = False
         self.capture = False
+        self.evolve_id = evolve_id
+        self.evolve_niv = evolve_niv
 
     def vu_(self):
         self.vu = True
@@ -190,16 +192,16 @@ class Indexer:
         return work
 
     @staticmethod
-    def add_new(name: str, id_: int, type_: int, stade: int, path: str, desc: str=""):
+    def add_new(name: str, id_: int, type_: int, stade: int, path: str, desc: str, evolve_id: int, evolve_niv: int):
         save_path = os.path.join("..", "saves", "indexer" + EXTENSION)
         if os.path.exists(save_path):
             with open(save_path, 'rb') as rbin:
                 tod = pickle.Unpickler(rbin).load()
-                tod.append(Element(name, id_, type_, stade, path, desc))
+                tod.append(Element(name, id_, type_, stade, path, desc, evolve_id, evolve_niv))
                 pickle.Pickler(open(save_path, 'wb')).dump(tod)
         else:
             with open(save_path, 'wb') as wbin:
-                tod = [Element(name, id_, type_, stade, path, desc)]
+                tod = [Element(name, id_, type_, stade, path, desc, evolve_id, evolve_niv)]
                 pickle.Pickler(wbin).dump(tod)
 
     def load(self):
@@ -242,6 +244,15 @@ class Indexer:
             if creature.id == id_:
                 return creature.type
         return POK_SEARCH_ERROR
+
+    def get_evolve_by_id_level(self, id_: int, current_level: int) -> bool or int:
+        for creature in self.indexer:
+            if creature.id == id_:
+                if creature.evolve_niv == current_level:
+                    return creature.evolve_id if creature.evolve_id != -1 else False
+                elif creature.evolve_niv == -1:
+                    return False
+        return False
 
     def get_typeur(self):
         return self.typeur
