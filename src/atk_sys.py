@@ -55,7 +55,7 @@ class AttaquesTable:
 
     def _traiter_datas(self, datas: list):
         for line in datas:
-            if line[0] != "#":
+            if line[0] != "#" and line.strip():
                 work = line.split('::')
                 type_ = T_NORMAL  # defaut
                 if work[1] == "FEU":

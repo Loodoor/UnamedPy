@@ -5,7 +5,6 @@ from pygame.locals import *
 from exceptions import CreaturesNonTrouvees
 from constantes import *
 import textwrap as tw
-import atk_sys
 
 
 class Element:
@@ -220,7 +219,7 @@ class Indexer:
             pickle.Pickler(save_index).dump(self.indexer)
         self.typeur.save()
 
-    def add_attacks_table(self, table: atk_sys.AttaquesTable):
+    def add_attacks_table(self, table: object):
         self._attaque_table = table
 
     def add_name_to_crea(self, id_: int, name: str):
