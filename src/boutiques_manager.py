@@ -22,6 +22,7 @@ class BoutiqueManager:
         self.objects_to_sell = {}
         self.money = money
         self.confirm_selling_of = _ObjectSold
+        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_boutique.png")).convert_alpha()
 
     def buy(self, object_: str, quantity: int):
         self.confirm_selling_of = _ObjectSold()
@@ -45,4 +46,4 @@ class BoutiqueManager:
         self.render()
 
     def render(self):
-        pass
+        self.ecran.blit(self.fond, (SHOP_X, SHOP_Y))

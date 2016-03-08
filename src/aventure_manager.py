@@ -21,6 +21,7 @@ class Adventure:
         self._first_creature_image = pygame.image.load(os.path.join("..", "assets", "creatures", "feu-01.png")).convert_alpha()
         self._image_prof = pygame.image.load(os.path.join("..", "assets", "aventure", "professeur.png")).convert_alpha()
         self._world_map = pygame.image.load(os.path.join("..", "assets", "aventure", "worldmap.png")).convert_alpha()
+        self.fond = pygame.image.load(os.path.join('..', 'assets', 'gui', 'fd_aventure.png')).convert_alpha()
 
     def get_progress(self):
         return self.progress
@@ -36,7 +37,7 @@ class Adventure:
         g = GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "", self.font)
         i = 0
         for texte in self.beginning_text:
-            pygame.draw.rect(self.ecran, (50, 180, 50), (0, 0, FEN_large, FEN_haut))
+            self.ecran.blit(self.fond, (0, 0))
 
             if texte[0] == INPUT_CHAR:
                 ask_smth = True

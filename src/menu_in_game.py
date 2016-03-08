@@ -16,58 +16,61 @@ class Menu:
             MENU_POKEDEX,
             MENU_QUITTER
         ]
+        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_menu.png")).convert_alpha()
+        self.fond_cat = pygame.image.load(os.path.join("..", "assets", "gui", "fd_categorie_menu.png")).convert_alpha()
+        self.fond_cat_sel = pygame.image.load(os.path.join("..", "assets", "gui", "fd_categorie_selected_menu.png")).convert_alpha()
 
     def update(self):
         self.render()
-        self.render_categories()
 
     def render(self):
-        pygame.draw.rect(self.ecran, (50, 80, 180), (MENU_X, MENU_Y, MENU_SIZE_X, MENU_SIZE_Y))
+        self.ecran.blit(self.fond, (MENU_X, MENU_Y))
+        self.render_categories()
 
     def render_categories(self):
-        color = (180, 50, 50) if self.categories[0] != self.select else (50, 180, 50)
-        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
-                                             MENU_Y + MENU_Y_CAT,
-                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        if self.categories[0] != self.select:
+            self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT))
+        else:
+            self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT))
         self.ecran.blit(self.police.render("Créatures", 1, (255, 255, 255)), (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
-                                                                     MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT))
+                                                                              MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT))
 
-        color = (180, 50, 50) if self.categories[1] != self.select else (50, 180, 50)
-        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
-                                             MENU_Y + MENU_Y_CAT,
-                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        if self.categories[1] != self.select:
+            self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT))
+        else:
+            self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT))
         self.ecran.blit(self.police.render("Inventaire", 1, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT))
 
-        color = (180, 50, 50) if self.categories[2] != self.select else (50, 180, 50)
-        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
-                                             MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT,
-                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        if self.categories[2] != self.select:
+            self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
+        else:
+            self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
         self.ecran.blit(self.police.render("Carte", 1, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
 
-        color = (180, 50, 50) if self.categories[3] != self.select else (50, 180, 50)
-        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
-                                             MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT,
-                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        if self.categories[3] != self.select:
+            self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
+        else:
+            self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
         self.ecran.blit(self.police.render("Sauvegarder", 1, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
 
-        color = (180, 50, 50) if self.categories[4] != self.select else (50, 180, 50)
-        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT,
-                                             MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2,
-                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        if self.categories[4] != self.select:
+            self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
+        else:
+            self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
         self.ecran.blit(self.police.render("Indexer", 1, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
 
-        color = (180, 50, 50) if self.categories[5] != self.select else (50, 180, 50)
-        pygame.draw.rect(self.ecran, color, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
-                                             MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2,
-                                             MENU_SIZE_X_CAT, MENU_SIZE_Y_CAT))
+        if self.categories[5] != self.select:
+            self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
+        else:
+            self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
         self.ecran.blit(self.police.render("Retour", 1, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))

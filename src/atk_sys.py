@@ -109,6 +109,7 @@ class Combat:
         self.storage = storage
         self.renderer_manager = renderer_manager
         self.equipe = equipe
+        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_combat.png")).convert_alpha()
 
     def on_start(self):
         debug.println("adv id", self.adversaire.get_id())
@@ -320,7 +321,7 @@ class Combat:
 
     def render(self):
         # en attendant d'avoir un paysage
-        pygame.draw.rect(self.ecran, (50, 50, 180), (COMB_X, COMB_Y, COMB_SX, COMB_SY))
+        self.ecran.blit(self.fond, (COMB_X, COMB_Y))
 
         # affichage des créatures
         self.ecran.blit(self.get_adversary().get_image(), (COMB_X_ADV, COMB_Y_ADV))

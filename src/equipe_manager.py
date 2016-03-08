@@ -19,6 +19,7 @@ class EquipeManager:
         self.rd_mgr = render_manager
         self.selected_crea = -1
         self.pc = None
+        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_creatures.png")).convert_alpha()
 
     def get_selected_creature(self) -> Creature:
         if self.selected_crea != -1:
@@ -32,7 +33,7 @@ class EquipeManager:
         self.render()
 
     def render(self):
-        pygame.draw.rect(self.ecran, (180, 50, 50), (FCREA_X, FCREA_Y, FCREA_SIZE_X, FCREA_SIZE_Y))
+        self.ecran.blit(self.fond, (FCREA_X, FCREA_Y))
         self.ecran.blit(self.titre, ((FEN_large - self.titre.get_width()) // 2, FCREA_TITRE_Y))
         for i in range(len(self.creatures)):
             couleur_bg = (50, 180, 50) if i != self.selected_crea else (50, 180, 180)

@@ -149,6 +149,7 @@ class Indexer:
         self.stade_sel = self.police.render("Stade [...]", 1, (10, 10, 10))
         self.creas_selected = []
         self._attaque_table = None
+        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_indexer.png")).convert_alpha()
 
     @staticmethod
     def static_select_all_crea_with_stade(stade: int):
@@ -322,7 +323,7 @@ class Indexer:
             pygame.display.flip()
 
     def render(self):
-        pygame.draw.rect(self.ecran, (180, 20, 180), (POK_POSX, POK_POSY, POK_X_SIZE, POK_Y_SIZE))
+        self.ecran.blit(self.fond, (POK_POSX, POK_POSY))
         titre = self.police.render("Indexeur" if self.render_creatures else "Indexer -> Types", 1, (255, 255, 255))
         self.ecran.blit(titre, (POK_X_TITRE, POK_Y_TITRE))
         pygame.draw.rect(self.ecran, (20, 20, 180), (POK_X_VIEWT, POK_Y_VIEWT, POK_SX_VIEWT, POK_SY_VIEWT))

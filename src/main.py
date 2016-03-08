@@ -73,6 +73,8 @@ def main():
     chargement = False
     en_reseau = False
     avancement = 0
+    btn_reseau = pygame.image.load(os.path.join("..", "assets", "gui", "fd_btn_reseau.png")).convert_alpha()
+    btn_jeu = pygame.image.load(os.path.join("..", "assets", "gui", "fd_btn_jeu.png")).convert_alpha()
 
     debug.println("Menu chargé en %3.4f sec" % (time.time() - start_at))
     debug.println("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
@@ -148,12 +150,11 @@ def main():
                 jeu.start()
                 del jeu
         else:
-            pygame.draw.rect(ecran, (50, 180, 180), (MENU_BTN_JOUER_X, MENU_BTN_JOUER_Y,
-                                                     MENU_BTN_JOUER_SX, MENU_BTN_JOUER_SY))
+            ecran.blit(btn_jeu, (MENU_BTN_JOUER_X, MENU_BTN_JOUER_Y))
             ecran.blit(jouer, (MENU_BTN_JOUER_X + (MENU_BTN_JOUER_SX - jouer.get_width()) // 2 + 2,
                                MENU_BTN_JOUER_Y + (MENU_BTN_JOUER_SY - jouer.get_height()) // 2 + 2))
-            pygame.draw.rect(ecran, (180, 50, 180), (MENU_BTN_RESEAU_X, MENU_BTN_RESEAU_Y,
-                                                     MENU_BTN_RESEAU_SX, MENU_BTN_RESEAU_SY))
+
+            ecran.blit(btn_reseau, (MENU_BTN_RESEAU_X, MENU_BTN_RESEAU_Y))
             ecran.blit(reseau, (MENU_BTN_RESEAU_X + (MENU_BTN_RESEAU_SX - reseau.get_width()) // 2 + 2,
                                 MENU_BTN_RESEAU_Y + (MENU_BTN_RESEAU_SY - reseau.get_height()) // 2 + 2))
 

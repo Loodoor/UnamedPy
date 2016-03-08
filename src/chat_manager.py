@@ -20,6 +20,7 @@ class ChatManager:
         self.text_entry = textentry.TextBox(self.ecran, x=CHAT_X_BOX, y=CHAT_Y_BOX,
                                             sx=CHAT_SX_BOX, sy=CHAT_SY_BOX, bgcolor=(70, 70, 70))
         self.quit = None
+        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_chat.png")).convert_alpha()
 
     def update_quit_event(self, new):
         self.quit = new
@@ -75,8 +76,7 @@ class ChatManager:
         ]
 
     def render(self):
-        pygame.draw.rect(self.ecran, (50, 180, 180), (CHAT_X_MESSAGES, CHAT_Y_MESSAGES,
-                                                      CHAT_SX, CHAT_SY))
+        self.ecran.blit(self.fond, (CHAT_X_MESSAGES, CHAT_Y_MESSAGES))
         i = 0
         color = (255, 255, 255)
         for msg in self.get_messages():

@@ -36,6 +36,8 @@ class Inventaire:
             )
         }
 
+        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_inventaire.png")).convert_alpha()
+
     def get_obj_messenger(self):
         if self.obj_messenger:
             return self.obj_messenger
@@ -79,7 +81,7 @@ class Inventaire:
         self.render()
 
     def render(self):
-        pygame.draw.rect(self.ecran, (50, 180, 70), (INVENT_POSX, INVENT_POSY, INVENT_X_SIZE, INVENT_Y_SIZE))
+        self.ecran.blit(self.fond, (INVENT_POSX, INVENT_POSY))
         self.ecran.blit(self.titre, (FEN_large // 2 - self.titre.get_size()[0] // 2, 30))
         for i in range(len(self.objets[self.cur_categorie])):
             if self.objets[self.cur_categorie][i].nombre():
