@@ -554,7 +554,7 @@ class Game:
         if self.show_fps:
             texte = self.police_normale.render("%3i FPS" % int(self.fps_regulator.get_fps()), 1, (0, 0, 0))
             pygame.draw.rect(self.ecran, (150, 150, 150),
-                            (self.ecran.get_width() - 10 + texte.get_width(), 0,
+                            (FEN_large - 10 + texte.get_width(), 0,
                              10 + texte.get_width(), 10 + texte.get_height()))
             self.ecran.blit(texte, (5, 5))
 
@@ -588,7 +588,7 @@ class Game:
                                  "- - Carte - -",
                                  "Zone id: {}".format(self.carte_mgr.get_zid()),
                                  "Map id : {}".format(os.path.split(self.carte_mgr.current_carte.path_)[1].split('.')[0][3:]),
-                                 "Offsets : {}".format(self.carte_mgr.get_ofs()),
+                                 "Offsets : {}".format([float("%4.3f" % i) for i in self.carte_mgr.get_ofs()]),
                                  "- - Personnage - -",
                                  "Direction: {}".format(self.personnage.get_dir()),
                                  "Position: {}".format(self.personnage.get_pos()),
@@ -598,7 +598,9 @@ class Game:
                                  "- - Réseau - -",
                                  "En réseau: {}".format(self.sock is not None),
                                  "Params: {}".format(self.params if self.sock is not None else "NA"),
-                                 line_width=150)
+                                 x=DEBUG_FEN_large - 200,
+                                 line_width=200,
+                                 sy=DEBUG_FEN_haut)
 
             pygame.display.flip()
 

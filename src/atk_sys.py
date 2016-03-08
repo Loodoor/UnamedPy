@@ -17,6 +17,12 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
     return True if specs_atk[SPEC_VIT] >= 2 * specs_def[SPEC_VIT] else False
 
 
+class AttaquesTable:
+    def __init__(self, path: str):
+        self.table = []
+        self.path = path
+
+
 class Combat:
     def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer, font, storage,
                  renderer_manager, equipe):

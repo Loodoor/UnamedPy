@@ -254,7 +254,7 @@ class CartesManager:
 
     def render(self):
         objects_at = self.current_carte.get_objects()
-        pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0) + self.ecran.get_size())
+        pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0, FEN_large, FEN_haut))
         for y in range(len(self.carte)):
             for x in range(len(self.carte[y])):
                 objet = self.carte[y][x]

@@ -36,7 +36,10 @@ def main():
     ))
     debug.println("Initialisation de Pygame.Font ...", pygame.font.init())
 
-    ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
+    if DEBUG_LEVEL >= 1:
+        ecran = pygame.display.set_mode((DEBUG_FEN_large, DEBUG_FEN_haut), HWSURFACE)
+    else:
+        ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
     clock = pygame.time.Clock()
     pygame.display.set_caption("Unamed - v" + VERSION)
     police = pygame.font.Font(POLICE_PATH, 16)

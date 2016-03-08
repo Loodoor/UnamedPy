@@ -36,7 +36,7 @@ class Adventure:
         g = GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "", self.font)
         i = 0
         for texte in self.beginning_text:
-            pygame.draw.rect(self.ecran, (50, 180, 50), (0, 0) + self.ecran.get_size())
+            pygame.draw.rect(self.ecran, (50, 180, 50), (0, 0, FEN_large, FEN_haut))
 
             if texte[0] == INPUT_CHAR:
                 ask_smth = True
@@ -54,18 +54,18 @@ class Adventure:
 
             if "creature image" in name_of_image:
                 self.ecran.blit(self._first_creature_image, (
-                    (self.ecran.get_width() - self._first_creature_image.get_width()) // 2,
-                    (self.ecran.get_height() - self._first_creature_image.get_height()) // 2
+                    (FEN_large - self._first_creature_image.get_width()) // 2,
+                    (FEN_haut - self._first_creature_image.get_height()) // 2
                 ))
             if "image prof" in name_of_image:
                 self.ecran.blit(self._image_prof, (
-                    (self.ecran.get_width() - self._image_prof.get_width()) // 2,
-                    (self.ecran.get_height() - self._image_prof.get_height() - BULLE_SY) // 2
+                    (FEN_large - self._image_prof.get_width()) // 2,
+                    (FEN_haut - self._image_prof.get_height() - BULLE_SY) // 2
                 ))
             if "worldmap" in name_of_image:
                 self.ecran.blit(self._world_map, (
-                    (self.ecran.get_width() - self._world_map.get_width()) // 2,
-                    (self.ecran.get_height() - self._world_map.get_height()) // 2
+                    (FEN_large - self._world_map.get_width()) // 2,
+                    (FEN_haut - self._world_map.get_height()) // 2
                 ))
             g.update()
 
