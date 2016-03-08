@@ -20,7 +20,16 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
 class AttaquesTable:
     def __init__(self):
         self.table = []
+        self._attacks = {}
         self.path = os.path.join("..", "assets", "configuration", "attaques" + EXTENSION)
+
+    def can_i_learn(self, type_crea: int, niv_crea: int, attaque_name: str, attacks_learnt: list) -> bool:
+        for name, obligator in self._attacks.items():
+            if name == attaque_name:
+                if type_crea in obligator[1] and obligator[0] <= niv_crea and name not in attacks_learnt:
+                    return True
+                return False
+        return True
 
     def get_attack_from_name(self, name: str):
         for attack in self.table:
@@ -37,7 +46,7 @@ class AttaquesTable:
 
     def load(self):
         try:
-            with open(self.path, 'r') as file:
+            with open(self.path, 'r', encoding='utf-8') as file:
                 datas = file.readlines()
         except OSError:
             datas = []
@@ -69,11 +78,14 @@ class AttaquesTable:
                     type_ = T_LUMIERE
                 if work[1] == "TENEBRE":
                     type_ = T_TENEBRE
+
                 try:
-                    cout = int(work[3])
+                    cout = int(work[4])
                 except ValueError:
                     cout = 1
-                self.table.append(creatures_mgr.Attaque(work[0], type_, work[2], cout))
+
+                self._attacks[work[0]] = [[int(i) for i in work[5].split('&')[0].split('-')], work[5].split('&')[1]]
+                self.table.append(creatures_mgr.Attaque(work[0], type_, int(work[2]), work[3], cout))
 
 
 class Combat:
