@@ -1,8 +1,8 @@
 # id de la créature::type::stade(0 à 3)::nom du fichier image::description::id de l'évolution (-1 si aucune)::niveau d'évolution (-1 si aucune)
 0::FEU::0::feu-01.png::Cette créature vit en groupe au coeur d'un volcan dont elle n'émerge que très rarement.::-1::-1
-1::T_LUMIERE::0::lumiere-01-a1.png::Cette créature très timide se redresse lorsqu'elle se sent menacée, et émet un vif rayon de lumière avec ses plaques ventrales pour faire fuir l'ennemi.::-1::-1
-2::T_LUMIERE::1::lumiere-01-a2.png::Cette créature s'est entourée de fourrure isolante pour préparer la métamorphose de son corps. Pour se protéger, elle peut émettre de la lumière à travers son cocon et utiliser ses pattes qui n'ont pas encore fini d'évoluer.::-1::-1
+1::T_LUMIERE::0::lumiere-01-a1.png::Cette créature très timide se redresse lorsqu'elle se sent menacée, et émet un vif rayon de lumière avec ses plaques ventrales pour faire fuir l'ennemi.::2::16
+2::T_LUMIERE::1::lumiere-01-a2.png::Cette créature s'est entourée de fourrure isolante pour préparer la métamorphose de son corps. Pour se protéger, elle peut émettre de la lumière à travers son cocon et utiliser ses pattes qui n'ont pas encore fini d'évoluer.::3::34
 3::T_LUMIERE::2::lumiere-01-a3.png::La lumière intense émise par cette créature et les motifs sur ses ailes créent des jeux d'ombres monstrueux qui effraient ses prédateurs.::-1::-1
-4::T_TENEBRE::0::tenebre-01-a1.png::Cette créature suit ses proies en glissant silencieusement au sol et sur les murs. Quand elle est suffisamment près, elle les avale tout rond.::-1::-1
-5::T_TENEBRE::1::tenebre-01-a2.png::Cette créature avale ses proies en les recouvrant de son corps gluant.::-1::-1
+4::T_TENEBRE::0::tenebre-01-a1.png::Cette créature suit ses proies en glissant silencieusement au sol et sur les murs. Quand elle est suffisamment près, elle les avale tout rond.::5::14
+5::T_TENEBRE::1::tenebre-01-a2.png::Cette créature avale ses proies en les recouvrant de son corps gluant.::6::36
 6::T_TENEBRE::2::tenebre-01-a3.png::Cette créature jaillit de l'ombre pour saisir ses proies jusqu'à plusieurs mètres de distance.::-1::-1
