@@ -162,6 +162,7 @@ class GUISauvegarde:
         self.ldroite = [pygame.image.load(_).convert_alpha() for _ in
                         glob(os.path.join("..", "assets", "personnages", "first", "droite*.png"))]
         self.cur_anim = 0
+        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_sauvegarde.png")).convert_alpha()
 
     def reinit(self):
         self.waiting = False
@@ -196,7 +197,7 @@ class GUISauvegarde:
         self.render()
 
     def render(self):
-        pygame.draw.rect(self.ecran, (50, 180, 180), (SAVE_X, SAVE_Y, SAVE_SX, SAVE_SY))
+        self.ecran.blit(self.fond, (SAVE_X, SAVE_Y))
         self.ecran.blit(self.texte,
                         (SAVE_X + (SAVE_SX - self.texte.get_width()) // 2,
                          SAVE_Y + 10))

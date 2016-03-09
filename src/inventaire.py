@@ -18,11 +18,6 @@ class Inventaire:
         self.cur_categorie = POCHE_COMMUNS
         self.selected_item = -1
         self.titre = self.police.render("Inventaire", 1, (10, 10, 10))
-        self.textes = {
-            "jeter": self.police.render("Jeter", 1, (10, 10, 10)),
-            "jeter tout": self.police.render("Vider", 1, (10, 10, 10)),
-            "utiliser": self.police.render("Utiliser", 1, (10, 10, 10))
-        }
         self._opened_from = None
         self.obj_messenger = None
 
@@ -37,6 +32,11 @@ class Inventaire:
         }
 
         self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_inventaire.png")).convert_alpha()
+        self._btn_next = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_next.png")).convert_alpha()
+        self._btn_previous = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_previous.png")).convert_alpha()
+        self._btn_jeter = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_jeter.png")).convert_alpha()
+        self._btn_vider = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_vider.png")).convert_alpha()
+        self._btn_utiliser = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_utiliser.png")).convert_alpha()
 
     def get_obj_messenger(self):
         if self.obj_messenger:
@@ -90,13 +90,9 @@ class Inventaire:
                 self.ecran.blit(item, (INVENT_X_ITEM, INVENT_Y_ITEM + i * INVENT_ESP_ITEM))
         if 0 <= self.selected_item < len(self.objets[self.cur_categorie]) and self.objets[self.cur_categorie][self.selected_item].nombre():
             # les boutons jeter, jeter tout et utiliser
-            pygame.draw.rect(self.ecran, (180, 50, 50), (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
-            pygame.draw.rect(self.ecran, (255, 50, 50), (INVENT_BTN_JETERTT_X, INVENT_BTN_JETERTT_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
-            pygame.draw.rect(self.ecran, (50, 50, 180), (INVENT_BTN_USE_X, INVENT_BTN_USE_Y, INVENT_SIZE_BTN_X, INVENT_SIZE_BTN_Y))
-            # et leur texte
-            self.ecran.blit(self.textes["jeter"], (INVENT_BTN_JETER_X + 2, INVENT_BTN_JETER_Y + 2))
-            self.ecran.blit(self.textes["jeter tout"], (INVENT_BTN_JETERTT_X + 2, INVENT_BTN_JETERTT_Y + 2))
-            self.ecran.blit(self.textes["utiliser"], (INVENT_BTN_USE_X + 2, INVENT_BTN_USE_Y + 2))
+            self.ecran.blit(self._btn_jeter, (INVENT_BTN_JETER_X, INVENT_BTN_JETER_Y))
+            self.ecran.blit(self._btn_vider, (INVENT_BTN_JETERTT_X, INVENT_BTN_JETERTT_Y))
+            self.ecran.blit(self._btn_utiliser, (INVENT_BTN_USE_X, INVENT_BTN_USE_Y))
             # texte d'aide
             # DECOUPER LE TEXTE CAR TROP GRAND !
             texte_aide_str = self.objets[self.cur_categorie][self.selected_item].aide()
@@ -111,10 +107,8 @@ class Inventaire:
         self.ecran.blit(self.images_poches[str(self.cur_categorie)], (INVENT_IMAGE_X, INVENT_IMAGE_Y))
 
         # les boutons next & previous
-        pygame.draw.rect(self.ecran, (180, 180, 50), (INVENT_BTN_PREVIOUS, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
-        pygame.draw.rect(self.ecran, (180, 180, 50), (INVENT_BTN_NEXT, INVENT_BTN_PAGES, INVENT_BTN_PAGES_SX, INVENT_BTN_PAGES_SY))
-        self.ecran.blit(self.police.render("<", 1, (10, 10, 10)), (INVENT_BTN_PREVIOUS + 6, INVENT_BTN_PAGES))
-        self.ecran.blit(self.police.render(">", 1, (10, 10, 10)), (INVENT_BTN_NEXT + 6, INVENT_BTN_PAGES))
+        self.ecran.blit(self._btn_previous, (INVENT_BTN_PREVIOUS, INVENT_BTN_PAGES))
+        self.ecran.blit(self._btn_next, (INVENT_BTN_NEXT, INVENT_BTN_PAGES))
 
         # texte de la poche
         tmp_poche = self.__quelle_poche()

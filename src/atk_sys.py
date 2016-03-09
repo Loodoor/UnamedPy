@@ -110,6 +110,9 @@ class Combat:
         self.renderer_manager = renderer_manager
         self.equipe = equipe
         self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_combat.png")).convert_alpha()
+        self._fond_atk = pygame.image.load(os.path.join("..", "assets", "gui", "fd_attaque.png")).convert_alpha()
+        self._fond_atk_selected = pygame.image.load(os.path.join("..", "assets", "gui", "fd_attaque_selected.png")).convert_alpha()
+        self._fond_barre_vie = pygame.image.load(os.path.join("..", "assets", "gui", "fd_barre_vie_creature.png")).convert_alpha()
 
     def on_start(self):
         debug.println("adv id", self.adversaire.get_id())
@@ -329,17 +332,15 @@ class Combat:
 
         # affichage des stats
         if not self.get_adversary().is_dead():
-            upg_bar(self.ecran, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+            upg_bar(self.ecran, (COMB_X_ADV + 3, COMB_Y_ADV - COMB_SY_LIFE_BAR - 5, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
                     self.get_adversary().get_pvs() // self.get_adversary().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
         else:
-            pygame.draw.rect(self.ecran, (128, 128, 128),
-                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR))
+            self.ecran.blit(self._fond_barre_vie, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10))
         if not self.get_my_creature().is_dead():
-            upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 10, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+            upg_bar(self.ecran, (COMB_X_ME + 3, COMB_Y_ME - COMB_SY_LIFE_BAR - 5, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
                     self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
         else:
-            pygame.draw.rect(self.ecran, (128, 128, 128),
-                             (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR * 2, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR))
+            self.ecran.blit(self._fond_barre_vie, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR * 2))
         self.ecran.blit(self.font.render("PV: {}".format(self.get_my_creature().get_pvs()), 1, (10, 10, 10)),
                         (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 8))
 
@@ -372,10 +373,10 @@ class Combat:
         # affichage du choix des attaques
         i = 1
         for atk in self.get_my_creature().get_attacks():
-            color = (180, 180, 50) if i - 1 != self.selected_atk else (50, 180, 180)
-            pygame.draw.rect(self.ecran, color,
-                             (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i,
-                              COMB_SX_ATK_FIELD, COMB_SY_ATK_FIELD))
+            if i - 1 == self.selected_atk:
+                self.ecran.blit(self._fond_atk_selected, (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))
+            else:
+                self.ecran.blit(self._fond_atk, (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))
             self.ecran.blit(self.font.render(atk.get_nom() +
                                              ", dégâts: " + str(atk.get_dgts()), 1, (10, 10, 10)),
                             (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))

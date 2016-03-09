@@ -13,13 +13,15 @@ class EquipeManager:
         self.creatures = []
         self.indexer = indexer
         self.path = os.path.join("..", "saves", "equipe" + EXTENSION)
-        self.passe_pc_txt = self.police.render("PC", 1, (255, 255, 255))
-        self.to_pc = self.police.render("-> PC", 1, (255, 255, 255))
         self.titre = self.police.render("Equipe", 1, (255, 255, 255))
         self.rd_mgr = render_manager
         self.selected_crea = -1
         self.pc = None
         self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_creatures.png")).convert_alpha()
+        self._fond_case = pygame.image.load(os.path.join("..", "assets", "gui", "fd_case_creature.png")).convert_alpha()
+        self._fond_case_selected = pygame.image.load(os.path.join("..", "assets", "gui", "fd_case_creature_selected.png")).convert_alpha()
+        self._btn_pc = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_pc.png")).convert_alpha()
+        self._btn_to_pc = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_to_pc.png")).convert_alpha()
 
     def get_selected_creature(self) -> Creature:
         if self.selected_crea != -1:
@@ -36,15 +38,14 @@ class EquipeManager:
         self.ecran.blit(self.fond, (FCREA_X, FCREA_Y))
         self.ecran.blit(self.titre, ((FEN_large - self.titre.get_width()) // 2, FCREA_TITRE_Y))
         for i in range(len(self.creatures)):
-            couleur_bg = (50, 180, 50) if i != self.selected_crea else (50, 180, 180)
             creature = self.creatures[i]
             pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), 1, (10, 10, 10))
             txt_format = self.police.render(creature.get_pseudo() + ' : niv.' + str(creature.get_niv()), 1, (10, 10, 10))
-            pygame.draw.rect(self.ecran, couleur_bg,
-                             (FCREA_X + FCREA_MARGE_X,
-                             FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE,
-                             FCREA_SIZE_X_CASE,
-                             FCREA_SIZE_Y_CASE))
+            if i == self.selected_crea:
+                self.ecran.blit(self._fond_case_selected, (FCREA_X + FCREA_MARGE_X,
+                                                           FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE))
+            else:
+                self.ecran.blit(self._fond_case, (FCREA_X + FCREA_MARGE_X, FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE))
             self.ecran.blit(txt_format,
                             (FCREA_X + FCREA_MARGE_X + FCREA_MARGE_TXT_X,
                              FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_TXT_Y +
@@ -58,14 +59,8 @@ class EquipeManager:
                             (FCREA_X + FCREA_IMAGE_X + FCREA_IMAGE_XY_MARGE,
                              FCREA_Y + FCREA_IMAGE_Y + (i + 1) * FCREA_MARGE_Y + i * FCREA_SIZE_Y_CASE + FCREA_MARGE_Y_RAPPORT_TITRE - FCREA_IMAGE_XY_MARGE))
         # boutons
-        pygame.draw.rect(self.ecran, (50, 180, 180), (FCREA_AUTRE_MGR_X, FCREA_AUTRE_MGR_Y,
-                                                      FCREA_AUTRE_MGR_SX, FCREA_AUTRE_MGR_SY))
-        self.ecran.blit(self.passe_pc_txt, (FCREA_AUTRE_MGR_X - (self.passe_pc_txt.get_width() - FCREA_AUTRE_MGR_SX) // 2,
-                                            FCREA_AUTRE_MGR_Y + 2))
-        pygame.draw.rect(self.ecran, (180, 50, 180), (FCREA_PASSE_CREA_TO__X, FCREA_PASSE_CREA_TO__Y,
-                                                      FCREA_PASSE_CREA_TO__SX, FCREA_PASSE_CREA_TO__SY))
-        self.ecran.blit(self.to_pc, (FCREA_PASSE_CREA_TO__X - (self.to_pc.get_width() - FCREA_PASSE_CREA_TO__SX) // 2,
-                                     FCREA_PASSE_CREA_TO__Y + 2))
+        self.ecran.blit(self._btn_pc, (FCREA_AUTRE_MGR_X, FCREA_AUTRE_MGR_Y))
+        self.ecran.blit(self._btn_to_pc, (FCREA_PASSE_CREA_TO__X, FCREA_PASSE_CREA_TO__Y))
 
     def load(self):
         if os.path.exists(self.path):
