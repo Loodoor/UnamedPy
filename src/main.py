@@ -49,7 +49,7 @@ def main():
     police_title = pygame.font.Font(POLICE_PATH, 20)
     police_title.set_underline(True)
     police_title.set_bold(True)
-    title = police_title.render("Unamed", 1, (255, 255, 255))
+    title = pygame.image.load(os.path.join("..", "assets", "menu", "logo_alpha.png")).convert_alpha()
     jouer = police_jouer.render("Jouer !", 1, (255, 255, 255))
     reseau = police_jouer.render("Réseau", 1, (255, 255, 255))
     bienvenue = [
@@ -101,16 +101,16 @@ def main():
 
         #Affichage
         ecran.blit(fond, (0, 0))
-        ecran.blit(title, (FEN_large // 2 - title.get_width() // 2, 20))
+        ecran.blit(title, (FEN_large // 2 - title.get_width() // 2, 0))
 
         if not has_already_played:
             i = 0
             for txt in bienvenue:
                 tmp = police.render(txt, 1, (255, 255, 255))
-                ecran.blit(tmp, (FEN_large // 2 - tmp.get_width() // 2, 100 + 20 * i))
+                ecran.blit(tmp, (FEN_large // 2 - tmp.get_width() // 2, 120 + 20 * i))
                 i += 1
         else:
-            ecran.blit(alea_texte, (FEN_large // 2 - alea_texte.get_width() // 2, 75))
+            ecran.blit(alea_texte, (FEN_large // 2 - alea_texte.get_width() // 2, 120))
 
         if chargement:
             pygame.draw.rect(ecran, (150, 150, 150), (FEN_large // 2 - MENU_SIZE_BAR // 2, MENU_BAR_Y, MENU_SIZE_BAR, 22))
