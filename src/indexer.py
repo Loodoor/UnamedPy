@@ -146,7 +146,7 @@ class Indexer:
         self.rd_mgr = render_manager
         self.selected_creature = -1
         self.selected_type = -1
-        self.stade_sel = self.police.render("Stade [...]", 1, (10, 10, 10))
+        self.stade_sel = self.police.render("Stade [...]", POL_ANTIALISING, (10, 10, 10))
         self.creas_selected = []
         self._attaque_table = None
         self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_indexer.png")).convert_alpha()
@@ -258,7 +258,7 @@ class Indexer:
                     return False
         return False
 
-    def get_typeur(self):
+    def get_typeur(self) -> Typeur:
         return self.typeur
 
     def get_captured(self, id_: int):
@@ -309,7 +309,7 @@ class Indexer:
         while True:
             pygame.draw.rect(self.ecran, (0, 0, 0), (POK_X_FENSST, POK_Y_FENSST, POK_SX_FENSST, POK_SY_FENSST))
             selected = 0
-            tmp = self.police.render("Stade à sélectionner : " + str(selected), 1, (255, 255, 255))
+            tmp = self.police.render("Stade à sélectionner : " + str(selected), POL_ANTIALISING, (255, 255, 255))
 
             ev = pygame.event.poll()
             if ev.type == KEYDOWN:
@@ -327,10 +327,10 @@ class Indexer:
 
     def render(self):
         self.ecran.blit(self.fond, (POK_POSX, POK_POSY))
-        titre = self.police.render("Indexeur" if self.render_creatures else "Indexer -> Types", 1, (255, 255, 255))
+        titre = self.police.render("Indexeur" if self.render_creatures else "Indexer -> Types", POL_ANTIALISING, (255, 255, 255))
         self.ecran.blit(titre, (POK_X_TITRE, POK_Y_TITRE))
         pygame.draw.rect(self.ecran, (20, 20, 180), (POK_X_VIEWT, POK_Y_VIEWT, POK_SX_VIEWT, POK_SY_VIEWT))
-        tmp = self.police.render("Créatures" if not self.render_creatures else "Types", 1, (255, 255, 255))
+        tmp = self.police.render("Créatures" if not self.render_creatures else "Types", POL_ANTIALISING, (255, 255, 255))
         self.ecran.blit(tmp, (POK_X_VIEWT + (POK_SX_VIEWT - tmp.get_width()) // 2, POK_Y_VIEWT + 4))
 
         i = 0
@@ -342,30 +342,30 @@ class Indexer:
                 if not vu and not capture:
                     continue
 
-                self.ecran.blit(self.police.render("Nom : {} - Type : {}".format(nom, type_), 1, (255, 255, 255)),
+                self.ecran.blit(self.police.render("Nom : {} - Type : {}".format(nom, type_), POL_ANTIALISING, (255, 255, 255)),
                                 (POK_X_NAME_CREA, POK_Y_NAME_CREA + POK_ESP_Y_ITEM * i))
 
                 if self.selected_creature == i and (vu or capture):
                     j = 1
 
-                    self.ecran.blit(self.police.render("Description :", 1, (255, 255, 255)),
+                    self.ecran.blit(self.police.render("Description :", POL_ANTIALISING, (255, 255, 255)),
                                     (POK_X_DESC, POK_Y_DESC))
 
                     if vu or capture:
                         for txt in tw.wrap(elem.description, width=32):
-                            self.ecran.blit(self.police.render(txt, 1, (255, 255, 255)),
+                            self.ecran.blit(self.police.render(txt, POL_ANTIALISING, (255, 255, 255)),
                                             (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
                             j += 1
                         self.ecran.blit(self.police.render("Vu : " + ("oui" if vu else "non") +
                                                            ", capturé : " + ("oui" if capture else "non"),
-                                                           1, (255, 255, 255)),
+                                                           POL_ANTIALISING, (255, 255, 255)),
                                         (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
                         self.ecran.blit(self.images_crea[elem.id], (
                             POK_X_IMG_CREA,
                             POK_Y_IMG_CREA + (j + 1) * POK_ESP_Y_ITEM)
                         )
                     else:
-                        self.ecran.blit(self.police.render("???", 1, (255, 255, 255)),
+                        self.ecran.blit(self.police.render("???", POL_ANTIALISING, (255, 255, 255)),
                                         (POK_X_DESC, POK_Y_DESC + POK_ESP_Y_ITEM))
                 i += 1
 
@@ -380,7 +380,7 @@ class Indexer:
                 chaine = str(t_id + 1)
                 texte = self.police.render('- ' + ('0' * 1 if i <= 8 else '') + "{}{} -> '{}', vu {} fois"
                                            .format(chaine, suffixe, type_name, self.typeur.get_views_on(t_id)),
-                                           1, (255, 255, 255))
+                                           POL_ANTIALISING, (255, 255, 255))
                 self.ecran.blit(texte, (POK_X_TYPE, POK_Y_TYPE + i * POK_SY_TYPE))
                 i += 1
 

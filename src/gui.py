@@ -15,7 +15,7 @@ class GUIBulle:
         self.font = font
         self.image = pygame.image.load(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
         self.iw, self.ih = self.image.get_size()
-        self.txt_renderer = self.font.render(" ", 1, (10, 10, 10))
+        self.txt_renderer = self.font.render(" ", POL_ANTIALISING, (10, 10, 10))
         self.create_text_renderers()
 
     def set_text(self, new: str or list):
@@ -24,9 +24,9 @@ class GUIBulle:
 
     def create_text_renderers(self):
         if not isinstance(self.texte, list):
-            self.txt_renderer = self.font.render(self.texte, 1, (10, 10, 10))
+            self.txt_renderer = self.font.render(self.texte, POL_ANTIALISING, (10, 10, 10))
         else:
-            self.txt_renderer = [self.font.render(t, 1, (10, 10, 10)) for t in self.texte]
+            self.txt_renderer = [self.font.render(t, POL_ANTIALISING, (10, 10, 10)) for t in self.texte]
 
     def update(self, dt: int=1):
         self.render()
@@ -143,7 +143,7 @@ class PNJSpeaking:
         self.mdt = 0
 
         self.color = color
-        self.txt_renderer = self.font.render(self.texte, 1, (10, 10, 10))
+        self.txt_renderer = self.font.render(self.texte, POL_ANTIALISING, (10, 10, 10))
         self.bulle = pygame.image.load(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
 
     def update(self, dt: int=1):
@@ -158,7 +158,7 @@ class PNJSpeaking:
         self.ecran.blit(self.txt_renderer, (PNJ_TXT_XPOS + PNJ_TXT_ALIGN_X, PNJ_TXT_YPOS + PNJ_TXT_ALIGN_Y))
 
         if self.clignote:
-            self.ecran.blit(self.font.render("_", 1, (10, 10, 10)), (PNJ_TXT_X_CLIGNO, PNJ_TXT_Y_CLIGNO))
+            self.ecran.blit(self.font.render("_", POL_ANTIALISING, (10, 10, 10)), (PNJ_TXT_X_CLIGNO, PNJ_TXT_Y_CLIGNO))
 
         self.mdt += dt
         self.mdt %= 2
@@ -169,8 +169,8 @@ class GUISauvegarde:
     def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont):
         self.ecran = ecran
         self.police = police
-        self.texte = self.police.render("Sauvegarde en cours ... Merci de patienter :)", 1, (0, 0, 0))
-        self.waiter = self.police.render("_", 1, (0, 0, 0))
+        self.texte = self.police.render("Sauvegarde en cours ... Merci de patienter :)", POL_ANTIALISING, (0, 0, 0))
+        self.waiter = self.police.render("_", POL_ANTIALISING, (0, 0, 0))
         self.waiting = False
         self._time = 0
         self.time_between = 8

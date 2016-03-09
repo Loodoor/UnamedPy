@@ -32,14 +32,14 @@ class Menu:
             self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT))
         else:
             self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT))
-        self.ecran.blit(self.police.render("Créatures", 1, (255, 255, 255)), (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
+        self.ecran.blit(self.police.render("Créatures", POL_ANTIALISING, (255, 255, 255)), (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
                                                                               MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT))
 
         if self.categories[1] != self.select:
             self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT))
         else:
             self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT))
-        self.ecran.blit(self.police.render("Inventaire", 1, (255, 255, 255)),
+        self.ecran.blit(self.police.render("Inventaire", POL_ANTIALISING, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT))
 
@@ -47,7 +47,7 @@ class Menu:
             self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
         else:
             self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
-        self.ecran.blit(self.police.render("Carte", 1, (255, 255, 255)),
+        self.ecran.blit(self.police.render("Carte", POL_ANTIALISING, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
 
@@ -55,7 +55,7 @@ class Menu:
             self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
         else:
             self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
-        self.ecran.blit(self.police.render("Sauvegarder", 1, (255, 255, 255)),
+        self.ecran.blit(self.police.render("Sauvegarder", POL_ANTIALISING, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 2 + MENU_SIZE_Y_CAT))
 
@@ -63,7 +63,7 @@ class Menu:
             self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
         else:
             self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
-        self.ecran.blit(self.police.render("Indexer", 1, (255, 255, 255)),
+        self.ecran.blit(self.police.render("Indexer", POL_ANTIALISING, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
 
@@ -71,7 +71,7 @@ class Menu:
             self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
         else:
             self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
-        self.ecran.blit(self.police.render("Retour", 1, (255, 255, 255)),
+        self.ecran.blit(self.police.render("Retour", POL_ANTIALISING, (255, 255, 255)),
                         (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT + MENU_X_CAT * 2 + MENU_SIZE_X_CAT,
                          MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT * 3 + MENU_SIZE_Y_CAT * 2))
 

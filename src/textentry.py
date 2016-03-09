@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import pygame
+from constantes import *
 from pygame.locals import *
 
 
@@ -35,9 +35,9 @@ class TextBox:
         self.sx = kwargs.get("sx", 120)
         self.sy = kwargs.get("sy", 35)
         self.bg_color = kwargs.get("bgcolor", (0, 0, 0))
-        self.cli = self.font.render(kwargs.get("cli", "_"), 1, self.color)
+        self.cli = self.font.render(kwargs.get("cli", "_"), POL_ANTIALISING, self.color)
         self.center = kwargs.get("center", False)
-        self.placeholder = self.font.render(kwargs.get("placeholder", ""), 1, self.color)
+        self.placeholder = self.font.render(kwargs.get("placeholder", ""), POL_ANTIALISING, self.color)
 
     def event(self, e: pygame.event):
         if e.type == QUIT:
@@ -53,7 +53,7 @@ class TextBox:
 
     def render(self):
         pygame.draw.rect(self.window, self.bg_color, (self.pos_x, self.pos_y, self.sx, self.sy))
-        texte = self.font.render(self.input, 1, self.color)
+        texte = self.font.render(self.input, POL_ANTIALISING, self.color)
         if not self.center:
             self.window.blit(self.placeholder, (self.pos_x, self.pos_y))
             self.window.blit(texte, (self.pos_x + 2 + self.placeholder.get_width(), self.pos_y + (self.sy - texte.get_height()) // 2))

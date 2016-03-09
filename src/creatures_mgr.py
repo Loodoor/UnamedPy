@@ -88,8 +88,26 @@ class Creature:
     def get_state(self):
         return self.specs[SPEC_ETAT]
 
+    def get_formatted_state(self):
+        work = ""
+        if self.specs[SPEC_ETAT] == SPEC_ETATS.poisone:
+            work = "Empoisonné"
+        elif self.specs[SPEC_ETAT] == SPEC_ETATS.brule:
+            work = "Brûlé"
+        elif self.specs[SPEC_ETAT] == SPEC_ETATS.paralise:
+            work = "Paralisé"
+        elif self.specs[SPEC_ETAT] == SPEC_ETATS.normal:
+            work = "Normal"
+        return work
+
     def get_vit(self):
         return self.specs[SPEC_VIT]
+
+    def get_def(self):
+        return self.specs[SPEC_DEF]
+
+    def get_atk(self):
+        return self.specs[SPEC_ATK]
 
     def is_shiney(self):
         return self.__shiney

@@ -88,6 +88,6 @@ class ChatManager:
                 color = CHAT_COULEUR_JOUEUR
             if msg["rang"] == RANG_SERVICE:
                 color = CHAT_COULEUR_SERVICE
-            self.ecran.blit(self.font.render(msg["message"], 1, color),
+            self.ecran.blit(self.font.render(msg["message"], POL_ANTIALISING, color),
                             (CHAT_X_MESSAGES, CHAT_Y_MESSAGES + i * CHAT_SY_MESSAGE))
             i += 1

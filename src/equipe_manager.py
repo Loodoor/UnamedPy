@@ -22,6 +22,7 @@ class EquipeManager:
         self._fond_case_selected = pygame.image.load(os.path.join("..", "assets", "gui", "fd_case_creature_selected.png")).convert_alpha()
         self._btn_pc = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_pc.png")).convert_alpha()
         self._btn_to_pc = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_to_pc.png")).convert_alpha()
+        self._fond_spec = pygame.image.load(os.path.join("..", "assets", "gui", "fd_spec_creatures.png")).convert_alpha()
 
     def get_selected_creature(self) -> Creature:
         if self.selected_crea != -1:
@@ -39,11 +40,32 @@ class EquipeManager:
         self.ecran.blit(self.titre, ((FEN_large - self.titre.get_width()) // 2, FCREA_TITRE_Y))
         for i in range(len(self.creatures)):
             creature = self.creatures[i]
-            pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), 1, (10, 10, 10))
-            txt_format = self.police.render(creature.get_pseudo() + ' : niv.' + str(creature.get_niv()), 1, (10, 10, 10))
+            pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), POL_ANTIALISING, (10, 10, 10))
+            txt_format = self.police.render(creature.get_pseudo() + ' : niv.' + str(creature.get_niv()), POL_ANTIALISING, (10, 10, 10))
             if i == self.selected_crea:
                 self.ecran.blit(self._fond_case_selected, (FCREA_X + FCREA_MARGE_X,
                                                            FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE))
+                self.ecran.blit(self._fond_spec, (FCREA_SPECS_AFF_X, FCREA_SPECS_AFF_Y))
+                self.ecran.blit(self.police.render("Spécificités", POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 5))
+                self.ecran.blit(self.police.render("Niveau : {}".format(creature.get_niv()), POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 45))
+                self.ecran.blit(self.police.render("XP actuel : {}/{}".format(creature.get_xp(), creature.get_seuil_xp()), POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 70))
+                self.ecran.blit(self.police.render("Type : {}".format(self.indexer.get_typeur().get_name(creature.get_type())), POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 95))
+                self.ecran.blit(self.police.render("Attaque : {}".format(creature.get_atk()), POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 120))
+                self.ecran.blit(self.police.render("Défense : {}".format(creature.get_def()), POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 145))
+                self.ecran.blit(self.police.render("Vitesse : {}".format(creature.get_vit()), POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 170))
+                self.ecran.blit(self.police.render("PV : {}".format(creature.get_pvs()), POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 195))
+                self.ecran.blit(self.police.render("PP : {}".format(creature.get_pps()), POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 220))
+                self.ecran.blit(self.police.render("Etat : {}".format(creature.get_formatted_state()), POL_ANTIALISING, (10, 10, 10)),
+                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 245))
             else:
                 self.ecran.blit(self._fond_case, (FCREA_X + FCREA_MARGE_X, FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE))
             self.ecran.blit(txt_format,

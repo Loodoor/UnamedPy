@@ -17,7 +17,7 @@ class ComputerManager:
         self.path = os.path.join("..", "saves", "pc" + EXTENSION)
         self.current_page = 0
         self.per_page = 7
-        self.titre = self.police.render("PC", 1, (255, 255, 255))
+        self.titre = self.police.render("PC", POL_ANTIALISING, (255, 255, 255))
         self.rd_mgr = render_manager
         self.selected_crea = -1
         self.equipe = None
@@ -81,9 +81,9 @@ class ComputerManager:
         self.ecran.blit(self.titre, ((FEN_large - self.titre.get_width()) // 2, FCREA_TITRE_Y))
         for i in range(len(self.storage[self.current_page:self.current_page + self.per_page])):
             creature = self.storage[i + self.current_page * self.per_page]
-            pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), 1,
+            pvs_format = self.police.render(str(creature.get_pvs()) + '/' + str(creature.get_max_pvs()), POL_ANTIALISING,
                                             (10, 10, 10))
-            txt_format = self.police.render(creature.get_pseudo() + ' : niv.' + str(creature.get_niv()), 1,
+            txt_format = self.police.render(creature.get_pseudo() + ' : niv.' + str(creature.get_niv()), POL_ANTIALISING,
                                             (10, 10, 10))
             if i == self.selected_crea:
                 self.ecran.blit(self._fond_case_selected, (FCREA_X + FCREA_MARGE_X, FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE))

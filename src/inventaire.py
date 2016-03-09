@@ -17,7 +17,7 @@ class Inventaire:
         self.path = os.path.join("..", "saves", "inventaire" + EXTENSION)
         self.cur_categorie = POCHE_COMMUNS
         self.selected_item = -1
-        self.titre = self.police.render("Inventaire", 1, (10, 10, 10))
+        self.titre = self.police.render("Inventaire", POL_ANTIALISING, (10, 10, 10))
         self._opened_from = None
         self.obj_messenger = None
 
@@ -86,7 +86,7 @@ class Inventaire:
         for i in range(len(self.objets[self.cur_categorie])):
             if self.objets[self.cur_categorie][i].nombre():
                 texte = self.objets[self.cur_categorie][i].name() + ' : ' + str(self.objets[self.cur_categorie][i].tot_quantite())
-                item = self.police.render(texte, 1, (10, 10, 10))
+                item = self.police.render(texte, POL_ANTIALISING, (10, 10, 10))
                 self.ecran.blit(item, (INVENT_X_ITEM, INVENT_Y_ITEM + i * INVENT_ESP_ITEM))
         if 0 <= self.selected_item < len(self.objets[self.cur_categorie]) and self.objets[self.cur_categorie][self.selected_item].nombre():
             # les boutons jeter, jeter tout et utiliser
@@ -99,7 +99,7 @@ class Inventaire:
             texte_lst = tw.wrap(texte_aide_str, width=37)
             i = 0
             for texte_tmp in texte_lst:
-                self.ecran.blit(self.police.render(texte_tmp, 1, (255, 255, 255)),
+                self.ecran.blit(self.police.render(texte_tmp, POL_ANTIALISING, (255, 255, 255)),
                                 (INVENT_TXT_AIDE_X, INVENT_TXT_AIDE_Y + INVENT_ESP_ITEM * i))
                 i += 1
 
@@ -112,7 +112,7 @@ class Inventaire:
 
         # texte de la poche
         tmp_poche = self.__quelle_poche()
-        poche_txt = self.police.render(tmp_poche, 1, (255, 255, 255))
+        poche_txt = self.police.render(tmp_poche, POL_ANTIALISING, (255, 255, 255))
         self.ecran.blit(poche_txt, (INVENT_TXT_POCHE_X - poche_txt.get_size()[0] // 2, INVENT_TXT_POCHE_Y))
 
     def clic(self, xp: int, yp: int):

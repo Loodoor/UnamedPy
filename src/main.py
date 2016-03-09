@@ -58,7 +58,7 @@ def main():
     max_len = int(MENU_SIZE_BAR // len(load_texts))
     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),
                                       encoding='utf-8').read(),
-                                 1, (255, 255, 255))
+                                 POL_ANTIALISING, (255, 255, 255))
 
     debug.println("Appuyez sur 'J' pour lancer le jeu")
 
@@ -100,7 +100,7 @@ def main():
         if not has_already_played:
             i = 0
             for txt in bienvenue:
-                tmp = police.render(txt, 1, (255, 255, 255))
+                tmp = police.render(txt, POL_ANTIALISING, (255, 255, 255))
                 ecran.blit(tmp, (FEN_large // 2 - tmp.get_width() // 2, 120 + 20 * i))
                 i += 1
         else:
@@ -115,10 +115,10 @@ def main():
                 if len(load_texts) - 1 > 0:
                     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),
                                                       encoding='utf-8').read(),
-                                                 1, (255, 255, 255))
+                                                 POL_ANTIALISING, (255, 255, 255))
                 else:
                     loading_text = police.render(open(load_texts.pop(0), encoding='utf-8').read(),
-                                                 1, (255, 255, 255))
+                                                 POL_ANTIALISING, (255, 255, 255))
             if avancement >= 246 and chargement:
                 if not has_already_played:
                     adventure.next()
