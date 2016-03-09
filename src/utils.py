@@ -112,8 +112,9 @@ def uremove(*files):
             os.remove(file)
 
 
-def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 128), fg_color: tuple=(50, 180, 50), esp=BAR_ESP):
-    pygame.draw.rect(screen, bg_color, rect_bg)
+def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 128), fg_color: tuple=(50, 180, 50), esp=BAR_ESP, bg: bool=True):
+    if bg:
+        pygame.draw.rect(screen, bg_color, rect_bg)
     pygame.draw.rect(screen, fg_color, (rect_bg[0] + esp, rect_bg[1] + esp, progress, rect_bg[3] - esp * 2))
 
 

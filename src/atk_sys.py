@@ -391,22 +391,23 @@ class Combat:
         self.ecran.blit(self.get_adversary().get_image(), (COMB_X_ADV, COMB_Y_ADV + Y_ADV_FALL))
         self.ecran.blit(self.get_my_creature().get_image(), (COMB_X_ME, COMB_Y_ME))
 
-        # affichage des stats
+        # affichage des barres de vie
         if not self.get_adversary().is_dead():
-            upg_bar(self.ecran, (COMB_X_ADV + 3, COMB_Y_ADV - COMB_SY_LIFE_BAR - 5, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
-                    self.get_adversary().get_pvs() // self.get_adversary().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
-        else:
-            self.ecran.blit(self._fond_barre_vie, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR - 10))
+            upg_bar(self.ecran, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+                    self.get_adversary().get_pvs() // self.get_adversary().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2), bg=False)
+        self.ecran.blit(self._fond_barre_vie, (COMB_X_ADV, COMB_Y_ADV - COMB_SY_LIFE_BAR))
+
         if not self.get_my_creature().is_dead():
-            upg_bar(self.ecran, (COMB_X_ME + 3, COMB_Y_ME - COMB_SY_LIFE_BAR - 5, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
-                    self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2))
-        else:
-            self.ecran.blit(self._fond_barre_vie, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR * 2))
+            upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR, COMB_SX_LIFE_BAR, COMB_SY_LIFE_BAR),
+                    self.get_my_creature().get_pvs() // self.get_my_creature().get_max_pvs() * (COMB_SX_LIFE_BAR - BAR_ESP * 2), bg=False)
+        self.ecran.blit(self._fond_barre_vie, (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR))
+
+        # mes pv
         self.ecran.blit(self.font.render("PV: {}".format(self.get_my_creature().get_pvs()), POL_ANTIALISING, (10, 10, 10)),
-                        (COMB_X_ME, COMB_Y_ME - COMB_SY_LIFE_BAR - 8))
+                        (COMB_X_ME + COMB_SX_LIFE_BAR + 14, COMB_Y_ME - COMB_SY_LIFE_BAR - 8))
 
         # xp de ma créature
-        upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME - COMB_SY_XP_BAR, COMB_SX_XP_BAR, COMB_SY_XP_BAR),
+        upg_bar(self.ecran, (COMB_X_ME, COMB_Y_ME + 10, COMB_SX_XP_BAR, COMB_SY_XP_BAR),
                 int(self.get_my_creature().get_xp() / self.get_my_creature().get_seuil_xp() * (COMB_SX_XP_BAR - BAR_ESP * 2)),
                 esp=1)
 
@@ -420,11 +421,9 @@ class Combat:
             self.ecran.blit(self.font.render("??? :: niv. {}".format(self.get_adversary().get_niv()),
                                              POL_ANTIALISING, (10, 10, 10)),
                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
-        self.ecran.blit(self.font.render("{} :: niv. {}".format(self.get_my_creature().get_pseudo(), self.get_my_creature().get_niv()),
+        self.ecran.blit(self.font.render("{} :: niv. {} ({})".format(self.get_my_creature().get_pseudo(), self.get_my_creature().get_niv(), self.get_my_creature().get_formatted_state()),
                                          POL_ANTIALISING, (10, 10, 10)),
-                        (COMB_X_ME, COMB_Y_ME - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 4))
-        self.ecran.blit(self.font.render(self.get_my_creature().get_formatted_state(), POL_ANTIALISING, (10, 10, 10)),
-                        (COMB_X_ME, COMB_Y_ME - COMB_SY_TXT_NAME - 4))
+                        (COMB_X_ME, COMB_Y_ME - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
 
         # affichage d'un indicateur pour dire s'il on a déjà capturé la créature adverse ou non
         if self.indexer.get_captured(self.get_adversary()):
@@ -439,7 +438,7 @@ class Combat:
                 self.ecran.blit(self._fond_atk, (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))
             self.ecran.blit(self.font.render(atk.get_nom() +
                                              ", dégâts: " + str(atk.get_dgts()), POL_ANTIALISING, (10, 10, 10)),
-                            (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))
+                            (COMB_X_ATK + 2, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + 2))
             self.ecran.blit(self.font.render("Description: " + atk.get_texte(), POL_ANTIALISING, (10, 10, 10)),
                             (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + COMB_SY_TXT_NAME))
             i += 1
@@ -447,4 +446,4 @@ class Combat:
         # affichage du nombre PPS
         self.ecran.blit(self.font.render("PP : " + str(self.get_my_creature().get_pps()) + "/" +
                                          str(self.get_my_creature().get_max_pps()), POL_ANTIALISING, (10, 10, 10)),
-                        (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + COMB_SY_ATK_FIELD))
+                        (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + COMB_SY_ATK_FIELD - 10))

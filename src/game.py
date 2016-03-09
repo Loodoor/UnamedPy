@@ -112,7 +112,7 @@ class Game:
             # on vient de commencer
             self.equipe_mgr.add_creature(Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))
             self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
-            self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poid pour lui infliger des dégâts")
+            self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poids")
 
         self.tab_types.init_tab()
 
