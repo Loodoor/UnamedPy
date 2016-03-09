@@ -59,6 +59,7 @@ class Creature:
         self.temp_specs = []
         self.upgrade_range = UPGRADE_RANGE_SPEC
         self.attaques = []
+        self.attaques_apprises = []
         self.indexer = indexer
         self.dead = False
         self.__shiney = True if random.random() <= SPEC_PROBA_SHINEY else False
@@ -153,10 +154,22 @@ class Creature:
         return self.specs[SPEC_TYP]
 
     def add_attack(self, name: str, type_: int, dgts: int, desc: str):
-        self.attaques.append(Attaque(name, type_, dgts, desc))
+        atk = Attaque(name, type_, dgts, desc)
+        self.attaques_apprises.append(atk)
+        if len(self.attaques) < MAX_ATK:
+            self.attaques.append(atk)
+
+    def forget_attack_by_name(self, name: str):
+        to_pop = -1
+        for i, attaque in enumerate(self.attaques):
+            if attaque.name == name:
+                to_pop = i
+                break
+        if to_pop != -1:
+            self.attaques.pop(to_pop)
 
     def get_attacks(self):
-        return self.attaques[-4:]
+        return self.attaques
 
     def get_pps(self):
         return self.specs[SPEC_PPS]

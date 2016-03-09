@@ -17,6 +17,9 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
     return True if specs_atk[SPEC_VIT] >= 2 * specs_def[SPEC_VIT] else False
 
 
+Y_ADV_FALL = 0
+
+
 class AttaquesTable:
     def __init__(self):
         self.table = []
@@ -118,6 +121,8 @@ class Combat:
         debug.println("adv id", self.adversaire.get_id())
         debug.println("zid", self.zid)
         self.has_started = True
+        global Y_ADV_FALL
+        Y_ADV_FALL = 0
 
     def on_end(self):
         if not self.indexer.get_viewed(self.get_adversary().get_id()):
@@ -216,6 +221,9 @@ class Combat:
             self.compteur_tour += 1
 
     def _manage_adversary_death(self):
+        global Y_ADV_FALL
+        while Y_ADV_FALL < 50:
+            self.render()
         g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                             self.get_adversary().get_pseudo() + " est vaincu !", self.font)
 
@@ -327,7 +335,10 @@ class Combat:
         self.ecran.blit(self.fond, (COMB_X, COMB_Y))
 
         # affichage des créatures
-        self.ecran.blit(self.get_adversary().get_image(), (COMB_X_ADV, COMB_Y_ADV))
+        global Y_ADV_FALL
+        if self.get_adversary().is_dead() and Y_ADV_FALL < 50:
+            Y_ADV_FALL += 1
+        self.ecran.blit(self.get_adversary().get_image(), (COMB_X_ADV, COMB_Y_ADV + Y_ADV_FALL))
         self.ecran.blit(self.get_my_creature().get_image(), (COMB_X_ME, COMB_Y_ME))
 
         # affichage des stats
