@@ -70,6 +70,26 @@ class GUIBulleWaiting(GUIBulle):
             pygame.display.flip()
 
 
+class GUIBulle2Choices(GUIBulleWaiting):
+    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str, font: pygame.font.SysFont,
+                 screenshotkey=K_F5):
+        super().__init__(ecran, pos, texte, font, screenshotkey)
+        self.ok = False
+
+    def update(self, dt: int=1):
+        while not self.done:
+            ev = pygame.event.poll()
+            if ev.type == KEYDOWN:
+                if ev.key == K_RETURN:
+                    self.ok = True
+                if ev.key != self.screenkey:
+                    self.done = True
+
+            self.render()
+            pygame.display.flip()
+        return self.ok
+
+
 class GUIBulleAsking(GUIBulleWaiting):
     def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str, font: pygame.font.SysFont,
                  screenshotkey=K_F5):

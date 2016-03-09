@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from gui import GUIBulle, GUIBulleWaiting, GUIBulleAsking
+from gui import GUIBulle, GUIBulleWaiting, GUIBulleAsking, GUIBulle2Choices
 from constantes import *
 from utils import upg_bar
 import creatures_mgr
@@ -255,6 +255,56 @@ class Combat:
                 id_ = self.indexer.get_evolve_by_id_level(self.get_my_creature().get_id(), self.get_my_creature().get_niv())
                 if id_:
                     self.get_my_creature().evolve_in(id_)
+                for attaque in self.indexer.get_attacks_table().table:
+                    if self.indexer.get_attacks_table().can_i_learn(
+                        self.get_my_creature().get_type(),
+                        self.get_my_creature().get_niv(),
+                        attaque.get_nom(),
+                        self.get_my_creature().get_attacks_learnt()
+                    ):
+                        if not self.get_my_creature().add_attack_bis(attaque):
+                            g = GUIBulle2Choices(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                                 [
+                                                     self.get_my_creature().get_pseudo() + " va apprendre {} !".format(attaque.get_nom()),
+                                                     "Pour continuer, appuyez sur Entrée. Sinon appuyez sur une autre touche pour abandonner"
+                                                 ],
+                                                 self.font)
+                            if g.update():
+                                # faire choisir une attaque à oublier
+                                g2 = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                                     "Quelle attaque {} doit oublier ?".format(self.get_my_creature().get_pseudo()),
+                                                     self.font)
+                                g2.update()
+                                g3 = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Laquelle ? ", self.font)
+                                g3.update()
+                                attacks_names_available = [a.get_nom() for a in self.get_my_creature().get_attacks()]
+                                while g3.get_text() not in attacks_names_available:
+                                    g3 = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                                                        [
+                                                            " - ".join(attacks_names_available),
+                                                            "Laquelle ? "
+                                                        ],
+                                                        self.font)
+                                    g3.update()
+                                self.get_my_creature().forget_attack_by_name(g3.get_text())
+                                g4 = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                                     "{} va oublier l'attaque {} !".format(
+                                                         self.get_my_creature().get_pseudo(),
+                                                         g3.get_text()
+                                                     ),
+                                                     self.font)
+                                g4.update()
+                                self.get_my_creature().add_attack_bis(attaque)
+                                del g2, g3, g4
+                            del g
+                        else:
+                            g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                                                self.get_my_creature().get_pseudo() + " a appris {} !".format(
+                                                    attaque.get_nom()),
+                                                self.font)
+                            g.update()
+                            del g
+                        break
         else:
             g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                 self.get_my_creature().get_pseudo() + " a gagné {} xp !".format(level_up),

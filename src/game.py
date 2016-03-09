@@ -106,6 +106,8 @@ class Game:
 
         self.carte_mgr.add_perso(self.personnage)
 
+        self.indexeur.add_attacks_table(self.attaques_table)
+
         if self.adventure.get_progress() == 1:
             # on vient de commencer
             self.equipe_mgr.add_creature(Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))

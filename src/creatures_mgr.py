@@ -153,11 +153,23 @@ class Creature:
     def get_type(self):
         return self.specs[SPEC_TYP]
 
+    def get_attacks_learnt(self):
+        return self.attaques_apprises
+
     def add_attack(self, name: str, type_: int, dgts: int, desc: str):
         atk = Attaque(name, type_, dgts, desc)
         self.attaques_apprises.append(atk)
         if len(self.attaques) < MAX_ATK:
             self.attaques.append(atk)
+            return True
+        return False
+
+    def add_attack_bis(self, attack: Attaque):
+        self.attaques_apprises.append(attack)
+        if len(self.attaques) < MAX_ATK:
+            self.attaques.append(attack)
+            return True
+        return False
 
     def forget_attack_by_name(self, name: str):
         to_pop = -1
@@ -167,6 +179,8 @@ class Creature:
                 break
         if to_pop != -1:
             self.attaques.pop(to_pop)
+            return True
+        return False
 
     def get_attacks(self):
         return self.attaques

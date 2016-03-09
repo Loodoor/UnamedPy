@@ -205,6 +205,9 @@ class Indexer:
                 tod = [Element(name, id_, type_, stade, path, desc, evolve_id, evolve_niv)]
                 pickle.Pickler(wbin).dump(tod)
 
+    def get_attacks_table(self):
+        return self._attaque_table
+
     def load(self):
         if os.path.exists(self.save_path):
             with open(self.save_path, "rb") as read_index:
