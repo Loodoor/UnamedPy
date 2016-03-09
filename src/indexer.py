@@ -146,7 +146,8 @@ class Indexer:
         self.rd_mgr = render_manager
         self.selected_creature = -1
         self.selected_type = -1
-        self.stade_sel = self.police.render("Stade [...]", POL_ANTIALISING, (10, 10, 10))
+        self._btn_types = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_types_indexeur.png")).convert_alpha()
+        self._btn_creatures = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_creatures_indexeur.png")).convert_alpha()
         self.creas_selected = []
         self._attaque_table = None
         self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_indexer.png")).convert_alpha()
@@ -329,9 +330,10 @@ class Indexer:
         self.ecran.blit(self.fond, (POK_POSX, POK_POSY))
         titre = self.police.render("Indexeur" if self.render_creatures else "Indexer -> Types", POL_ANTIALISING, (255, 255, 255))
         self.ecran.blit(titre, (POK_X_TITRE, POK_Y_TITRE))
-        pygame.draw.rect(self.ecran, (20, 20, 180), (POK_X_VIEWT, POK_Y_VIEWT, POK_SX_VIEWT, POK_SY_VIEWT))
-        tmp = self.police.render("Créatures" if not self.render_creatures else "Types", POL_ANTIALISING, (255, 255, 255))
-        self.ecran.blit(tmp, (POK_X_VIEWT + (POK_SX_VIEWT - tmp.get_width()) // 2, POK_Y_VIEWT + 4))
+        if not self.render_creatures:
+            self.ecran.blit(self._btn_types, (POK_X_VIEWT, POK_Y_VIEWT))
+        else:
+            self.ecran.blit(self._btn_creatures, (POK_X_VIEWT, POK_Y_VIEWT))
 
         i = 0
         if self.render_creatures:
@@ -369,9 +371,6 @@ class Indexer:
                                         (POK_X_DESC, POK_Y_DESC + POK_ESP_Y_ITEM))
                 i += 1
 
-            pygame.draw.rect(self.ecran, (180, 180, 50), (POK_X_SEL_STADE, POK_Y_SEL_STADE,
-                                                          POK_SX_SEL_STADE, POK_SY_SEL_STADE))
-            self.ecran.blit(self.stade_sel, (POK_X_SEL_STADE + (POK_SX_SEL_STADE - self.stade_sel.get_width()) // 2, POK_Y_SEL_STADE + 4))
         else:
             for t_id, type_name in self.typeur.get_types().items():
                 if not type_name:
@@ -391,9 +390,9 @@ class Indexer:
             if POK_X_NAME_CREA <= xp <= POK_X_NAME_CREA + 200:
                 self.selected_creature = (yp - POK_Y_NAME_CREA) // POK_ESP_Y_ITEM
                 self.selected_creature = self.selected_creature if 0 <= self.selected_creature < len(self.indexer) else -1
-            if POK_X_SEL_STADE <= xp <= POK_X_SEL_STADE + POK_SX_SEL_STADE and \
+            """if POK_X_SEL_STADE <= xp <= POK_X_SEL_STADE + POK_SX_SEL_STADE and \
                     POK_Y_SEL_STADE <= yp <= POK_Y_SEL_STADE + POK_SY_SEL_STADE:
-                self.render_sel_stade()
+                self.render_sel_stade()"""
         if not self.render_creatures:
             if POK_X_TYPE <= xp <= POK_X_TYPE + 200:
                 self.selected_type = (yp - POK_Y_TYPE) // POK_SY_TYPE
