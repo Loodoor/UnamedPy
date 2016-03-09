@@ -42,16 +42,10 @@ def main():
         ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
     clock = pygame.time.Clock()
     pygame.display.set_caption("Unamed - v" + VERSION)
-    police = pygame.font.Font(POLICE_PATH, 16)
-    police_jouer = pygame.font.Font(POLICE_PATH, 20)
-    police_annot = pygame.font.Font(POLICE_PATH, 12)
+    police = pygame.font.Font(POLICE_PATH, POL_NORMAL_TAILLE)
+    police_annot = pygame.font.Font(POLICE_PATH, POL_NORMAL_TAILLE)
     police_annot.set_italic(True)
-    police_title = pygame.font.Font(POLICE_PATH, 20)
-    police_title.set_underline(True)
-    police_title.set_bold(True)
     title = pygame.image.load(os.path.join("..", "assets", "menu", "logo_alpha.png")).convert_alpha()
-    jouer = police_jouer.render("Jouer !", 1, (255, 255, 255))
-    reseau = police_jouer.render("Réseau", 1, (255, 255, 255))
     bienvenue = [
         "Bienvenue à toi, chercheur !",
         "Tu vas entrer sur l'île d'Unamed, prépare toi à une toute nouvelle aventure !"
@@ -151,12 +145,7 @@ def main():
                 del jeu
         else:
             ecran.blit(btn_jeu, (MENU_BTN_JOUER_X, MENU_BTN_JOUER_Y))
-            ecran.blit(jouer, (MENU_BTN_JOUER_X + (MENU_BTN_JOUER_SX - jouer.get_width()) // 2 + 2,
-                               MENU_BTN_JOUER_Y + (MENU_BTN_JOUER_SY - jouer.get_height()) // 2 + 2))
-
             ecran.blit(btn_reseau, (MENU_BTN_RESEAU_X, MENU_BTN_RESEAU_Y))
-            ecran.blit(reseau, (MENU_BTN_RESEAU_X + (MENU_BTN_RESEAU_SX - reseau.get_width()) // 2 + 2,
-                                MENU_BTN_RESEAU_Y + (MENU_BTN_RESEAU_SY - reseau.get_height()) // 2 + 2))
 
         pygame.display.flip()
 
