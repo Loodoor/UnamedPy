@@ -201,7 +201,7 @@ class Personnage:
 
     def get_pos_in_tiles(self):
         pos_px = self.get_pos()
-        return pos_px[0] // TILE_SIZE, pos_px[1] // TILE_SIZE
+        return (pos_px[0] - self.carte_mgr.get_of1()) // TILE_SIZE, (pos_px[1] - self.carte_mgr.get_of2()) // TILE_SIZE
 
     def load(self):
         if os.path.exists(self.path):
