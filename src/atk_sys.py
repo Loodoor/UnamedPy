@@ -109,7 +109,7 @@ class Combat:
         self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
         self.indic_captured = pygame.image.load(os.path.join("..", "assets", "gui", "captured.png")).convert_alpha()
         self.font = font
-        self.selected_atk = -1
+        self.selected_atk = 0
         self.storage = storage
         self.renderer_manager = renderer_manager
         self.equipe = equipe
