@@ -27,9 +27,10 @@ class AttaquesTable:
         self.path = os.path.join("..", "assets", "configuration", "attaques" + EXTENSION)
 
     def can_i_learn(self, type_crea: int, niv_crea: int, attaque_name: str, attacks_learnt: list) -> bool:
+        attacks_learnt = [atk.get_nom() for atk in attacks_learnt]
         for name, obligator in self._attacks.items():
             if name == attaque_name:
-                if type_crea in obligator[1] and obligator[0] <= niv_crea and name not in attacks_learnt:
+                if type_crea in obligator[0] and obligator[1] <= niv_crea and not (name in attacks_learnt):
                     return True
                 return False
         return True
@@ -87,7 +88,7 @@ class AttaquesTable:
                 except ValueError:
                     cout = 1
 
-                self._attacks[work[0]] = [[int(i) for i in work[5].split('&')[0].split('-')], work[5].split('&')[1]]
+                self._attacks[work[0]] = [[int(i) for i in work[5].split('&')[0].split('-')], int(work[5].split('&')[1].strip())]
                 self.table.append(creatures_mgr.Attaque(work[0], type_, int(work[2]), work[3], cout))
 
 
@@ -240,7 +241,7 @@ class Combat:
             g.update()
             del g
 
-            level_up = False
+            has_level_up = False
             for new in level_up:
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     [
@@ -250,8 +251,8 @@ class Combat:
                                     ], self.font)
                 g.update()
                 del g
-                level_up = True
-            if level_up:
+                has_level_up = True
+            if has_level_up:
                 id_ = self.indexer.get_evolve_by_id_level(self.get_my_creature().get_id(), self.get_my_creature().get_niv())
                 if id_:
                     self.get_my_creature().evolve_in(id_)
