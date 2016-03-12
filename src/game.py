@@ -55,9 +55,6 @@ class Game:
         self.police_grande = pygame.font.Font(POLICE_PATH, POL_GRANDE_TAILLE)
         self.police_petite = pygame.font.Font(POLICE_PATH, POL_PETITE_TAILLE)
 
-        # Entités
-        self.personnage = personnage.Personnage(self.ecran, self.police_grande, perso_choice)
-
         # Managers
         self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager)
         self.oth_persos_mgr = personnage.OthPersonnagesManager(self.ecran)
@@ -78,6 +75,9 @@ class Game:
         self.attaques_table = atk_sys.AttaquesTable()
         self.parametres = ParametresManager()
         self.parametres.load()
+
+        # Entités
+        self.personnage = personnage.Personnage(self.carte_mgr, self.ecran, self.police_grande, perso_choice)
 
         # Contrôles
         self.controles = self.parametres.get("controls")

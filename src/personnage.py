@@ -11,7 +11,7 @@ from animator import PlayerAnimator
 
 
 class Personnage:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font, choice: str, pos: tuple=(0, 0)):
+    def __init__(self, carte, ecran: pygame.Surface, police: pygame.font.Font, choice: str, pos: tuple=(0, 0)):
         self.ecran = ecran
         self.direction = BAS
         self.police = police
@@ -23,7 +23,7 @@ class Personnage:
         self.perso = self.player_anim.get_sprite_pause(self.direction)
         self.is_moving = False
         self.pos = list(pos)
-        self.carte_mgr = None
+        self.carte_mgr = carte
         self.inventaire = inventaire.Inventaire(self.ecran, self.police, self.carte_mgr)
         self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
         self.same_as_before = False
@@ -44,7 +44,7 @@ class Personnage:
         self.inventaire.previous()
 
     def inventaire_update(self):
-        self.inventaire.update(tuple(self.pos))
+        self.inventaire.update((self.pos[0] - self.carte_mgr.get_of1(), self.pos[1] - self.carte_mgr.get_of2()))
 
     def changed_cur_case(self):
         return not self.same_as_before
@@ -122,7 +122,10 @@ class Personnage:
 
         self._move_player(direction, dt)
 
-        tmp_obj = self.carte_mgr.get_object_at(self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE)
+        tmp_obj = self.carte_mgr.get_object_at(
+            (self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE,
+            (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE
+        )
         if tmp_obj and tmp_obj != OBJET_GET_ERROR:
             g = GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Youpi ! Vous venez de trouver " +
                                 str(tmp_obj[0].nombre()) + " " + str(tmp_obj[0].name()) + " !",

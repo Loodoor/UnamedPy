@@ -211,9 +211,9 @@ while continuer:
         if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
             continuer = 0
         if event.type == MOUSEBUTTONDOWN:
-            if event.button == 4:
-                curpos = curpos + 1 if curpos + 1 < len(lassets) else 0
             if event.button == 5:
+                curpos = curpos + 1 if curpos + 1 < len(lassets) else 0
+            if event.button == 4:
                 curpos = curpos - 1 if curpos - 1 >= 0 else len(assets) - 1
             if event.button == 1:
                 clic = 1
