@@ -40,12 +40,12 @@ TILE_SIZE += 2
 
 pygame.init()
 
-ecran = pygame.display.set_mode((0, 0), FULLSCREEN)
+ecran = pygame.display.set_mode((0, 0))
 
 clock_ = pygame.time.Clock()
 clic = 0
 layer = 0  # maxi 5 (0 -> ... 4 compris)
-fullscreen = True
+fullscreen = False
 help_ = True
 
 pygame.font.init()
@@ -182,10 +182,10 @@ def create_edit_zone():
 
 
 def draw_tiles_tool_bar():
-    y = ecran.get_height() - TILE_SIZE - 4
+    y = 8
     pygame.draw.rect(ecran, (128, 128, 128),
                      ((ecran.get_width() - 41 * (TILE_SIZE + 2)) // 2, y - 4, (TILE_SIZE + 2) * 40, TILE_SIZE + 8))
-    for i in range(0, 20):
+    for i in range(0, 18):
         tmp = (curpos + i - 10) % len(lassets)
         x = (ecran.get_width() - 20 * (TILE_SIZE + 2)) // 2 + (TILE_SIZE + 2) * (i - 10)
         if tmp == curpos:
@@ -233,6 +233,12 @@ while continuer:
             if event.button == 1:
                 clic = 0
         if event.type == KEYDOWN:
+            if event.key == K_0 or event.key == K_KP0:
+                x, y = pygame.mouse.get_pos()
+                mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
+                if 0 <= mx < len(carte[0]) and 0 <= my < len(carte):
+                    obj = carte[my][mx][layer]
+                    curpos = lassets.index(obj)
             if event.key == K_RIGHT:
                 offset -= TILE_SIZE
             if event.key == K_LEFT:
