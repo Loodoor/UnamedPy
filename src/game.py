@@ -192,6 +192,19 @@ class Game:
                 self.renderer_manager.change_renderer_for(RENDER_CHAT)
             else:
                 self.renderer_manager.invert_renderer()
+        if event.type == KEYUP:
+            if event.key == self.controles[HAUT]:
+                self.top = False
+                self.personnage.end_move()
+            if event.key == self.controles[BAS]:
+                self.bottom = False
+                self.personnage.end_move()
+            if event.key == self.controles[GAUCHE]:
+                self.left = False
+                self.personnage.end_move()
+            if event.key == self.controles[DROITE]:
+                self.right = False
+                self.personnage.end_move()
 
         # Gestion des objets
         if self.personnage.inventaire.get_obj_messenger():
@@ -427,19 +440,6 @@ class Game:
                 self.left, self.right = False, True
             if event.key == self.controles[MENU]:
                 self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
-        if event.type == KEYUP:
-            if event.key == self.controles[HAUT]:
-                self.top = False
-                self.personnage.end_move()
-            if event.key == self.controles[BAS]:
-                self.bottom = False
-                self.personnage.end_move()
-            if event.key == self.controles[GAUCHE]:
-                self.left = False
-                self.personnage.end_move()
-            if event.key == self.controles[DROITE]:
-                self.right = False
-                self.personnage.end_move()
         self.move_perso(dt)
 
         # joystick
