@@ -18,32 +18,15 @@ class SubCarte:
     chaque carte s'occupe aussi de gérer ses objets (au sol), et les chemins vers d'autres cartes
     elles gérent aussi leur ZID
     """
-    def __init__(self, carte: list, objets: dict, buildings: dict, zid: int, pnjs: list, spawns: dict, id_: int):
+    def __init__(self, carte: list, objets: dict, buildings: dict, zid: int, pnjs: list, spawns: dict, triggers: dict, id_: int):
         self.carte = carte
         self.objets = objets
         self.buildings = buildings
         self.zid = zid
         self.pnjs = pnjs
         self.spawns = spawns
+        self.triggers = triggers
         self.id = id_
-
-    def load(self):
-        path_ = os.path.join("..", "assets", "map", "map" + str(self.id) + EXTENSION)
-        if os.path.exists(path_):
-            with open(path_, "rb") as map_reader:
-                load = pickle.Unpickler(map_reader).load()
-                try:
-                    self.carte, self.objets, self.buildings, self.zid, self.pnjs, self.spawns = load
-                except ValueError:
-                    self.carte, self.objets, self.buildings, self.zid, self.pnjs = load
-                    debug.println("[!] Impossible de charger les spawn pour cette map")
-                del load
-        else:
-            raise CarteInexistante(path_)
-
-    def save(self):
-        with open(os.path.join("..", "assets", "map", "map" + str(self.id) + EXTENSION), "wb") as map_saver:
-            pickle.Pickler(map_saver).dump([self.carte, self.objets, self.buildings, self.zid, self.pnjs, self.spawns])
 
     def create_pnj(self, pnj: PNJ):
         self.pnjs.append(pnj)
@@ -99,11 +82,11 @@ class SubCarte:
         return True
 
     def trigger_at(self, x: int, y: int):
-        return True if len(self.carte[y][x]) == 6 else False
+        return (x, y) in self.triggers.keys()
 
     def call_trigger_at(self, x: int, y: int, triggers_mgr: TriggersManager):
         if self.trigger_at(x, y):
-            triggers_mgr.call_trigger_with_id(self.carte[y][x][TRIGGER], os.path.join("..", "assets", "map", "map" + str(self.id) + EXTENSION))
+            triggers_mgr.call_trigger_with_id(self.triggers[x, y], os.path.join("..", "assets", "map", "map" + str(self.id) + EXTENSION))
             return True
         return False
 
