@@ -245,7 +245,7 @@ class CartesManager:
                 tile = self.carte[y][x][0]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
 
-                if xpos < -TILE_SIZE or xpos > FEN_large or ypos < -TILE_SIZE or ypos > FEN_haut:
+                if xpos < -TILE_SIZE or xpos > FEN_large or ypos < -TILE_SIZE or ypos > FEN_haut or tile == '9990':
                     # optimisation
                     continue
 
@@ -311,7 +311,7 @@ class CartesManager:
 
     def call_trigger_at(self, x: int, y: int):
         if not self.current_carte.call_trigger_at(x, y, self.triggers_mgr):
-            if self.carte[y][x][0] in TILES_RDM_CREATURES and randint(*LUCK_RDM_CREA):
+            if self.carte[y][x][1] in TILES_RDM_CREATURES and randint(*LUCK_RDM_CREA):
                 # combat !
                 self.rd_mgr.change_renderer_for(RENDER_COMBAT)
 
