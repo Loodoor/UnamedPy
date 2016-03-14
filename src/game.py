@@ -597,7 +597,7 @@ class Game:
                                  "FPS : %3.2f" % self.fps_regulator.get_fps(),
                                  "- - Carte - -",
                                  "Zone id: {}".format(self.carte_mgr.get_zid()),
-                                 "Map id : {}".format(os.path.split(self.carte_mgr.current_carte.path_)[1].split('.')[0][3:]),
+                                 "Map id : {}".format(self.carte_mgr.current_carte.id),
                                  "Offsets : {}".format([float("%4.3f" % i) for i in self.carte_mgr.get_ofs()]),
                                  "- - Personnage - -",
                                  "Direction: {}".format(self.personnage.get_dir()),
