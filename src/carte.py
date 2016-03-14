@@ -86,7 +86,7 @@ class SubCarte:
 
     def call_trigger_at(self, x: int, y: int, triggers_mgr: TriggersManager):
         if self.trigger_at(x, y):
-            triggers_mgr.call_trigger_with_id(self.triggers[x, y], os.path.join("..", "assets", "map", "map" + str(self.id) + EXTENSION))
+            triggers_mgr.call_trigger_with_id(self.triggers[x, y], self.id)
             return True
         return False
 
@@ -104,13 +104,13 @@ class CartesManager:
     def __init__(self, ecran: pygame.Surface, renderer_manager):
         self.ecran = ecran
         self.rd_mgr = renderer_manager
-        self.map_path = os.path.join("..", "assets", "map", "map" + EXTENSION)
-        self.maps = {}
+        self.map_path = os.path.join("..", "assets", "saves", "map" + EXTENSION)
+        self.map = ""
         self.offsets = [0, 0]
         self.images = {}
         self.lassets = []
         self.triggers_mgr = TriggersManager()
-        self.current_carte = SubCarte()
+        self.current_carte = None
         self.carte = []
         self.callback_end_rendering = []
         self.loaded = False
@@ -144,8 +144,8 @@ class CartesManager:
             self.general_load()
         if os.path.exists(self.map_path):
             with open(self.map_path, "rb") as map_reader:
-                self.maps = pickle.Unpickler(map_reader).load()
-            self.current_carte.load(os.path.join(*self.maps[MAP_ENTRY_POINT]))
+                self.map = pickle.Unpickler(map_reader).load()
+            self.current_carte = pickle.Unpickler(open(self.map, 'rb')).load()
             self.carte = self.current_carte.get_all()
             self.adjust_offset()
         else:
@@ -168,16 +168,15 @@ class CartesManager:
         if self.current_carte.get_building_id_at(x, y) != BUILDING_GET_ERROR:
             self.change_map(os.path.join("..", "assets", "map", "map" + self.current_carte.get_building_id_at(x, y) + EXTENSION))
 
-    def change_map(self, new_path: str):
-        depuis = os.path.split(self.current_carte.path_)[1].split('.')[0][3:]
-        self.current_carte.save()
-        self.current_carte = SubCarte()
-        self.current_carte.load(new_path)
+    def change_map(self, new_id: int):
+        depuis = self.current_carte.id
+        pickle.Pickler(open(os.path.join("..", "assets", "map", "map" + str(depuis) + EXTENSION), "wb")).dump(self.current_carte)
+        self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map" + str(new_id) + EXTENSION), "rb")).load()
         self.carte = self.current_carte.get_all()
         tmp = self.current_carte.get_spawn_pos_with_id(depuis)
 
         if not tmp:
-            raise ReferenceError("Il manque un point d'entrée sur la map {}".format(new_path))
+            raise ReferenceError("Il manque un point d'entrée sur la map {}".format(new_id))
         spawn_tiles_pos = [p * TILE_SIZE for p in tmp]
 
         if FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
