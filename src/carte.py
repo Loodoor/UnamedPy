@@ -145,7 +145,7 @@ class CartesManager:
         if os.path.exists(self.map_path):
             with open(self.map_path, "rb") as map_reader:
                 self.map = pickle.Unpickler(map_reader).load()
-            self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map" + str(self.map) + EXTENSION, 'rb')).load()
+            self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map" + str(self.map) + EXTENSION), 'rb')).load()
             self.carte = self.current_carte.get_all()
             self.adjust_offset()
         else:
