@@ -1,3 +1,51 @@
 {
-    "jumping": [t + 133  for t in range(20) if not t % 2]
+    "jumping": {
+        "content": [
+            "133",
+            "135",
+            "137",
+            "141",
+            "145",
+            "147",
+            "149",
+            "151",
+            "153"
+        ],
+        "133": {
+            "from": "RIGHT",
+            "to": "LEFT"
+        },
+        "135": {
+            "from": "RIGHT",
+            "to": "LEFT"
+        },
+        "137": {
+            "from": "RIGHT",
+            "to": "LEFT"
+        },
+        "141": {
+            "from": "TOP",
+            "to": "BOTTOM"
+        },
+        "145": {
+            "from": "LEFT",
+            "to": "RIGHT"
+        },
+        "147": {
+            "from": "LEFT",
+            "to": "RIGHT"
+        },
+        "149": {
+            "from": "LEFT",
+            "to": "RIGHT"
+        },
+        "151": {
+            "from": "TOP",
+            "to": "BOTTOM"
+        },
+        "153": {
+            "from": "TOP",
+            "to": "BOTTOM"
+        }
+    }
 }
