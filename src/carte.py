@@ -141,14 +141,17 @@ class CartesManager:
     def load(self):
         if not self.loaded:
             self.general_load()
+
         if os.path.exists(self.map_path):
             with open(self.map_path, "rb") as map_reader:
                 self.map = pickle.Unpickler(map_reader).load()
-            self.current_carte = pickle.Unpickler(open(self.map, 'rb')).load()
+            self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map" + str(self.map) + EXTENSION, 'rb')).load()
             self.carte = self.current_carte.get_all()
             self.adjust_offset()
         else:
-            raise CarteInexistante(self.map_path)
+            self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map0" + EXTENSION), 'rb')).load()
+            self.carte = self.current_carte.get_all()
+            self.adjust_offset()
 
     def adjust_offset(self):
         x = (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 if FEN_large >= len(self.carte[0]) * TILE_SIZE else 0
@@ -156,6 +159,8 @@ class CartesManager:
         self.offsets = [x, y]
 
     def save(self):
+        with open(self.map_path, "wb") as file:
+            pickle.Pickler(file).dump(self.current_carte.id)
         self.triggers_mgr.save()
 
     def collide_at(self, x, y):
