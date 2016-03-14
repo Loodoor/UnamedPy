@@ -115,6 +115,7 @@ class CartesManager:
         self.loaded = False
         self.perso = None
         self.water_animator = None
+        self.specials_blocs = None
 
     def add_perso(self, new):
         if not self.perso:
@@ -136,6 +137,10 @@ class CartesManager:
                 self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
                 self.lassets.append(i.split(os.sep)[-1])
         self._load_animators()
+
+        with open(os.path.join("..", "assets", "configuration", "tiles.umd"), "r") as file:
+            self.specials_blocs = eval(file.read())
+
         self.loaded = True
 
     def load(self):
@@ -170,7 +175,7 @@ class CartesManager:
 
     def check_changing_map(self, x, y):
         if self.current_carte.get_building_id_at(x, y) != BUILDING_GET_ERROR:
-            self.change_map(os.path.join("..", "assets", "map", "map" + self.current_carte.get_building_id_at(x, y) + EXTENSION))
+            self.change_map(self.current_carte.get_building_id_at(x, y))
 
     def change_map(self, new_id: int):
         depuis = self.current_carte.id
