@@ -401,10 +401,10 @@ class Game:
                 self.personnage.inventaire.close()
 
     def _manage_object_action(self):
-        def done(self):
-            self.renderer_manager.unlock_special()
-            self.personnage.inventaire.clear_obj_messenger()
-            self.render()
+        def done(game):
+            game.renderer_manager.unlock_special()
+            game.personnage.inventaire.clear_obj_messenger()
+            game.render()
 
         if self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_GAME:
             if self.personnage.inventaire.get_obj_messenger().objet["id"] == OBJETS_ID.Chaussures:
@@ -490,7 +490,12 @@ class Game:
         self.continuer = 1
 
         self.renderer_manager.clear_all()
-        self.renderer_manager.ban_renderer(RENDER_COMBAT)
+        self.renderer_manager.ban_renderer(
+            RENDER_COMBAT,
+            RENDER_INVENTAIRE,
+            RENDER_CREATURES,
+            RENDER_POKEDEX
+        )
 
         self.personnage.set_carte_mgr(self.carte_mgr)
 
@@ -518,6 +523,7 @@ class Game:
         if self.renderer_manager.get_renderer() == RENDER_GAME:
             self.personnage.update()
             self.oth_persos_mgr.draw_them()
+            self.carte_mgr.draw_top_layer()
         elif self.renderer_manager.get_renderer() == RENDER_INVENTAIRE:
             self.personnage.inventaire_update()
         elif self.renderer_manager.get_renderer() == RENDER_CHAT:

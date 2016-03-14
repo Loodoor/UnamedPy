@@ -78,7 +78,7 @@ class SubCarte:
 
     def collide_at(self, x: int, y: int):
         if 0 <= int(y) < len(self.carte) and 0 <= int(x) < len(self.carte[0]):
-            return True if COLLIDE_ITEM(self.carte[int(y)][int(x)][0]) else False
+            return True if COLLIDE_ITEM(self.carte[int(y)][int(x)][1]) else False
         return True
 
     def trigger_at(self, x: int, y: int):
@@ -212,6 +212,7 @@ class CartesManager:
 
     def update(self):
         self.render()
+        self._update_anims()
 
     def _draw_tile_at(self, at_x: int, at_y: int, tile: str):
         if tile == TILE_EAU:
@@ -233,6 +234,18 @@ class CartesManager:
             else:
                 self.images[anim].next()
         self.callback_end_rendering = []
+
+    def draw_top_layer(self):
+        for y in range(len(self.carte)):
+            for x in range(len(self.carte[y])):
+                tile = self.carte[y][x][0]
+                xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
+
+                if xpos < -TILE_SIZE or xpos > FEN_large or ypos < -TILE_SIZE or ypos > FEN_haut:
+                    # optimisation
+                    continue
+
+                self._draw_tile_at(xpos, ypos, tile)
 
     def render(self):
         objects_at = self.current_carte.get_objects()
@@ -258,7 +271,6 @@ class CartesManager:
                 # objets
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))
-        self._update_anims()
 
     def get_tile_code_at(self, x: int, y: int):
         return self.carte[y][x] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR
