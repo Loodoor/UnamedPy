@@ -9,7 +9,6 @@ from utils import udel_same_occurence
 from pnj_manager import PNJ
 from animator import FluidesAnimator, BaseMultipleSpritesAnimator
 from random import randint
-import debug
 
 
 class SubCarte:
