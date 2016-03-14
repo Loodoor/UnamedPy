@@ -281,8 +281,8 @@ class CartesManager:
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))
 
-    def get_tile_code_at(self, x: int, y: int):
-        return self.carte[y][x] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR
+    def get_tile_code_at(self, x: int, y: int, layer: int=1):
+        return self.carte[y][x][layer] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR
 
     def get_of1(self):
         return self.offsets[0]

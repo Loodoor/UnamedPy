@@ -61,6 +61,24 @@ class Personnage:
         x, y = self.pos[0], self.pos[1]
         x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
         y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
+        tile_code = self.carte_mgr.get_tile_code_at(x // TILE_SIZE, y // TILE_SIZE)
+
+        # pré traitement avec les tiles de jump
+        jump_dict = self.carte_mgr.specials_blocs['jumping']
+        if tile_code in jump_dict["content"]:
+            tile_specs = jump_dict[tile_code]
+            if tile_specs["from"] == "RIGHT" and direction == GAUCHE:
+                if tile_specs["to"] == "LEFT":
+                    x -= TILE_SIZE
+            if tile_specs["from"] == "LEFT" and direction == DROITE:
+                if tile_specs["to"] == "RIGHT":
+                    x += TILE_SIZE
+            if tile_specs["from"] == "TOP" and direction == BAS:
+                if tile_specs["to"] == "BOTTOM":
+                    y += TILE_SIZE
+            if tile_specs["from"] == "BOTTOM" and direction == HAUT:
+                if tile_specs["to"] == "TOP":
+                    y -= TILE_SIZE
 
         # Détection des collisions
         x1, y1 = x, y
