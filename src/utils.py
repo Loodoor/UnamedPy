@@ -182,7 +182,7 @@ class ULoader:
                         type_ = T_LUMIERE
                     if work[1] == "TENEBRE":
                         type_ = T_TENEBRE
-                    Indexer.add_new("", int(work[0]), type_, int(work[2]), self.pack_creatures + work[3], work[4], int(work[5]), int(work[6]))
+                    Indexer.add_new("", int(work[0]), type_, int(work[2]), self.pack_creatures + work[3] + ".png", work[4], int(work[5]), int(work[6]))
 
         # Création des triggers
         # toujours définir un ID (str)
