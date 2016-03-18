@@ -1,14 +1,34 @@
 # coding=utf-8
 
 import pickle
+from urllib import request
 from glob import glob
 from constantes import *
 from trigger_manager import TriggersManager
-from exceptions import CarteInexistante, ErreurContenuCarte
+from exceptions import ErreurContenuCarte
 from utils import udel_same_occurence
 from pnj_manager import PNJ
 from animator import FluidesAnimator, BaseMultipleSpritesAnimator
 from random import randint
+from urllib import error
+import socket
+
+
+def maps_retriver(site: str):
+    try:
+        files = []
+        temp_maps_list_path = os.path.join("..", "assets", "temp", "maps_list.txt")
+        request.urlretrieve(site + '/maps_list.txt', temp_maps_list_path)
+        with open(temp_maps_list_path, "r") as file:
+            files = [line.split('::') for line in file.readlines()]
+        for (url, name) in files:
+            request.urlretrieve(url, os.path.join("..", "assets", "maps", name))
+    except socket.gaierror and error.URLError:
+        print("Pas de connexion internet")
+    except PermissionError:
+        print("Le jeu n'a pas les droit suffisants pour télécharger les maps")
+    except OSError:
+        print("Le chemin d'enregistrement des cartes n'est pas correct")
 
 
 class SubCarte:
