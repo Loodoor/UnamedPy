@@ -108,6 +108,8 @@ class Game:
 
         self.indexeur.add_attacks_table(self.attaques_table)
 
+        carte.maps_retriver("http://folaefolc.hostux.net")
+
         if self.adventure.get_progress() == 1:
             # on vient de commencer
             self.equipe_mgr.add_creature(Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))
