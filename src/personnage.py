@@ -153,12 +153,12 @@ class Personnage:
             self.inventaire.find_object(tmp_obj)
         del tmp_obj
 
-        if self.last_case == (self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE):
+        if self.last_case == ((self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE, (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE):
             self.same_as_before = True
         else:
             self.same_as_before = False
 
-        self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
+        self.last_case = (self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE, (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE
 
         self.carte_mgr.check_changing_map((self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE,
                                           (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE)
