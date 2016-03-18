@@ -18,7 +18,7 @@ class Adventure:
         self.beginning_text = []
         self.loaded = False
         self.values = {}
-        self._first_creature_image = pygame.image.load(os.path.join("..", "assets", "creatures", "feu-01.png")).convert_alpha()
+        self._first_creature_image = pygame.transform.scale(pygame.image.load(os.path.join("..", "assets", "creatures", "1 base.png")).convert_alpha(), (250, 250))
         self._image_prof = pygame.image.load(os.path.join("..", "assets", "aventure", "professeur.png")).convert_alpha()
         self._world_map = pygame.image.load(os.path.join("..", "assets", "aventure", "worldmap.png")).convert_alpha()
         self.fond = pygame.image.load(os.path.join('..', 'assets', 'gui', 'fd_aventure.png')).convert_alpha()

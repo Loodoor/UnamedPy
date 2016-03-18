@@ -48,7 +48,7 @@
 46::EAU::0::glace base::Cette petite chose ressemble à un simple rocher et n'est jamais prise au sérieux::47::65
 47::EAU::1::glace evolve::Sa chevelure ressemble beaucoup à des algues, et cette créature s'en sert pour mieux se cacher dans les fonds marins::48::149
 48::EAU::2::glace final::Ce monstre des glaces ressemble à une plante carnivore, mais est beaucoup plus agile !::-1::-1
-49::PLANTE::0::plante base::Cette mini herbe se dissimule facilement dans la nature, peu de personnes savent qu'elle existe::-1::-1
+49::PLANTE::0::herbe base::Cette mini herbe se dissimule facilement dans la nature, peu de personnes savent qu'elle existe::-1::-1
 50::ELEC::0::insect base::Cet insect est capable de lancer de mini éclairs pour mieux se défendre::51::104
 51::ELEC::1::insect evolve::Ayant atteint sa forme finale, cette créature terrorise villes et villages::-1::-1
 52::LUMIERE::0::nochrome base::Cette créature vient d'un univers parallèle où personne n'a jamais pu aller::-1::-1
@@ -68,8 +68,8 @@
 66::LUMIERE::0::sombre base::Cette petite chose lutte de tout son possible pour garder la lumière::67::79
 67::TENEBRE::1::sombre evolve::Cette créature a changé de côté pendant son évolution, pour le mal::68::169
 68::LUMIERE::2::sombre final::Malgré les apparences, cette créature lutte contre l'obscurité::-1::-1
-69::NORMAL::0::Ce vers est très présent au fond des grottes où il chasse de petits insectes::70::83
-70::NORMAL::1::Ce vers attends patiemment pour évoluer comme ses ainés::71::164
-71::AIR::2::Ce majesteux oiseau règne sans pitié sur la forêt::-1::-1
+69::NORMAL::0::vers base:::Ce vers est très présent au fond des grottes où il chasse de petits insectes::70::83
+70::NORMAL::1::vers evolve::Ce vers attends patiemment pour évoluer comme ses ainés::71::164
+71::AIR::2::vers final::Ce majesteux oiseau règne sans pitié sur la forêt::-1::-1
 72::NORMAL::0::violet base::Un petit insect redoutant absolument toutes les créature. Il se cache dans les grottes pour survivre::73::89
 73::NORMAL::1::violet evolve::Ayant évolué, il craint beaucoup moins les attaques et peut maintenant sortir sans se cacher::-1::-1

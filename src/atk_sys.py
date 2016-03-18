@@ -223,8 +223,9 @@ class Combat:
 
     def _manage_adversary_death(self):
         global Y_ADV_FALL
-        while Y_ADV_FALL < 50:
+        while Y_ADV_FALL <= 50:
             self.render()
+            pygame.display.flip()
         g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                             self.get_adversary().get_pseudo() + " est vaincu !", self.font)
 
@@ -246,7 +247,7 @@ class Combat:
                 g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                                     [
                                         "Niveau : +1 !   Attaque : +" + str(new[SPEC_ATK]) + " !",
-                                        "Défense : +" + str(new[SPEC_DEF]) + "!   Vitesse : +" + str(new[SPEC_VIT]) + " !",
+                                        "Défense : +" + str(new[SPEC_DEF]) + " !   Vitesse : +" + str(new[SPEC_VIT]) + " !",
                                         "Points de vie : +" + str(new[SPEC_MAX_PVS]) + " !"
                                     ], self.font)
                 g.update()
@@ -388,8 +389,9 @@ class Combat:
         # affichage des créatures
         global Y_ADV_FALL
         if self.get_adversary().is_dead() and Y_ADV_FALL < 50:
-            Y_ADV_FALL += 1
-        self.ecran.blit(self.get_adversary().get_image(), (COMB_X_ADV, COMB_Y_ADV + Y_ADV_FALL))
+            Y_ADV_FALL += 0.25
+        if Y_ADV_FALL < 50:
+            self.ecran.blit(self.get_adversary().get_image(), (COMB_X_ADV, COMB_Y_ADV + Y_ADV_FALL))
         self.ecran.blit(self.get_my_creature().get_image(), (COMB_X_ME, COMB_Y_ME))
 
         # affichage des barres de vie
