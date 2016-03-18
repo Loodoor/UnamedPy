@@ -24,7 +24,7 @@ def maps_retriver(site: str):
         for (url, name) in files:
             request.urlretrieve(url, os.path.join("..", "assets", "maps", name))
     except socket.gaierror and error.URLError:
-        print("Pas de connexion internet")
+        print("Pas de connexion internet || Le fichier / site n'exsite pas")
     except PermissionError:
         print("Le jeu n'a pas les droit suffisants pour télécharger les maps")
     except OSError:
