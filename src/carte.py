@@ -15,20 +15,27 @@ import socket
 
 
 def maps_retriver(site: str):
+    files = []
     try:
-        files = []
         temp_maps_list_path = os.path.join("..", "assets", "temp", "maps_list.txt")
         request.urlretrieve(site + '/maps_list.txt', temp_maps_list_path)
         with open(temp_maps_list_path, "r") as file:
-            files = [line.split('::') for line in file.readlines()]
-        for (url, name) in files:
-            request.urlretrieve(url, os.path.join("..", "assets", "maps", name))
+            files = [[s.strip() for s in line.split('::')] for line in file.readlines()]
     except socket.gaierror and error.URLError:
         print("Pas de connexion internet || Le fichier / site n'exsite pas")
     except PermissionError:
-        print("Le jeu n'a pas les droit suffisants pour télécharger les maps")
-    except OSError:
-        print("Le chemin d'enregistrement des cartes n'est pas correct")
+        print("Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")
+
+    for (url, name) in files:
+        dl_path = os.path.join("..", "assets", "map", "name")
+        try:
+            request.urlretrieve(url, dl_path)
+        except socket.gaierror and error.URLError:
+            print("Pas de connexion internet || Le fichier / site n'exsite pas")
+        except PermissionError:
+            print("Le jeu n'a pas les droits suffisants pour télécharger les maps")
+        except OSError:
+            print("Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
 
 
 class SubCarte:
