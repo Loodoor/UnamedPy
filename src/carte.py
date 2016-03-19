@@ -12,30 +12,35 @@ from animator import FluidesAnimator, BaseMultipleSpritesAnimator
 from random import randint
 from urllib import error
 import socket
+import debug
 
 
 def maps_retriver(site: str):
     files = []
+    temp_maps_list_path = os.path.join("..", "assets", "temp", "maps_list.txt")
     try:
-        temp_maps_list_path = os.path.join("..", "assets", "temp", "maps_list.txt")
         request.urlretrieve(site + '/maps_list.txt', temp_maps_list_path)
         with open(temp_maps_list_path, "r") as file:
             files = [[s.strip() for s in line.split('::')] for line in file.readlines()]
     except socket.gaierror and error.URLError:
-        print("Pas de connexion internet || Le fichier / site n'exsite pas")
+        debug.println("Pas de connexion internet || Le fichier / site n'exsite pas")
     except PermissionError:
-        print("Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")
+        debug.println("Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")
 
     for (url, name) in files:
         dl_path = os.path.join("..", "assets", "map", "name")
         try:
             request.urlretrieve(url, dl_path)
         except socket.gaierror and error.URLError:
-            print("Pas de connexion internet || Le fichier / site n'exsite pas")
+            debug.println("Pas de connexion internet || Le fichier / site n'exsite pas")
         except PermissionError:
-            print("Le jeu n'a pas les droits suffisants pour télécharger les maps")
+            debug.println("Le jeu n'a pas les droits suffisants pour télécharger les maps")
         except OSError:
-            print("Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
+            debug.println("Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
+
+    if os.path.exists(temp_maps_list_path):
+        debug.println("Suppresion du fichier listant les maps à télécharger depuis le serveur")
+        os.remove(temp_maps_list_path)
 
 
 class SubCarte:

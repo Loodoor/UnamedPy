@@ -63,7 +63,7 @@ def uround(nb: int or float, lim: float=0.5):
 def uscreenschot(surface: pygame.Surface):
     path_ = os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png")
     pygame.image.save(surface, path_)
-    print("Screenshot sauvegardée sous '" + path_ + "'")
+    debug.println("Screenshot sauvegardée sous '" + path_ + "'")
 
 
 def uset_image_as_shiney(base: pygame.Surface) -> pygame.Surface:
