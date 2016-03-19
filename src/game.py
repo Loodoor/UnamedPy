@@ -108,7 +108,7 @@ class Game:
 
         self.indexeur.add_attacks_table(self.attaques_table)
 
-        carte.maps_retriver("http://folaefolc.hostux.net/unamed")
+        carte.maps_retriver("http://folaefolc.hostux.fr/unamed")
 
         if self.adventure.get_progress() == 1:
             # on vient de commencer

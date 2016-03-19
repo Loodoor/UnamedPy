@@ -20,8 +20,10 @@ def maps_retriver(site: str):
     temp_maps_list_path = os.path.join("..", "assets", "temp", "maps_list.txt")
     try:
         request.urlretrieve(site + '/maps_list.txt', temp_maps_list_path)
+        debug.println("Récupération de la liste ({}) ...".format(site + '/maps_list.txt'))
         with open(temp_maps_list_path, "r") as file:
             files = [[s.strip() for s in line.split('::')] for line in file.readlines()]
+        debug.println("Fichiers à récupérer du serveur :\n{}".format('\n-'.join([name for (url, name) in files])))
     except socket.gaierror and error.URLError:
         debug.println("Pas de connexion internet || Le fichier / site n'exsite pas")
     except PermissionError:
@@ -31,8 +33,9 @@ def maps_retriver(site: str):
         dl_path = os.path.join("..", "assets", "map", name)
         try:
             request.urlretrieve(url, dl_path)
+            debug.println("Récupération de {}, à l'adresse {}".format(dl_path, url))
         except socket.gaierror and error.URLError:
-            debug.println("Pas de connexion internet || Le fichier / site n'exsite pas")
+            debug.println("Pas de connexion internet || La map / site n'exsite pas")
         except PermissionError:
             debug.println("Le jeu n'a pas les droits suffisants pour télécharger les maps")
         except OSError:
