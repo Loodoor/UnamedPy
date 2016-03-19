@@ -28,7 +28,7 @@ def maps_retriver(site: str):
         debug.println("Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")
 
     for (url, name) in files:
-        dl_path = os.path.join("..", "assets", "map", "name")
+        dl_path = os.path.join("..", "assets", "map", name)
         try:
             request.urlretrieve(url, dl_path)
         except socket.gaierror and error.URLError:
