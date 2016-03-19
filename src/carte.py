@@ -220,7 +220,7 @@ class CartesManager:
         tmp = self.current_carte.get_spawn_pos_with_id(depuis)
 
         if not tmp:
-            raise ReferenceError("Il manque un point d'entrée sur la map {}".format(new_id))
+            raise ReferenceError("Il manque un point d'entrée sur la map {} pour la map d'id {}".format(new_id, depuis))
         spawn_tiles_pos = [p * TILE_SIZE for p in tmp]
 
         if FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
