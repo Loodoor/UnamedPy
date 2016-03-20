@@ -141,6 +141,7 @@ def main():
                                     p=(ip.get_text(), 5500))
                 else:
                     jeu = game.Game(ecran, "first", adventure=adventure)
+                jeu.prepare()
                 if not has_already_played:
                     adventure.next()
                 jeu.start()

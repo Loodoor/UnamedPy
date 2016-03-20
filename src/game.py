@@ -571,8 +571,6 @@ class Game:
             self.ecran.blit(texte, (5, 5))
 
     def start(self):
-        self.prepare()
-
         debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
 
         while self.continuer:
