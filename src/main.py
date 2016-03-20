@@ -86,8 +86,6 @@ def main():
             if event.type == KEYDOWN:
                 if event.key == K_RIGHT or event.key == K_LEFT:
                     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
-                if event.key == K_SPACE and chargement:
-                    avancement = 246  # pour accélérer le chargement
             if event.type == MOUSEBUTTONUP:
                 xp, yp = event.pos
                 if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_JOUER_SX and \
@@ -158,7 +156,10 @@ def main():
                 if not has_already_played:
                     adventure.next()
                 jeu.start()
-                del jeu
+
+                # on remet tout à 0
+                jeu = None
+                loadeur = None
         else:
             ecran.blit(btn_jeu, (MENU_BTN_JOUER_X, MENU_BTN_JOUER_Y))
             ecran.blit(btn_reseau, (MENU_BTN_RESEAU_X, MENU_BTN_RESEAU_Y))

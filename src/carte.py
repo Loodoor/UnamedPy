@@ -138,7 +138,7 @@ class CartesManager:
     def __init__(self, ecran: pygame.Surface, renderer_manager):
         self.ecran = ecran
         self.rd_mgr = renderer_manager
-        self.map_path = os.path.join("..", "assets", "saves", "map" + EXTENSION)
+        self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
         self.map = ""
         self.offsets = [0, 0]
         self.images = {}
