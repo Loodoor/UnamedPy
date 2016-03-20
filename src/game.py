@@ -90,25 +90,40 @@ class Game:
 
     def load(self):
         self.carte_mgr.load()
+        yield 1
         self.personnage.load()
-        self.indexeur.load()
+        yield 1
+        for i in self.indexeur.load():
+            yield i
         self.equipe_mgr.load()
+        yield 1
         self.pc_mgr.load()
+        yield 1
         self.zones_manager.load()
+        yield 1
         self.money.load()
+        yield 1
         self.attaques_table.load()
+        yield 1
 
         self.chat_mgr.update_quit_event(self.controles[CHAT])
+        yield 1
 
         self.network_ev_listener.add_controler('perso', self.personnage)
+        yield 1
         self.network_ev_listener.add_controler('others', self.oth_persos_mgr)
+        yield 1
         self.network_ev_listener.add_controler('adventure', self.adventure)
+        yield 1
 
         self.carte_mgr.add_perso(self.personnage)
+        yield 1
 
         self.indexeur.add_attacks_table(self.attaques_table)
+        yield 1
 
         carte.maps_retriver("http://folaefolc.hostux.fr/unamed")
+        yield 1
 
         if self.adventure.get_progress() == 1:
             # on vient de commencer
@@ -117,6 +132,7 @@ class Game:
             self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poids")
 
         self.tab_types.init_tab()
+        yield 1
 
     def save(self):
         debug.println("Sauvegarde ...")
@@ -490,23 +506,31 @@ class Game:
     def prepare(self):
         # Variables ayant besoin d'être rechargées avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
+        yield 1
 
         self.renderer_manager.clear_all()
+        yield 1
         self.renderer_manager.ban_renderer(
             RENDER_COMBAT,
             RENDER_INVENTAIRE,
             RENDER_CREATURES,
             RENDER_POKEDEX
         )
+        yield 1
 
         self.personnage.set_carte_mgr(self.carte_mgr)
+        yield 1
 
         self.pc_mgr.add_equipe(self.equipe_mgr)
+        yield 1
         self.equipe_mgr.add_pc(self.pc_mgr)
+        yield 1
 
-        self.load()
+        for i in self.load():
+            yield i
 
         pygame.joystick.init()
+        yield 1
         if pygame.joystick.get_count() > 0:
             joystick = pygame.joystick.Joystick(0)
             joystick.init()
@@ -514,6 +538,7 @@ class Game:
             debug.println("Un joystick a été trouvé")
 
         pygame.key.set_repeat(200, 100)
+        yield 1
         if self.joystick:
             self.joystick.set_repeat(40)
 

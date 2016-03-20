@@ -216,7 +216,9 @@ class Indexer:
                 for elem in self.indexer:
                     img = pygame.image.load(elem.path).convert_alpha()
                     self.images_crea[elem.id] = pygame.transform.scale(img, (POK_SX_IMAGE_CREA, POK_SY_IMAGE_CREA))
+                    yield 1
                 self.creas_selected = self.indexer
+                yield 1
         else:
             raise CreaturesNonTrouvees
         self.typeur.load()

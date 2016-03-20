@@ -68,6 +68,9 @@ def main():
     has_already_played = adventure.has_already_played()
     chargement = False
     en_reseau = False
+    jeu = None
+    loadeur = None
+    finished_loading = False
     avancement = 0
     btn_reseau = pygame.image.load(os.path.join("..", "assets", "gui", "fd_btn_reseau.png")).convert_alpha()
     btn_jeu = pygame.image.load(os.path.join("..", "assets", "gui", "fd_btn_jeu.png")).convert_alpha()
@@ -95,6 +98,27 @@ def main():
                     chargement = True
                     en_reseau = True
 
+        # création de l'instance de jeu
+        if en_reseau:
+            if not jeu:
+                debug.println("Entrée en mode réseau ...")
+                ecran.fill(0)
+                pygame.display.flip()
+                ip = TextBox(ecran, x=100, y=ecran.get_height() // 2,
+                             sx=ecran.get_width(),
+                             sy=ecran.get_height(),
+                             placeholder="IP du serveur : ")
+                ip.mainloop()
+                jeu = game.Game(ecran, "first", adventure=adventure,
+                                s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM),
+                                p=(ip.get_text(), 5500))
+        else:
+            jeu = game.Game(ecran, "first", adventure=adventure) if not jeu else jeu
+
+        # création du "loadeur"
+        if jeu and not loadeur:
+            loadeur = jeu.prepare()
+
         #Affichage
         ecran.blit(fond, (0, 0))
         ecran.blit(title, (FEN_large // 2 - title.get_width() // 2, 0))
@@ -109,10 +133,13 @@ def main():
             ecran.blit(alea_texte, (FEN_large // 2 - alea_texte.get_width() // 2, 120))
 
         if chargement:
-            pygame.draw.rect(ecran, (150, 150, 150), (FEN_large // 2 - MENU_SIZE_BAR // 2, MENU_BAR_Y, MENU_SIZE_BAR, 22))
-            pygame.draw.rect(ecran, (30, 160, 30), (FEN_large // 2 - MENU_SIZE_BAR // 2 + 2, MENU_BAR_Y + 2, avancement, 18))
+            utils.upg_bar(ecran, (FEN_large // 2 - MENU_SIZE_BAR // 2, MENU_BAR_Y, MENU_SIZE_BAR, 22), avancement, max_progress=98)
             ecran.blit(loading_text, (FEN_large // 2 - loading_text.get_width() // 2, MENU_SIZE_BAR))
-            avancement += MENU_SPEED_LOADING
+            if loadeur:
+                try:
+                    avancement += next(loadeur)
+                except StopIteration:
+                    finished_loading = True
             if not int(avancement) % max_len and len(load_texts) != 0 and float(int(avancement)) == avancement:
                 if len(load_texts) - 1 > 0:
                     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),
@@ -121,27 +148,13 @@ def main():
                 else:
                     loading_text = police.render(open(load_texts.pop(0), encoding='utf-8').read(),
                                                  POL_ANTIALISING, (255, 255, 255))
-            if avancement >= 246 and chargement:
+            if finished_loading and chargement:
+                debug.println("L'avancement max est {}".format(avancement))
                 chargement = False
                 avancement = 0
                 temp = utils.ULoader()
                 temp.load()
                 del temp
-                if en_reseau:
-                    debug.println("Entrée en mode réseau ...")
-                    ecran.fill(0)
-                    pygame.display.flip()
-                    ip = TextBox(ecran, x=100, y=ecran.get_height() // 2,
-                                 sx=ecran.get_width(),
-                                 sy=ecran.get_height(),
-                                 placeholder="IP du serveur : ")
-                    ip.mainloop()
-                    jeu = game.Game(ecran, "first", adventure=adventure,
-                                    s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM),
-                                    p=(ip.get_text(), 5500))
-                else:
-                    jeu = game.Game(ecran, "first", adventure=adventure)
-                jeu.prepare()
                 if not has_already_played:
                     adventure.next()
                 jeu.start()
