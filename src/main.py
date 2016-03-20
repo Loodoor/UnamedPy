@@ -122,8 +122,6 @@ def main():
                     loading_text = police.render(open(load_texts.pop(0), encoding='utf-8').read(),
                                                  POL_ANTIALISING, (255, 255, 255))
             if avancement >= 246 and chargement:
-                if not has_already_played:
-                    adventure.next()
                 chargement = False
                 avancement = 0
                 temp = utils.ULoader()
@@ -143,6 +141,8 @@ def main():
                                     p=(ip.get_text(), 5500))
                 else:
                     jeu = game.Game(ecran, "first", adventure=adventure)
+                if not has_already_played:
+                    adventure.next()
                 jeu.start()
                 del jeu
         else:
