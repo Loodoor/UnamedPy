@@ -153,10 +153,7 @@ class Personnage:
             self.inventaire.find_object(tmp_obj)
         del tmp_obj
 
-        if self.last_case == ((self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE, (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE):
-            self.same_as_before = True
-        else:
-            self.same_as_before = False
+        self.same_as_before = self.last_case == ((self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE, (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE)
 
         self.last_case = (self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE, (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE
 
@@ -170,15 +167,6 @@ class Personnage:
 
         x, y, new_of1, new_of2 = self._check_collisions(direction, vecteur, new_speed)
 
-        """if len(self.carte_mgr.get_carte()) * TILE_SIZE < FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE < FEN_large:
-            self.pos = (x + self.carte_mgr.get_of1(), y + self.carte_mgr.get_of2())
-        elif len(self.carte_mgr.get_carte()) * TILE_SIZE < FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE >= FEN_large:
-            self.pos = (self.pos[0], y + self.carte_mgr.get_of2())
-            self.carte_mgr.move_of1(new_of1)
-        elif len(self.carte_mgr.get_carte()) * TILE_SIZE >= FEN_haut and len(self.carte_mgr.get_carte()[0]) * TILE_SIZE < FEN_large:
-            self.pos = (x + self.carte_mgr.get_of1(), self.pos[1])
-            self.carte_mgr.move_of2(new_of2)
-        else:"""
         self.carte_mgr.move_of1(new_of1)
         self.carte_mgr.move_of2(new_of2)
 

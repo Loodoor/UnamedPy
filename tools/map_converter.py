@@ -14,9 +14,9 @@ def converter(file_path: str):
     old = pickle.Unpickler(open(file_path, 'rb')).load()
     carte, objets, buildings, zid, pnjs, spawns = old
     new_carte = []
-    for y, line in enumerate(carte):
+    for line in carte:
         new_ligne = []
-        for x, case in enumerate(line):
+        for case in line:
             new_case = ['9990']
             for il, layer in enumerate(case):
                 new_case.append(layer)

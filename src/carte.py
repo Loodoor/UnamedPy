@@ -24,7 +24,7 @@ def maps_retriver(site: str):
         with open(temp_maps_list_path, "r") as file:
             files = [[s.strip() for s in line.split('::')] for line in file.readlines()]
         debug.println("Fichiers à récupérer du serveur :\n{}".format('\n-'.join([name for (url, name) in files])))
-    except socket.gaierror and error.URLError:
+    except (socket.gaierror, error.URLError):
         debug.println("Pas de connexion internet || Le fichier / site n'exsite pas")
     except PermissionError:
         debug.println("Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")

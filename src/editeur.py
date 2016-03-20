@@ -55,7 +55,16 @@ police = pygame.font.SysFont("comicsansms", 12)
 
 if os.path.exists(map_path):
     with open(map_path, "rb") as file:
-        carte, objets, buildings, zid, pnj, spawns = pickle.Unpickler(file).load()
+        tmp = pickle.Unpickler(file).load()
+        try:
+            carte, objets, buildings, zid, pnj, spawns = tmp
+        except TypeError:
+            carte = tmp.carte
+            objets = tmp.objets
+            buildings = tmp.buildings
+            zid = tmp.zid
+            pnj = tmp.pnjs
+            spawns = tmp.spawns
 else:
     for i in range(YTAILLE):
         lst = []
@@ -73,6 +82,7 @@ for i in glob(os.path.join("..", "assets", "tiles", "*")):
     elif os.path.isdir(i):
         assets[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
         lassets.append(i.split(os.sep)[-1])
+lassets = [str(i) for i in sorted([int(c) for c in lassets])]
 water_animator = FluidesAnimator(assets[TILE_EAU], ANIM_SPEED_EAU)
 water_animator.load()
 
@@ -346,8 +356,6 @@ while continuer:
                 print("Carte is not None :", carte is not None)
                 with open(map_path, "wb") as file:
                     pickle.Pickler(file).dump([carte, objets, buildings, zid, pnj, spawns])
-
-                print("Exited cleanly")
             if event.key == K_b:
                 x, y = pygame.mouse.get_pos()
                 mx, my = x // TILE_SIZE - offset // TILE_SIZE, y // TILE_SIZE - offset2 // TILE_SIZE
