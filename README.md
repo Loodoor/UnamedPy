@@ -16,6 +16,8 @@ Un énorme merci à Wesley FG qui a créé toutes les tiles utilisées (uniqueme
 
 De même, je remercie du fond du coeur Smiley-Fakemon, qui me laisse utiliser ses Fakemon pour Unamed ^^
 
+Tiles d'intérieur faites par Slash
+
 World Map faite par Sansonic
 
 (Les différentes conversations que j'ai eu avec ces honorables graphistes (les messages les plus récents sont les premiers)) :
