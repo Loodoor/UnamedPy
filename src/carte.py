@@ -34,7 +34,7 @@ def maps_retriver(site: str):
         try:
             request.urlretrieve(url, dl_path)
             debug.println("Récupération de {}, à l'adresse {}".format(dl_path, url))
-        except socket.gaierror and error.URLError:
+        except (socket.gaierror, error.URLError):
             debug.println("Pas de connexion internet || La map / site n'exsite pas")
         except PermissionError:
             debug.println("Le jeu n'a pas les droits suffisants pour télécharger les maps")
