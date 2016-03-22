@@ -96,7 +96,7 @@ class Inventaire:
             # texte d'aide
             # DECOUPER LE TEXTE CAR TROP GRAND !
             texte_aide_str = self.objets[self.cur_categorie][self.selected_item].aide()
-            texte_lst = tw.wrap(texte_aide_str, width=37)
+            texte_lst = tw.wrap(texte_aide_str, width=30)
             i = 0
             for texte_tmp in texte_lst:
                 self.ecran.blit(self.police.render(texte_tmp, POL_ANTIALISING, (255, 255, 255)),

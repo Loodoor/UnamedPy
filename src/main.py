@@ -131,7 +131,7 @@ def main():
             ecran.blit(alea_texte, (FEN_large // 2 - alea_texte.get_width() // 2, 120))
 
         if chargement:
-            utils.upg_bar(ecran, (FEN_large // 2 - MENU_SIZE_BAR // 2, MENU_BAR_Y, MENU_SIZE_BAR, 22), avancement, max_progress=98)
+            utils.upg_bar(ecran, (FEN_large // 2 - MENU_SIZE_BAR // 2, MENU_BAR_Y, MENU_SIZE_BAR, 22), avancement, max_progress=98, fg_color=(20, 180, 20))
             ecran.blit(loading_text, (FEN_large // 2 - loading_text.get_width() // 2, MENU_SIZE_BAR))
             if loadeur:
                 try:

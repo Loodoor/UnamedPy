@@ -133,6 +133,15 @@ class SubCarte:
         else:
             self.drop_object_at(x, y - 1, obj, from_poche)
 
+    def get_tiles_composing(self) -> list:
+        work = []
+        for line in self.carte:
+            for layer in line:
+                for case in layer:
+                    if case not in work:
+                        work.append(case)
+        return work
+
 
 class CartesManager:
     def __init__(self, ecran: pygame.Surface, renderer_manager):
@@ -306,12 +315,8 @@ class CartesManager:
                 if not isinstance(objet, list):
                     raise ErreurContenuCarte
                 else:
-                    if len(objet) <= 5:
-                        for tile in udel_same_occurence(*objet[::-1]):
-                            self._draw_tile_at(xpos, ypos, tile)
-                    else:
-                        for tile in udel_same_occurence(*objet[-2::-1]):
-                            self._draw_tile_at(xpos, ypos, tile)
+                    for tile in udel_same_occurence(*objet[::-1]):
+                        self._draw_tile_at(xpos, ypos, tile)
                 # objets
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))

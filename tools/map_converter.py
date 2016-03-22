@@ -11,22 +11,26 @@ from carte import SubCarte
 
 
 def converter(file_path: str):
-    old = pickle.Unpickler(open(file_path, 'rb')).load()
-    carte, objets, buildings, zid, pnjs, spawns = old
-    new_carte = []
-    for line in carte:
-        new_ligne = []
-        for case in line:
-            new_case = ['9990']
-            for il, layer in enumerate(case):
-                new_case.append(layer)
-                if il == 2:
-                    break
-            new_ligne.append(new_case)
-        new_carte.append(new_ligne)
-    new = SubCarte(new_carte, objets, buildings, zid, pnjs, spawns, {}, os.path.split(file_path)[1].replace('.umd', '')[3:])
-    pickle.Pickler(open(file_path, 'wb')).dump(new)
-    print("done ! - {}".format(os.path.split(file_path)[1].replace('.umd', '')[3:]))
+    try:
+        old = pickle.Unpickler(open(file_path, 'rb')).load()
+        carte, objets, buildings, zid, pnjs, spawns = old
+        new_carte = []
+        for line in carte:
+            new_ligne = []
+            for case in line:
+                new_case = ['9990']
+                for il, layer in enumerate(case):
+                    new_case.append(layer)
+                    if il == 2:
+                        break
+                new_ligne.append(new_case)
+            new_carte.append(new_ligne)
+        new = SubCarte(new_carte, objets, buildings, zid, pnjs, spawns, {}, os.path.split(file_path)[1].replace('.umd', '')[3:])
+        pickle.Pickler(open(file_path, 'wb')).dump(new)
+    except:
+        print("An error occured")
+    else:
+        print("done ! - {}".format(os.path.split(file_path)[1].replace('.umd', '')[3:]))
 
 
 def run():

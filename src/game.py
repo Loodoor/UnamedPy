@@ -125,12 +125,6 @@ class Game:
         carte.maps_retriver("http://folaefolc.hostux.fr/unamed")
         yield 1
 
-        if self.adventure.get_progress() == 1:
-            # on vient de commencer
-            self.equipe_mgr.add_creature(Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))
-            self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
-            self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poids")
-
         self.tab_types.init_tab()
         yield 1
 
@@ -564,13 +558,15 @@ class Game:
                                                  self.carte_mgr.get_zid(), self.indexeur, self.police_normale,
                                                  self.tab_types, self.renderer_manager, self.equipe_mgr)
                 self.cur_combat.find_adv()
-                self.top, self.bottom, self.right, self.left = [False] * 4
-            if self.cur_combat and not self.cur_combat.is_finished():
-                self.cur_combat.update()
-            if self.cur_combat.is_finished():
-                self.cur_combat.on_end()
-                self.renderer_manager.change_for_last_renderer()
-                self.cur_combat = None
+            if self.cur_combat:
+                if not self.cur_combat.is_finished():
+                    self.cur_combat.update()
+                else:
+                    self.cur_combat.on_end()
+                    self.renderer_manager.change_for_last_renderer()
+                    self.cur_combat = None
+            if not self.equipe_mgr.is_not_empty():
+                self.renderer_manager.change_without_logging_last(RENDER_GAME)
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:
@@ -597,6 +593,13 @@ class Game:
 
     def start(self):
         debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
+
+        if self.adventure.get_progress() == 1:
+            # on vient de commencer
+            self.equipe_mgr.add_creature(
+                Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))
+            self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
+            self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poids")
 
         while self.continuer:
             # FPS

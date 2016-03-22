@@ -223,7 +223,7 @@ class Combat:
 
     def _manage_adversary_death(self):
         global Y_ADV_FALL
-        while Y_ADV_FALL <= 50:
+        while Y_ADV_FALL < 50:
             self.render()
             pygame.display.flip()
         g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
