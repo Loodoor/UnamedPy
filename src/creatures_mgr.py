@@ -116,7 +116,7 @@ class Creature:
         return self.dead
 
     def _calc_seuil_xp(self):
-        return int(SPEC_SEUIL_XP_LVL_UP / 2 * math.sqrt(self.get_niv() + 1) * 1.2)
+        return int((self.get_niv() ** 2) / 6 + 8 * self.get_niv() + SPEC_SEUIL_XP_LVL_UP)
 
     def get_seuil_xp(self):
         return self._calc_seuil_xp()
@@ -125,10 +125,7 @@ class Creature:
         return self.specs[SPEC_XP]
 
     def gagner_xp(self, adv):
-        gain = random.randint(
-            int(SPEC_XP_GAGNE * math.sqrt(adv.get_niv() + 1) * random.randint(30, 75) / 100),
-            int(SPEC_XP_GAGNE * math.sqrt(adv.get_niv() + 1) * random.randint(75, 125) / 100)
-        )
+        gain = math.sqrt(adv.get_niv()) * adv.get_niv() / 20 + 8
         self.specs[SPEC_XP] += gain
 
         if self.specs[SPEC_XP] >= self._calc_seuil_xp():
