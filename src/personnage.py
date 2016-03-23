@@ -11,7 +11,7 @@ from animator import PlayerAnimator
 
 
 class Personnage:
-    def __init__(self, carte, ecran: pygame.Surface, police: pygame.font.Font, choice: str, pos: tuple=(0, 0)):
+    def __init__(self, carte, ecran, police, choice: str, pos: tuple=(0, 0)):
         self.ecran = ecran
         self.direction = BAS
         self.police = police
@@ -227,7 +227,7 @@ class Personnage:
 
 
 class OthPersonnagesManager:
-    def __init__(self, ecran: pygame.Surface):
+    def __init__(self, ecran):
         self.ecran = ecran
         self._others = {}
         self._sprites = {}
@@ -235,16 +235,16 @@ class OthPersonnagesManager:
             directory = os.path.split(dir_)[1]
             self._sprites[directory] = {}
             self._sprites[directory][BAS] = [
-                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "bas*.png"))
+                rendering_engine.load_image(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "bas*.png"))
             ]
             self._sprites[directory][HAUT] = [
-                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "haut*.png"))
+                rendering_engine.load_image(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "haut*.png"))
             ]
             self._sprites[directory][GAUCHE] = [
-                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "gauche*.png"))
+                rendering_engine.load_image(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "gauche*.png"))
             ]
             self._sprites[directory][DROITE] = [
-                pygame.image.load(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "droite*.png"))
+                rendering_engine.load_image(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "droite*.png"))
             ]
 
     def add_new(self, id_: float, avatar: str, pseudo: str):

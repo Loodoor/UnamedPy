@@ -9,7 +9,7 @@ import debug
 
 
 class Inventaire:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font, carte):
+    def __init__(self, ecran, police, carte):
         self.ecran = ecran
         self.police = police
         self.carte = carte
@@ -26,17 +26,17 @@ class Inventaire:
 
         # Poches
         self.images_poches = {
-            os.path.split(image_path)[1].split('.')[0]: pygame.image.load(image_path).convert_alpha() for image_path in glob(
+            os.path.split(image_path)[1].split('.')[0]: rendering_engine.load_image(image_path).convert_alpha() for image_path in glob(
                 os.path.join("..", "assets", "inventaire", "poches", "*.png")
             )
         }
 
-        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_inventaire.png")).convert_alpha()
-        self._btn_next = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_next.png")).convert_alpha()
-        self._btn_previous = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_previous.png")).convert_alpha()
-        self._btn_jeter = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_jeter.png")).convert_alpha()
-        self._btn_vider = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_vider.png")).convert_alpha()
-        self._btn_utiliser = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_utiliser.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_inventaire.png")).convert_alpha()
+        self._btn_next = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_next.png")).convert_alpha()
+        self._btn_previous = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_previous.png")).convert_alpha()
+        self._btn_jeter = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_jeter.png")).convert_alpha()
+        self._btn_vider = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_vider.png")).convert_alpha()
+        self._btn_utiliser = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_utiliser.png")).convert_alpha()
 
     def get_obj_messenger(self):
         if self.obj_messenger:

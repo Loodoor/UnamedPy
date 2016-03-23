@@ -4,7 +4,7 @@ from constantes import *
 
 
 class Menu:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.Font) -> None:
+    def __init__(self, ecran, police) -> None:
         self.ecran = ecran
         self.police = police
         self.select = 0
@@ -16,9 +16,9 @@ class Menu:
             MENU_POKEDEX,
             MENU_QUITTER
         ]
-        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_menu.png")).convert_alpha()
-        self.fond_cat = pygame.image.load(os.path.join("..", "assets", "gui", "fd_categorie_menu.png")).convert_alpha()
-        self.fond_cat_sel = pygame.image.load(os.path.join("..", "assets", "gui", "fd_categorie_selected_menu.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_menu.png")).convert_alpha()
+        self.fond_cat = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_categorie_menu.png")).convert_alpha()
+        self.fond_cat_sel = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_categorie_selected_menu.png")).convert_alpha()
 
     def update(self):
         self.render()

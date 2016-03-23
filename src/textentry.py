@@ -5,7 +5,7 @@ from pygame.locals import *
 
 
 class TextBox:
-    def __init__(self, window: pygame.Surface, **kwargs):
+    def __init__(self, window, **kwargs):
         """
         args :
             font            (default : pygame.font.SysFont("arial", 18))
@@ -27,7 +27,7 @@ class TextBox:
         self.clignote = False
         self.mdt = 0
 
-        self.font = kwargs.get("font", pygame.font.SysFont("arial", 18))
+        self.font = kwargs.get("font", rendering_engine.load_sys_font("arial", 18))
         self.max_length = kwargs.get("max_length", 32)
         self.color = kwargs.get("color", (255, 255, 255))
         self.pos_x = kwargs.get("x", 0)
@@ -39,7 +39,7 @@ class TextBox:
         self.center = kwargs.get("center", False)
         self.placeholder = self.font.render(kwargs.get("placeholder", ""), POL_ANTIALISING, self.color)
 
-    def event(self, e: pygame.event):
+    def event(self, e):
         if e.type == QUIT:
             self.running = False
         elif e.type == KEYDOWN:
@@ -52,7 +52,7 @@ class TextBox:
                 self.input += e.unicode
 
     def render(self):
-        pygame.draw.rect(self.window, self.bg_color, (self.pos_x, self.pos_y, self.sx, self.sy))
+        rendering_engine.draw_rect(self.window, (self.pos_x, self.pos_y, self.sx, self.sy), self.bg_color)
         texte = self.font.render(self.input, POL_ANTIALISING, self.color)
         if not self.center:
             self.window.blit(self.placeholder, (self.pos_x, self.pos_y))
@@ -73,11 +73,11 @@ class TextBox:
             self.mdt = 1
 
     def update(self):
-        for event in pygame.event.get():
+        for event in rendering_engine.get_event():
             self.event(event)
 
         self.render()
-        pygame.display.flip()
+        rendering_engine.flip()
 
     def mainloop(self):
         while self.running:

@@ -59,19 +59,18 @@ def uround(nb: int or float, lim: float=0.5):
     return math.floor(nb) if nb <= lim else math.ceil(nb)
 
 
-def uscreenschot(surface: pygame.Surface):
+def uscreenschot(surface):
     path_ = os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png")
-    pygame.image.save(surface, path_)
+    rendering_engine.save_image(surface, path_)
     debug.println("Screenshot sauvegardée sous '" + path_ + "'")
 
 
-def uset_image_as_shiney(base: pygame.Surface) -> pygame.Surface:
+def uset_image_as_shiney(base) -> object:
     base.lock()
     for pixel in range(base.get_width() * base.get_height()):
         x, y = pixel % base.get_height(), pixel // base.get_height()
         last_color = base.get_at((x, y))
-        new_color = pygame.Color(last_color.g, last_color.b, last_color.r, last_color.a)
-        base.set_at((x, y), new_color)
+        base.set_at((x, y), (last_color.g, last_color.b, last_color.r, last_color.a))
     base.unlock()
     return base
 
@@ -116,8 +115,8 @@ def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 
         progress /= max_progress
         progress *= rect_bg[2] - 2 * esp
     if bg:
-        pygame.draw.rect(screen, bg_color, rect_bg)
-    pygame.draw.rect(screen, fg_color, (rect_bg[0] + esp, rect_bg[1] + esp, progress, rect_bg[3] - esp * 2))
+        rendering_engine.draw_rect(screen, rect_bg, bg_color)
+    rendering_engine.draw_rect(screen, (rect_bg[0] + esp, rect_bg[1] + esp, progress, rect_bg[3] - esp * 2), fg_color)
 
 
 class UMoment:

@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import socket
-from pygame.locals import *
 
 import carte
 import debug
@@ -30,14 +29,14 @@ from network_event_listener import NetworkEventsListener
 
 
 class Game:
-    def __init__(self, ecran: pygame.Surface, perso_choice: str, adventure: Adventure, s: socket.socket=None,
+    def __init__(self, ecran, perso_choice: str, adventure: Adventure, s: socket.socket=None,
                  p: tuple=('127.0.0.1', 5500), controles: dict={}):
         self.__start_at__ = time.time()
 
         self.adventure = adventure
 
         # self.fps_regulator = IAFPS(FPS_base)
-        self.fps_regulator = pygame.time.Clock()
+        self.fps_regulator = rendering_engine.create_clock()
         self.continuer = 1
         self.ecran = ecran
         self.sock = s
@@ -51,9 +50,9 @@ class Game:
         self.bottom = False
 
         # Polices
-        self.police_normale = pygame.font.Font(POLICE_PATH, POL_NORMAL_TAILLE)
-        self.police_grande = pygame.font.Font(POLICE_PATH, POL_GRANDE_TAILLE)
-        self.police_petite = pygame.font.Font(POLICE_PATH, POL_PETITE_TAILLE)
+        self.police_normale = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
+        self.police_grande = rendering_engine.load_font(POLICE_PATH, POL_GRANDE_TAILLE)
+        self.police_petite = rendering_engine.load_font(POLICE_PATH, POL_PETITE_TAILLE)
 
         # Managers
         self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager)
@@ -143,7 +142,7 @@ class Game:
     def screenshot(self):
         uscreenschot(self.ecran)
 
-    def process_event(self, event: pygame.event, dt: int=1):
+    def process_event(self, event, dt: int=1):
         if self.joystick:
             self.joystick.update_states()
 
@@ -230,7 +229,7 @@ class Game:
                 self.personnage.inventaire.close()
             self._manage_object_action()
 
-    def process_events_carte(self, event: pygame.event, dt: int=1):
+    def process_events_carte(self, event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.renderer_manager.invert_renderer()
@@ -241,10 +240,10 @@ class Game:
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.invert_renderer()
 
-    def process_events_save(self, event: pygame.event, dt: int=1):
+    def process_events_save(self, event, dt: int=1):
         pass
 
-    def process_events_pokedex(self, event: pygame.event, dt: int=1):
+    def process_events_pokedex(self, event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.renderer_manager.invert_renderer()
@@ -256,12 +255,12 @@ class Game:
         if self.joystick:
             self.joystick_deplace_souris()
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = pygame.mouse.get_pos()
+                xp, yp = rendering_engine.get_mouse_pos()
                 self.indexeur.clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.invert_renderer()
 
-    def process_events_pc(self, event: pygame.event, dt: int=1):
+    def process_events_pc(self, event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.renderer_manager.invert_renderer()
@@ -273,12 +272,12 @@ class Game:
         if self.joystick:
             self.joystick_deplace_souris()
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = pygame.mouse.get_pos()
+                xp, yp = rendering_engine.get_mouse_pos()
                 self.pc_mgr.clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.invert_renderer()
 
-    def process_events_menu_in_game(self, event: pygame.event, dt: int=1):
+    def process_events_menu_in_game(self, event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.renderer_manager.invert_renderer()
@@ -312,9 +311,9 @@ class Game:
                 if new_renderer == RENDER_INVENTAIRE:
                     self.personnage.inventaire.open(RENDER_GAME)
 
-        self.menu_in_game.mouseover(pygame.mouse.get_pos())
+        self.menu_in_game.mouseover(rendering_engine.get_mouse_pos())
 
-    def process_events_creatures(self, event: pygame.event, dt: int=1):
+    def process_events_creatures(self, event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.renderer_manager.invert_renderer()
@@ -326,21 +325,21 @@ class Game:
         if self.joystick:
             self.joystick_deplace_souris()
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = pygame.mouse.get_pos()
+                xp, yp = rendering_engine.get_mouse_pos()
                 self.equipe_mgr.clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.invert_renderer()
 
-    def process_events_chat(self, event: pygame.event, dt: int=1):
+    def process_events_chat(self, event, dt: int=1):
         if self.chat_mgr.is_running():
             self.chat_mgr.event(event)
         else:
             self.renderer_manager.invert_renderer()
 
-    def process_events_boutique(self, event: pygame.event, dt: int=1):
+    def process_events_boutique(self, event, dt: int=1):
         raise FonctionnaliteNonImplementee
 
-    def process_events_combat(self, event: pygame.event, dt: int=1):
+    def process_events_combat(self, event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.__ctrls[NEXT_PAGE] or event.key == self.__ctrls[DOWN_PAGE]:
                 self.cur_combat.next()
@@ -362,10 +361,10 @@ class Game:
         # joystick
         if self.joystick:
             self.joystick_deplace_souris()
-            xp, yp = pygame.mouse.get_pos()
+            xp, yp = rendering_engine.get_mouse_pos()
             self.cur_combat.mouseover(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = pygame.mouse.get_pos()
+                xp, yp = rendering_engine.get_mouse_pos()
                 self.cur_combat.clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[NEXT_PAGE]["button"]):
                 self.cur_combat.next()
@@ -377,15 +376,15 @@ class Game:
 
     def joystick_deplace_souris(self):
         if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] - JOY_DEPLACE_SOURIS)
+            rendering_engine.set_mouse_pos(rendering_engine.get_mouse_pos()[0], rendering_engine.get_mouse_pos()[1] - JOY_DEPLACE_SOURIS)
         if self.joystick.get_axis(self.controles_joy[BAS]["axis"]["nb"]) == self.controles_joy[BAS]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1] + JOY_DEPLACE_SOURIS)
+            rendering_engine.set_mouse_pos(rendering_engine.get_mouse_pos()[0], rendering_engine.get_mouse_pos() + JOY_DEPLACE_SOURIS)
         if self.joystick.get_axis(self.controles_joy[GAUCHE]["axis"]["nb"]) == self.controles_joy[GAUCHE]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] - JOY_DEPLACE_SOURIS, pygame.mouse.get_pos()[1])
+            rendering_engine.set_mouse_pos(rendering_engine.get_mouse_pos()[0] - JOY_DEPLACE_SOURIS, rendering_engine.get_mouse_pos())
         if self.joystick.get_axis(self.controles_joy[DROITE]["axis"]["nb"]) == self.controles_joy[DROITE]["axis"]["value"]:
-            pygame.mouse.set_pos(pygame.mouse.get_pos()[0] + JOY_DEPLACE_SOURIS, pygame.mouse.get_pos()[1])
+            rendering_engine.set_mouse_pos(rendering_engine.get_mouse_pos()[0] + JOY_DEPLACE_SOURIS, rendering_engine.get_mouse_pos())
 
-    def process_events_inventaire(self, event: pygame.event, dt: int=1):
+    def process_events_inventaire(self, event, dt: int=1):
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.renderer_manager.change_for_last_renderer()
@@ -402,7 +401,7 @@ class Game:
         if self.joystick:
             self.joystick_deplace_souris()
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = pygame.mouse.get_pos()
+                xp, yp = rendering_engine.get_mouse_pos()
                 self.personnage.inventaire_clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[NEXT_PAGE]["button"]):
                 self.personnage.inventaire_next()
@@ -439,7 +438,7 @@ class Game:
                 self.equipe_mgr.get_selected_creature().set_spec(categorie=cat, new=new)
                 done(self)
 
-    def process_events_game(self, event: pygame.event, dt: int=1):
+    def process_events_game(self, event, dt: int=1):
         # clavier
         if event.type == KEYDOWN:
             if event.key == self.controles[HAUT]:
@@ -523,15 +522,15 @@ class Game:
         for i in self.load():
             yield i
 
-        pygame.joystick.init()
+        rendering_engine.init_joystick()
         yield 1
-        if pygame.joystick.get_count() > 0:
-            joystick = pygame.joystick.Joystick(0)
+        if rendering_engine.count_joysticks() > 0:
+            joystick = rendering_engine.create_joystick()
             joystick.init()
             self.joystick = JoystickController(joystick)
             debug.println("Un joystick a été trouvé")
 
-        pygame.key.set_repeat(200, 100)
+        rendering_engine.set_key_repeat(200, 100)
         yield 1
         if self.joystick:
             self.joystick.set_repeat(40)
@@ -586,9 +585,10 @@ class Game:
 
         if self.show_fps:
             texte = self.police_normale.render("%3i FPS" % int(self.fps_regulator.get_fps()), 1, (0, 0, 0))
-            pygame.draw.rect(self.ecran, (150, 150, 150),
-                            (FEN_large - 10 + texte.get_width(), 0,
-                             10 + texte.get_width(), 10 + texte.get_height()))
+            rendering_engine.draw_rect(self.ecran, (FEN_large - 10 + texte.get_width(), 0,
+                                                    10 + texte.get_width(), 10 + texte.get_height()),
+                                       (150, 150, 150)
+            )
             self.ecran.blit(texte, (5, 5))
 
     def start(self):
@@ -607,7 +607,7 @@ class Game:
             dt = self.fps_regulator.tick(FPS_base)
 
             # Evénements
-            self.process_event(pygame.event.poll(), dt)
+            self.process_event(rendering_engine.poll_event(), dt)
 
             self.network_ev_listener.listen()
 
@@ -640,16 +640,16 @@ class Game:
                                  line_width=200,
                                  sy=DEBUG_FEN_haut)
 
-            pygame.display.flip()
+            rendering_engine.flip()
 
         self.renderer_manager.change_renderer_for(RENDER_SAVE)
         while True:
             dt = self.fps_regulator.tick(FPS_base)
             self.render(dt)
 
-            pygame.event.poll()
+            rendering_engine.poll_event()
 
-            pygame.display.flip()
+            rendering_engine.flip()
 
             if self.renderer_manager != RENDER_SAVE:
                 break

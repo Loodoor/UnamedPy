@@ -2,7 +2,6 @@
 
 import pickle
 from glob import glob
-from pygame.locals import *
 from constantes import *
 import trigger_manager
 from utils import unothing, udel_same_occurence

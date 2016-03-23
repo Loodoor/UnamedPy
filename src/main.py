@@ -17,7 +17,7 @@ import time
 
 import game
 import utils
-# from ecran import MyScreen
+import rendering_engine
 from textentry import TextBox
 from aventure_manager import Adventure
 
@@ -31,23 +31,23 @@ def get_alea_text(path: str="textes") -> str:
 
 def main():
     start_at = time.time()
-    tmp = pygame.init()
+    tmp = rendering_engine.init()
     debug.println("Initialisation de Pygame ... {modules} ; {erreurs}".format(
         modules="Modules chargés : {}".format(tmp[0]),
         erreurs="Erreurs de chargement : {}".format(tmp[1])
     ))
-    debug.println("Initialisation de Pygame.Font ...", pygame.font.init())
+    debug.println("Initialisation de Pygame.Font ...", rendering_engine.init_font())
 
     if DEBUG_LEVEL >= 1:
-        ecran = pygame.display.set_mode((DEBUG_FEN_large, DEBUG_FEN_haut), HWSURFACE)
+        ecran = rendering_engine.create_window((DEBUG_FEN_large, DEBUG_FEN_haut), HWSURFACE)
     else:
-        ecran = pygame.display.set_mode((FEN_large, FEN_haut), HWSURFACE)
-    clock = pygame.time.Clock()
-    pygame.display.set_caption("Unamed - v" + VERSION)
-    police = pygame.font.Font(POLICE_PATH, POL_NORMAL_TAILLE)
-    police_annot = pygame.font.Font(POLICE_PATH, POL_NORMAL_TAILLE)
+        ecran = rendering_engine.create_window((FEN_large, FEN_haut), HWSURFACE)
+    clock = rendering_engine.create_clock()
+    rendering_engine.set_caption("Unamed - v{}".format(VERSION))
+    police = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
+    police_annot = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
     police_annot.set_italic(True)
-    title = pygame.image.load(os.path.join("..", "assets", "menu", "logo_alpha.png")).convert_alpha()
+    title = rendering_engine.load_image(os.path.join("..", "assets", "menu", "logo_alpha.png")).convert_alpha()
     bienvenue = [
         "Bienvenue à toi, chercheur !",
         "Tu vas entrer sur l'île d'Unamed, prépare toi à une toute nouvelle aventure !"
@@ -55,7 +55,7 @@ def main():
     adventure = Adventure(ecran, police)
     adventure.load()
     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
-    fond = pygame.image.load(os.path.join("..", "assets", "menu", "fond.png")).convert_alpha()
+    fond = rendering_engine.load_image(os.path.join("..", "assets", "menu", "fond.png")).convert_alpha()
     load_texts = glob(os.path.join("..", "assets", "menu", "chargement", "*.txt"))
     max_len = int(MENU_SIZE_BAR // len(load_texts))
     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),
@@ -72,15 +72,15 @@ def main():
     loadeur = None
     finished_loading = False
     avancement = 0
-    btn_reseau = pygame.image.load(os.path.join("..", "assets", "gui", "fd_btn_reseau.png")).convert_alpha()
-    btn_jeu = pygame.image.load(os.path.join("..", "assets", "gui", "fd_btn_jeu.png")).convert_alpha()
+    btn_reseau = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_reseau.png")).convert_alpha()
+    btn_jeu = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_jeu.png")).convert_alpha()
 
     debug.println("Menu chargé en %3.4f sec" % (time.time() - start_at))
     debug.println("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
 
     while continuer:
         dt = clock.tick()
-        for event in pygame.event.get():
+        for event in rendering_engine.get_event():
             if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 continuer = 0
             if event.type == KEYDOWN:
@@ -101,7 +101,7 @@ def main():
             if not jeu:
                 debug.println("Entrée en mode réseau ...")
                 ecran.fill(0)
-                pygame.display.flip()
+                rendering_engine.flip()
                 ip = TextBox(ecran, x=100, y=ecran.get_height() // 2,
                              sx=ecran.get_width(),
                              sy=ecran.get_height(),
@@ -164,9 +164,9 @@ def main():
             ecran.blit(btn_jeu, (MENU_BTN_JOUER_X, MENU_BTN_JOUER_Y))
             ecran.blit(btn_reseau, (MENU_BTN_RESEAU_X, MENU_BTN_RESEAU_Y))
 
-        pygame.display.flip()
+        rendering_engine.flip()
 
-    pygame.quit()
+    rendering_engine.quit_()
 
     debug.println("Le programme s'est terminé proprement")
 
