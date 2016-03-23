@@ -139,7 +139,7 @@ class Creature:
 
             return levels_ups
         else:
-            return gain
+            return int(gain)
 
     def taper(self, dgts):
         self.specs[SPEC_PVS] -= dgts
