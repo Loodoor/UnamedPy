@@ -7,7 +7,7 @@ import os
 
 
 class ComputerManager:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont, render_manager, max_size=PC_MAX_CREA):
+    def __init__(self, ecran, police, render_manager, max_size=PC_MAX_CREA):
         self.ecran = ecran
         self.police = police
         self.storage = []
@@ -19,13 +19,13 @@ class ComputerManager:
         self.rd_mgr = render_manager
         self.selected_crea = -1
         self.equipe = None
-        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_creatures.png")).convert_alpha()
-        self._fond_case = pygame.image.load(os.path.join("..", "assets", "gui", "fd_case_creature.png")).convert_alpha()
-        self._fond_case_selected = pygame.image.load(os.path.join("..", "assets", "gui", "fd_case_creature_selected.png")).convert_alpha()
-        self._btn_next = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_next.png")).convert_alpha()
-        self._btn_previous = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_previous.png")).convert_alpha()
-        self._btn_creatures = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_poche_creatures.png")).convert_alpha()
-        self._btn_to_creatures = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_to_poche_creatures.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_creatures.png")).convert_alpha()
+        self._fond_case = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_case_creature.png")).convert_alpha()
+        self._fond_case_selected = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_case_creature_selected.png")).convert_alpha()
+        self._btn_next = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_next.png")).convert_alpha()
+        self._btn_previous = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_previous.png")).convert_alpha()
+        self._btn_creatures = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_poche_creatures.png")).convert_alpha()
+        self._btn_to_creatures = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_to_poche_creatures.png")).convert_alpha()
 
     def load(self):
         if os.path.exists(self.path):

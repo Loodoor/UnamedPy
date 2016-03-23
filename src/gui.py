@@ -1,6 +1,5 @@
 # coding=utf-8
 
-from pygame.locals import *
 from constantes import *
 from textentry import TextBox
 import time
@@ -8,12 +7,12 @@ from glob import glob
 
 
 class GUIBulle:
-    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str or list, font: pygame.font.SysFont):
+    def __init__(self, ecran, pos: tuple, texte: str or list, font):
         self.ecran = ecran
         self.pos = pos
         self.texte = texte
         self.font = font
-        self.image = pygame.image.load(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
+        self.image = rendering_engine.load_image(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
         self.iw, self.ih = self.image.get_size()
         self.txt_renderer = self.font.render(" ", POL_ANTIALISING, (10, 10, 10))
         self.create_text_renderers()
@@ -46,7 +45,7 @@ class GUIBulle:
 
 
 class GUIBulleWaiting(GUIBulle):
-    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str or list, font: pygame.font.SysFont, screenshotkey=K_F5):
+    def __init__(self, ecran, pos: tuple, texte: str or list, font, screenshotkey=K_F5):
         super().__init__(ecran, pos, texte, font)
         self.done = False
         self.screenkey = screenshotkey
@@ -61,24 +60,24 @@ class GUIBulleWaiting(GUIBulle):
 
     def update(self, dt: int=1):
         while not self.done:
-            ev = pygame.event.poll()
+            ev = rendering_engine.poll_event()
             if ev.type == KEYDOWN:
                 if ev.key != self.screenkey:
                     self.done = True
 
             self.render()
-            pygame.display.flip()
+            rendering_engine.flip()
 
 
 class GUIBulle2Choices(GUIBulleWaiting):
-    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str, font: pygame.font.SysFont,
+    def __init__(self, ecran, pos: tuple, texte: str, font,
                  screenshotkey=K_F5):
         super().__init__(ecran, pos, texte, font, screenshotkey)
         self.ok = False
 
     def update(self, dt: int=1):
         while not self.done:
-            ev = pygame.event.poll()
+            ev = rendering_engine.poll_event()
             if ev.type == KEYDOWN:
                 if ev.key == K_RETURN:
                     self.ok = True
@@ -86,12 +85,12 @@ class GUIBulle2Choices(GUIBulleWaiting):
                     self.done = True
 
             self.render()
-            pygame.display.flip()
+            rendering_engine.flip()
         return self.ok
 
 
 class GUIBulleAsking(GUIBulleWaiting):
-    def __init__(self, ecran: pygame.Surface, pos: tuple, texte: str, font: pygame.font.SysFont,
+    def __init__(self, ecran, pos: tuple, texte: str, font,
                  screenshotkey=K_F5):
         super().__init__(ecran, pos, texte, font, screenshotkey)
         self.create_text_renderers()
@@ -124,17 +123,17 @@ class GUIBulleAsking(GUIBulleWaiting):
 
     def update(self, dt: int=1):
         while not self.done:
-            ev = pygame.event.poll()
+            ev = rendering_engine.poll_event()
             if ev.type == KEYDOWN:
                 if ev.key != self.screenkey:
                     self.text_box.event(ev)
 
             self.render()
-            pygame.display.flip()
+            rendering_engine.flip()
 
 
 class PNJSpeaking:
-    def __init__(self, texte: str, ecran: pygame.Surface, font: pygame.font.SysFont, color: tuple=(240, 240, 240)):
+    def __init__(self, texte: str, ecran, font, color: tuple=(240, 240, 240)):
         self.texte = texte
         self.ecran = ecran
         self.font = font
@@ -144,10 +143,10 @@ class PNJSpeaking:
 
         self.color = color
         self.txt_renderer = self.font.render(self.texte, POL_ANTIALISING, (10, 10, 10))
-        self.bulle = pygame.image.load(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
+        self.bulle = rendering_engine.load_image(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
 
     def update(self, dt: int=1):
-        ev = pygame.event.get()
+        ev = rendering_engine.get_event()
         self.render(dt)
         if ev != KEYUP:
             return True
@@ -166,7 +165,7 @@ class PNJSpeaking:
 
 
 class GUISauvegarde:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont):
+    def __init__(self, ecran, police):
         self.ecran = ecran
         self.police = police
         self.texte = self.police.render("Sauvegarde en cours ... Merci de patienter :)", POL_ANTIALISING, (0, 0, 0))
@@ -179,10 +178,10 @@ class GUISauvegarde:
         self.callback = None
         self.firstcall = None
         self.has_started_saving = False
-        self.ldroite = [pygame.image.load(_).convert_alpha() for _ in
+        self.ldroite = [rendering_engine.load_image(_).convert_alpha() for _ in
                         glob(os.path.join("..", "assets", "personnages", "first", "droite*.png"))]
         self.cur_anim = 0
-        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_sauvegarde.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_sauvegarde.png")).convert_alpha()
 
     def reinit(self):
         self.waiting = False

@@ -6,7 +6,7 @@ from constantes import *
 
 
 class EquipeManager:
-    def __init__(self, ecran: pygame.Surface, police: pygame.font.SysFont, indexer, render_manager, size: int=6):
+    def __init__(self, ecran, police, indexer, render_manager, size: int=6):
         self.size = size
         self.ecran = ecran
         self.police = police
@@ -17,12 +17,12 @@ class EquipeManager:
         self.rd_mgr = render_manager
         self.selected_crea = -1
         self.pc = None
-        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_creatures.png")).convert_alpha()
-        self._fond_case = pygame.image.load(os.path.join("..", "assets", "gui", "fd_case_creature.png")).convert_alpha()
-        self._fond_case_selected = pygame.image.load(os.path.join("..", "assets", "gui", "fd_case_creature_selected.png")).convert_alpha()
-        self._btn_pc = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_pc.png")).convert_alpha()
-        self._btn_to_pc = pygame.image.load(os.path.join("..", "assets", "gui", "fd_bouton_to_pc.png")).convert_alpha()
-        self._fond_spec = pygame.image.load(os.path.join("..", "assets", "gui", "fd_spec_creatures.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_creatures.png")).convert_alpha()
+        self._fond_case = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_case_creature.png")).convert_alpha()
+        self._fond_case_selected = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_case_creature_selected.png")).convert_alpha()
+        self._btn_pc = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_pc.png")).convert_alpha()
+        self._btn_to_pc = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_to_pc.png")).convert_alpha()
+        self._fond_spec = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_spec_creatures.png")).convert_alpha()
 
     def get_selected_creature(self) -> Creature:
         if self.selected_crea != -1:

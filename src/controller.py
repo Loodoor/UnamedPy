@@ -13,7 +13,7 @@ N_BY_MOD = lambda n, mod: (int(n * 1000) % mod) <= 2.0
 
 
 class JoystickController:
-    def __init__(self, joystick: pygame.joystick.Joystick):
+    def __init__(self, joystick):
         """
             Comment utiliser cette classe ?
             1/ L'initialiser

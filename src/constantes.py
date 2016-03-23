@@ -7,6 +7,7 @@ import sys
 import rendering_engine
 import random
 
+# besoin absolu !
 from pygame.locals import *
 
 

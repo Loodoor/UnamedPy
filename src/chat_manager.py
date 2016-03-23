@@ -6,7 +6,7 @@ from network_event_listener import NetworkEventsListener
 
 
 class ChatManager:
-    def __init__(self, ecran: pygame.Surface, font: pygame.font.SysFont, reseau_mgr: NetworkEventsListener,
+    def __init__(self, ecran, font, reseau_mgr: NetworkEventsListener,
                  pseudo: str, rang: int):
         self.ecran = ecran
         self.font = font
@@ -17,7 +17,7 @@ class ChatManager:
         self.text_entry = textentry.TextBox(self.ecran, x=CHAT_X_BOX, y=CHAT_Y_BOX,
                                             sx=CHAT_SX_BOX, sy=CHAT_SY_BOX, bgcolor=(70, 70, 70))
         self.quit = None
-        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_chat.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_chat.png")).convert_alpha()
 
     def update_quit_event(self, new):
         self.quit = new
@@ -59,7 +59,7 @@ class ChatManager:
     def is_running(self):
         return self.text_entry.is_running()
 
-    def event(self, e: pygame.event):
+    def event(self, e):
         if e.type == KEYDOWN and e.key != self.quit:
             self.text_entry.event(e)
 

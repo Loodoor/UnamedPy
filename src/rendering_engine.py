@@ -2,6 +2,12 @@
 
 import pygame
 
+"""
+Disponnibles :
+    * pysfml (pas encore supporté)
+    * opengl (pas encore supporté, why not ?)
+    * pygame (actuellement utilisé)
+"""
 METHOD = "pygame"
 
 
@@ -48,3 +54,13 @@ def flip():
 def rescale(image: object, size: tuple) -> object:
     if METHOD == "pygame":
         return pygame.transform.scale(image, size)
+
+
+def poll_event() -> object:
+    if METHOD == "pygame":
+        return pygame.event.poll()
+
+
+def get_event() -> object:
+    if METHOD == "pygame":
+        return pygame.event.get()

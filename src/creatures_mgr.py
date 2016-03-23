@@ -82,7 +82,7 @@ class Creature:
 
     def get_image_with_size(self, size: tuple):
         if size not in self._images_resized.keys():
-            self._images_resized[size] = pygame.transform.scale(self.__image, size)
+            self._images_resized[size] = rendering_engine.rescale(self.__image, size)
         return self._images_resized[size]
 
     def get_state(self):
