@@ -6,7 +6,7 @@ from creatures_mgr import Creature
 
 
 class Capturer:
-    def __init__(self, ecran: pygame.Surface):
+    def __init__(self, ecran):
         self.ecran = ecran
         self.ratio = 0  # 100
         self.type_capt = None  # NotImpletedError

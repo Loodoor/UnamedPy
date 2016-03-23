@@ -93,7 +93,7 @@ class AttaquesTable:
 
 
 class Combat:
-    def __init__(self, ecran: pygame.Surface, creature_joueur, zone: ZonesManager, zone_id: int, indexer, font, storage,
+    def __init__(self, ecran, creature_joueur, zone: ZonesManager, zone_id: int, indexer, font, storage,
                  renderer_manager, equipe):
         self.ecran = ecran
         self.compteur_tour = 0
@@ -107,16 +107,16 @@ class Combat:
         self.has_captured = False
         self.is_running = True
         self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
-        self.indic_captured = pygame.image.load(os.path.join("..", "assets", "gui", "captured.png")).convert_alpha()
+        self.indic_captured = rendering_engine.load_image(os.path.join("..", "assets", "gui", "captured.png")).convert_alpha()
         self.font = font
         self.selected_atk = 0
         self.storage = storage
         self.renderer_manager = renderer_manager
         self.equipe = equipe
-        self.fond = pygame.image.load(os.path.join("..", "assets", "gui", "fd_combat.png")).convert_alpha()
-        self._fond_atk = pygame.image.load(os.path.join("..", "assets", "gui", "fd_attaque.png")).convert_alpha()
-        self._fond_atk_selected = pygame.image.load(os.path.join("..", "assets", "gui", "fd_attaque_selected.png")).convert_alpha()
-        self._fond_barre_vie = pygame.image.load(os.path.join("..", "assets", "gui", "fd_barre_vie_creature.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_combat.png")).convert_alpha()
+        self._fond_atk = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_attaque.png")).convert_alpha()
+        self._fond_atk_selected = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_attaque_selected.png")).convert_alpha()
+        self._fond_barre_vie = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_barre_vie_creature.png")).convert_alpha()
 
     def on_start(self):
         debug.println("adv id", self.adversaire.get_id())
@@ -225,7 +225,7 @@ class Combat:
         global Y_ADV_FALL
         while Y_ADV_FALL < 50:
             self.render()
-            pygame.display.flip()
+            rendering_engine.flip()
         g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                             self.get_adversary().get_pseudo() + " est vaincu !", self.font)
 

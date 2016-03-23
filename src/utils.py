@@ -4,7 +4,6 @@ from constantes import *
 from indexer import Indexer
 from trigger_manager import Trigger, TriggersManager
 from zones_attaques_manager import ZonesManager, Zone
-import pygame
 import objets_manager
 import inventaire
 from os import path, sep

@@ -4,8 +4,10 @@ import os
 import time
 import math
 import sys
-import pygame
+import rendering_engine
 import random
+
+from pygame.locals import *
 
 
 class UEnumFactory:

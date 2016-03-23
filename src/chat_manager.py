@@ -1,8 +1,5 @@
 # coding=utf-8
 
-import pygame
-from pygame.locals import *
-
 import textentry
 from constantes import *
 from network_event_listener import NetworkEventsListener

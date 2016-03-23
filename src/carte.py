@@ -144,7 +144,7 @@ class SubCarte:
 
 
 class CartesManager:
-    def __init__(self, ecran: pygame.Surface, renderer_manager):
+    def __init__(self, ecran, renderer_manager):
         self.ecran = ecran
         self.rd_mgr = renderer_manager
         self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
@@ -174,7 +174,7 @@ class CartesManager:
             # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
             # chargement d'une tile simple
             if os.path.isfile(i):
-                self.images[os.path.split(i)[1][:-4]] = pygame.image.load(i).convert_alpha()
+                self.images[os.path.split(i)[1][:-4]] = rendering_engine.load_image(i).convert_alpha()
                 self.lassets.append(os.path.split(i)[1][:-4])
             # chargement d'une animation
             elif os.path.isdir(i):
@@ -273,7 +273,7 @@ class CartesManager:
             if tile not in self.callback_end_rendering:
                 self.callback_end_rendering.append(tile)
         else:
-            if isinstance(self.images[tile], pygame.Surface):
+            if isinstance(self.images[tile], rendering_engine.get_surface_class()):
                 self.ecran.blit(self.images[tile], (at_x, at_y))
             elif isinstance(self.images[tile], BaseMultipleSpritesAnimator):
                 self.ecran.blit(self.images[tile].get_anim(), (at_x, at_y))
@@ -302,7 +302,7 @@ class CartesManager:
 
     def render(self):
         objects_at = self.current_carte.get_objects()
-        pygame.draw.rect(self.ecran, (0, 0, 0), (0, 0, FEN_large, FEN_haut))
+        rendering_engine.draw_rect(self.ecran, (0, 0, FEN_large, FEN_haut), (0, 0, 0))
         for y in range(len(self.carte)):
             for x in range(len(self.carte[y])):
                 objet = self.carte[y][x]
@@ -362,11 +362,11 @@ class CartesManager:
 
 
 class CarteRenderer:
-    def __init__(self, ecran: pygame.Surface, carte_mgr: CartesManager):
+    def __init__(self, ecran, carte_mgr: CartesManager):
         self.ecran = ecran
         self.carte_mgr = carte_mgr
-        self.carte_img = pygame.image.load(os.path.join("..", "assets", "aventure", "worldmap.png")).convert_alpha()
-        self.carte_mgr = pygame.transform.scale(self.carte_img, (MAP_RDR_SX, MAP_RDR_SY))
+        self.carte_img = rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")).convert_alpha()
+        self.carte_mgr = rendering_engine.rescale(self.carte_img, (MAP_RDR_SX, MAP_RDR_SY))
 
     def update(self):
         self.render()

@@ -6,7 +6,7 @@ from constantes import *
 
 
 class BaseSideAnimator:
-    def __init__(self, base_image: pygame.Surface, velocity: float, vertical: bool):
+    def __init__(self, base_image: object, velocity: float, vertical: bool):
         self.base_image = base_image
         self.velocity = velocity
         self.decalage = int(self.base_image.get_width() // self.velocity + 1)
@@ -20,7 +20,7 @@ class BaseSideAnimator:
 
         time_ = 0
         for _ in range(self.decalage):
-            surf = pygame.Surface((TILE_SIZE, TILE_SIZE))
+            surf = rendering_engine.create_surface((TILE_SIZE, TILE_SIZE))
             surf.fill((76, 76, 76))
             surf.set_colorkey((76, 76, 76))
 
@@ -40,7 +40,7 @@ class BaseSideAnimator:
     def _draw(self):
         self.time += self.velocity
 
-    def draw_at(self, ecran: pygame.Surface, pos: tuple=(-1, -1)):
+    def draw_at(self, ecran: object, pos: tuple=(-1, -1)):
         ecran.blit(self.output[int(self.time % len(self.output))], pos)
 
 
@@ -71,12 +71,12 @@ class BaseMultipleSpritesAnimator:
 
     def _create_anims(self):
         for img in glob.glob(os.path.join(self.path, "*.png")):
-            self.anims.append(pygame.image.load(img).convert_alpha())
+            self.anims.append(rendering_engine.load_image(img).convert_alpha())
             self._max_anim += 1
 
 
 class FluidesAnimator(BaseSideAnimator):
-    def __init__(self, base_image: pygame.Surface, velocity: float):
+    def __init__(self, base_image, velocity: float):
         super().__init__(base_image, velocity, False)
 
     def next(self):
@@ -137,10 +137,10 @@ class PlayerAnimator:
         raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
 
     def _create_anims(self):
-        lhaut = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "haut*.png"))]
-        lbas = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "bas*.png"))]
-        lgauche = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "gauche*.png"))]
-        ldroite = [pygame.image.load(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "droite*.png"))]
+        lhaut = [rendering_engine.load_image(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "haut*.png"))]
+        lbas = [rendering_engine.load_image(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "bas*.png"))]
+        lgauche = [rendering_engine.load_image(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "gauche*.png"))]
+        ldroite = [rendering_engine.load_image(_).convert_alpha() for _ in glob.glob(os.path.join(self.path, "droite*.png"))]
 
         self.anims = {
             HAUT: lhaut,

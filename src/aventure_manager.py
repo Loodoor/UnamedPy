@@ -3,13 +3,12 @@
 from constantes import *
 from pickle import Pickler, Unpickler
 from gui import GUIBulleWaiting, GUIBulleAsking
-import pygame
 import debug
 
 
 # Attention, y a du hardcode dans l'air ^^'
 class Adventure:
-    def __init__(self, ecran: pygame.Surface, font: pygame.font.SysFont):
+    def __init__(self, ecran, font):
         self.user_pseudo = ""
         self.progress = 0
         self.ecran = ecran
@@ -18,10 +17,10 @@ class Adventure:
         self.beginning_text = []
         self.loaded = False
         self.values = {}
-        self._first_creature_image = pygame.transform.scale(pygame.image.load(os.path.join("..", "assets", "creatures", "1 base.png")).convert_alpha(), (250, 250))
-        self._image_prof = pygame.image.load(os.path.join("..", "assets", "aventure", "professeur.png")).convert_alpha()
-        self._world_map = pygame.image.load(os.path.join("..", "assets", "aventure", "worldmap.png")).convert_alpha()
-        self.fond = pygame.image.load(os.path.join('..', 'assets', 'gui', 'fd_aventure.png')).convert_alpha()
+        self._first_creature_image = rendering_engine.rescale(rendering_engine.load_image(os.path.join("..", "assets", "creatures", "1 base.png")).convert_alpha(), (250, 250))
+        self._image_prof = rendering_engine.load_image(os.path.join("..", "assets", "aventure", "professeur.png")).convert_alpha()
+        self._world_map = rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join('..', 'assets', 'gui', 'fd_aventure.png')).convert_alpha()
 
     def get_progress(self):
         return self.progress
@@ -84,7 +83,7 @@ class Adventure:
                     self.values["first creature name"] = t.get_text()
             i += 1
 
-            pygame.display.flip()
+            rendering_engine.flip()
         del g
 
     def next(self):

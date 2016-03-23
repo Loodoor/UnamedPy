@@ -1,7 +1,5 @@
 # coding=utf-8
 
-import pygame
-from pygame.locals import *
 from creatures_mgr import Creature
 import pickle
 from constantes import *
