@@ -50,7 +50,7 @@ class EquipeManager:
                                 (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 5))
                 self.ecran.blit(self.police.render("Niveau : {}".format(creature.get_niv()), POL_ANTIALISING, (10, 10, 10)),
                                 (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 45))
-                self.ecran.blit(self.police.render("XP actuel : {}/{}".format(creature.get_xp(), creature.get_seuil_xp()), POL_ANTIALISING, (10, 10, 10)),
+                self.ecran.blit(self.police.render("XP actuel : {}/{}".format(int(creature.get_xp()), int(creature.get_seuil_xp())), POL_ANTIALISING, (10, 10, 10)),
                                 (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 70))
                 self.ecran.blit(self.police.render("Type : {}".format(self.indexer.get_typeur().get_name(creature.get_type())), POL_ANTIALISING, (10, 10, 10)),
                                 (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 95))
