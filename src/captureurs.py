@@ -5,6 +5,16 @@ import random
 from creatures_mgr import Creature
 
 
+class Capturer:
+    def __init__(self, ratio: int, type_capt: list, id_: int):
+        self.ratio = ratio  # 100
+        self.type_capt = type_capt
+        self.id = id_
+
+    def use(self, creature: Creature):
+        return random.randint(0, MAX_RATIO_CAP) >= self.ratio and creature.get_type() in self.type_capt
+
+
 class CapturersTable:
     instance = None
 
@@ -43,13 +53,3 @@ class CapturersTable:
                     return ball
             return GLOBAL_ERROR
         raise AttributeError("Need to create an object instance of CapturersTable")
-
-
-class Capturer:
-    def __init__(self, ratio: int, type_capt: list, id_: int):
-        self.ratio = ratio  # 100
-        self.type_capt = type_capt
-        self.id = id_
-
-    def use(self, creature: Creature):
-        return random.randint(0, MAX_RATIO_CAP) >= self.ratio and creature.get_type() in self.type_capt

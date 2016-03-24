@@ -75,6 +75,11 @@ def main():
     btn_reseau = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_reseau.png")).convert_alpha()
     btn_jeu = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_jeu.png")).convert_alpha()
 
+    try:
+        max_avancement = int(open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "r").read())
+    except OSError:
+        max_avancement = 98
+
     debug.println("Menu chargé en %3.4f sec" % (time.time() - start_at))
     debug.println("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
 
@@ -131,7 +136,7 @@ def main():
             ecran.blit(alea_texte, (FEN_large // 2 - alea_texte.get_width() // 2, 120))
 
         if chargement:
-            utils.upg_bar(ecran, (FEN_large // 2 - MENU_SIZE_BAR // 2, MENU_BAR_Y, MENU_SIZE_BAR, 22), avancement, max_progress=98, fg_color=(20, 180, 20))
+            utils.upg_bar(ecran, (FEN_large // 2 - MENU_SIZE_BAR // 2, MENU_BAR_Y, MENU_SIZE_BAR, 22), avancement, max_progress=max_avancement, fg_color=(20, 180, 20))
             ecran.blit(loading_text, (FEN_large // 2 - loading_text.get_width() // 2, MENU_SIZE_BAR))
             if loadeur:
                 try:
@@ -148,6 +153,8 @@ def main():
                                                  POL_ANTIALISING, (255, 255, 255))
             if finished_loading and chargement:
                 debug.println("L'avancement max est {}".format(avancement))
+                if avancement != max_avancement:
+                    max_avancement = avancement
                 chargement = False
                 avancement = 0
                 temp = utils.ULoader()
@@ -167,6 +174,8 @@ def main():
         rendering_engine.flip()
 
     rendering_engine.quit_()
+
+    open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "w").write(int(max_avancement))
 
     debug.println("Le programme s'est terminé proprement")
 
