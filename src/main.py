@@ -76,7 +76,8 @@ def main():
     btn_jeu = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_jeu.png")).convert_alpha()
 
     try:
-        max_avancement = int(open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "r").read())
+        with open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "r") as file:
+            max_avancement = int(file.read())
     except OSError:
         max_avancement = 98
 
@@ -175,7 +176,8 @@ def main():
 
     rendering_engine.quit_()
 
-    open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "w").write(int(max_avancement))
+    with open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "w") as file:
+        file.write(str(max_avancement))
 
     debug.println("Le programme s'est terminé proprement")
 

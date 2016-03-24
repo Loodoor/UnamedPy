@@ -1,7 +1,16 @@
 # coding=utf-8
 
-import pygame
-import sfml as sf
+try:
+    import pygame
+except ImportError:
+    try:
+        import sfml as sf
+    except ImportError:
+        print("Impossible de charger une lib graphique")
+    else:
+        METHOD = "pysfml"
+else:
+    METHOD = "pygame"
 
 
 """
@@ -10,7 +19,6 @@ Disponnibles :
     * opengl (pas encore supporté, why not ?)
     * pygame (actuellement utilisé)
 """
-METHOD = "pygame"
 _window = None
 
 
