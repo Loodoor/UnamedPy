@@ -30,10 +30,10 @@ class ObjectTable:
             OBJETS_ID.PotionMax: {"on": RENDER_CREATURES, "spec": SPEC_PVS, "new": +999999},
             OBJETS_ID.Chaussures: {"on": RENDER_GAME, "id": OBJETS_ID.Chaussures},
             OBJETS_ID.Velo: {"on": RENDER_GAME, "id": OBJETS_ID.Velo},
-            OBJETS_ID.SimpleBall: {"on": RENDER_COMBAT, "capture": 0.15},
-            OBJETS_ID.NormalBall: {"on": RENDER_COMBAT, "capture": 0.35},
-            OBJETS_ID.SuperiorBall: {"on": RENDER_COMBAT, "capture": 0.6},
-            OBJETS_ID.UltraBall: {"on": RENDER_COMBAT, "capture": 1}
+            OBJETS_ID.SimpleBall: {"on": RENDER_COMBAT},
+            OBJETS_ID.NormalBall: {"on": RENDER_COMBAT},
+            OBJETS_ID.SuperiorBall: {"on": RENDER_COMBAT},
+            OBJETS_ID.UltraBall: {"on": RENDER_COMBAT}
         }
 
     @staticmethod
