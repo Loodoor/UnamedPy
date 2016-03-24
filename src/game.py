@@ -9,15 +9,15 @@ import atk_sys
 import money_mgr
 import tab_types
 import personnage
+import captureurs
 import chat_manager
 import menu_in_game
-import objets_manager
 import equipe_manager
 import computer_manager
 import renderer_manager
 import zones_attaques_manager
 from constantes import *
-from gui import GUISauvegarde
+from gui import GUISauvegarde, GUIBulleWaiting
 from utils import uscreenschot
 # from fpsregulator import IAFPS
 from creatures_mgr import Creature
@@ -70,7 +70,6 @@ class Game:
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
                                                  self.adventure.get_pseudo(), RANG_NUL)
         self.mini_map = carte.CarteRenderer(self.ecran, self.carte_mgr)
-        self.objets_table = objets_manager.ObjectTable()
         self.attaques_table = atk_sys.AttaquesTable()
         self.parametres = ParametresManager()
         self.parametres.load()
@@ -426,10 +425,19 @@ class Game:
                 done(self)
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_COMBAT:
             if self.cur_combat:
-                passed = len([1 for _ in range(MAX_ESSAIS_BALL) if random.random() <= self.personnage.inventaire.get_obj_messenger().objet["capture"]])
+                ball = captureurs.CapturersTable.get_ball_with_id(self.personnage.inventaire.get_obj_messenger().objet["id"])
+                passed = len([1 for _ in range(MAX_ESSAIS_BALL) if ball.use(self.cur_combat.get_adversary())])
                 done(self)
                 if passed / MAX_ESSAIS_BALL >= PERCENT_CAPTURE_NECESSAIRE:
                     self.cur_combat.end_fight_for_capture()
+                else:
+                    g = GUIBulleWaiting(
+                        self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                        "Zut alors ! La capture a ratée :(",
+                        self.police_normale
+                    )
+                    g.update()
+                    del g
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_CREATURES:
             if self.equipe_mgr.is_a_creature_selected():
                 cat, new = self.personnage.inventaire.get_obj_messenger().objet["spec"], \
