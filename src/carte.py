@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import pickle
+import pickle, _pickle
 from urllib import request
 from glob import glob
 from constantes import *
@@ -194,7 +194,19 @@ class CartesManager:
         if os.path.exists(self.map_path):
             with open(self.map_path, "rb") as map_reader:
                 self.map = pickle.Unpickler(map_reader).load()
-            self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map" + str(self.map) + EXTENSION), 'rb')).load()
+            try:
+                self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map" + str(self.map) + EXTENSION), 'rb')).load()
+            except _pickle.UnpicklingError:
+                with open(os.path.join("..", "assets", "map", "map" + str(self.map) + EXTENSION), "r") as file:
+                    content = file.read()
+                content = eval(content)
+                self.current_carte = SubCarte(
+                    [
+                        content['layer3'],
+                        content['layer2'],
+                        content['layer1']
+                    ],
+                    content['objects'], content['intermap'], content['zid'], content['pnjs'], content['spawns'], content['triggers'], content['id'])
             self.carte = self.current_carte.get_all()
             self.adjust_offset()
         else:
