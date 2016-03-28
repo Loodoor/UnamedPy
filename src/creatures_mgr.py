@@ -130,7 +130,7 @@ class Creature:
 
         if self.specs[SPEC_XP] >= self._calc_seuil_xp():
             levels_ups = []
-            for _ in range(self.specs[SPEC_XP] // self._calc_seuil_xp()):
+            for _ in range(int(self.specs[SPEC_XP] // self._calc_seuil_xp())):
                 levels_ups.append(self._level_up())
             self.specs[SPEC_XP] %= self._calc_seuil_xp()
 

@@ -59,13 +59,13 @@ class EquipeManager:
                 self.ecran.blit(self.police.render("Défense : {}".format(creature.get_def()), POL_ANTIALISING, (10, 10, 10)),
                                 (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 145))
                 self.ecran.blit(self.police.render("Vitesse : {}".format(creature.get_vit()), POL_ANTIALISING, (10, 10, 10)),
-                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 170))
+                                (FCREA_SPECS_AFF_X + 10, FCREA_SPECS_AFF_Y + 170))
                 self.ecran.blit(self.police.render("PV : {}".format(creature.get_pvs()), POL_ANTIALISING, (10, 10, 10)),
-                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 195))
+                                (FCREA_SPECS_AFF_X + 15, FCREA_SPECS_AFF_Y + 195))
                 self.ecran.blit(self.police.render("PP : {}".format(creature.get_pps()), POL_ANTIALISING, (10, 10, 10)),
-                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 220))
+                                (FCREA_SPECS_AFF_X + 20, FCREA_SPECS_AFF_Y + 220))
                 self.ecran.blit(self.police.render("Etat : {}".format(creature.get_formatted_state()), POL_ANTIALISING, (10, 10, 10)),
-                                (FCREA_SPECS_AFF_X + 5, FCREA_SPECS_AFF_Y + 245))
+                                (FCREA_SPECS_AFF_X + 25, FCREA_SPECS_AFF_Y + 245))
             else:
                 self.ecran.blit(self._fond_case, (FCREA_X + FCREA_MARGE_X, FCREA_Y + FCREA_SIZE_Y_CASE * i + FCREA_MARGE_Y * (i + 1) + FCREA_MARGE_Y_RAPPORT_TITRE))
             self.ecran.blit(txt_format,
