@@ -19,19 +19,19 @@ import zones_attaques_manager
 from constantes import *
 from gui import GUISauvegarde, GUIBulleWaiting
 from utils import uscreenschot
-# from fpsregulator import IAFPS
 from creatures_mgr import Creature
 from aventure_manager import Adventure
 from parametres import ParametresManager
 from controller import JoystickController
 from exceptions import FonctionnaliteNonImplementee
 from network_event_listener import NetworkEventsListener
+# from fpsregulator import IAFPS
 
 
 class Game:
     def __init__(self, ecran, perso_choice: str, adventure: Adventure, s: socket.socket=None,
                  p: tuple=('127.0.0.1', 5500), controles: dict={}):
-        self.__start_at__ = time.time()
+        self.__start_at__ = 0
 
         self.adventure = adventure
 
@@ -505,6 +505,9 @@ class Game:
         self.top, self.bottom, self.right, self.left = [False] * 4
 
     def prepare(self):
+        debug.println("Le jeu démarre ...")
+        self.__start_at__ = time.time()
+
         # Variables ayant besoin d'être rechargées avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
         yield 1
@@ -543,7 +546,7 @@ class Game:
         if self.joystick:
             self.joystick.set_repeat(40)
 
-        debug.println("Le jeu démarre ...")
+        debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
 
     def render(self, dt: int=1):
         self.carte_mgr.update() if self.renderer_manager.can_i_render() else None
@@ -600,8 +603,6 @@ class Game:
             self.ecran.blit(texte, (5, 5))
 
     def start(self):
-        debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
-
         if self.adventure.get_progress() == 1:
             # on vient de commencer
             self.equipe_mgr.add_creature(
@@ -611,8 +612,8 @@ class Game:
 
         while self.continuer:
             # FPS
-            # self.fps_regulator.actualise() ; dt = self.fps_regulator.get_DeltaTime()
-            dt = self.fps_regulator.tick(FPS_base)
+            # self.fps_regulator.actualise() ; dt = self.fps_regulator.get_deltatime()
+            dt = self.fps_regulator.tick()
 
             # Evénements
             self.process_event(rendering_engine.poll_event(), dt)

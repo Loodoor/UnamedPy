@@ -46,6 +46,49 @@ def maps_retriver(site: str):
         os.remove(temp_maps_list_path)
 
 
+def parse_monoline_layer(layer: list, size: tuple) -> list:
+    carte = []
+    sx, sy = size
+
+    for x in range(sx):
+        line = []
+        for y in range(sy):
+            tile = layer[x + y * sx]
+            line.append(tile)
+        carte.append(line)
+
+    return carte
+
+
+def load_map_from_id(id_: int):
+    try:
+        # pickled version
+        carte = pickle.Unpickler(
+            open(os.path.join("..", "assets", "map", "map" + str(id_) + EXTENSION), 'rb')).load()
+    except _pickle.UnpicklingError:
+        # json version
+        with open(os.path.join("..", "assets", "map", "map" + str(id_) + EXTENSION), "r") as file:
+            content = file.read()
+        content = eval(content)
+
+        carte = SubCarte(
+            [
+                parse_monoline_layer(content['layer3'], (content['width'], content['height'])),
+                parse_monoline_layer(content['layer2'], (content['width'], content['height'])),
+                parse_monoline_layer(content['layer1'], (content['width'], content['height']))
+            ],
+            content['objects'],
+            content['intermap'],
+            content['zid'],
+            content['pnjs'],
+            content['spawns'],
+            content['triggers'],
+            content['id']
+        )
+
+    return carte
+
+
 class SubCarte:
     """
     chaque carte crée ses propres PNJ et s'occupe de les afficher
@@ -194,19 +237,7 @@ class CartesManager:
         if os.path.exists(self.map_path):
             with open(self.map_path, "rb") as map_reader:
                 self.map = pickle.Unpickler(map_reader).load()
-            try:
-                self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map" + str(self.map) + EXTENSION), 'rb')).load()
-            except _pickle.UnpicklingError:
-                with open(os.path.join("..", "assets", "map", "map" + str(self.map) + EXTENSION), "r") as file:
-                    content = file.read()
-                content = eval(content)
-                self.current_carte = SubCarte(
-                    [
-                        content['layer3'],
-                        content['layer2'],
-                        content['layer1']
-                    ],
-                    content['objects'], content['intermap'], content['zid'], content['pnjs'], content['spawns'], content['triggers'], content['id'])
+            self.current_carte = load_map_from_id(self.map)
             self.carte = self.current_carte.get_all()
             self.adjust_offset()
         else:

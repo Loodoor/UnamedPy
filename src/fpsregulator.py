@@ -7,9 +7,9 @@ from constantes import MAX_FPS
 
 
 class IAFPS:
-    def __init__(self, FPS: int):
-        self.FPS = FPS / 10 if FPS != -1 else MAX_FPS
-        self.defaut_value = self.FPS
+    def __init__(self, fps: int=-1):
+        self.fps = fps / 10 if fps != -1 else MAX_FPS
+        self.defaut_value = self.fps
         self.reduction = 0.0005
         self.wait = 0.001
         self.cpt_tour = 0
@@ -37,9 +37,9 @@ class IAFPS:
             self.timer(self.cpt_tour)
         else:
             self.cpt_tour += 1
-        self.deltaTime_update()
+        self.delta_time_update()
 
-    def deltaTime_update(self):
+    def delta_time_update(self):
         if self.count_frames % 2:
             self.cur_time = time.time()
         else:
@@ -48,27 +48,25 @@ class IAFPS:
             self.frame_time = self.cur_time - self.last_time
         else:
             self.frame_time = self.last_time - self.cur_time
-        self.dt_compute += self.get_DeltaTime()
+        self.dt_compute += self.get_deltatime()
 
-    def get_DeltaTime(self):
+    def get_deltatime(self):
         return self.frame_time
 
     def timer(self, frame_rate: int):
         self.frame_rate = frame_rate
-        if self.frame_rate > self.FPS:
+        if self.frame_rate > self.fps:
             self.wait += self.reduction
-        elif self.frame_rate < self.FPS:
+        elif self.frame_rate < self.fps:
             self.wait -= self.reduction
             if self.wait <= 0:
                 self.wait = 0
-                #print("temps de pause (sec) :: " + str(self.wait))
-                #print("frame_rate compté dans la boucle :: " + str(self.frame_rate))
 
     def pause(self):
         time.sleep(self.wait)
 
-    def set_FPS(self, nv_FPS):
-        self.FPS = nv_FPS / 10
+    def set_fps(self, nv_fps: int):
+        self.fps = nv_fps / 10
 
     def default(self):
-        self.FPS = self.defaut_value
+        self.fps = self.defaut_value
