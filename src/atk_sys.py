@@ -117,6 +117,7 @@ class Combat:
         self._fond_atk = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_attaque.png"))
         self._fond_atk_selected = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_attaque_selected.png"))
         self._fond_barre_vie = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_barre_vie_creature.png"))
+        self._fond_socle_pokemon = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_combat_pokemon.png"))
 
     def on_start(self):
         debug.println("adv id", self.adversaire.get_id())
@@ -386,6 +387,10 @@ class Combat:
         # en attendant d'avoir un paysage
         self.ecran.blit(self.fond, (COMB_X, COMB_Y))
 
+        # affichage des "socles"
+        self.ecran.blit(self._fond_socle_pokemon, (COMB_X_ADV - (self._fond_socle_pokemon.get_width() - 150) // 2, COMB_Y_ADV + (150 - self._fond_socle_pokemon.get_height())))
+        self.ecran.blit(self._fond_socle_pokemon, (COMB_X_ME - (self._fond_socle_pokemon.get_width() - 150) // 2, COMB_Y_ME + (150 - self._fond_socle_pokemon.get_height())))
+
         # affichage des créatures
         global Y_ADV_FALL
         if self.get_adversary().is_dead() and Y_ADV_FALL < 50:
@@ -441,9 +446,9 @@ class Combat:
                 self.ecran.blit(self._fond_atk, (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i))
             self.ecran.blit(self.font.render(atk.get_nom() +
                                              ", dégâts: " + str(atk.get_dgts()), POL_ANTIALISING, (10, 10, 10)),
-                            (COMB_X_ATK + 2, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + 2))
+                            (COMB_X_ATK + 32, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + 4))
             self.ecran.blit(self.font.render("Description: " + atk.get_texte(), POL_ANTIALISING, (10, 10, 10)),
-                            (COMB_X_ATK, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + COMB_SY_TXT_NAME))
+                            (COMB_X_ATK + 32, COMB_Y_ADV + COMB_SY_ADV + (COMB_SY_ATK_FIELD + 10) * i + COMB_SY_TXT_NAME + 2))
             i += 1
 
         # affichage du nombre PPS
