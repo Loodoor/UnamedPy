@@ -518,7 +518,12 @@ class Game:
             RENDER_COMBAT,
             RENDER_INVENTAIRE,
             RENDER_CREATURES,
-            RENDER_POKEDEX
+            RENDER_POKEDEX,
+            RENDER_CARTE,
+            RENDER_MENU_IN_GAME,
+            RENDER_BOUTIQUE,
+            RENDER_SAVE,
+            RENDER_PC
         )
         yield 1
 

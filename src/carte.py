@@ -346,6 +346,7 @@ class CartesManager:
     def render(self):
         objects_at = self.current_carte.get_objects()
         rendering_engine.draw_rect(self.ecran, (0, 0, FEN_large, FEN_haut), (0, 0, 0))
+
         for y in range(len(self.carte)):
             for x in range(len(self.carte[y])):
                 objet = self.carte[y][x]
