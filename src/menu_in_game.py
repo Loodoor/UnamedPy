@@ -33,7 +33,7 @@ class Menu:
         else:
             self.ecran.blit(self.fond_cat_sel, (MENU_X + MENU_X_CAT, MENU_Y + MENU_Y_CAT))
         self.ecran.blit(self.police.render("Créatures", POL_ANTIALISING, (255, 255, 255)), (MENU_X + MENU_TXT_CAT_X + MENU_X_CAT,
-                                                                              MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT))
+                                                                                            MENU_Y + MENU_TXT_CAT_Y + MENU_Y_CAT))
 
         if self.categories[1] != self.select:
             self.ecran.blit(self.fond_cat, (MENU_X + MENU_X_CAT * 2 + MENU_SIZE_X_CAT, MENU_Y + MENU_Y_CAT))
