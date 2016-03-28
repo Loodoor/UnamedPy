@@ -235,16 +235,16 @@ class OthPersonnagesManager:
             directory = os.path.split(dir_)[1]
             self._sprites[directory] = {}
             self._sprites[directory][BAS] = [
-                rendering_engine.load_image(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "bas*.png"))
+                rendering_engine.load_image(i) for i in glob.glob(os.path.join(dir_, "bas*.png"))
             ]
             self._sprites[directory][HAUT] = [
-                rendering_engine.load_image(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "haut*.png"))
+                rendering_engine.load_image(i) for i in glob.glob(os.path.join(dir_, "haut*.png"))
             ]
             self._sprites[directory][GAUCHE] = [
-                rendering_engine.load_image(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "gauche*.png"))
+                rendering_engine.load_image(i) for i in glob.glob(os.path.join(dir_, "gauche*.png"))
             ]
             self._sprites[directory][DROITE] = [
-                rendering_engine.load_image(i).convert_alpha() for i in glob.glob(os.path.join(dir_, "droite*.png"))
+                rendering_engine.load_image(i) for i in glob.glob(os.path.join(dir_, "droite*.png"))
             ]
 
     def add_new(self, id_: float, avatar: str, pseudo: str):

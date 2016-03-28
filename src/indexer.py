@@ -145,11 +145,11 @@ class Indexer:
         self.rd_mgr = render_manager
         self.selected_creature = -1
         self.selected_type = -1
-        self._btn_types = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_types_indexeur.png")).convert_alpha()
-        self._btn_creatures = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_creatures_indexeur.png")).convert_alpha()
+        self._btn_types = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_types_indexeur.png"))
+        self._btn_creatures = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_creatures_indexeur.png"))
         self.creas_selected = []
         self._attaque_table = None
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_indexer.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_indexer.png"))
 
     @staticmethod
     def static_select_all_crea_with_stade(stade: int):
@@ -213,7 +213,7 @@ class Indexer:
             with open(self.save_path, "rb") as read_index:
                 self.indexer = pickle.Unpickler(read_index).load()
                 for elem in self.indexer:
-                    img = rendering_engine.load_image(elem.path).convert_alpha()
+                    img = rendering_engine.load_image(elem.path)
                     self.images_crea[elem.id] = rendering_engine.rescale(img, (POK_SX_IMAGE_CREA, POK_SY_IMAGE_CREA))
                     yield 1
                 self.creas_selected = self.indexer

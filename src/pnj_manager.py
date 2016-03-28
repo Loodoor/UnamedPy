@@ -62,7 +62,7 @@ class PNJ:
         self.dir = dir_
         self.mdt = 0
         self.orientation = BAS
-        self.sprite = rendering_engine.load_image(os.path.join("..", "assets", "pnj", sprite)).convert_alpha()
+        self.sprite = rendering_engine.load_image(os.path.join("..", "assets", "pnj", sprite))
         self.on_speak = PNJSpeaking(texte, self.ecran, self.font)
 
     def update(self, dt: int=1):

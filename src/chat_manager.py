@@ -17,7 +17,7 @@ class ChatManager:
         self.text_entry = textentry.TextBox(self.ecran, x=CHAT_X_BOX, y=CHAT_Y_BOX,
                                             sx=CHAT_SX_BOX, sy=CHAT_SY_BOX, bgcolor=(70, 70, 70))
         self.quit = None
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_chat.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_chat.png"))
 
     def update_quit_event(self, new):
         self.quit = new

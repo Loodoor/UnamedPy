@@ -89,7 +89,7 @@ def draw_rect(screen, rect: tuple, fgcolor: tuple, bgcolor: tuple=(0, 0, 0), wid
 
 def load_image(path: str) -> object:
     if METHOD == "pygame":
-        return pygame.image.load(path)
+        return pygame.image.load(path).convert_alpha()
     if METHOD == "pysfml":
         pass
 

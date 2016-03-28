@@ -12,7 +12,7 @@ class GUIBulle:
         self.pos = pos
         self.texte = texte
         self.font = font
-        self.image = rendering_engine.load_image(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
+        self.image = rendering_engine.load_image(os.path.join("..", "assets", "gui", "bulle.png"))
         self.iw, self.ih = self.image.get_size()
         self.txt_renderer = self.font.render(" ", POL_ANTIALISING, (10, 10, 10))
         self.create_text_renderers()
@@ -143,7 +143,7 @@ class PNJSpeaking:
 
         self.color = color
         self.txt_renderer = self.font.render(self.texte, POL_ANTIALISING, (10, 10, 10))
-        self.bulle = rendering_engine.load_image(os.path.join("..", "assets", "gui", "bulle.png")).convert_alpha()
+        self.bulle = rendering_engine.load_image(os.path.join("..", "assets", "gui", "bulle.png"))
 
     def update(self, dt: int=1):
         ev = rendering_engine.get_event()
@@ -178,10 +178,10 @@ class GUISauvegarde:
         self.callback = None
         self.firstcall = None
         self.has_started_saving = False
-        self.ldroite = [rendering_engine.load_image(_).convert_alpha() for _ in
+        self.ldroite = [rendering_engine.load_image(_) for _ in
                         glob(os.path.join("..", "assets", "personnages", "first", "droite*.png"))]
         self.cur_anim = 0
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_sauvegarde.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_sauvegarde.png"))
 
     def reinit(self):
         self.waiting = False

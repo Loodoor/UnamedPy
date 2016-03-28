@@ -47,7 +47,7 @@ def main():
     police = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
     police_annot = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
     police_annot.set_italic(True)
-    title = rendering_engine.load_image(os.path.join("..", "assets", "menu", "logo_alpha.png")).convert_alpha()
+    title = rendering_engine.load_image(os.path.join("..", "assets", "menu", "logo_alpha.png"))
     bienvenue = [
         "Bienvenue à toi, chercheur !",
         "Tu vas entrer sur l'île d'Unamed, prépare toi à une toute nouvelle aventure !"
@@ -55,7 +55,7 @@ def main():
     adventure = Adventure(ecran, police)
     adventure.load()
     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
-    fond = rendering_engine.load_image(os.path.join("..", "assets", "menu", "fond.png")).convert_alpha()
+    fond = rendering_engine.load_image(os.path.join("..", "assets", "menu", "fond.png"))
     load_texts = glob(os.path.join("..", "assets", "menu", "chargement", "*.txt"))
     max_len = int(MENU_SIZE_BAR // len(load_texts))
     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),
@@ -72,8 +72,8 @@ def main():
     loadeur = None
     finished_loading = False
     avancement = 0
-    btn_reseau = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_reseau.png")).convert_alpha()
-    btn_jeu = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_jeu.png")).convert_alpha()
+    btn_reseau = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_reseau.png"))
+    btn_jeu = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_jeu.png"))
 
     try:
         with open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "r") as file:

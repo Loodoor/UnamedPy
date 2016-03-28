@@ -174,7 +174,7 @@ class CartesManager:
             # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
             # chargement d'une tile simple
             if os.path.isfile(i):
-                self.images[os.path.split(i)[1][:-4]] = rendering_engine.load_image(i).convert_alpha()
+                self.images[os.path.split(i)[1][:-4]] = rendering_engine.load_image(i)
                 self.lassets.append(os.path.split(i)[1][:-4])
             # chargement d'une animation
             elif os.path.isdir(i):
@@ -365,7 +365,7 @@ class CarteRenderer:
     def __init__(self, ecran, carte_mgr: CartesManager):
         self.ecran = ecran
         self.carte_mgr = carte_mgr
-        self.carte_img = rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")).convert_alpha()
+        self.carte_img = rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png"))
         self.carte_mgr = rendering_engine.rescale(self.carte_img, (MAP_RDR_SX, MAP_RDR_SY))
 
     def update(self):

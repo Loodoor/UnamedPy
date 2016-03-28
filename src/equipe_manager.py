@@ -17,12 +17,12 @@ class EquipeManager:
         self.rd_mgr = render_manager
         self.selected_crea = -1
         self.pc = None
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_creatures.png")).convert_alpha()
-        self._fond_case = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_case_creature.png")).convert_alpha()
-        self._fond_case_selected = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_case_creature_selected.png")).convert_alpha()
-        self._btn_pc = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_pc.png")).convert_alpha()
-        self._btn_to_pc = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_to_pc.png")).convert_alpha()
-        self._fond_spec = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_spec_creatures.png")).convert_alpha()
+        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_creatures.png"))
+        self._fond_case = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_case_creature.png"))
+        self._fond_case_selected = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_case_creature_selected.png"))
+        self._btn_pc = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_pc.png"))
+        self._btn_to_pc = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_to_pc.png"))
+        self._fond_spec = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_spec_creatures.png"))
 
     def get_selected_creature(self) -> Creature:
         if self.selected_crea != -1:
