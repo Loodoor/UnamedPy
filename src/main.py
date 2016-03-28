@@ -84,6 +84,11 @@ def main():
     debug.println("Menu chargé en %3.4f sec" % (time.time() - start_at))
     debug.println("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
 
+    temp = utils.ULoader()
+    temp.load()
+    del temp
+    debug.println("Chargement et création des valeurs par défaut terminé")
+
     while continuer:
         dt = clock.tick()
         for event in rendering_engine.get_event():
@@ -158,9 +163,6 @@ def main():
                     max_avancement = avancement
                 chargement = False
                 avancement = 0
-                temp = utils.ULoader()
-                temp.load()
-                del temp
                 if not has_already_played:
                     adventure.next()
                 jeu.start()
