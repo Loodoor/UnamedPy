@@ -4,7 +4,7 @@ from constantes import *
 from exceptions import ErreurRepertoire
 import debug
 
-if os.path.split(os.getcwd())[1] != "src":
+if os.path.split(os.getcwd())[1] not in ["src", "build"]:
     raise ErreurRepertoire("Le répertoire courant n'est pas correct, le jeu ne peut pas se lancer")
 if not os.path.exists(os.path.join("..", "saves")):
     os.mkdir(os.path.join("..", "saves"))
