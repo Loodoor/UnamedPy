@@ -583,6 +583,7 @@ class Game:
             if not self.equipe_mgr.is_not_empty():
                 self.renderer_manager.change_without_logging_last(RENDER_GAME)
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
+            rendering_engine.draw_rect(self.ecran, (0, 0) + self.ecran.get_size(), (0, 0, 0))
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:
             if not self.gui_save_mgr.is_saving():
