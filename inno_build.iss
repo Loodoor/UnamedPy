@@ -7,11 +7,12 @@
 #define MyAppURL "http://folaefolc.hostux.fr/"
 #define MyAppExeName "main.exe"
 
+
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{DBFA5000-6DB2-49E1-85F5-9198173389AF}
+AppId={{74233CF4-DC15-433F-82D6-DBB4E09BF60F}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
@@ -19,18 +20,14 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={#MyAppName}
-DisableDirPage=yes
+DefaultDirName=/{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=LICENSE
-OutputDir=./
-OutputBaseFilename={#MyAppName} {#MyAppVersion}
+OutputBaseFilename={#MyAppName} - {#MyAppVersion}
+OutputDir=H:/Git/unamed/
 Compression=lzma
 SolidCompression=yes
-; WizardImageFile=C:\Users\Moustillon\Desktop\UrWorld Alpha 3.0.0\downloaderbi.bmp
-; WizardSmallImageFile=C:\Users\Moustillon\Desktop\UrWorld Alpha 3.0.0\smalli.bmp 
-; SetupIconFile=start.ico
+LicenseFile=LICENSE
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -51,17 +48,14 @@ Source: "*"; DestDir: "{app}"; Flags: ignoreversion
 Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "build\*"; DestDir: "{app}\build"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "saves\*"; DestDir: "{app}\saves"; Flags: ignoreversion recursesubdirs createallsubdirs
-
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\build\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
-; Filename: "{app}\downloaders\python34.msi"; Description: "Python v-3.4 - Nécessaire au fonctionnement du jeu"; Flags: shellexec postinstall skipifsilent
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: shellexec postinstall skipifsilent
+Filename: "{app}\build\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+

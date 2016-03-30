@@ -1,6 +1,0 @@
-Chargement ...
-Initialisation de Pygame ... Modules chargés : 6 ; Erreurs de chargement : 0
-Initialisation de Pygame.Font ... None
-Appuyez sur 'J' pour lancer le jeu
-Menu chargé en 0.9298 sec
-Aucune partie trouvée
