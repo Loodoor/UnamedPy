@@ -355,7 +355,7 @@ class Indexer:
                                     (POK_X_DESC, POK_Y_DESC))
 
                     if vu or capture:
-                        for txt in tw.wrap(elem.description, width=26):
+                        for txt in tw.wrap(elem.description, width=25):
                             self.ecran.blit(self.police.render(txt, POL_ANTIALISING, (255, 255, 255)),
                                             (POK_X_DESC, POK_Y_DESC + j * POK_ESP_Y_ITEM))
                             j += 1
