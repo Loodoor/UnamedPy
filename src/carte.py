@@ -84,7 +84,8 @@ def load_map_from_id(id_: int):
             content['pnjs'],
             content['spawns'],
             content['triggers'],
-            content['id']
+            content['id'],
+            content['lights']
         )
 
     return carte
@@ -96,7 +97,8 @@ class SubCarte:
     chaque carte s'occupe aussi de gérer ses objets (au sol), et les chemins vers d'autres cartes
     elles gérent aussi leur ZID
     """
-    def __init__(self, carte: list, objets: dict, buildings: dict, zid: int, pnjs: list, spawns: dict, triggers: dict, id_: int):
+    def __init__(self, carte: list, objets: dict, buildings: dict, zid: int, pnjs: list, spawns: dict,
+                 triggers: dict, id_: int, lights: list=None):
         self.carte = carte
         self.objets = objets
         self.buildings = buildings
@@ -105,6 +107,7 @@ class SubCarte:
         self.spawns = spawns
         self.triggers = triggers
         self.id = id_
+        self.lights = lights if lights else [light.PreRenderedLight(self, 0, (10, 10), 30, (150, 25, 35), 10)]
 
     def create_pnj(self, pnj: PNJ):
         self.pnjs.append(pnj)
@@ -120,6 +123,9 @@ class SubCarte:
 
     def get_objects(self):
         return self.objets
+
+    def get_lights(self):
+        return self.lights
 
     def building_at(self, x: int, y: int):
         return True if (x, y) in self.buildings.keys() else False
@@ -204,9 +210,7 @@ class CartesManager:
         self.perso = None
         self.water_animator = None
         self.specials_blocs = None
-        self.lights = [
-            light.PreRenderedLight(self, 0, (10, 10), 30, (150, 25, 35), 10)
-        ]
+        self.lights = []
 
     def add_perso(self, new):
         if not self.perso:
@@ -217,6 +221,7 @@ class CartesManager:
         self.water_animator.load()
 
     def _load_lights(self):
+        self.lights = self.current_carte.get_lights()
         for _light in self.lights:
             _light.load()
 
@@ -232,7 +237,6 @@ class CartesManager:
                 self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
                 self.lassets.append(i.split(os.sep)[-1])
         self._load_animators()
-        self._load_lights()
 
         with open(os.path.join("..", "assets", "configuration", "tiles.umd"), "r") as file:
             self.specials_blocs = eval(file.read())
@@ -253,6 +257,8 @@ class CartesManager:
             self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map0" + EXTENSION), 'rb')).load()
             self.carte = self.current_carte.get_all()
             self.adjust_offset()
+
+        self._load_lights()
 
     def adjust_offset(self):
         x = (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 if FEN_large >= len(self.carte[0]) * TILE_SIZE else 0
