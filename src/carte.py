@@ -13,6 +13,7 @@ from random import randint
 from urllib import error
 import socket
 import debug
+import light
 
 
 def maps_retriver(site: str):
@@ -203,6 +204,9 @@ class CartesManager:
         self.perso = None
         self.water_animator = None
         self.specials_blocs = None
+        self.lights = [
+            light.PreRenderedLight(self, 0, (10, 10), 30, (150, 25, 35), 10)
+        ]
 
     def add_perso(self, new):
         if not self.perso:
@@ -211,6 +215,10 @@ class CartesManager:
     def _load_animators(self):
         self.water_animator = FluidesAnimator(self.images[TILE_EAU], ANIM_SPEED_EAU)
         self.water_animator.load()
+
+    def _load_lights(self):
+        for _light in self.lights:
+            _light.load()
 
     def general_load(self):
         for i in glob(os.path.join("..", "assets", "tiles", "*")):
@@ -224,6 +232,7 @@ class CartesManager:
                 self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
                 self.lassets.append(i.split(os.sep)[-1])
         self._load_animators()
+        self._load_lights()
 
         with open(os.path.join("..", "assets", "configuration", "tiles.umd"), "r") as file:
             self.specials_blocs = eval(file.read())
@@ -364,6 +373,9 @@ class CartesManager:
                 # objets
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))
+
+        for _light in self.lights:
+            _light.blit(self.ecran)
 
     def get_tile_code_at(self, x: int, y: int, layer: int=1):
         return self.carte[int(y)][int(x)][layer] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR
