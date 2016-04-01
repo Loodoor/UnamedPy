@@ -20,6 +20,7 @@ import utils
 import rendering_engine
 from textentry import TextBox
 from aventure_manager import Adventure
+from parametres import gui_access
 
 
 def get_alea_text(path: str="textes") -> str:
@@ -74,6 +75,7 @@ def main():
     avancement = 0
     btn_reseau = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_reseau.png"))
     btn_jeu = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_jeu.png"))
+    btn_params = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_params.png"))
 
     try:
         with open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "r") as file:
@@ -99,13 +101,16 @@ def main():
                     alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
             if event.type == MOUSEBUTTONUP:
                 xp, yp = event.pos
-                if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_JOUER_SX and \
-                        MENU_BTN_JOUER_Y <= yp <= MENU_BTN_JOUER_Y + MENU_BTN_JOUER_SY:
+                if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_SX and \
+                        MENU_BTN_JOUER_Y <= yp <= MENU_BTN_JOUER_Y + MENU_BTN_SY:
                     chargement = True
-                if MENU_BTN_RESEAU_X <= xp <= MENU_BTN_RESEAU_X + MENU_BTN_RESEAU_SX and \
-                        MENU_BTN_RESEAU_Y <= yp <= MENU_BTN_RESEAU_Y + MENU_BTN_RESEAU_SY:
+                if MENU_BTN_RESEAU_X <= xp <= MENU_BTN_RESEAU_X + MENU_BTN_SX and \
+                        MENU_BTN_RESEAU_Y <= yp <= MENU_BTN_RESEAU_Y + MENU_BTN_SY:
                     chargement = True
                     en_reseau = True
+                if MENU_BTN_PARAMS_X <= xp <= MENU_BTN_PARAMS_X + MENU_BTN_SX and \
+                        MENU_BTN_PARAMS_Y <= yp <= MENU_BTN_PARAMS_Y + MENU_BTN_SY:
+                    gui_access(ecran)
 
         # création de l'instance de jeu
         if en_reseau:
@@ -173,6 +178,7 @@ def main():
         else:
             ecran.blit(btn_jeu, (MENU_BTN_JOUER_X, MENU_BTN_JOUER_Y))
             ecran.blit(btn_reseau, (MENU_BTN_RESEAU_X, MENU_BTN_RESEAU_Y))
+            ecran.blit(btn_params, (MENU_BTN_PARAMS_X, MENU_BTN_PARAMS_Y))
 
         rendering_engine.flip()
 

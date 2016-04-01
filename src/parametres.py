@@ -4,6 +4,7 @@ import pickle
 from constantes import *
 from pygame.locals import *
 from exceptions import ClassNonChargee
+import rendering_engine
 
 
 class ParametresManager:
@@ -148,3 +149,20 @@ class ParametresManager:
     def save(self):
         with open(self.path_to_settings, "wb") as wsettings:
             pickle.Pickler(wsettings).dump(self.params)
+
+
+def gui_access(ecran):
+    done = False
+    fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_params.png"))
+    ecran.fill(0)
+
+    while not done:
+        for event in rendering_engine.get_event():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                done = True
+            if event.type == MOUSEBUTTONUP:
+                xp, yp = event.pos
+
+        ecran.blit(fond, (PARAMS_X, PARAMS_Y))
+
+        rendering_engine.flip()
