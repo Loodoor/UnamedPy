@@ -158,13 +158,13 @@ def gui_access(ecran, police):
     params.load()
 
     fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_params.png"))
-    titre = police.render("Paramètres")
+    titre = police.render("Paramètres", POL_ANTIALISING, (10, 10, 10))
     settings_txt_list = [
 
         police.render("Musique : {}".format(ureplace_bool_str(params.get("music"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
         police.render("Animations : {}".format(ureplace_bool_str(params.get("play_anims"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
         police.render("DeltaTime par défaut : {}".format(ureplace_bool_str(params.get("delta_time")["has_default"], ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
-        police.render("Valeur par défaut (valable uniquement si activé) : {}".format(ureplace_bool_str(params.get("delta_time")["default"])), POL_ANTIALISING, (10, 10, 10))
+        police.render("Valeur par défaut (valable uniquement si activé) : {}".format(ureplace_bool_str(params.get("delta_time")["default"], ['on', 'off'])), POL_ANTIALISING, (10, 10, 10))
     ]
     ecran.fill(0)  # besoin d'effacer l'écran sinon c'est moche :p
 
