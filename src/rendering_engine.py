@@ -197,3 +197,10 @@ def set_mouse_pos(new_x: int, new_y: int):
         pygame.mouse.set_pos(new_x, new_y)
     if METHOD == "pysfml":
         pass
+
+
+def get_key_name(key: int) -> str:
+    if METHOD == "pygame":
+        return pygame.key.name(key)
+    if METHOD == "pysfml":
+        return

@@ -146,6 +146,12 @@ class ParametresManager:
         else:
             raise ClassNonChargee("ParametresManager", "get")
 
+    def set(self, key: str, new):
+        if self.params:
+            self.params[key] = new
+        else:
+            raise ClassNonChargee("ParametresManager", "set")
+
     def save(self):
         with open(self.path_to_settings, "wb") as wsettings:
             pickle.Pickler(wsettings).dump(self.params)
@@ -159,12 +165,25 @@ def gui_access(ecran, police):
 
     fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_params.png"))
     titre = police.render("Paramètres", POL_ANTIALISING, (10, 10, 10))
-    settings_txt_list = [
-
+    const_to_str = {
+        HAUT: "HAUT",
+        BAS: "BAS",
+        GAUCHE: "GAUCHE",
+        DROITE: "DROITE",
+        CHAT: "CHAT",
+        MENU: "MENU",
+        SCREENSCHOT: "CAPTURE D'ECRAN",
+        SHOW_FPS: "AFFICHER LES FPS",
+        VALIDATION: "VALIDER (une action)"
+    }
+    controls = params.get("controls")
+    settings_txt_list = [police.render("Controles", POL_ANTIALISING, (10, 10, 10))] + [
+        police.render("{} : {}".format(const_to_str[cst], rendering_engine.get_key_name(controls[cst])), POL_ANTIALISING, (10, 10, 10)) for cst in controls.keys()
+    ] + [
         police.render("Musique : {}".format(ureplace_bool_str(params.get("music"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
         police.render("Animations : {}".format(ureplace_bool_str(params.get("play_anims"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
         police.render("DeltaTime par défaut : {}".format(ureplace_bool_str(params.get("delta_time")["has_default"], ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
-        police.render("Valeur par défaut (valable uniquement si activé) : {}".format(ureplace_bool_str(params.get("delta_time")["default"], ['on', 'off'])), POL_ANTIALISING, (10, 10, 10))
+        police.render("Valeur par défaut (valable uniquement si activé ; en sec) : {}".format(params.get("delta_time")["default"]), POL_ANTIALISING, (10, 10, 10))
     ]
     ecran.fill(0)  # besoin d'effacer l'écran sinon c'est moche :p
 
