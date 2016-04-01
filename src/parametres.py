@@ -6,6 +6,7 @@ from pygame.locals import *
 from exceptions import ClassNonChargee
 import rendering_engine
 from utils import ureplace_bool_str
+import debug
 
 
 class ParametresManager:
@@ -185,14 +186,36 @@ def gui_access(ecran, police):
         police.render("DeltaTime par défaut : {}".format(ureplace_bool_str(params.get("delta_time")["has_default"], ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
         police.render("Valeur par défaut (valable uniquement si activé ; en sec) : {}".format(params.get("delta_time")["default"]), POL_ANTIALISING, (10, 10, 10))
     ]
+
+    selected = -1
+
     ecran.fill(0)  # besoin d'effacer l'écran sinon c'est moche :p
 
     while not done:
         for event in rendering_engine.get_event():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 done = True
+            if event.type == KEYUP:
+                if event.key == K_RETURN:
+                    if selected == 10:
+                        params.set("music", not params.get("music"))
+                    if selected == 11:
+                        params.set("play_anims", not params.get("play_anims"))
+                    if selected == 12:
+                        tmp = params.get("delta_time")
+                        tmp.update({"has_default": not tmp["has_default"]})
+                        params.set("delta_time", tmp)
+                    if selected == 13:
+                        print("DEMANDE à FAIRE !")
+                if 0 <= selected < 10:
+                    debug.println("reconnaitre le setting cliqué ! (donc lsite au lieu de dico) ; puis assigner")
             if event.type == MOUSEBUTTONUP:
                 xp, yp = event.pos
+                real_y = (yp - PARAMS_Y_START_LISTE) // PARAMS_ESP_Y_LIGNE
+                if 0 <= real_y < len(settings_txt_list):
+                    selected = real_y
+                else:
+                    selected = -1
 
         ecran.blit(fond, (PARAMS_X, PARAMS_Y))
         ecran.blit(titre, ((FEN_large - titre.get_width()) // 2, PARAMS_Y_TITRE))
@@ -200,3 +223,4 @@ def gui_access(ecran, police):
             ecran.blit(texte, (PARAMS_X_LISTE, PARAMS_Y_START_LISTE + i * PARAMS_ESP_Y_LIGNE))
 
         rendering_engine.flip()
+    params.save()
