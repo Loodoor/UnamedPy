@@ -5,6 +5,7 @@ from constantes import *
 from pygame.locals import *
 from exceptions import ClassNonChargee
 import rendering_engine
+from utils import ureplace_bool_str
 
 
 class ParametresManager:
@@ -117,7 +118,6 @@ class ParametresManager:
                 UP_PAGE: K_UP,
                 DOWN_PAGE: K_DOWN
             },
-            "b&w": False,
             "music": True,
             "play_anims": True,
             "delta_time": {
@@ -151,10 +151,22 @@ class ParametresManager:
             pickle.Pickler(wsettings).dump(self.params)
 
 
-def gui_access(ecran):
+def gui_access(ecran, police):
     done = False
+
+    params = ParametresManager()
+    params.load()
+
     fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_params.png"))
-    ecran.fill(0)
+    titre = police.render("Paramètres")
+    settings_txt_list = [
+
+        police.render("Musique : {}".format(ureplace_bool_str(params.get("music"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
+        police.render("Animations : {}".format(ureplace_bool_str(params.get("play_anims"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
+        police.render("DeltaTime par défaut : {}".format(ureplace_bool_str(params.get("delta_time")["has_default"], ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
+        police.render("Valeur par défaut (valable uniquement si activé) : {}".format(ureplace_bool_str(params.get("delta_time")["default"])), POL_ANTIALISING, (10, 10, 10))
+    ]
+    ecran.fill(0)  # besoin d'effacer l'écran sinon c'est moche :p
 
     while not done:
         for event in rendering_engine.get_event():
@@ -164,5 +176,8 @@ def gui_access(ecran):
                 xp, yp = event.pos
 
         ecran.blit(fond, (PARAMS_X, PARAMS_Y))
+        ecran.blit(titre, ((FEN_large - titre.get_width()) // 2, PARAMS_Y_TITRE))
+        for i, texte in enumerate(settings_txt_list):
+            ecran.blit(texte, (PARAMS_X_LISTE, PARAMS_Y_START_LISTE + i * PARAMS_ESP_Y_LIGNE))
 
         rendering_engine.flip()

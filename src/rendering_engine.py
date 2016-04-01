@@ -150,7 +150,7 @@ def poll_event() -> object:
         pass
 
 
-def get_event() -> object:
+def get_event() -> list:
     if METHOD == "pygame":
         return pygame.event.get()
     if METHOD == "pysfml":

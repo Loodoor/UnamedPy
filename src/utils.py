@@ -18,6 +18,12 @@ def unothing(*args, **kwargs):
     return args, kwargs
 
 
+def ureplace_bool_str(state: bool, by: list):
+    if state:
+        return by[0]
+    return by[1]
+
+
 def usep_lst_in_smallers(main: list, size: int) -> list:
     work = []
     new_line = []

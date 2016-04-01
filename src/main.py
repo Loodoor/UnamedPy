@@ -110,7 +110,7 @@ def main():
                     en_reseau = True
                 if MENU_BTN_PARAMS_X <= xp <= MENU_BTN_PARAMS_X + MENU_BTN_SX and \
                         MENU_BTN_PARAMS_Y <= yp <= MENU_BTN_PARAMS_Y + MENU_BTN_SY:
-                    gui_access(ecran)
+                    gui_access(ecran, police)
 
         # création de l'instance de jeu
         if en_reseau:
