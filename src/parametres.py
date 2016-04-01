@@ -177,7 +177,7 @@ def gui_access(ecran, police):
         VALIDATION: "VALIDER (une action)"
     }
     controls = params.get("controls")
-    settings_txt_list = [police.render("Controles", POL_ANTIALISING, (10, 10, 10))] + [
+    settings_txt_list = [police.render("Contrôles", POL_ANTIALISING, (10, 10, 10))] + [
         police.render("{} : {}".format(const_to_str[cst], rendering_engine.get_key_name(controls[cst])), POL_ANTIALISING, (10, 10, 10)) for cst in controls.keys()
     ] + [
         police.render("Musique : {}".format(ureplace_bool_str(params.get("music"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
