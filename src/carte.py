@@ -281,11 +281,13 @@ class SubCarte:
 
 
 class CartesManager:
-    def __init__(self, ecran, renderer_manager):
+    def __init__(self, ecran, renderer_manager, police):
         self.ecran = ecran
         self.rd_mgr = renderer_manager
+        self.police = police
         self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
         self.world_path = os.path.join("..", "saves", "world" + EXTENSION)
+        self._fd_nom_map = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_nom_map.png"))
         self.map = MAP_DEFAULT
         self.world = WORLD_DEFAULT  # default
         self.offsets = [0, 0]
@@ -296,6 +298,8 @@ class CartesManager:
         self.carte = []
         self.callback_end_rendering = []
         self.loaded = False
+        self.has_changed_map = False
+        self.time_changed_map = 0
         self.perso = None
         self.water_animator = None
         self.specials_blocs = None
@@ -372,6 +376,7 @@ class CartesManager:
             self.change_map(*self.current_carte.get_building_id_tag_at(x, y))
 
     def change_map(self, new_id: int, tag: str):
+        self.has_changed_map = True
         depuis = self.current_carte.id
         pickle.Pickler(open(os.path.join("..", "assets", "map", "world{}".format(self.world), "map" + str(depuis) + EXTENSION), "wb")).dump(self.current_carte)
 
@@ -474,8 +479,16 @@ class CartesManager:
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))
 
-        for _light in self.lights:
+        for _light in self.current_carte.get_lights():
             _light.blit(self.ecran)
+
+        if self.has_changed_map:
+            self.time_changed_map += 1
+            self.ecran.blit(self._fd_nom_map, (MAP_FD_NAME_MAP_X, MAP_FD_NAME_MAP_Y))
+            self.ecran.blit(self.police.render(self.current_carte.get_name()))
+            if self.time_changed_map >= MAX_TIME_CHANGED_MAP:
+                self.time_changed_map = 0
+                self.has_changed_map = False
 
     def get_tile_code_at(self, x: int, y: int, layer: int=1):
         return self.carte[int(y)][int(x)][layer] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR

@@ -55,7 +55,7 @@ class Game:
         self.police_petite = rendering_engine.load_font(POLICE_PATH, POL_PETITE_TAILLE)
 
         # Managers
-        self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager)
+        self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager, self.police_normale)
         self.oth_persos_mgr = personnage.OthPersonnagesManager(self.ecran)
         self.indexeur = indexer.Indexer(self.ecran, self.police_grande, self.renderer_manager)
         self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande, self.indexeur, self.renderer_manager)
@@ -85,11 +85,14 @@ class Game:
         self.joystick = None
 
         self.__ctrls = self.parametres.get("secured_controls")
+        self._default_dt = self.parametres.get("delta_time")["default"]
+        self._play_music = self.parametres.get("music")
+        self._play_anims = self.parametres.get("play_anims")
 
     def load(self):
         carte.maps_retriver("http://dev.jeanba.fr/mapmaker_web/public")
         yield 1
-        
+
         self.carte_mgr.load()
         yield 1
         self.personnage.load()
