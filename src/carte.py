@@ -115,7 +115,7 @@ def load_map_from_id(id_: int, wid: int):
         content = eval(content)
 
         try:
-            _object = content['objects']
+            _object = content['objects'] if content['objects'] else {}
         except KeyError:
             _object = {}
 
@@ -130,12 +130,12 @@ def load_map_from_id(id_: int, wid: int):
             _pnjs = []
 
         try:
-            _maplinks = content["maplinks"]
+            _maplinks = content["maplinks"] if content['maplinks'] else {}
         except KeyError:
             _maplinks = {}
 
         try:
-            _triggers = content['triggers']
+            _triggers = content['triggers'] if content['triggers'] else {}
         except KeyError:
             _triggers = {}
 
@@ -512,7 +512,7 @@ class CartesManager:
 
     def call_trigger_at(self, x: int, y: int):
         if not self.current_carte.call_trigger_at(x, y, self.triggers_mgr):
-            if self.carte[y][x][1] in TILES_RDM_CREATURES and randint(*LUCK_RDM_CREA) >= LUCK_CREA_APPEAR:
+            if self.carte[y][x][2] in TILES_RDM_CREATURES and randint(*LUCK_RDM_CREA) >= LUCK_CREA_APPEAR:
                 # combat !
                 self.rd_mgr.change_renderer_for(RENDER_COMBAT)
 
