@@ -15,7 +15,7 @@ else:
 
 """
 Disponnibles :
-    * pysfml (pas encore supporté)
+    * pysfml (pas encore supporté totalement)
     * opengl (pas encore supporté, why not ?)
     * pygame (actuellement utilisé)
 """
@@ -34,6 +34,13 @@ def init_font():
         return pygame.font.init()
     if METHOD == "pysfml":
         pass
+
+
+def init_mixer():
+    if METHOD == "pygame":
+        return pygame.mixer.init()
+    if METHOD == "pysfml":
+        return
 
 
 def init_joystick():
@@ -202,5 +209,47 @@ def set_mouse_pos(new_x: int, new_y: int):
 def get_key_name(key: int) -> str:
     if METHOD == "pygame":
         return pygame.key.name(key)
+    if METHOD == "pysfml":
+        return
+
+
+def load_music_object(path: str) -> object:
+    if METHOD == "pygame":
+        return pygame.mixer.Sound(path)
+    if METHOD == "pysfml":
+        return
+
+
+def load_music(path: str):
+    if METHOD == "pygame":
+        pygame.mixer.music.load(path)
+    if METHOD == "pysfml":
+        pass
+
+
+def play_music(loops: int=-1):
+    if METHOD == "pygame":
+        pygame.mixer.music.play(loops=loops)
+    if METHOD == "pysfml":
+        pass
+
+
+def stop_music():
+    if METHOD == "pygame":
+        pygame.mixer.music.stop()
+    if METHOD == "pysfml":
+        pass
+
+
+def fadeout_music(value: float):
+    if METHOD == "pygame":
+        pygame.mixer.music.fadeout(value)
+    if METHOD == "pysfml":
+        pass
+
+
+def is_mixer_busy() -> bool:
+    if METHOD == "pygame":
+        return pygame.mixer.get_busy()
     if METHOD == "pysfml":
         return

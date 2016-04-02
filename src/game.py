@@ -12,6 +12,7 @@ import personnage
 import captureurs
 import chat_manager
 import menu_in_game
+import music_player
 import equipe_manager
 import computer_manager
 import renderer_manager
@@ -72,6 +73,8 @@ class Game:
         self.mini_map = carte.CarteRenderer(self.ecran, self.carte_mgr)
         self.attaques_table = atk_sys.AttaquesTable()
         self.parametres = ParametresManager()
+        self.musics_player = music_player.MusicPlayer()
+
         self.parametres.load()
 
         # Entités
@@ -554,6 +557,12 @@ class Game:
         if self.joystick:
             self.joystick.set_repeat(40)
 
+        self.musics_player.create_random_playlist()
+        yield 1
+
+        self.musics_player.select(self.musics_player.get_rdm_playlist().pop())
+        yield 1
+
         debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
 
     def render(self, dt: int=1):
@@ -641,6 +650,10 @@ class Game:
                                  "Renderer: {}".format(self.renderer_manager.get_renderer()),
                                  "Delatime : %3.1f ms" % dt,
                                  "FPS : %3.2f" % self.fps_regulator.get_fps(),
+                                 "- - Musique - -",
+                                 "Is Playing : {}".format(self.musics_player.is_playing()),
+                                 "Musique actuelle : {}".format(self.musics_player.get_music_id()),
+                                 "Playlist vide : {}".format(not self.musics_player.get_rdm_playlist()),
                                  "- - Carte - -",
                                  "Zone id: {}".format(self.carte_mgr.get_zid()),
                                  "Map id : {}".format(self.carte_mgr.current_carte.id),
@@ -657,6 +670,8 @@ class Game:
                                  x=DEBUG_FEN_large - 200,
                                  line_width=200,
                                  sy=DEBUG_FEN_haut)
+
+            self.musics_player.play(0)
 
             rendering_engine.flip()
 

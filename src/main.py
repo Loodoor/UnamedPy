@@ -38,6 +38,7 @@ def main():
         erreurs="Erreurs de chargement : {}".format(tmp[1])
     ))
     debug.println("Initialisation de Pygame.Font ...", rendering_engine.init_font())
+    debug.println("Initialisation de Pygame.Mixer ...", rendering_engine.init_mixer())
 
     if DEBUG_LEVEL >= 1:
         ecran = rendering_engine.create_window((DEBUG_FEN_large, DEBUG_FEN_haut), HWSURFACE)
