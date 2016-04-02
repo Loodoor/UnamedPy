@@ -154,8 +154,10 @@ class ParametresManager:
             raise ClassNonChargee("ParametresManager", "set")
 
     def save(self):
+        debug.println("Saving settings ...")
         with open(self.path_to_settings, "wb") as wsettings:
             pickle.Pickler(wsettings).dump(self.params)
+        debug.println("Saving finished !")
 
 
 def gui_access(ecran, police):
@@ -250,4 +252,5 @@ def gui_access(ecran, police):
             ecran.blit(texte, (PARAMS_X_LISTE, PARAMS_Y_START_LISTE + i * PARAMS_ESP_Y_LIGNE))
 
         rendering_engine.flip()
+
     params.save()
