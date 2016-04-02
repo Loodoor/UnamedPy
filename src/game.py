@@ -120,7 +120,7 @@ class Game:
         self.indexeur.add_attacks_table(self.attaques_table)
         yield 1
 
-        carte.maps_retriver("http://folaefolc.hostux.fr/unamed")
+        carte.maps_retriver("http://dev.jeanba.fr/mapmaker_web/public")
         yield 1
 
         self.tab_types.init_tab()

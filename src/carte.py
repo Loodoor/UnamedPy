@@ -18,74 +18,132 @@ import light
 
 def maps_retriver(site: str):
     files = []
-    temp_maps_list_path = os.path.join("..", "assets", "temp", "maps_list.txt")
     try:
-        request.urlretrieve(site + '/maps_list.txt', temp_maps_list_path)
-        debug.println("Récupération de la liste ({}) ...".format(site + '/maps_list.txt'))
-        with open(temp_maps_list_path, "r") as file:
-            files = [[s.strip() for s in line.split('::')] for line in file.readlines()]
-        debug.println("Fichiers à récupérer du serveur :\n{}".format('\n-'.join([name for (url, name) in files])))
+        data = str(request.urlopen(site + "/provider/list")).replace('false', 'False').replace('true', 'True')
+        debug.println("Récupération de la liste des mondes ({}) ...".format(site + '/provider/list'))
+        files = eval(data)
+        debug.println("Contenu du fichier : {}".format(files))
     except (socket.gaierror, error.URLError):
         debug.println("Pas de connexion internet || Le fichier / site n'exsite pas")
     except PermissionError:
         debug.println("Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")
 
-    for (url, name) in files:
-        dl_path = os.path.join("..", "assets", "map", name)
-        try:
-            request.urlretrieve(url, dl_path)
-            debug.println("Récupération de {}, à l'adresse {}".format(dl_path, url))
-        except (socket.gaierror, error.URLError):
-            debug.println("Pas de connexion internet || La map / site n'exsite pas")
-        except PermissionError:
-            debug.println("Le jeu n'a pas les droits suffisants pour télécharger les maps")
-        except OSError:
-            debug.println("Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
+    if files:
+        directory = os.path.join("..", "assets", "map", "world{}".format(files['wid']))
 
-    if os.path.exists(temp_maps_list_path):
-        debug.println("Suppresion du fichier listant les maps à télécharger depuis le serveur")
-        os.remove(temp_maps_list_path)
+        if not os.path.exists(directory):
+            # création du dossier du monde s'il n'exise pas !
+            os.mkdir(directory)
+
+        maps = files["maps"]
+
+        for id_, carte in maps:
+            dl_path = os.path.join(directory, "{}{}".format(id_, EXTENSION))
+            try:
+                with open(dl_path, "w") as file:
+                    file.write(carte)
+            except PermissionError:
+                debug.println("Le jeu n'a pas les droits suffisants pour télécharger les maps")
+            except OSError:
+                debug.println("Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
 
 
 def parse_monoline_layer(layer: list, size: tuple) -> list:
     carte = []
     sx, sy = size
 
-    for x in range(sx):
-        line = []
-        for y in range(sy):
-            tile = layer[x + y * sx]
-            line.append(tile)
-        carte.append(line)
+    if isinstance(layer, list):
+        for x in range(sx):
+            line = []
+            for y in range(sy):
+                if layer:
+                    tile = layer[x + y * sx]
+                else:
+                    tile = "9990"
+                line.append(tile)
+            carte.append(line)
+    elif isinstance(layer, dict):
+        # on fait une map vide avant !
+        for x in range(sx):
+            line = []
+            for y in range(sy):
+                line.append("9990")
+            carte.append(line)
+
+        for pos, tile in layer.items():
+            real_x, real_y = pos % sx, pos // sx
+            carte[real_y][real_x] = tile
 
     return carte
 
 
-def load_map_from_id(id_: int):
+def load_map_from_id(id_: int, wid: int):
     try:
         # pickled version
         carte = pickle.Unpickler(
-            open(os.path.join("..", "assets", "map", "map" + str(id_) + EXTENSION), 'rb')).load()
+            open(os.path.join("..", "assets", "map", "world{}".format(wid), "map" + str(id_) + EXTENSION), 'rb')).load()
     except _pickle.UnpicklingError:
         # json version
-        with open(os.path.join("..", "assets", "map", "map" + str(id_) + EXTENSION), "r") as file:
+        with open(os.path.join("..", "assets", "map", "world{}".format(wid), "map" + str(id_) + EXTENSION), "r") as file:
             content = file.read()
         content = eval(content)
+
+        try:
+            _object = content['objects']
+        except KeyError:
+            _object = {}
+
+        try:
+            _zid = content['zid']
+        except KeyError:
+            _zid = 0
+
+        try:
+            _pnjs = content['pnjs']
+        except KeyError:
+            _pnjs = []
+
+        # {"i":12,"j":62,"layer":5,"type":"0","map":"1","spawn_id":0,"spawn_tag":"bottom_left"}
+
+        try:
+            _maplinks = content["maplinks"]
+        except KeyError:
+            _maplinks = {}
+
+        try:
+            _triggers = content['triggers']
+        except KeyError:
+            _triggers = {}
+
+        try:
+            _id = content['id']
+        except KeyError:
+            _id = MAP_DEFAULT
+
+        try:
+            _lights = content['lights']
+        except KeyError:
+            _lights = []
+
+        try:
+            _name = content['name']
+        except KeyError:
+            _name = "DEFAULT MAP NAME"
 
         carte = SubCarte(
             [
                 parse_monoline_layer(content['layer3'], (content['width'], content['height'])),
-                parse_monoline_layer(content['layer2'], (content['width'], content['height'])),
-                parse_monoline_layer(content['layer1'], (content['width'], content['height']))
+                parse_monoline_layer(content['layer1'], (content['width'], content['height'])),
+                parse_monoline_layer(content['layer2'], (content['width'], content['height']))
             ],
-            content['objects'],
-            content['intermap'],
-            content['zid'],
-            content['pnjs'],
-            content['spawns'],
-            content['triggers'],
-            content['id'],
-            content['lights']
+            _object,
+            _maplinks,
+            _zid,
+            _pnjs,
+            _triggers,
+            _id,
+            _name,
+            _lights
         )
 
     return carte
@@ -97,26 +155,26 @@ class SubCarte:
     chaque carte s'occupe aussi de gérer ses objets (au sol), et les chemins vers d'autres cartes
     elles gérent aussi leur ZID
     """
-    def __init__(self, carte: list, objets: dict, buildings: dict, zid: int, pnjs: list, spawns: dict,
-                 triggers: dict, id_: int, lights: list=None):
+    def __init__(self, carte: list, objets: dict, maplinks: dict, zid: int, pnjs: list,
+                 triggers: dict, id_: int, name: str, lights: list=None):
         self.carte = carte
         self.objets = objets
-        self.buildings = buildings
+        self.maplinks = maplinks
         self.zid = zid
         self.pnjs = pnjs
-        self.spawns = spawns
         self.triggers = triggers
         self.id = id_
-        self.lights = lights if lights else [light.PreRenderedLight(self, 0, (10, 10), 30, (150, 25, 35), 10)]
+        self.lights = lights if lights else [light.PreRenderedLight(self, 0, (0, 0), 30, (150, 25, 35), 10)]
+        self.name = name
 
     def create_pnj(self, pnj: PNJ):
         self.pnjs.append(pnj)
 
-    def add_building(self, x: int, y: int, id_: int):
-        self.buildings[x, y] = id_
-
     def get_all(self):
         return self.carte
+
+    def get_name(self):
+        return self.name
 
     def get_at(self, x: int, y: int):
         return self.carte[y][x]
@@ -128,17 +186,23 @@ class SubCarte:
         return self.lights
 
     def building_at(self, x: int, y: int):
-        return True if (x, y) in self.buildings.keys() else False
+        for _, content in self.maplinks.items():
+            if content["i"] == x and content["j"] == y and content["type"] == "0":
+                return True
+        return False
 
-    def get_spawn_pos_with_id(self, id_: int):
-        for pos, map_id in self.spawns.items():
-            if map_id == id_:
-                return pos
+    def get_spawn_pos_with_tag(self, tag: str):
+        for _, content in self.maplinks.items():
+            if content["type"] == "1" and content["spawn_tag"] == tag:
+                return content["i"], content["j"]
         return None
 
-    def get_building_id_at(self, x: int, y: int):
+    def get_building_id_tag_at(self, x: int, y: int):
         if self.building_at(x, y):
-            return str(self.buildings[x, y])
+            # {"i":12,"j":62,"layer":5,"type":"0","map":"1","spawn_id":0,"spawn_tag":"bottom_left"}
+            for _, content in self.maplinks.items():
+                if content["i"] == x and content["j"] == y and content["type"] == "0":
+                    return content["map"], content["spawn_tag"]
         return BUILDING_GET_ERROR
 
     def get_zid(self):
@@ -198,7 +262,9 @@ class CartesManager:
         self.ecran = ecran
         self.rd_mgr = renderer_manager
         self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
-        self.map = ""
+        self.world_path = os.path.join("..", "saves", "world" + EXTENSION)
+        self.map = MAP_DEFAULT
+        self.world = WORLD_DEFAULT  # default
         self.offsets = [0, 0]
         self.images = {}
         self.lassets = []
@@ -247,14 +313,33 @@ class CartesManager:
         if not self.loaded:
             self.general_load()
 
+        doki = False  # god variable !
+
         if os.path.exists(self.map_path):
             with open(self.map_path, "rb") as map_reader:
                 self.map = pickle.Unpickler(map_reader).load()
-            self.current_carte = load_map_from_id(self.map)
+            doki = True
+
+        if os.path.exists(self.world_path):
+            doki = True
+            with open(self.world_path, "rb") as world_reader:
+                self.world = pickle.Unpickler(world_reader).load()
+        else:
+            doki = False
+
+        if doki:
+            self.current_carte = load_map_from_id(self.map, self.world)
             self.carte = self.current_carte.get_all()
             self.adjust_offset()
         else:
-            self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map0" + EXTENSION), 'rb')).load()
+            self.current_carte = pickle.Unpickler(
+                open(
+                    os.path.join("..", "assets", "map",
+                                 "world{}".format(WORLD_DEFAULT),
+                                 "map{}{}".format(MAP_DEFAULT, EXTENSION)
+                    ),
+                    'rb')
+            ).load()
             self.carte = self.current_carte.get_all()
             self.adjust_offset()
 
@@ -271,20 +356,21 @@ class CartesManager:
         self.triggers_mgr.save()
 
     def collide_at(self, x, y):
-        if self.current_carte.get_building_id_at(x, y) == BUILDING_GET_ERROR:
+        if self.current_carte.get_building_id_tag_at(x, y) == BUILDING_GET_ERROR:
             return self.current_carte.collide_at(x, y)
         return True
 
     def check_changing_map(self, x, y):
-        if self.current_carte.get_building_id_at(x, y) != BUILDING_GET_ERROR:
-            self.change_map(self.current_carte.get_building_id_at(x, y))
+        if self.current_carte.get_building_id_tag_at(x, y) != BUILDING_GET_ERROR:
+            self.change_map(*self.current_carte.get_building_id_tag_at(x, y))
 
-    def change_map(self, new_id: int):
+    def change_map(self, new_id: int, tag: str):
         depuis = self.current_carte.id
-        pickle.Pickler(open(os.path.join("..", "assets", "map", "map" + str(depuis) + EXTENSION), "wb")).dump(self.current_carte)
-        self.current_carte = pickle.Unpickler(open(os.path.join("..", "assets", "map", "map" + str(new_id) + EXTENSION), "rb")).load()
+        pickle.Pickler(open(os.path.join("..", "assets", "map", "world{}".format(self.world), "map" + str(depuis) + EXTENSION), "wb")).dump(self.current_carte)
+
+        self.current_carte = load_map_from_id(new_id, self.world)
         self.carte = self.current_carte.get_all()
-        tmp = self.current_carte.get_spawn_pos_with_id(depuis)
+        tmp = self.current_carte.get_spawn_pos_with_tag(tag)
 
         if not tmp:
             raise ReferenceError("Il manque un point d'entrée sur la map {} pour la map d'id {}".format(new_id, depuis))

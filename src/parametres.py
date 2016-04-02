@@ -177,9 +177,10 @@ def gui_access(ecran, police):
         SHOW_FPS: "AFFICHER LES FPS",
         VALIDATION: "VALIDER (une action)"
     }
+    order = [HAUT, BAS, GAUCHE, DROITE, CHAT, MENU, SCREENSCHOT, SHOW_FPS, VALIDATION]
     controls = params.get("controls")
     settings_txt_list = [police.render("Contrôles", POL_ANTIALISING, (10, 10, 10))] + [
-        police.render("{} : {}".format(const_to_str[cst], rendering_engine.get_key_name(controls[cst])), POL_ANTIALISING, (10, 10, 10)) for cst in controls.keys()
+        police.render("{} : {}".format(const_to_str[cst], rendering_engine.get_key_name(controls[cst])), POL_ANTIALISING, (10, 10, 10)) for cst in order
     ] + [
         police.render("Musique : {}".format(ureplace_bool_str(params.get("music"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
         police.render("Animations : {}".format(ureplace_bool_str(params.get("play_anims"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
