@@ -159,6 +159,23 @@ class ParametresManager:
 
 
 def gui_access(ecran, police):
+    def create_textes():
+        return [police.render("Contrôles", POL_ANTIALISING, (10, 10, 10))] + [
+            police.render("{} : {}".format(const_to_str[cst], rendering_engine.get_key_name(controls[cst])),
+                          POL_ANTIALISING, (10, 10, 10)) for cst in order
+        ] + [
+            police.render(
+                "Musique : {}".format(
+                    ureplace_bool_str(params.get("music"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
+            police.render("Animations : {}".format(
+                ureplace_bool_str(params.get("play_anims"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
+            police.render("DeltaTime par défaut : {}".format(
+                ureplace_bool_str(params.get("delta_time")["has_default"], ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
+            police.render("Valeur par défaut (valable uniquement si activé ; en sec) : {}".format(
+                params.get("delta_time")["default"]), POL_ANTIALISING, (10, 10, 10))
+        ]
+
+
     done = False
 
     params = ParametresManager()
@@ -179,14 +196,8 @@ def gui_access(ecran, police):
     }
     order = [HAUT, BAS, GAUCHE, DROITE, CHAT, MENU, SCREENSCHOT, SHOW_FPS, VALIDATION]
     controls = params.get("controls")
-    settings_txt_list = [police.render("Contrôles", POL_ANTIALISING, (10, 10, 10))] + [
-        police.render("{} : {}".format(const_to_str[cst], rendering_engine.get_key_name(controls[cst])), POL_ANTIALISING, (10, 10, 10)) for cst in order
-    ] + [
-        police.render("Musique : {}".format(ureplace_bool_str(params.get("music"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
-        police.render("Animations : {}".format(ureplace_bool_str(params.get("play_anims"), ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
-        police.render("DeltaTime par défaut : {}".format(ureplace_bool_str(params.get("delta_time")["has_default"], ['on', 'off'])), POL_ANTIALISING, (10, 10, 10)),
-        police.render("Valeur par défaut (valable uniquement si activé ; en sec) : {}".format(params.get("delta_time")["default"]), POL_ANTIALISING, (10, 10, 10))
-    ]
+
+    settings_txt_list = create_textes()
 
     selected = -1
 
@@ -208,8 +219,12 @@ def gui_access(ecran, police):
                         params.set("delta_time", tmp)
                     if selected == 13:
                         debug.println("DEMANDE à FAIRE !")
-                if 0 <= selected < 10:
-                    debug.println("reconnaitre le setting cliqué ! (donc lsite au lieu de dico) ; puis assigner")
+                if 0 < selected < 10:
+                    code = event.key
+                    tmp = params.get("controls")
+                    tmp.update({order[selected - 1]: code})
+                    params.set("controls", tmp)
+                    settings_txt_list = create_textes()
             if event.type == MOUSEBUTTONUP:
                 xp, yp = event.pos
                 real_y = (yp - PARAMS_Y_START_LISTE) // PARAMS_ESP_Y_LIGNE
@@ -221,6 +236,17 @@ def gui_access(ecran, police):
         ecran.blit(fond, (PARAMS_X, PARAMS_Y))
         ecran.blit(titre, ((FEN_large - titre.get_width()) // 2, PARAMS_Y_TITRE))
         for i, texte in enumerate(settings_txt_list):
+            if i == selected and i:
+                rendering_engine.draw_rect(
+                    ecran,
+                    (
+                        PARAMS_X_LISTE - 2,
+                        PARAMS_Y_START_LISTE + i * PARAMS_ESP_Y_LIGNE - 2,
+                        texte.get_width() + 4,
+                        texte.get_height() + 4
+                    ),
+                    (180, 50, 50)
+                )
             ecran.blit(texte, (PARAMS_X_LISTE, PARAMS_Y_START_LISTE + i * PARAMS_ESP_Y_LIGNE))
 
         rendering_engine.flip()
