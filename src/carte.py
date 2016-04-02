@@ -19,7 +19,8 @@ import light
 def maps_retriver(site: str):
     files = []
     try:
-        data = str(request.urlopen(site + "/provider/list")).replace('false', 'False').replace('true', 'True')
+        tmp = request.urlopen(site + "/provider/list").read().decode()
+        data = str(tmp).replace('false', 'False').replace('true', 'True').replace('null', 'None')
         debug.println("Récupération de la liste des mondes ({}) ...".format(site + '/provider/list'))
         files = eval(data)
         debug.println("Contenu du fichier : {}".format(files))
@@ -29,23 +30,33 @@ def maps_retriver(site: str):
         debug.println("Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")
 
     if files:
-        directory = os.path.join("..", "assets", "map", "world{}".format(files['wid']))
+        for world in files:
+            directory = os.path.join("..", "assets", "map", "world{}".format(world['wid']))
 
-        if not os.path.exists(directory):
-            # création du dossier du monde s'il n'exise pas !
-            os.mkdir(directory)
+            if not os.path.exists(directory):
+                # création du dossier du monde s'il n'exise pas !
+                os.mkdir(directory)
 
-        maps = files["maps"]
+            tmp = request.urlopen(site + "/provider/world/{}".format(world['wid'])).read().decode()
+            data = str(tmp).replace('false', 'False').replace('true', 'True').replace('null', 'None')
+            maps = eval(data)
 
-        for id_, carte in maps:
-            dl_path = os.path.join(directory, "{}{}".format(id_, EXTENSION))
-            try:
-                with open(dl_path, "w") as file:
-                    file.write(carte)
-            except PermissionError:
-                debug.println("Le jeu n'a pas les droits suffisants pour télécharger les maps")
-            except OSError:
-                debug.println("Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
+            with open(os.path.join(directory, 'config.txt'), 'w') as file:
+                file.write(str(
+                    {
+                        "name": maps['name']
+                    }
+                ))
+
+            for id_, carte in maps['maps'].items():
+                dl_path = os.path.join(directory, "map{}{}".format(id_, EXTENSION))
+                try:
+                    with open(dl_path, "w") as file:
+                        file.write(str(carte))
+                except PermissionError:
+                    debug.println("Le jeu n'a pas les droits suffisants pour télécharger les maps")
+                except OSError:
+                    debug.println("Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
 
 
 def parse_monoline_layer(layer: list, size: tuple) -> list:
@@ -53,11 +64,11 @@ def parse_monoline_layer(layer: list, size: tuple) -> list:
     sx, sy = size
 
     if isinstance(layer, list):
-        for x in range(sx):
+        for y in range(sy):
             line = []
-            for y in range(sy):
+            for x in range(sx):
                 if layer:
-                    tile = layer[x + y * sx]
+                    tile = str(layer[x + y * sx])
                 else:
                     tile = "9990"
                 line.append(tile)
@@ -71,8 +82,23 @@ def parse_monoline_layer(layer: list, size: tuple) -> list:
             carte.append(line)
 
         for pos, tile in layer.items():
-            real_x, real_y = pos % sx, pos // sx
-            carte[real_y][real_x] = tile
+            real_x, real_y = int(pos) % sx, int(pos) // sx
+            carte[real_y][real_x] = str(tile)
+
+    return carte
+
+
+def parse_layers_to_map(*layers):
+    carte = []
+
+    for y in range(len(layers[0])):
+        line = []
+        for x in range(len(layers[0][y])):
+            case = []
+            for layer in layers:
+                case.append(layer[y][x])
+            line.append(case)
+        carte.append(line)
 
     return carte
 
@@ -103,8 +129,6 @@ def load_map_from_id(id_: int, wid: int):
         except KeyError:
             _pnjs = []
 
-        # {"i":12,"j":62,"layer":5,"type":"0","map":"1","spawn_id":0,"spawn_tag":"bottom_left"}
-
         try:
             _maplinks = content["maplinks"]
         except KeyError:
@@ -131,11 +155,11 @@ def load_map_from_id(id_: int, wid: int):
             _name = "DEFAULT MAP NAME"
 
         carte = SubCarte(
-            [
-                parse_monoline_layer(content['layer3'], (content['width'], content['height'])),
-                parse_monoline_layer(content['layer1'], (content['width'], content['height'])),
-                parse_monoline_layer(content['layer2'], (content['width'], content['height']))
-            ],
+            parse_layers_to_map(
+                parse_monoline_layer(content['layer3'], (int(content['width']), int(content['height']))),
+                parse_monoline_layer(content['layer2'], (int(content['width']), int(content['height']))),
+                parse_monoline_layer(content['layer1'], (int(content['width']), int(content['height'])))
+            ),
             _object,
             _maplinks,
             _zid,
@@ -164,7 +188,7 @@ class SubCarte:
         self.pnjs = pnjs
         self.triggers = triggers
         self.id = id_
-        self.lights = lights if lights else [light.PreRenderedLight(self, 0, (0, 0), 30, (150, 25, 35), 10)]
+        self.lights = lights  # if lights else [light.PreRenderedLight(self, 0, (0, 0), 30, (150, 25, 35), 10)]
         self.name = name
 
     def create_pnj(self, pnj: PNJ):
@@ -199,7 +223,6 @@ class SubCarte:
 
     def get_building_id_tag_at(self, x: int, y: int):
         if self.building_at(x, y):
-            # {"i":12,"j":62,"layer":5,"type":"0","map":"1","spawn_id":0,"spawn_tag":"bottom_left"}
             for _, content in self.maplinks.items():
                 if content["i"] == x and content["j"] == y and content["type"] == "0":
                     return content["map"], content["spawn_tag"]
@@ -313,35 +336,17 @@ class CartesManager:
         if not self.loaded:
             self.general_load()
 
-        doki = False  # god variable !
-
         if os.path.exists(self.map_path):
             with open(self.map_path, "rb") as map_reader:
                 self.map = pickle.Unpickler(map_reader).load()
-            doki = True
 
         if os.path.exists(self.world_path):
-            doki = True
             with open(self.world_path, "rb") as world_reader:
                 self.world = pickle.Unpickler(world_reader).load()
-        else:
-            doki = False
 
-        if doki:
-            self.current_carte = load_map_from_id(self.map, self.world)
-            self.carte = self.current_carte.get_all()
-            self.adjust_offset()
-        else:
-            self.current_carte = pickle.Unpickler(
-                open(
-                    os.path.join("..", "assets", "map",
-                                 "world{}".format(WORLD_DEFAULT),
-                                 "map{}{}".format(MAP_DEFAULT, EXTENSION)
-                    ),
-                    'rb')
-            ).load()
-            self.carte = self.current_carte.get_all()
-            self.adjust_offset()
+        self.current_carte = load_map_from_id(self.map, self.world)
+        self.carte = self.current_carte.get_all()
+        self.adjust_offset()
 
         self._load_lights()
 
@@ -353,6 +358,8 @@ class CartesManager:
     def save(self):
         with open(self.map_path, "wb") as file:
             pickle.Pickler(file).dump(self.current_carte.id)
+        with open(self.world_path, "wb") as file:
+            pickle.Pickler(file).dump(self.world)
         self.triggers_mgr.save()
 
     def collide_at(self, x, y):
@@ -461,7 +468,8 @@ class CartesManager:
                     raise ErreurContenuCarte
                 else:
                     for tile in udel_same_occurence(*objet[::-1]):
-                        self._draw_tile_at(xpos, ypos, tile)
+                        if tile != "9990":
+                            self._draw_tile_at(xpos, ypos, tile)
                 # objets
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))

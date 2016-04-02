@@ -207,7 +207,7 @@ def gui_access(ecran, police):
                         tmp.update({"has_default": not tmp["has_default"]})
                         params.set("delta_time", tmp)
                     if selected == 13:
-                        print("DEMANDE à FAIRE !")
+                        debug.println("DEMANDE à FAIRE !")
                 if 0 <= selected < 10:
                     debug.println("reconnaitre le setting cliqué ! (donc lsite au lieu de dico) ; puis assigner")
             if event.type == MOUSEBUTTONUP:
