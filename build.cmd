@@ -11,3 +11,5 @@ echo -------------------------------
 echo Build finished !
 
 cd ..
+
+pause
