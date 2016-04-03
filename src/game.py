@@ -671,7 +671,7 @@ class Game:
                                  line_width=200,
                                  sy=DEBUG_FEN_haut)
 
-            self.musics_player.play(0)
+            self.musics_player.play()
 
             rendering_engine.flip()
 
