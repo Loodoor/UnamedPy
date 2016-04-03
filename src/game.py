@@ -565,8 +565,8 @@ class Game:
 
         debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
 
-    def render(self, dt: int=1):
-        self.carte_mgr.update() if self.renderer_manager.can_i_render() else None
+    def render(self, dt: float=1.0):
+        self.carte_mgr.update(dt) if self.renderer_manager.can_i_render() else None
 
         if self.renderer_manager.get_renderer() == RENDER_GAME:
             self.personnage.update()
@@ -671,7 +671,8 @@ class Game:
                                  line_width=200,
                                  sy=DEBUG_FEN_haut)
 
-            self.musics_player.play()
+            if self._play_music:
+                self.musics_player.play()
 
             rendering_engine.flip()
 

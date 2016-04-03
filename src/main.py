@@ -167,7 +167,6 @@ def main():
                 debug.println("L'avancement max est {}".format(avancement))
                 if avancement != max_avancement:
                     max_avancement = avancement
-                chargement = False
                 avancement = 0
                 if not has_already_played:
                     adventure.next()
@@ -176,6 +175,8 @@ def main():
                 # on remet tout à 0
                 jeu = None
                 loadeur = None
+                finished_loading = False
+                chargement = False
         else:
             ecran.blit(btn_jeu, (MENU_BTN_JOUER_X, MENU_BTN_JOUER_Y))
             ecran.blit(btn_reseau, (MENU_BTN_RESEAU_X, MENU_BTN_RESEAU_Y))

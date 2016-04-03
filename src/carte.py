@@ -419,8 +419,8 @@ class CartesManager:
     def drop_object_at(self, x: int, y: int, obj, from_poche):
         self.current_carte.drop_object_at(int(x) // TILE_SIZE, int(y) // TILE_SIZE, obj, from_poche)
 
-    def update(self):
-        self.render()
+    def update(self, dt: float=1.0):
+        self.render(dt)
         self._update_anims()
 
     def _draw_tile_at(self, at_x: int, at_y: int, tile: str):
@@ -456,7 +456,7 @@ class CartesManager:
 
                 self._draw_tile_at(xpos, ypos, tile)
 
-    def render(self):
+    def render(self, dt: float=1.0):
         objects_at = self.current_carte.get_objects()
         rendering_engine.draw_rect(self.ecran, (0, 0, FEN_large, FEN_haut), (0, 0, 0))
 
