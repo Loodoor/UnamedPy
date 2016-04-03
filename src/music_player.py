@@ -20,7 +20,7 @@ class MusicPlayer:
         self.__rdm_playing_list = []
         self.__playing = False
         self.__looping = False
-        self.__music_lenght = 60 * 2 + 30  # c'est une moyenne
+        self.__music_lenght = 60 * 3 + 30  # c'est une moyenne
         self.__start_playing_at = 0
 
     def select(self, sound_index: int):

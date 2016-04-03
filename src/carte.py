@@ -383,6 +383,7 @@ class CartesManager:
 
     def change_map(self, new_id: int, tag: str):
         self.has_changed_map = True
+        self.time_changed_map = 0
         depuis = self.current_carte.id
         pickle.Pickler(open(os.path.join("..", "assets", "map", "world{}".format(self.world), "map" + str(depuis) + EXTENSION), "wb")).dump(self.current_carte)
 
@@ -462,6 +463,15 @@ class CartesManager:
 
                 self._draw_tile_at(xpos, ypos, tile)
 
+        if self.has_changed_map:
+            self.time_changed_map += 1
+            self.ecran.blit(self._fd_nom_map, (MAP_FD_NAME_MAP_X, MAP_FD_NAME_MAP_Y))
+            self.ecran.blit(self.police.render(self.current_carte.get_name(), POL_ANTIALISING, (10, 10, 10)),
+                            (MAP_FD_NAME_MAP_X + 10, MAP_FD_NAME_MAP_Y + (self._fd_nom_map.get_height() - 20) // 2))
+            if self.time_changed_map >= MAX_TIME_CHANGED_MAP:
+                self.time_changed_map = 0
+                self.has_changed_map = False
+
     def render(self, dt: float=1.0):
         objects_at = self.current_carte.get_objects()
         rendering_engine.draw_rect(self.ecran, (0, 0, FEN_large, FEN_haut), (0, 0, 0))
@@ -494,15 +504,6 @@ class CartesManager:
 
         for _light in self.current_carte.get_lights():
             _light.blit(self.ecran)
-
-        if self.has_changed_map:
-            self.time_changed_map += 1
-            self.ecran.blit(self._fd_nom_map, (MAP_FD_NAME_MAP_X, MAP_FD_NAME_MAP_Y))
-            self.ecran.blit(self.police.render(self.current_carte.get_name(), POL_ANTIALISING, (10, 10, 10)),
-                            (MAP_FD_NAME_MAP_X + 10, MAP_FD_NAME_MAP_Y + (self._fd_nom_map.get_height() - 20) // 2))
-            if self.time_changed_map >= MAX_TIME_CHANGED_MAP:
-                self.time_changed_map = 0
-                self.has_changed_map = False
 
     def get_tile_code_at(self, x: int, y: int, layer: int=1):
         return self.carte[int(y)][int(x)][layer] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR

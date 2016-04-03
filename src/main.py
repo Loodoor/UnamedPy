@@ -56,13 +56,13 @@ def main():
     ]
     adventure = Adventure(ecran, police)
     adventure.load()
-    alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
+    alea_texte = police_annot.render(get_alea_text(), POL_ANTIALISING, (0, 0, 0))
     fond = rendering_engine.load_image(os.path.join("..", "assets", "menu", "fond.png"))
     load_texts = glob(os.path.join("..", "assets", "menu", "chargement", "*.txt"))
     max_len = int(MENU_SIZE_BAR // len(load_texts))
     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),
                                       encoding='utf-8').read(),
-                                 POL_ANTIALISING, (255, 255, 255))
+                                 POL_ANTIALISING, (0, 0, 0))
 
     debug.println("Appuyez sur 'J' pour lancer le jeu")
 
@@ -99,7 +99,7 @@ def main():
                 continuer = 0
             if event.type == KEYDOWN:
                 if event.key == K_RIGHT or event.key == K_LEFT:
-                    alea_texte = police_annot.render(get_alea_text(), 1, (255, 255, 255))
+                    alea_texte = police_annot.render(get_alea_text(), POL_ANTIALISING, (0, 0, 0))
             if event.type == MOUSEBUTTONUP:
                 xp, yp = event.pos
                 if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_SX and \
@@ -141,7 +141,7 @@ def main():
         if not has_already_played:
             i = 0
             for txt in bienvenue:
-                tmp = police.render(txt, POL_ANTIALISING, (255, 255, 255))
+                tmp = police.render(txt, POL_ANTIALISING, (0, 0, 0))
                 ecran.blit(tmp, (FEN_large // 2 - tmp.get_width() // 2, 120 + 20 * i))
                 i += 1
         else:
@@ -159,10 +159,10 @@ def main():
                 if len(load_texts) - 1 > 0:
                     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),
                                                       encoding='utf-8').read(),
-                                                 POL_ANTIALISING, (255, 255, 255))
+                                                 POL_ANTIALISING, (0, 0, 0))
                 else:
                     loading_text = police.render(open(load_texts.pop(0), encoding='utf-8').read(),
-                                                 POL_ANTIALISING, (255, 255, 255))
+                                                 POL_ANTIALISING, (0, 0, 0))
             if finished_loading and chargement:
                 debug.println("L'avancement max est {}".format(avancement))
                 if avancement != max_avancement:

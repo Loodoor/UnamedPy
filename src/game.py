@@ -31,7 +31,7 @@ from network_event_listener import NetworkEventsListener
 
 class Game:
     def __init__(self, ecran, perso_choice: str, adventure: Adventure, s: socket.socket=None,
-                 p: tuple=('127.0.0.1', 5500), controles: dict={}):
+                 p: tuple=('127.0.0.1', 5500)):
         self.__start_at__ = 0
 
         self.adventure = adventure
@@ -75,25 +75,37 @@ class Game:
         self.parametres = ParametresManager()
         self.musics_player = music_player.MusicPlayer()
 
-        self.parametres.load()
-
         # Entités
         self.personnage = personnage.Personnage(self.carte_mgr, self.ecran, self.police_grande, perso_choice)
 
         # Contrôles
-        self.controles = self.parametres.get("controls")
-        self.controles.update(controles)
-        self.controles_joy = self.parametres.get("joy_controls")
-        controles = {}  # vider le dico à chaque fois !
+        self.controles = {}
+        self.controles_joy = {}
         self.joystick = None
 
-        self.__ctrls = self.parametres.get("secured_controls")
-        self._default_dt = self.parametres.get("delta_time")["default"]
-        self._play_music = self.parametres.get("music")
-        self._play_anims = self.parametres.get("play_anims")
+        self.__ctrls = {}
+        self._default_dt = 1.0
+        self._play_music = True
+        self._play_anims = True
 
     def load(self):
         carte.maps_retriver("http://dev.jeanba.fr/mapmaker_web/public")
+        yield 1
+
+        self.parametres.load()
+        yield 1
+
+        self.controles = self.parametres.get("controls")
+        yield 1
+        self.controles_joy = self.parametres.get("joy_controls")
+        yield 1
+        self.__ctrls = self.parametres.get("secured_controls")
+        yield 1
+        self._default_dt = self.parametres.get("delta_time")["default"]
+        yield 1
+        self._play_music = self.parametres.get("music")
+        yield 1
+        self._play_anims = self.parametres.get("play_anims")
         yield 1
 
         self.carte_mgr.load()

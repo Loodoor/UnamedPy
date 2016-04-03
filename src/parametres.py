@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import pickle
+import pickle, _pickle
 from constantes import *
 from pygame.locals import *
 from exceptions import ClassNonChargee
@@ -133,14 +133,19 @@ class ParametresManager:
     def _pre_load(self):
         if not os.path.exists(self.path_to_settings):
             with open(self.path_to_settings, "wb") as wsettings:
+                debug.println("Creating default configuration")
                 pickle.Pickler(wsettings).dump(self._default_config)
-        elif open(self.path_to_settings, 'rb').read() == "":
-            os.remove(self.path_to_settings)
-            self._pre_load()
 
     def load(self):
         self._pre_load()
-        self.params = pickle.Unpickler(open(self.path_to_settings, 'rb')).load()
+        try:
+            with open(self.path_to_settings, 'rb') as file:
+                debug.println("Loading settings")
+                self.params = pickle.Unpickler(file).load()
+        except _pickle.UnpicklingError:
+            debug.println("Loading settings failed")
+            os.remove(self.path_to_settings)
+            self._pre_load()
 
     def get(self, key: str):
         if self.params:
