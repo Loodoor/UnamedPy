@@ -485,7 +485,8 @@ class CartesManager:
         if self.has_changed_map:
             self.time_changed_map += 1
             self.ecran.blit(self._fd_nom_map, (MAP_FD_NAME_MAP_X, MAP_FD_NAME_MAP_Y))
-            self.ecran.blit(self.police.render(self.current_carte.get_name()))
+            self.ecran.blit(self.police.render(self.current_carte.get_name(), POL_ANTIALISING, (10, 10, 10)),
+                            (MAP_FD_NAME_MAP_X + 10, MAP_FD_NAME_MAP_Y + (self._fd_nom_map.get_height() - 20) // 2))
             if self.time_changed_map >= MAX_TIME_CHANGED_MAP:
                 self.time_changed_map = 0
                 self.has_changed_map = False

@@ -7,6 +7,7 @@ from exceptions import ClassNonChargee
 import rendering_engine
 from utils import ureplace_bool_str
 import debug
+from gui import GUIBulleAsking
 
 
 class ParametresManager:
@@ -226,7 +227,7 @@ def gui_access(ecran, police):
                     tmp = params.get("controls")
                     tmp.update({order[selected - 1]: code})
                     params.set("controls", tmp)
-                    settings_txt_list = create_textes()
+                settings_txt_list = create_textes()
             if event.type == MOUSEBUTTONUP:
                 xp, yp = event.pos
                 real_y = (yp - PARAMS_Y_START_LISTE) // PARAMS_ESP_Y_LIGNE
