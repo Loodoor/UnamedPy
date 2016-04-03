@@ -209,29 +209,29 @@ class SubCarte:
     def get_lights(self):
         return self.lights
 
-    def building_at(self, x: int, y: int):
-        for _, content in self.maplinks.items():
-            if content["i"] == x and content["j"] == y and content["type"] == "1":
-                return True
-        return False
-
     def spawn_at(self, x: int, y: int):
         for _, content in self.maplinks.items():
             if content["i"] == x and content["j"] == y and content["type"] == "0":
                 return True
         return False
 
+    def building_at(self, x: int, y: int):
+            for _, content in self.maplinks.items():
+                if int(content["i"]) == x and int(content["j"]) == y and int(content["type"]) == 1:
+                    return True
+            return False
+
     def get_spawn_pos_with_tag(self, tag: str):
         for _, content in self.maplinks.items():
-            if content["type"] == "0" and content["spawn_tag"] == tag:
+            if int(content["type"]) == 0 and content["spawn_tag"] == tag:
                 return content["i"], content["j"]
         return None
 
     def get_building_id_tag_at(self, x: int, y: int):
         if self.building_at(x, y):
             for _, content in self.maplinks.items():
-                if content["i"] == x and content["j"] == y and content["type"] == "1":
-                    return content["map"], content["spawn_tag"]
+                if int(content["i"]) == x and int(content["j"]) == y and int(content["type"]) == 1:
+                    return content["destination"]["map_id"], content["destination"]["spawn_tag"]
         return BUILDING_GET_ERROR
 
     def get_zid(self):
