@@ -650,6 +650,8 @@ class Game:
                                  "Renderer: {}".format(self.renderer_manager.get_renderer()),
                                  "Delatime : %3.1f ms" % dt,
                                  "FPS : %3.2f" % self.fps_regulator.get_fps(),
+                                 "Spawns en bleu",
+                                 "Passages en rouge",
                                  "- - Musique - -",
                                  "Is Playing : {}".format(self.musics_player.is_playing()),
                                  "Musique actuelle : {}".format(self.musics_player.get_music_id()),

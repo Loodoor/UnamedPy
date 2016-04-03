@@ -211,20 +211,26 @@ class SubCarte:
 
     def building_at(self, x: int, y: int):
         for _, content in self.maplinks.items():
+            if content["i"] == x and content["j"] == y and content["type"] == "1":
+                return True
+        return False
+
+    def spawn_at(self, x: int, y: int):
+        for _, content in self.maplinks.items():
             if content["i"] == x and content["j"] == y and content["type"] == "0":
                 return True
         return False
 
     def get_spawn_pos_with_tag(self, tag: str):
         for _, content in self.maplinks.items():
-            if content["type"] == "1" and content["spawn_tag"] == tag:
+            if content["type"] == "0" and content["spawn_tag"] == tag:
                 return content["i"], content["j"]
         return None
 
     def get_building_id_tag_at(self, x: int, y: int):
         if self.building_at(x, y):
             for _, content in self.maplinks.items():
-                if content["i"] == x and content["j"] == y and content["type"] == "0":
+                if content["i"] == x and content["j"] == y and content["type"] == "1":
                     return content["map"], content["spawn_tag"]
         return BUILDING_GET_ERROR
 
@@ -475,6 +481,13 @@ class CartesManager:
                     for tile in udel_same_occurence(*objet[::-1]):
                         if tile != "9990":
                             self._draw_tile_at(xpos, ypos, tile)
+
+                if DEBUG_LEVEL >= 1:
+                    if self.current_carte.building_at(x, y):
+                        rendering_engine.draw_rect(self.ecran, (xpos, ypos, TILE_SIZE, TILE_SIZE), (255, 0, 0))
+                    if self.current_carte.spawn_at(x, y):
+                        rendering_engine.draw_rect(self.ecran, (xpos, ypos, TILE_SIZE, TILE_SIZE), (0, 0, 255))
+
                 # objets
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))

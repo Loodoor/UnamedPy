@@ -9,7 +9,7 @@ import debug
 # Attention, y a du hardcode dans l'air ^^'
 class Adventure:
     def __init__(self, ecran, font):
-        self.user_pseudo = ""
+        self.user_pseudo = "testeur"
         self.progress = 0
         self.ecran = ecran
         self.font = font
@@ -90,6 +90,16 @@ class Adventure:
         if self.loaded:
             if not self.progress:
                 self._begin()
+            self.progress += 1
+        else:
+            debug.println("Merci de charger l'AdventureManager avant d'utiliser cette méthode")
+
+    def muted_next(self):
+        if self.loaded:
+            if not self.progress:
+                with open(os.path.join("..", "saves", "pseudo" + EXTENSION), "wb") as pseudo_w:
+                    Pickler(pseudo_w).dump(self.user_pseudo)
+                self.values["first creature name"] = "testeur"
             self.progress += 1
         else:
             debug.println("Merci de charger l'AdventureManager avant d'utiliser cette méthode")

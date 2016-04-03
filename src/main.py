@@ -168,8 +168,10 @@ def main():
                 if avancement != max_avancement:
                     max_avancement = avancement
                 avancement = 0
-                if not has_already_played:
+                if not has_already_played and not DEBUG_LEVEL:
                     adventure.next()
+                elif not has_already_played and DEBUG_LEVEL:
+                    adventure.muted_next()
                 jeu.start()
 
                 # on remet tout à 0
