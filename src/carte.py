@@ -28,6 +28,8 @@ def maps_retriver(site: str):
         debug.println("Pas de connexion internet || Le fichier / site n'exsite pas")
     except PermissionError:
         debug.println("Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")
+    finally:
+        yield 1
 
     if files:
         for world in files:
@@ -57,6 +59,7 @@ def maps_retriver(site: str):
                     debug.println("Le jeu n'a pas les droits suffisants pour télécharger les maps")
                 except OSError:
                     debug.println("Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
+    yield 1
 
 
 def parse_monoline_layer(layer: list, size: tuple) -> list:

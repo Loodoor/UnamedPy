@@ -89,8 +89,8 @@ class Game:
         self._play_anims = True
 
     def load(self):
-        carte.maps_retriver("http://dev.jeanba.fr/mapmaker_web/public")
-        yield 1
+        for i in carte.maps_retriver("http://dev.jeanba.fr/mapmaker_web/public"):
+            yield i
 
         self.parametres.load()
         yield 1
