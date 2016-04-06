@@ -4,9 +4,8 @@ import random
 
 
 class PreRenderedLight():
-    def __init__(self, carte_mgr, id_: int, pos: tuple, size: int, color: tuple, variation: int=0,
+    def __init__(self, id_: int, pos: tuple, size: int, color: tuple, variation: int=0,
                  ambiantLight: int=64, threshold: float=12):
-        self.carte_mgr = carte_mgr
         self.lightID = id_
         self.lightPos = pos
         self.lightSize = size
@@ -24,12 +23,12 @@ class PreRenderedLight():
             self.imageList.append(pygame.Surface((self.lightSize * 2 + self.variation, self.lightSize * 2 + self.variation), pygame.SRCALPHA, 32))
             self.imageList[number].convert_alpha()
             self.imageList[number].fill((0, 0, 0, 0))
-        self.render()
+        self._render()
 
     def move(self, pos):
         self.lightPos = pos
     
-    def render(self):
+    def _render(self):
         for number in range(0, self.nbImages):
             maxRange = int(self.lightSize + random.random() * self.variation)
             for i in range(1, maxRange):
@@ -46,9 +45,9 @@ class PreRenderedLight():
                     (r, g, b, t)
                 )
 
-    def blit(self, surf):
-        xFillRect = self.lightPos[0] + self.carte_mgr.get_of1()
-        yFillRect = self.lightPos[1] + self.carte_mgr.get_of2()
+    def blit(self, surf, carte_mgr):
+        xFillRect = self.lightPos[0] + carte_mgr.get_of1()
+        yFillRect = self.lightPos[1] + carte_mgr.get_of2()
 
         if 0 <= xFillRect < surf.get_width() + self.imageList[self.indexBlit].get_width() and 0 <= yFillRect < surf.get_height() + self.imageList[self.indexBlit].get_height():
             surf.blit(self.imageList[self.indexBlit], (xFillRect, yFillRect))

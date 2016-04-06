@@ -7,13 +7,13 @@ from constantes import *
 from trigger_manager import TriggersManager
 from exceptions import ErreurContenuCarte
 from utils import udel_same_occurence
-from pnj_manager import PNJ
+from pnj_manager import PNJ, CROSS_MOVE, HORIZONTAL_MOVE, STANDART_MOVE, VERTICAL_MOVE
 from animator import FluidesAnimator, BaseMultipleSpritesAnimator
 from random import randint
 from urllib import error
 import socket
 import debug
-import light
+import light as light_module
 
 
 def maps_retriver(site: str):
@@ -91,7 +91,7 @@ def parse_monoline_layer(layer: list, size: tuple) -> list:
     return carte
 
 
-def parse_layers_to_map(*layers):
+def parse_layers_to_map(*layers) -> list:
     carte = []
 
     for y in range(len(layers[0])):
@@ -104,6 +104,50 @@ def parse_layers_to_map(*layers):
         carte.append(line)
 
     return carte
+
+
+def parse_pnjs_dict(pnjs: dict) -> list:
+    work = []
+
+    for id_, pnj_details in pnjs.items():
+        if pnj_details["type_mvt"] == "0":
+            type_mvt = STANDART_MOVE
+        elif pnj_details["type_mvt"] == "1":
+            type_mvt = CROSS_MOVE
+        elif pnj_details["type_mvt"] == "2":
+            type_mvt = VERTICAL_MOVE
+        else:  # if pnj_details["type_mvt"] == "3":
+            type_mvt = HORIZONTAL_MOVE
+
+        work.append(
+            PNJ(
+                (pnj_details["pos"]["i"], pnj_details["pos"]["j"]),
+                type_mvt,
+                pnj_details["texte"],
+                pnj_details["dir"],
+                pnj_details["image"]
+            )
+        )
+
+    return work
+
+
+def parse_lights_dict(lights: dict) -> list:
+    work = []
+
+    for id_, light_details in lights.items():
+        work.append(
+            light_module.PreRenderedLight(
+                id_,
+                (light_details["pos"]["x"], light_details["pos"]["y"]),
+                light_details["size"],
+                (light_details["color"]["r"], light_details["color"]["g"], light_details["color"]["b"]),
+                variation=light_details["variation"],
+                threshold=light_details["threshold"]
+            )
+        )
+
+    return work
 
 
 def load_map_from_id(id_: int, wid: int):
@@ -129,6 +173,7 @@ def load_map_from_id(id_: int, wid: int):
 
         try:
             _pnjs = content['pnjs']
+            _pnjs = parse_pnjs_dict(_pnjs)
         except KeyError:
             _pnjs = []
 
@@ -148,7 +193,7 @@ def load_map_from_id(id_: int, wid: int):
             _id = MAP_DEFAULT
 
         try:
-            _lights = content['lights']
+            _lights = parse_lights_dict(content['lights'])
         except KeyError:
             _lights = []
 
@@ -191,7 +236,7 @@ class SubCarte:
         self.pnjs = pnjs
         self.triggers = triggers
         self.id = id_
-        self.lights = lights  # if lights else [light.PreRenderedLight(self, 0, (0, 0), 30, (150, 25, 35), 10)]
+        self.lights = lights
         self.name = name
 
     def create_pnj(self, pnj: PNJ):
@@ -212,17 +257,20 @@ class SubCarte:
     def get_lights(self):
         return self.lights
 
+    def get_pnjs(self):
+        return self.pnjs
+
     def spawn_at(self, x: int, y: int):
         for _, content in self.maplinks.items():
-            if content["i"] == x and content["j"] == y and content["type"] == "0":
+            if int(content["i"]) == x and int(content["j"]) == y and int(content["type"]) == 0:
                 return True
         return False
 
     def building_at(self, x: int, y: int):
-            for _, content in self.maplinks.items():
-                if int(content["i"]) == x and int(content["j"]) == y and int(content["type"]) == 1:
-                    return True
-            return False
+        for _, content in self.maplinks.items():
+            if int(content["i"]) == x and int(content["j"]) == y and int(content["type"]) == 1:
+                return True
+        return False
 
     def get_spawn_pos_with_tag(self, tag: str):
         for _, content in self.maplinks.items():
@@ -466,6 +514,10 @@ class CartesManager:
 
                 self._draw_tile_at(xpos, ypos, tile)
 
+        for _light in self.current_carte.get_lights():
+            _light.blit(self.ecran, self)
+
+        # doit toujours être dessiné en dernier !
         if self.has_changed_map:
             self.time_changed_map += 1
             self.ecran.blit(self._fd_nom_map, (MAP_FD_NAME_MAP_X, MAP_FD_NAME_MAP_Y))
@@ -505,8 +557,8 @@ class CartesManager:
                 if (x, y) in objects_at:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))
 
-        for _light in self.current_carte.get_lights():
-            _light.blit(self.ecran)
+        for _pnj in self.current_carte.get_pnjs():
+            _pnj.update(self.ecran, self)
 
     def get_tile_code_at(self, x: int, y: int, layer: int=1):
         return self.carte[int(y)][int(x)][layer] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR

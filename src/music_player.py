@@ -23,6 +23,8 @@ class MusicPlayer:
         self.__music_lenght = 60 * 3 + 30  # c'est une moyenne
         self.__start_playing_at = 0
 
+        self.__stop = False
+
     def select(self, sound_index: int):
         if 0 <= sound_index < len(self.sounds_path):
             self.__current = sound_index
@@ -42,7 +44,7 @@ class MusicPlayer:
 
     def play(self, loop: int=0):
         # va tourner à l'infini par défaut
-        if self.__current != -1 and not self.is_playing():
+        if self.__current != -1 and not self.is_playing() and not self.__stop:
             # playlist aléatoire
             if self.__rdm_playing_list:
                 try:
@@ -66,11 +68,13 @@ class MusicPlayer:
         if self.__current != -1 and self.is_playing():
             rendering_engine.stop_music()
             self.__playing = False
+            self.__stop = True
 
     def fadeout(self, value: float):
         if self.__current != -1 and self.is_playing():
             rendering_engine.fadeout_music(value)
             self.__playing = False
+            self.__stop = True
 
     def get_rdm_playlist(self) -> list:
         return self.__rdm_playing_list

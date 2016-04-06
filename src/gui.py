@@ -133,9 +133,8 @@ class GUIBulleAsking(GUIBulleWaiting):
 
 
 class PNJSpeaking:
-    def __init__(self, texte: str, ecran, font, color: tuple=(240, 240, 240)):
+    def __init__(self, texte: str, font, color: tuple=(240, 240, 240)):
         self.texte = texte
-        self.ecran = ecran
         self.font = font
 
         self.clignote = False
@@ -145,19 +144,19 @@ class PNJSpeaking:
         self.txt_renderer = self.font.render(self.texte, POL_ANTIALISING, (10, 10, 10))
         self.bulle = rendering_engine.load_image(os.path.join("..", "assets", "gui", "bulle.png"))
 
-    def update(self, dt: int=1):
+    def update(self, ecran, dt: int=1):
         ev = rendering_engine.get_event()
-        self.render(dt)
+        self.render(ecran, dt)
         if ev != KEYUP:
             return True
         return False
 
-    def render(self, dt: int=1):
-        self.ecran.blit(self.bulle, (PNJ_TXT_XPOS, PNJ_TXT_YPOS))
-        self.ecran.blit(self.txt_renderer, (PNJ_TXT_XPOS + PNJ_TXT_ALIGN_X, PNJ_TXT_YPOS + PNJ_TXT_ALIGN_Y))
+    def render(self, ecran, dt: int=1):
+        ecran.blit(self.bulle, (PNJ_TXT_XPOS, PNJ_TXT_YPOS))
+        ecran.blit(self.txt_renderer, (PNJ_TXT_XPOS + PNJ_TXT_ALIGN_X, PNJ_TXT_YPOS + PNJ_TXT_ALIGN_Y))
 
         if self.clignote:
-            self.ecran.blit(self.font.render("_", POL_ANTIALISING, (10, 10, 10)), (PNJ_TXT_X_CLIGNO, PNJ_TXT_Y_CLIGNO))
+            ecran.blit(self.font.render("_", POL_ANTIALISING, (10, 10, 10)), (PNJ_TXT_X_CLIGNO, PNJ_TXT_Y_CLIGNO))
 
         self.mdt += dt
         self.mdt %= 2

@@ -166,6 +166,7 @@ class Game:
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
             if self.network_ev_listener.is_enabled():
                 self.network_ev_listener.disconnect()
+            self.musics_player.fadeout(300)
             self.continuer = False
 
         # Différents mode de gestion des événements
@@ -626,10 +627,8 @@ class Game:
 
         if self.show_fps:
             texte = self.police_normale.render("%3i FPS" % int(self.fps_regulator.get_fps()), 1, (0, 0, 0))
-            rendering_engine.draw_rect(self.ecran, (FEN_large - 10 + texte.get_width(), 0,
-                                                    10 + texte.get_width(), 10 + texte.get_height()),
-                                       (150, 150, 150)
-            )
+            rendering_engine.draw_rect(self.ecran, (0, 0, 10 + texte.get_width(), 10 + texte.get_height()),
+                                       (150, 150, 150))
             self.ecran.blit(texte, (5, 5))
 
     def start(self):
