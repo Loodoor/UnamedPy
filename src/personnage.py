@@ -55,7 +55,7 @@ class Personnage:
         else:
             self.perso = self.player_anim.get_sprite_pause(self.direction)
 
-    def _check_collisions(self, direction: int, vecteur: list, new_speed: float) -> tuple:
+    def _check_collisions(self, direction: int, vecteur: list, new_speed: float, pnjs: list) -> tuple:
         inverse_dir = unegate_vect(vecteur)
         new_of1, new_of2 = inverse_dir[0] * new_speed, inverse_dir[1] * new_speed
         x, y = self.pos[0], self.pos[1]
@@ -80,55 +80,37 @@ class Personnage:
                 if tile_specs["to"] == "TOP":
                     y -= TILE_SIZE
 
-        # Détection des collisions
+        # Détection des collisions avec les tiles et les pnjs (d'une pierre 2 coups :D)
+        pnjs_rect = [pnj.get_rect() for pnj in pnjs]
+        colliding = lambda i, j: self.carte_mgr.collide_at(i, j) or (i, j) in pnjs_rect
         x1, y1 = x, y
         x2, y2 = x1 + TILE_SIZE, y1
         x3, y3 = x1, y1 + TILE_SIZE
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
 
         if direction == HAUT:
-            if self.carte_mgr.collide_at(x1 / TILE_SIZE, y1 / TILE_SIZE):
+            if colliding(x1 / TILE_SIZE, y1 / TILE_SIZE) or (colliding(x2 / TILE_SIZE, y2 / TILE_SIZE) and x % TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y += TILE_SIZE - decy
                 new_of2 -= TILE_SIZE - decy
-            elif self.carte_mgr.collide_at(x2 / TILE_SIZE, y2 / TILE_SIZE):
-                if x % TILE_SIZE:
-                    decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    y += TILE_SIZE - decy
-                    new_of2 -= TILE_SIZE - decy
 
         if direction == GAUCHE:
-            if self.carte_mgr.collide_at(x1 / TILE_SIZE, y1 / TILE_SIZE):
+            if colliding(x1 / TILE_SIZE, y1 / TILE_SIZE) or (self.carte_mgr.collide_at(x3 / TILE_SIZE, y3 / TILE_SIZE) and y % TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x += TILE_SIZE - decx
                 new_of1 -= TILE_SIZE - decx
-            elif self.carte_mgr.collide_at(x3 / TILE_SIZE, y3 / TILE_SIZE):
-                if y % TILE_SIZE:
-                    decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    x += TILE_SIZE - decx
-                    new_of1 -= TILE_SIZE - decx
 
         if direction == DROITE:
-            if self.carte_mgr.collide_at(x2 / TILE_SIZE, y2 / TILE_SIZE):
+            if colliding(x2 / TILE_SIZE, y2 / TILE_SIZE) or (colliding(x4 / TILE_SIZE, y4 / TILE_SIZE) and y % TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x -= decx
                 new_of1 += decx
-            elif self.carte_mgr.collide_at(x4 / TILE_SIZE, y4 / TILE_SIZE):
-                if y % TILE_SIZE:
-                    decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    x -= decx
-                    new_of1 += decx
 
         if direction == BAS:
-            if self.carte_mgr.collide_at(x3 / TILE_SIZE, y3 / TILE_SIZE):
+            if colliding(x3 / TILE_SIZE, y3 / TILE_SIZE) or (colliding(x4 / TILE_SIZE, y4 / TILE_SIZE) and x % TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y -= decy
                 new_of2 += decy
-            elif self.carte_mgr.collide_at(x4 / TILE_SIZE, y4 / TILE_SIZE):
-                if x % TILE_SIZE:
-                    decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                    y -= decy
-                    new_of2 += decy
 
         return x, y, new_of1, new_of2
 
@@ -164,8 +146,9 @@ class Personnage:
         new_speed = self.speed * (dt / 50) / self.cur_div
 
         vecteur = udir_to_vect(direction)
+        pnjs = self.carte_mgr.get_pnjs()
 
-        x, y, new_of1, new_of2 = self._check_collisions(direction, vecteur, new_speed)
+        x, y, new_of1, new_of2 = self._check_collisions(direction, vecteur, new_speed, pnjs)
 
         self.carte_mgr.move_of1(new_of1)
         self.carte_mgr.move_of2(new_of2)

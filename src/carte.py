@@ -584,6 +584,9 @@ class CartesManager:
             return object_ if object_ != OBJET_GET_ERROR else None
         return None
 
+    def get_pnjs(self):
+        return self.current_carte.get_pnjs()
+
     def move_of1(self, dir_: int):
         self.offsets[0] += dir_
 
