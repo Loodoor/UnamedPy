@@ -63,7 +63,7 @@ class Personnage:
         y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
         tile_code = self.carte_mgr.get_tile_code_at(x // TILE_SIZE, y // TILE_SIZE)
 
-        # pré traitement avec les tiles de jump
+        # pré-traitement avec les tiles de jump
         jump_dict = self.carte_mgr.specials_blocs['jumping']
         if tile_code in jump_dict["content"]:
             tile_specs = jump_dict[tile_code]

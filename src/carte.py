@@ -172,9 +172,9 @@ def load_map_from_id(id_: int, wid: int):
             _zid = 0
 
         try:
-            _pnjs = content['pnjs']
-            _pnjs = parse_pnjs_dict(_pnjs)
+            _pnjs = parse_pnjs_dict(content['pnjs'])
         except KeyError:
+            print('error')
             _pnjs = []
 
         try:
@@ -195,6 +195,7 @@ def load_map_from_id(id_: int, wid: int):
         try:
             _lights = parse_lights_dict(content['lights'])
         except KeyError:
+            print('error')
             _lights = []
 
         try:
