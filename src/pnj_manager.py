@@ -50,7 +50,7 @@ HORIZONTAL_MOVE = [
 
 
 class PNJ:
-    def __init__(self, pos: tuple, type_mvt: list, texte: str, dir_: int=1, sprite: str='bas.png') -> None:
+    def __init__(self, pos: tuple, type_mvt: list, texte: str, dir_: int=1, sprite: str='first') -> None:
         self.pos = list(pos)
         self.type_mvt = type_mvt
         self.font = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
@@ -67,7 +67,7 @@ class PNJ:
         self.perso = None
         self.sprites_anim.set_speed(20)
         self.on_speak = PNJSpeaking(texte, self.font)
-        self._rect = self.get_pos() + self.sprites_anim.get_sprite_pause(self.orientation).get_size()
+        self._rect = tuple(self.get_pos()) + tuple(self.sprites_anim.get_sprite_pause(self.orientation).get_size())
 
     def _actualise_sprite(self):
         if self.is_moving:

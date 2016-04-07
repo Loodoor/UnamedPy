@@ -123,9 +123,9 @@ def parse_pnjs_dict(pnjs: dict) -> list:
             PNJ(
                 (pnj_details["pos"]["i"], pnj_details["pos"]["j"]),
                 type_mvt,
-                pnj_details["texte"],
+                pnj_details["text"],
                 pnj_details["dir"],
-                pnj_details["image"]
+                  # pnj_details["image"]
             )
         )
 
@@ -139,7 +139,7 @@ def parse_lights_dict(lights: dict) -> list:
         work.append(
             light_module.PreRenderedLight(
                 id_,
-                (light_details["pos"]["x"], light_details["pos"]["y"]),
+                (light_details["pos"]["i"] * TILE_SIZE, light_details["pos"]["j"] * TILE_SIZE),
                 light_details["size"],
                 (light_details["color"]["r"], light_details["color"]["g"], light_details["color"]["b"]),
                 variation=light_details["variation"],
@@ -174,7 +174,6 @@ def load_map_from_id(id_: int, wid: int):
         try:
             _pnjs = parse_pnjs_dict(content['pnjs'])
         except KeyError:
-            print('error')
             _pnjs = []
 
         try:
@@ -195,7 +194,6 @@ def load_map_from_id(id_: int, wid: int):
         try:
             _lights = parse_lights_dict(content['lights'])
         except KeyError:
-            print('error')
             _lights = []
 
         try:
