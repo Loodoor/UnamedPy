@@ -82,7 +82,12 @@ class Personnage:
 
         # Détection des collisions avec les tiles et les pnjs (d'une pierre 2 coups :D)
         pnjs_rect = [pnj.get_rect() for pnj in pnjs]
-        colliding = lambda i, j: self.carte_mgr.collide_at(i, j) or (i, j) in pnjs_rect
+
+        def colliding(i: int, j: int):
+            carte = self.carte_mgr.collide_at(i, j)
+            pnj = rendering_engine.create_rect(int(i) * TILE_SIZE, int(j) * TILE_SIZE, TILE_SIZE, TILE_SIZE).collidelist(pnjs_rect)
+            return carte or pnj != -1
+
         x1, y1 = x, y
         x2, y2 = x1 + TILE_SIZE, y1
         x3, y3 = x1, y1 + TILE_SIZE

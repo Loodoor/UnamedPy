@@ -253,3 +253,10 @@ def is_mixer_busy() -> bool:
         return pygame.mixer.get_busy()
     if METHOD == "pysfml":
         return
+
+
+def create_rect(x: int, y: int, w: int, h: int) -> object:
+    if METHOD == "pygame":
+        return pygame.Rect(x, y, w, h)
+    if METHOD == "pysfml":
+        return

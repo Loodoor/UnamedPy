@@ -557,7 +557,7 @@ class CartesManager:
                     self.ecran.blit(self.images[TILE_POKEOBJ], (xpos, ypos))
 
         for _pnj in self.current_carte.get_pnjs():
-            _pnj.update(self.ecran, self)
+            _pnj.update(self.ecran, self, dt)
 
     def get_tile_code_at(self, x: int, y: int, layer: int=1):
         return self.carte[int(y)][int(x)][layer] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR

@@ -3,6 +3,7 @@
 from constantes import *
 from gui import PNJSpeaking
 from animator import PlayerAnimator
+import rendering_engine
 
 
 STANDART_MOVE = [
@@ -51,11 +52,11 @@ HORIZONTAL_MOVE = [
 
 class PNJ:
     def __init__(self, pos: tuple, type_mvt: list, texte: str, dir_: int=1, sprite: str='first') -> None:
-        self.pos = list(pos)
+        self.pos = [t * TILE_SIZE for t in pos]
         self.type_mvt = type_mvt
         self.font = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
         self.cur_scheme = 0
-        self.real_pos = self.pos
+        self.real_pos = []
         self.speed = 4
         self.speak = False
         self.is_moving = False
@@ -67,7 +68,6 @@ class PNJ:
         self.perso = None
         self.sprites_anim.set_speed(20)
         self.on_speak = PNJSpeaking(texte, self.font)
-        self._rect = tuple(self.get_pos()) + tuple(self.sprites_anim.get_sprite_pause(self.orientation).get_size())
 
     def _actualise_sprite(self):
         if self.is_moving:
@@ -76,12 +76,21 @@ class PNJ:
             self.perso = self.sprites_anim.get_sprite_pause(self.orientation)
 
     def update(self, ecran, carte_mgr, dt: int=1):
+        self.real_pos = [
+            carte_mgr.get_of1() + self.pos[0],
+            carte_mgr.get_of2() + self.pos[1]
+        ]
+
         self.mdt += dt
         self.sprites_anim.next()
         self._actualise_sprite()
 
-        if not self.mdt % 150:
+        if not self.mdt % 35:
             self.move(carte_mgr)
+            self.pos = [
+                self.real_pos[0] - carte_mgr.get_of1(),
+                self.real_pos[1] - carte_mgr.get_of2()
+            ]
 
         self.render(ecran, dt)
 
@@ -89,7 +98,7 @@ class PNJ:
         return self.pos
 
     def get_rect(self) -> tuple:
-        return self._rect
+        return rendering_engine.create_rect(self.pos[0], self.pos[1], TILE_SIZE, TILE_SIZE)
 
     def move_scheme(self):
         self.cur_scheme += self.dir
@@ -113,8 +122,8 @@ class PNJ:
         x, y = tmp
         x *= self.speed
         y *= self.speed
-        x += self.pos[0] - carte_mgr.get_of1()
-        y += self.pos[1] - carte_mgr.get_of2()
+        x += self.real_pos[0] - carte_mgr.get_of1()
+        y += self.real_pos[1] - carte_mgr.get_of2()
         x1, y1 = x, y
         x2, y2 = x1 + TILE_SIZE, y1
         x3, y3 = x1, y1 + TILE_SIZE
@@ -127,9 +136,9 @@ class PNJ:
         if tmp[0] < 0:
             self.orientation = GAUCHE
         if tmp[1] > 0:
-            self.orientation = HAUT
-        if tmp[1] < 0:
             self.orientation = BAS
+        if tmp[1] < 0:
+            self.orientation = HAUT
 
         # Détection des collisions
         if self.orientation == HAUT:
