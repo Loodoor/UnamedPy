@@ -125,7 +125,7 @@ def parse_pnjs_dict(pnjs: dict) -> list:
                 type_mvt,
                 pnj_details["text"],
                 pnj_details["dir"],
-                  # pnj_details["image"]
+                # pnj_details["image"]
             )
         )
 

@@ -161,6 +161,15 @@ class Personnage:
         if self.changed_cur_case():
             self.carte_mgr.call_trigger_at(int(x // TILE_SIZE), int(y // TILE_SIZE))
 
+    def search_and_talk_to_pnj(self):
+        i, j = self.pos
+        i -= self.carte_mgr.get_of1()
+        j -= self.carte_mgr.get_of2()
+        pnjs_rect = [pnj.get_rect() for pnj in self.carte_mgr.get_pnjs()]
+        check_id = rendering_engine.create_rect(i - TILE_SIZE, j - TILE_SIZE, TILE_SIZE * 3, TILE_SIZE * 3).collidelist(pnjs_rect)
+        if check_id != -1:
+            self.carte_mgr.get_pnjs()[check_id].player_want_to_talk(self.ecran)
+
     def is_moving_or_not(self):
         return self.is_moving
 
@@ -190,6 +199,8 @@ class Personnage:
 
     def render(self):
         self.ecran.blit(self.perso, self.pos)
+        if DEBUG_LEVEL >= 1:
+            rendering_engine.draw_rect(self.ecran, (self.pos[0] - TILE_SIZE, self.pos[1] - TILE_SIZE, TILE_SIZE * 3, TILE_SIZE * 3), (255, 0, 0), width=2)
 
     def get_pos(self):
         return tuple(int(i) for i in self.pos)

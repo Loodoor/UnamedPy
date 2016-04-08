@@ -478,6 +478,9 @@ class Game:
                 self.left, self.right = False, True
             if event.key == self.controles[MENU]:
                 self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
+        if event.type == KEYUP:
+            if event.key == self.controles[VALIDATION]:
+                self.personnage.search_and_talk_to_pnj()
         self.move_perso(dt)
 
         # joystick

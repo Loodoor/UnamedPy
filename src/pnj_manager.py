@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from constantes import *
-from gui import PNJSpeaking
+from gui import GUIBulleWaiting
 from animator import PlayerAnimator
 import rendering_engine
 
@@ -69,7 +69,9 @@ class PNJ:
         self.sprites_anim = PlayerAnimator(os.path.join("..", "assets", "pnj", sprite))
         self.perso = None
         self.sprites_anim.set_speed(20)
-        self.on_speak = PNJSpeaking(texte, self.font)
+        self.texte = texte
+        self.on_speak = None
+        self._screenshot = None
 
     def _actualise_sprite(self):
         if self.is_moving:
@@ -94,7 +96,7 @@ class PNJ:
                 self.real_pos[1] - carte_mgr.get_of2()
             ]
 
-        self.render(ecran, dt)
+        self.render(ecran)
 
     def get_pos(self) -> tuple:
         return self.pos
@@ -107,8 +109,8 @@ class PNJ:
         if self.cur_scheme + self.dir >= len(self.type_mvt):
             self.cur_scheme = 0
 
-    def speaking(self, ecran, dt: int=1):
-        return self.on_speak.update(ecran, dt)
+    def speaking(self, dt: int=1):
+        return not not self.on_speak.update(dt)
 
     def _changed_case(self) -> bool:
         return not self._a_parcouru % TILE_SIZE and self._a_parcouru != 0
@@ -187,11 +189,11 @@ class PNJ:
 
         self.real_pos = (x + carte_mgr.get_of1(), y + carte_mgr.get_of2())
 
-    def render(self, ecran, dt: int=1):
+    def render(self, ecran):
         if 0 <= self.real_pos[0] < FEN_large + self.perso.get_width() and 0 <= self.real_pos[1] < FEN_haut + self.perso.get_height():
             ecran.blit(self.perso, self.real_pos)
-        if self.speak:
-            self.speak = self.speaking(ecran, dt)
 
-    def player_want_to_talk(self):
+    def player_want_to_talk(self, ecran):
         self.speak = True
+        self.on_speak = GUIBulleWaiting(ecran, (PNJ_TXT_XPOS, PNJ_TXT_YPOS), self.texte, self.font)
+        self.speak = self.speaking()
