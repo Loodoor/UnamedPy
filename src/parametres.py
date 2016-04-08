@@ -22,7 +22,8 @@ class ParametresManager:
                 MENU: K_RSHIFT,
                 SCREENSCHOT: K_F5,
                 SHOW_FPS: K_BACKSPACE,
-                VALIDATION: K_RETURN
+                VALIDATION: K_RETURN,
+                MAJ: K_LSHIFT
             },
             "joy_controls": {
                 DROITE: {

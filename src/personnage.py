@@ -28,6 +28,17 @@ class Personnage:
         self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
         self.same_as_before = False
 
+    def change_moving_state(self) -> None:
+        if self.cur_div == DIV_DT_BASIC:
+            self.run()
+            return
+        if self.cur_div == DIV_DT_COURSE:
+            self.ride()
+            return
+        if self.cur_div == DIV_DT_VELO:
+            self.walk()
+            return
+
     def get_skin_path(self):
         return self._choice
 
@@ -48,6 +59,9 @@ class Personnage:
 
     def changed_cur_case(self):
         return not self.same_as_before
+
+    def get_speed_diviseur(self) -> float:
+        return self.cur_div
 
     def _actualise_sprite(self):
         if self.is_moving:
@@ -181,10 +195,10 @@ class Personnage:
         self.cur_div = DIV_DT_BASIC
 
     def run(self):
-        self.cur_div = DIV_DT_COURSE if self.cur_div != DIV_DT_COURSE else DIV_DT_BASIC
+        self.cur_div = DIV_DT_COURSE
 
     def ride(self):
-        self.cur_div = DIV_DT_VELO if self.cur_div != DIV_DT_VELO else DIV_DT_BASIC
+        self.cur_div = DIV_DT_VELO
 
     def get_dir(self):
         return self.direction

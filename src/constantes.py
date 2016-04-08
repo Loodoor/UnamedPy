@@ -77,8 +77,6 @@ temp = UEnumFactory(
     "HyperPotion",
     "MegaPotion",
     "PotionMax",
-    "Chaussures",
-    "Velo",
     "SimpleBall",
     "NormalBall",
     "SuperiorBall",
@@ -247,6 +245,7 @@ NEXT_PAGE = 7
 PREVIOUS_PAGE = 8
 SHOW_FPS = 9
 VALIDATION = 10
+MAJ = 13
 UP_PAGE = 11
 DOWN_PAGE = 12
 
@@ -367,8 +366,8 @@ TRIGGER = 5
 
 BASIC_SPEED = 4
 DIV_DT_BASIC = 1
-DIV_DT_VELO = 0.5
-DIV_DT_COURSE = 0.8
+DIV_DT_COURSE = 0.7
+DIV_DT_VELO = 0.45
 
 T_FEU = 0
 T_EAU = 1

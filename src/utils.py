@@ -229,10 +229,6 @@ class ULoader:
                                              [0, MAX_ITEM], OBJETS_ID.MegaPotion)
         regen_pvs_max = objets_manager.Objet("Potion Max", "La potion max régénère entièrement les PV d'une de vos créatures",
                                              [0, MAX_ITEM], OBJETS_ID.PotionMax)
-        chaussures = objets_manager.Objet("Chaussures", "Les chaussures vous permettent de vous déplacer plus vite",
-                                          [1, 1], OBJETS_ID.Chaussures)
-        velo = objets_manager.Objet("Vélo", "Le vélo vous permet de vous déplacer encore vite qu'avec les Chaussures",
-                                    [0, 1], OBJETS_ID.Velo)
         simple_ball = objets_manager.Objet("Simple Ball", "La simple ball vous permet de capturer une créature. Son taux"
                                                           " de réussite est très faible", [1, MAX_ITEM],
                                            OBJETS_ID.SimpleBall)
@@ -276,8 +272,7 @@ class ULoader:
                 regen_pvs_max
             ],  # Poche médicaments
             [
-                velo,
-                chaussures
+
             ],  # Poche Objets Rares
             [
 

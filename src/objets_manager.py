@@ -11,7 +11,6 @@ class ObjectTable:
             ObjectTable.instance = self
 
         self.table = {
-            # ID: dict -> {"on": ("creature" | "adversaire" | "personnage")}
             OBJETS_ID.AntiPara: {"on": RENDER_CREATURES, "spec": SPEC_ETAT, "new": SPEC_ETATS.normal},
             OBJETS_ID.AntiBrule: {"on": RENDER_CREATURES, "spec": SPEC_ETAT, "new": SPEC_ETATS.normal},
             OBJETS_ID.AntiPoison: {"on": RENDER_CREATURES, "spec": SPEC_ETAT, "new": SPEC_ETATS.normal},
@@ -28,8 +27,6 @@ class ObjectTable:
             OBJETS_ID.HyperPotion: {"on": RENDER_CREATURES, "spec": SPEC_PVS, "new": +100},
             OBJETS_ID.MegaPotion: {"on": RENDER_CREATURES, "spec": SPEC_PVS, "new": +200},
             OBJETS_ID.PotionMax: {"on": RENDER_CREATURES, "spec": SPEC_PVS, "new": +999999},
-            OBJETS_ID.Chaussures: {"on": RENDER_GAME, "id": OBJETS_ID.Chaussures},
-            OBJETS_ID.Velo: {"on": RENDER_GAME, "id": OBJETS_ID.Velo},
             OBJETS_ID.SimpleBall: {"on": RENDER_COMBAT},
             OBJETS_ID.NormalBall: {"on": RENDER_COMBAT},
             OBJETS_ID.SuperiorBall: {"on": RENDER_COMBAT},

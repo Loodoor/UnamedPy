@@ -436,12 +436,7 @@ class Game:
             game.render()
 
         if self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_GAME:
-            if self.personnage.inventaire.get_obj_messenger().objet["id"] == OBJETS_ID.Chaussures:
-                self.personnage.run()
-                done(self)
-            if self.personnage.inventaire.get_obj_messenger().objet["id"] == OBJETS_ID.Velo:
-                self.personnage.ride()
-                done(self)
+            done(self)
         elif self.personnage.inventaire.get_obj_messenger().pour["renderer"] == RENDER_COMBAT:
             if self.cur_combat:
                 ball = captureurs.CapturersTable.get_ball_with_id(self.personnage.inventaire.get_obj_messenger().objet["id"])
@@ -481,6 +476,8 @@ class Game:
         if event.type == KEYUP:
             if event.key == self.controles[VALIDATION]:
                 self.personnage.search_and_talk_to_pnj()
+            if event.key == self.controles[MAJ]:
+                self.personnage.change_moving_state()
         self.move_perso(dt)
 
         # joystick
@@ -680,6 +677,7 @@ class Game:
                                  "Position (cases): {}".format(self.personnage.get_pos_in_tiles()),
                                  "UP: {} | DOWN: {}".format(self.top, self.bottom),
                                  "RIGHT: {} | LEFT: {}".format(self.right, self.left),
+                                 "DivDt : {}".format(self.personnage.get_speed_diviseur()),
                                  "- - Réseau - -",
                                  "En réseau: {}".format(self.sock is not None),
                                  "Params: {}".format(self.params if self.sock is not None else "NA"),
