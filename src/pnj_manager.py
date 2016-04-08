@@ -7,46 +7,48 @@ import rendering_engine
 
 
 STANDART_MOVE = [
-    (0, 0),
     (0, -1),
-    (0, -2),
-    (1, -2),
-    (2, -2),
-    (3, -2),
-    (3, -1),
-    (3, 0),
-    (2, 0),
-    (1, 0)
+    (0, -1),
+    (1, 0),
+    (1, 0),
+    (0, 1),
+    (0, 1),
+    (-1, 0),
+    (-1, 0)
 ]
 CROSS_MOVE = [
-    (0, 0),
     (0, 1),
-    (0, 2),
-    (-1, 2),
-    (-2, 2),
-    (-1, 2),
-    (0, 2),
-    (0, 3),
-    (0, 4),
-    (0, 3),
-    (0, 2),
-    (1, 2),
-    (2, 2),
-    (1, 2),
-    (0, 2),
+    (0, 1),
+    (-1, 0),
+    (-1, 0),
+    (1, 0),
+    (1, 0),
+    (0, 1),
+    (0, 1),
+    (0, -1),
+    (0, -1),
+    (1, 0),
+    (1, 0),
+    (-1, 0),
+    (-1, 0),
+    (0, 1),
     (0, 1)
 ]
 VERTICAL_MOVE = [
-    (0, 0),
     (0, 1),
-    (0, 2),
-    (0, 3)
+    (0, 1),
+    (0, 1),
+    (0, -1),
+    (0, -1),
+    (0, -1)
 ]
 HORIZONTAL_MOVE = [
-    (0, 0),
     (1, 0),
-    (2, 0),
-    (3, 0)
+    (1, 0),
+    (1, 0),
+    (-1, 0),
+    (-1, 0),
+    (-1, 0)
 ]
 
 
@@ -102,16 +104,14 @@ class PNJ:
 
     def move_scheme(self):
         self.cur_scheme += self.dir
-        if self.cur_scheme + self.dir < 0:
-            self.dir = +1
         if self.cur_scheme + self.dir >= len(self.type_mvt):
-            self.dir = -1
+            self.cur_scheme = 0
 
     def speaking(self, ecran, dt: int=1):
         return self.on_speak.update(ecran, dt)
 
     def _changed_case(self) -> bool:
-        return not self._a_parcouru % TILE_SIZE
+        return not self._a_parcouru % TILE_SIZE and self._a_parcouru != 0
 
     def move(self, carte_mgr):
         if self._changed_case():
