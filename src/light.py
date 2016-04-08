@@ -1,26 +1,30 @@
 import pygame
 from pygame import gfxdraw
 import random
+from constantes import *
 
 
 class PreRenderedLight():
     def __init__(self, id_: int, pos: tuple, size: int, color: tuple, variation: int=0,
                  ambiantLight: int=176, threshold: float=12):
         self.lightID = id_
-        self.lightPos = pos
-        self.lightSize = size
         self.lightColor = color
         self.variation = variation
+        self.lightSize = size
         self.imageList = []
         self.nbImages = 10
         self.indexBlit = 0
         self.ambiantLight = ambiantLight
         self.threshold = threshold
+        self.lightPos = [
+            pos[0] - self.lightSize - self.variation + TILE_SIZE,
+            pos[1] - self.lightSize - self.variation + TILE_SIZE
+        ]
         self._t = 0
     
     def load(self):
         for number in range(0, self.nbImages):
-            self.imageList.append(pygame.Surface((self.lightSize * 2 + self.variation, self.lightSize * 2 + self.variation), pygame.SRCALPHA, 32))
+            self.imageList.append(pygame.Surface((self.lightSize * 2 + self.variation * 2, self.lightSize * 2 + self.variation * 2), pygame.SRCALPHA, 32))
             self.imageList[number].convert_alpha()
             self.imageList[number].fill((0, 0, 0, 0))
         self._render()
@@ -36,7 +40,6 @@ class PreRenderedLight():
                 g = self.lightColor[1] * (i / maxRange)
                 b = self.lightColor[2] * (i / maxRange)
                 t = int(255 - (self.ambiantLight * (i / maxRange)))
-                # print("Color:", r, g, b, "Transparency:", t, "at", i)
                 pygame.gfxdraw.filled_circle(
                     self.imageList[number],
                     int(self.lightSize + self.variation / 2),
