@@ -5,7 +5,7 @@ import random
 
 class PreRenderedLight():
     def __init__(self, id_: int, pos: tuple, size: int, color: tuple, variation: int=0,
-                 ambiantLight: int=64, threshold: float=12):
+                 ambiantLight: int=176, threshold: float=12):
         self.lightID = id_
         self.lightPos = pos
         self.lightSize = size
