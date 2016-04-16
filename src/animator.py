@@ -37,7 +37,7 @@ class BaseSideAnimator:
             time_ %= self.base_image.get_width()
             self.output.append(surf)
 
-    def _draw(self):
+    def next(self):
         self.time += self.velocity
 
     def draw_at(self, ecran: object, pos: tuple=(-1, -1)):

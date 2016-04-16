@@ -8,7 +8,7 @@ from trigger_manager import TriggersManager
 from exceptions import ErreurContenuCarte
 from utils import udel_same_occurence
 from pnj_manager import PNJ, CROSS_MOVE, HORIZONTAL_MOVE, STANDART_MOVE, VERTICAL_MOVE
-from animator import FluidesAnimator, BaseMultipleSpritesAnimator
+from animator import FluidesAnimator, BaseMultipleSpritesAnimator, BaseSideAnimator
 from random import randint
 from urllib import error
 import socket
@@ -237,6 +237,10 @@ class SubCarte:
         self.id = id_
         self.lights = lights
         self.name = name
+        self._rainy = random.random() < PROB_RAIN
+
+    def is_rainy(self):
+        return self._rainy
 
     def create_pnj(self, pnj: PNJ):
         self.pnjs.append(pnj)
@@ -357,7 +361,10 @@ class CartesManager:
         self.has_changed_map = False
         self.time_changed_map = 0
         self.perso = None
-        self.water_animator = None
+        self.animators = {
+            "water": None,
+            "rain": None
+        }
         self.specials_blocs = None
         self.lights = []
 
@@ -366,8 +373,11 @@ class CartesManager:
             self.perso = new
 
     def _load_animators(self):
-        self.water_animator = FluidesAnimator(self.images[TILE_EAU], ANIM_SPEED_EAU)
-        self.water_animator.load()
+        self.animators['water'] = FluidesAnimator(self.images[TILE_EAU], ANIM_SPEED_EAU)
+        self.animators['water'].load()
+
+        self.animators['rain'] = BaseSideAnimator(self.images[TILE_RAIN], ANIM_SPEED_RAIN, True)
+        self.animators['rain'].load()
 
     def _load_lights(self):
         self.lights = self.current_carte.get_lights()
@@ -482,7 +492,7 @@ class CartesManager:
 
     def _draw_tile_at(self, at_x: int, at_y: int, tile: str):
         if tile == TILE_EAU:
-            self.ecran.blit(self.water_animator.get_anim(), (at_x, at_y))
+            self.ecran.blit(self.animators["water"].get_anim(), (at_x, at_y))
             if tile not in self.callback_end_rendering:
                 self.callback_end_rendering.append(tile)
         else:
@@ -496,7 +506,7 @@ class CartesManager:
     def _update_anims(self):
         for anim in self.callback_end_rendering:
             if anim == TILE_EAU:
-                self.water_animator.next()
+                self.animators["water"].next()
             else:
                 self.images[anim].next()
         self.callback_end_rendering = []
@@ -515,6 +525,13 @@ class CartesManager:
 
         for _light in self.current_carte.get_lights():
             _light.blit(self.ecran, self)
+
+        # pluie
+        for y in range(len(self.carte)):
+            for x in range(len(self.carte[y])):
+                rx, ry = x * TILE_SIZE + self.get_of1(), y * TILE_SIZE + self.get_of2()
+                self.animators['rain'].draw_at(self.ecran, (rx, ry))
+        self.animators['rain'].next()
 
         # doit toujours être dessiné en dernier !
         if self.has_changed_map:
