@@ -56,14 +56,14 @@ class TextBox:
         texte = self.font.render(self.input, POL_ANTIALISING, self.color)
         if not self.center:
             self.window.blit(self.placeholder, (self.pos_x, self.pos_y))
-            self.window.blit(texte, (self.pos_x + 2 + self.placeholder.get_width(), self.pos_y + (self.sy - texte.get_height()) // 2))
+            self.window.blit(texte, (self.pos_x + 2 + self.placeholder.get_width(), self.pos_y))
             if self.clignote:
                 self.window.blit(self.cli, (self.pos_x + 2 * 2 + self.placeholder.get_width() + texte.get_width(),
                                             self.pos_y))
         else:
             self.window.blit(self.placeholder, (self.window.get_width() // 2 - self.placeholder.get_width(),
                                                 self.window.get_height() // 2 - self.placeholder.get_height() // 2))
-            self.window.blit(texte, (texte.get_width() // 2, texte.get_height() // 2 - texte.get_height() // 2))
+            self.window.blit(texte, (texte.get_width() // 2, self.window.get_height() // 2 - texte.get_height() // 2))
             if self.clignote:
                 self.window.blit(self.cli, (self.pos_x + 2 * 2 + self.placeholder.get_width() + texte.get_width(),
                                             self.pos_y))
