@@ -69,7 +69,6 @@ def main():
     continuer = 1
     has_already_played = adventure.has_already_played()
     chargement = False
-    en_reseau = False
     jeu = None
     loadeur = None
     finished_loading = False
@@ -100,35 +99,29 @@ def main():
             if event.type == KEYDOWN:
                 if event.key == K_RIGHT or event.key == K_LEFT:
                     alea_texte = police_annot.render(get_alea_text(), POL_ANTIALISING, (0, 0, 0))
-            if event.type == MOUSEBUTTONUP:
+            if event.type == MOUSEBUTTONUP and not chargement:
                 xp, yp = event.pos
                 if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_SX and \
                         MENU_BTN_JOUER_Y <= yp <= MENU_BTN_JOUER_Y + MENU_BTN_SY:
                     chargement = True
+                    jeu = game.Game(ecran, "first", adventure=adventure)
                 if MENU_BTN_RESEAU_X <= xp <= MENU_BTN_RESEAU_X + MENU_BTN_SX and \
                         MENU_BTN_RESEAU_Y <= yp <= MENU_BTN_RESEAU_Y + MENU_BTN_SY:
                     chargement = True
-                    en_reseau = True
+                    debug.println("Entrée en mode réseau ...")
+                    ecran.fill(0)
+                    rendering_engine.flip()
+                    ip = TextBox(ecran, x=100, y=ecran.get_height() // 2,
+                                 sx=ecran.get_width(),
+                                 sy=ecran.get_height(),
+                                 placeholder="IP du serveur : ")
+                    ip.mainloop()
+                    jeu = game.Game(ecran, "first", adventure=adventure,
+                                    s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM),
+                                    p=(ip.get_text(), 5500))
                 if MENU_BTN_PARAMS_X <= xp <= MENU_BTN_PARAMS_X + MENU_BTN_SX and \
                         MENU_BTN_PARAMS_Y <= yp <= MENU_BTN_PARAMS_Y + MENU_BTN_SY:
                     gui_access(ecran, police)
-
-        # création de l'instance de jeu
-        if en_reseau:
-            if not jeu:
-                debug.println("Entrée en mode réseau ...")
-                ecran.fill(0)
-                rendering_engine.flip()
-                ip = TextBox(ecran, x=100, y=ecran.get_height() // 2,
-                             sx=ecran.get_width(),
-                             sy=ecran.get_height(),
-                             placeholder="IP du serveur : ")
-                ip.mainloop()
-                jeu = game.Game(ecran, "first", adventure=adventure,
-                                s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM),
-                                p=(ip.get_text(), 5500))
-        else:
-            jeu = game.Game(ecran, "first", adventure=adventure) if not jeu else jeu
 
         # création du "loadeur"
         if jeu and not loadeur:
