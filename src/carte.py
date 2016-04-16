@@ -527,11 +527,12 @@ class CartesManager:
             _light.blit(self.ecran, self)
 
         # pluie
-        for y in range(len(self.carte)):
-            for x in range(len(self.carte[y])):
-                rx, ry = x * TILE_SIZE + self.get_of1(), y * TILE_SIZE + self.get_of2()
-                self.animators['rain'].draw_at(self.ecran, (rx, ry))
-        self.animators['rain'].next()
+        if self.current_carte.is_rainy():
+            for y in range(len(self.carte)):
+                for x in range(len(self.carte[y])):
+                    rx, ry = x * TILE_SIZE + self.get_of1(), y * TILE_SIZE + self.get_of2()
+                    self.animators['rain'].draw_at(self.ecran, (rx, ry))
+            self.animators['rain'].next()
 
         # doit toujours être dessiné en dernier !
         if self.has_changed_map:
