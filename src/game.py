@@ -251,12 +251,18 @@ class Game:
         if event.type == KEYDOWN:
             if event.key == self.controles[MENU]:
                 self.renderer_manager.invert_renderer()
+        if event.type == MOUSEBUTTONUP:
+            xp, yp = event.pos
+            self.mini_map.clic(xp, yp)
 
         # joystick
         if self.joystick:
             self.joystick_deplace_souris()
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.invert_renderer()
+            if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
+                xp, yp = rendering_engine.get_mouse_pos()
+                self.mini_map.clic(xp, yp)
 
     def process_events_save(self, event, dt: int=1):
         pass
@@ -549,6 +555,9 @@ class Game:
         self.personnage.set_carte_mgr(self.carte_mgr)
         yield 1
 
+        self.mini_map.load()
+        yield 1
+
         self.pc_mgr.add_equipe(self.equipe_mgr)
         yield 1
         self.equipe_mgr.add_pc(self.pc_mgr)
@@ -646,7 +655,6 @@ class Game:
 
             # Evénements
             self.process_event(rendering_engine.poll_event(), dt)
-
             self.network_ev_listener.listen()
 
             # Affichage

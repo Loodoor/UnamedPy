@@ -625,11 +625,48 @@ class CarteRenderer:
     def __init__(self, ecran, carte_mgr: CartesManager):
         self.ecran = ecran
         self.carte_mgr = carte_mgr
-        self.carte_img = rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png"))
-        self.carte_mgr = rendering_engine.rescale(self.carte_img, (MAP_RDR_SX, MAP_RDR_SY))
+        self.path = os.path.join("..", "assets", "configuration", "worldmap" + EXTENSION)
+        self.carte_paths = rendering_engine.create_surface((MAP_RDR_SX, MAP_RDR_SY), rendering_engine.get_alpha_channel(), 32)
+        self.carte_mgr = rendering_engine.rescale(rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")), (MAP_RDR_SX, MAP_RDR_SY))
+        self._scheme = []
+        self._surfs = {}
+        self.selected = None
+
+    def load(self):
+        with open(self.path) as code:
+            for line in code.readlines():
+                self._scheme.append([_ for _ in line.strip()])
+
+        self._surfs[MAP_RDR_CHEMIN] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[MAP_RDR_CHEMIN].fill((215, 185, 15))
+
+        self._surfs[MAP_RDR_CHENAL] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[MAP_RDR_CHENAL].fill((20, 215, 200))
+
+        self._surfs[MAP_RDR_LIEUX_SPEC] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[MAP_RDR_LIEUX_SPEC].fill((50, 190, 20))
+
+        self._surfs[MAP_RDR_VILLE] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[MAP_RDR_VILLE].fill((215, 25, 25))
+
+        for y, line in enumerate(self._scheme):
+            for x, case in enumerate(line):
+                if case != MAP_RDR_VIDE:
+                    rx, ry = MAP_RDR_POSX + x * MAP_RDR_CASE_SIZE, MAP_RDR_POSY + y * MAP_RDR_CASE_SIZE
+
+                    if case not in MAP_RDR_VILLES:
+                        surf = self._surfs[case]
+                    else:
+                        surf = self._surfs[MAP_RDR_VILLE]
+
+                    self.carte_paths.blit(surf, (rx, ry))
+
+    def clic(self, x: int, y: int):
+        pass
 
     def update(self):
         self.render()
 
     def render(self):
         self.ecran.blit(self.carte_mgr, (MAP_RDR_POSX, MAP_RDR_POSY))
+        self.ecran.blit(self.carte_paths, (MAP_RDR_POSX, MAP_RDR_POSY))

@@ -260,3 +260,10 @@ def create_rect(x: int, y: int, w: int, h: int) -> object:
         return pygame.Rect(x, y, w, h)
     if METHOD == "pysfml":
         return
+
+
+def get_alpha_channel():
+    if METHOD == "pygame":
+        return pygame.SRCALPHA
+    if METHOD == "pysfml":
+        return
