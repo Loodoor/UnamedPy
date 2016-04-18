@@ -174,7 +174,6 @@ MAX_TIME_CHANGED_MAP = 200
 
 TRIGGER_ERROR = "trigger.error"
 TRIGGER_UNDEFINED = "trigger.undefined"
-TRIGGER_COMBAT_ZONE = "trigger.combat.lance."  # + ZONE ID
 TRIGGER_INFINITE_CALLS = -1
 
 BAR_ESP = 2
@@ -487,6 +486,7 @@ tmp = UEnumFactory(
 )
 SPEC_ETATS = tmp.create()
 del tmp
+SPEC_ETAT_AFFECT_PERCENT = 0.5
 SPEC_DGT_BRULURE = lambda niveau: niveau // 2 * 3
 SPEC_DGT_POISON = lambda niveau: niveau // 2 * 4
 SPEC_LUCK_OF_ATTACK = lambda vit: random.randint(0, 100) + vit >= 50

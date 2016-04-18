@@ -1,27 +1,1296 @@
-# nom::type::degats::description::cout::type1(int)-type2(int)-...&niveau_necessaire
-Charge::NORMAL::10::La créature va charger son adversaire de tout son poids::1::0-1-2-3-4-5-6-7&2
-Boul'Rock::TERRE::25::Un roc est lancé tel un boulet de canon sur l'adversaire::1::5-6&12
-Brume::EAU::10::Une brume épaisse s'installe::1::0-1&12
-Coup d'bec::AIR::15::La créature adverse est violemment bequetée::1::4&5
-Eclair::ELEC::22::Un éclair s'abat sur l'adversaire pour le blesser::1::3-7&8
-Bulles d'eau::EAU::12::Des bulles d'eau sont projetées sur l'adversaire pour le blesser::1::1&5
-Coup d'tête::NORMAL::14::La créature donne un violent coup de tête à son adversaire::1::0-1-2-3-4-5-6-7-8-9&6
-Découper::NORMAL::17::L'adversaire est découpé de lames accérées::1::0-1-2-3-4-5-6&10
-Morsure::NORMAL::19::La créature mord son adversaire pour le blesser::1::0-1-2-3-4-5-6-7&5
-Vague::EAU::14::Une vague submerge l'ennemi::1::5-1&7
-Coup d'poing::NORMAL::20::Un violent coup de poing est donnée à l'ennemi::1::0-2-5-6&10
-Poing de feu::FEU::18::Un poing de feu s'abat sur l'ennemi::1::0&5
-Constriction::PLANTE::16::Des lianes enserrent l'adversaire pour le blesser::1::2-6&5
-Electro'vague::PLASMA::25::Une vague d'ondes électriques déferle sur l'ennemi::1::7-3&12
-Rayon d'Soleil::LUMIERE::10::Un rayon de soleil extrêmement lumineux frappe l'ennemi::1::8&13
-
-# FEU     = 0  >> 1
-# EAU     = 1  >> 3
-# PLANTE  = 2  >> 1
-# ELEC    = 3  >> 1
-# AIR     = 4  >> 1
-# NORMAL  = 5  >> 5
-# TERRE   = 6  >> 1
-# PLASMA  = 7  >> 1
-# LUMIERE = 8  >> 1
-# TENEBRE = 9  >> 0
+[
+    {
+        "puissance": "70",
+        "a_type": "14",
+        "name": "Abime",
+        "effect": "Fait tomber l'ennemi dans une crevasse.",
+        "precision": "30"
+    },
+    {
+        "puissance": "60",
+        "a_type": "11",
+        "name": "Acidarmure",
+        "effect": "Liquéfie le corps du lanceur.",
+        "precision": "25"
+    },
+    {
+        "puissance": "40",
+        "a_type": "11",
+        "name": "Acide",
+        "effect": "Pulvérise un acide.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "100",
+        "a_type": "17",
+        "name": "Aeroblast",
+        "effect": "Implosion à taux de coups critiques élevé.",
+        "precision": "95",
+        "brule": True
+    },
+    {
+        "puissance": "60",
+        "a_type": "17",
+        "name": "Aeropique",
+        "effect": "Attaque extrêmement rapide et inévitable.",
+        "precision": "50"
+    },
+    {
+        "puissance": "70",
+        "a_type": "1",
+        "name": "Aile D'Acier",
+        "effect": "Frappe l'ennemi en déployant ses ailes d'acier.",
+        "precision": "90"
+    },
+    {
+        "puissance": "70",
+        "a_type": "14",
+        "name": "Ampleur",
+        "effect": "Un tremblement de terre d'intensité variable.",
+        "precision": "100"
+    },
+    {
+        "puissance": "80",
+        "a_type": "2",
+        "name": "Balayage",
+        "effect": "Un coup de pied faisant plus mal aux ennemis lourds.",
+        "precision": "100"
+    },
+    {
+        "puissance": "70",
+        "a_type": "12",
+        "name": "Ball'Brume",
+        "effect": "Envoie une rafale de duvet.",
+        "precision": "100"
+    },
+    {
+        "puissance": "10",
+        "a_type": "10",
+        "name": "Balle Graine",
+        "effect": "Mitraille l'ennemi de plusieurs rafales à la suite.",
+        "precision": "100"
+    },
+    {
+        "puissance": "30",
+        "a_type": "7",
+        "name": "Ball'Glace",
+        "effect": "Une boule de glace destructrice.",
+        "precision": "90",
+        "paralise": True
+    },
+    {
+        "puissance": "80",
+        "a_type": "15",
+        "name": "Ball'Ombre",
+        "effect": "Projette une grand tache.",
+        "precision": "100"
+    },
+    {
+        "puissance": "10",
+        "a_type": "16",
+        "name": "Baston",
+        "effect": "Baston générale !",
+        "precision": "100"
+    },
+    {
+        "puissance": "80",
+        "a_type": "17",
+        "name": "Bec Vrille",
+        "effect": "Une attaque utilisant le bec comme une perceuse.",
+        "precision": "100"
+    },
+    {
+        "puissance": "90",
+        "a_type": "9",
+        "name": "Belier",
+        "effect": "Une charge violente qui ébranle l'ennemi.",
+        "precision": "85"
+    },
+    {
+        "puissance": "120",
+        "a_type": "7",
+        "name": "Blizzard",
+        "effect": "Déclenche une tempête violente.",
+        "precision": "70"
+    },
+    {
+        "puissance": "90",
+        "a_type": "11",
+        "name": "Bomb-Beurk",
+        "effect": "Envoie des détritus pour blesser. Peut empoisonner.",
+        "poison": True,
+        "precision": "100"
+    },
+    {
+        "puissance": "100",
+        "a_type": "9",
+        "name": "Bomb'Oeuf",
+        "effect": "Envoie violemment un oeuf en direction de l'ennemi.",
+        "precision": "75"
+    },
+    {
+        "puissance": "25",
+        "a_type": "13",
+        "name": "Boule Roc",
+        "effect": "Projette des rochers sur l'ennemi plusieurs fois de suite.",
+        "precision": "80"
+    },
+    {
+        "puissance": "50",
+        "a_type": "9",
+        "name": "Brouhaha",
+        "effect": "Brouhaha.",
+        "precision": "100"
+    },
+    {
+        "puissance": "65",
+        "a_type": "4",
+        "name": "Bulles D'O",
+        "effect": "Envoie des bulles pouvant paraliser.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "100",
+        "a_type": "6",
+        "name": "Canicule",
+        "effect": "Un souffle ardent pouvant brûler l'ennemi.",
+        "precision": "90",
+        "brule": True
+    },
+    {
+        "puissance": "120",
+        "a_type": "1",
+        "name": "REKT",
+        "effect": "Frappe violement.",
+        "precision": "85"
+    },
+    {
+        "puissance": "80",
+        "a_type": "4",
+        "name": "Cascade",
+        "effect": "Charge rapide pouvant de franchir des cascades.",
+        "precision": "100"
+    },
+    {
+        "puissance": "75",
+        "a_type": "2",
+        "name": "Casse-Brique",
+        "effect": "Détruit les barrières et blesse.",
+        "precision": "100"
+    },
+    {
+        "puissance": "50",
+        "a_type": "15",
+        "name": "Cauchemar",
+        "effect": "Inflige des dégâts à un ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "35",
+        "a_type": "9",
+        "name": "Charge",
+        "effect": "Charge l'ennemi avec un violent plaquage.",
+        "precision": "95",
+        "paralise": True
+    },
+    {
+        "puissance": "25",
+        "a_type": "14",
+        "name": "Charge-Os",
+        "effect": "Frappe l'ennemi plusieurs fois avec un os.",
+        "precision": "80"
+    },
+    {
+        "puissance": "50",
+        "a_type": "12",
+        "name": "Choc Mental",
+        "effect": "Une attaque mentale.",
+        "precision": "100"
+    },
+    {
+        "puissance": "35",
+        "a_type": "4",
+        "name": "Claquoir",
+        "effect": "Piège l'ennemi et l'écrase.",
+        "precision": "75",
+        "paralise": True
+    },
+    {
+        "puissance": "35",
+        "a_type": "2",
+        "name": "Cogne",
+        "effect": "Coup de poing violent.",
+        "precision": "100"
+    },
+    {
+        "puissance": "120",
+        "a_type": "3",
+        "name": "Colere",
+        "effect": "Une attaque furieuse.",
+        "precision": "100"
+    },
+    {
+        "puissance": "18",
+        "a_type": "9",
+        "name": "Combo-Griffe",
+        "effect": "Ecorche l'ennemi avec des griffes de plusieurs fois.",
+        "precision": "80"
+    },
+    {
+        "puissance": "10",
+        "a_type": "9",
+        "name": "Etreinte",
+        "effect": "Etrangle pour blesser.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "70",
+        "a_type": "2",
+        "name": "Corps Perdu",
+        "effect": "L'attaque dure longtemps, mais n'échoue jamais.",
+        "precision": "100"
+    },
+    {
+        "puissance": "20",
+        "a_type": "14",
+        "name": "Coud'Boue",
+        "effect": "Envoie de la boue au visage.",
+        "precision": "100"
+    },
+    {
+        "puissance": "100",
+        "a_type": "9",
+        "name": "Coud'Krane",
+        "effect": "Rentre la tête et attaque suivant avec force.",
+        "precision": "100"
+    },
+    {
+        "puissance": "70",
+        "a_type": "9",
+        "name": "Coup D'Boule",
+        "effect": "Une charge qui peut apeurer l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "100",
+        "a_type": "2",
+        "name": "Coup-Croix",
+        "effect": "2 attaques tranchantes. Taux de critiques élevé.",
+        "precision": "80"
+    },
+    {
+        "puissance": "50",
+        "a_type": "9",
+        "name": "Coupe",
+        "effect": "Coupe l'ennemi avec des lames, des griffes, etc.",
+        "precision": "95"
+    },
+    {
+        "puissance": "80",
+        "a_type": "9",
+        "name": "Coupe-Vent",
+        "effect": "Une attaque en 2 temps qui frappe au 2e temps.",
+        "precision": "100"
+    },
+    {
+        "puissance": "80",
+        "a_type": "9",
+        "name": "Croc De Mort",
+        "effect": "Blesse d'un coup de croc. Peut apeurer l'ennemi.",
+        "precision": "90"
+    },
+    {
+        "puissance": "50",
+        "a_type": "11",
+        "name": "Crochetvenin",
+        "effect": "Morsure pouvant sérieusement empoisonner l'ennemi.",
+        "precision": "100",
+        "poison": True
+    },
+    {
+        "puissance": "60",
+        "a_type": "17",
+        "name": "Cru-Aile",
+        "effect": "Frappe l'ennemi en déployant les ailes.",
+        "precision": "100"
+    },
+    {
+        "puissance": "120",
+        "a_type": "9",
+        "name": "Damocles",
+        "effect": "Une dangereuse charge qui blesse aussi le lanceur.",
+        "precision": "100"
+    },
+    {
+        "puissance": "15",
+        "a_type": "6",
+        "name": "Danseflamme",
+        "effect": "Encercle l'ennemi de flammes.",
+        "precision": "70",
+        "brule": True
+    },
+    {
+        "puissance": "90",
+        "a_type": "10",
+        "name": "Danse-Fleur",
+        "effect": "Une attaque furieuse avec des fleurs.",
+        "precision": "100"
+    },
+    {
+        "puissance": "14",
+        "a_type": "8",
+        "name": "Dard-Nuee",
+        "effect": "Envoie des dards empoisonés.",
+        "precision": "85",
+        "poison": True
+    },
+    {
+        "puissance": "15",
+        "a_type": "11",
+        "name": "Dard-Venin",
+        "effect": "Une attaque de dards, etc., pouvant empoisonner.",
+        "precision": "100",
+        "poison": True
+    },
+    {
+        "puissance": "120",
+        "a_type": "6",
+        "name": "Deflagration",
+        "effect": "Une explosion qui carbonise tout. Peut brûler l'ennemi.",
+        "precision": "85",
+        "brule": True
+    },
+    {
+        "puissance": "200",
+        "a_type": "9",
+        "name": "Destruction",
+        "effect": "Inflige de sérieux dégâts, mais met le lanceur K.O.",
+        "precision": "100"
+    },
+    {
+        "puissance": "65",
+        "a_type": "11",
+        "name": "Detritus",
+        "effect": "Blesse en envoyant des détritus. Peut empoisonner.",
+        "precision": "100",
+        "poison": True
+    },
+    {
+        "puissance": "30",
+        "a_type": "2",
+        "name": "Double Pied",
+        "effect": "Un double coup de pied.",
+        "precision": "100"
+    },
+    {
+        "puissance": "25",
+        "a_type": "8",
+        "name": "Double-Dard",
+        "effect": "Les dards des pattes avant frappent deux fois.",
+        "precision": "100"
+    },
+    {
+        "puissance": "80",
+        "a_type": "3",
+        "name": "Dracogriffe",
+        "effect": "Tranche l'ennemi avec des griffes acérées.",
+        "precision": "100"
+    },
+    {
+        "puissance": "60",
+        "a_type": "3",
+        "name": "Dracosouffle",
+        "effect": "Frappe l'ennemi grâce à un souffle super puissant.",
+        "precision": "100"
+    },
+    {
+        "puissance": "100",
+        "a_type": "2",
+        "name": "Dynamopoing",
+        "effect": "Puissant et rend confus, mais pas très précis.",
+        "precision": "50"
+    },
+    {
+        "puissance": "75",
+        "a_type": "13",
+        "name": "Eboulement",
+        "effect": "Envoie de gros rochers. Peut apeurer l'ennemi.",
+        "precision": "90"
+    },
+    {
+        "puissance": "40",
+        "a_type": "5",
+        "name": "Eclair",
+        "effect": "Une attaque électrique pouvant paralyser l'ennemi.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "75",
+        "a_type": "9",
+        "name": "Eclategriffe",
+        "effect": "Lacère avec des griffes.",
+        "precision": "95"
+    },
+    {
+        "puissance": "20",
+        "a_type": "2",
+        "name": "Eclate-Roc",
+        "effect": "Une attaque puissante.",
+        "precision": "100"
+    },
+    {
+        "puissance": "65",
+        "a_type": "9",
+        "name": "Ecrasement",
+        "effect": "Ecrase avec un énorme pied. Peut apeurer l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "40",
+        "a_type": "9",
+        "name": "Ecras'Face",
+        "effect": "Ecrase l'ennemi avec les pattes avant ou la queue.",
+        "precision": "100"
+    },
+    {
+        "puissance": "20",
+        "a_type": "4",
+        "name": "Ecume",
+        "effect": "Une attaque de bulles.",
+        "precision": "100"
+    },
+    {
+        "puissance": "100",
+        "a_type": "5",
+        "name": "Elecanon",
+        "effect": "Puissant et paralysant, mais pas très précis.",
+        "precision": "50"
+    },
+    {
+        "puissance": "120",
+        "a_type": "5",
+        "name": "Electacle",
+        "effect": "Une dangereuse charge qui blesse aussi le lanceur.",
+        "precision": "100"
+    },
+    {
+        "puissance": "150",
+        "a_type": "6",
+        "name": "Eruption",
+        "effect": "Inflige beaucoup de dégâts.",
+        "precision": "100"
+    },
+    {
+        "puissance": "65",
+        "a_type": "5",
+        "name": "Etincelle",
+        "effect": "Une charge électrique qui peut paralyser l'ennemi.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "30",
+        "a_type": "15",
+        "name": "Etonnement",
+        "effect": "Une attaque qui peut choquer et apeurer l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "15",
+        "a_type": "9",
+        "name": "Constriction",
+        "effect": "Ligote l'ennemi et l'écrase.",
+        "precision": "75"
+    },
+    {
+        "puissance": "250",
+        "a_type": "9",
+        "name": "Explosion",
+        "effect": "Inflige de sérieux dégâts, mais met le lanceur K.O.",
+        "precision": "100"
+    },
+    {
+        "puissance": "80",
+        "a_type": "12",
+        "name": "Extrasenseur",
+        "effect": "Pouvoir singulier qui peut apeurer  l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "120",
+        "a_type": "5",
+        "name": "Fatal-Foudre",
+        "effect": "Une attaque foudroyante pouvant paralyser l'ennemi.",
+        "precision": "70",
+        "paralise": True
+    },
+    {
+        "puissance": "60",
+        "a_type": "16",
+        "name": "Feinte",
+        "effect": "Attire l'ennemi et frappe sans jamais échouer.",
+        "precision": "100"
+    },
+    {
+        "puissance": "100",
+        "a_type": "6",
+        "name": "Feu Sacre",
+        "effect": "Une attaque de feu mystique avec 50% de chance de brûler.",
+        "precision": "95",
+        "brule": True
+    },
+    {
+        "puissance": "60",
+        "a_type": "10",
+        "name": "Feuillemagik",
+        "effect": "Envoie des feuilles ne pouvant être esquivées.",
+        "precision": "90"
+    },
+    {
+        "puissance": "40",
+        "a_type": "6",
+        "name": "Flammeche",
+        "effect": "Une faible attaque de feu pouvant brûler l'ennemi.",
+        "precision": "100",
+        "brule": True
+    },
+    {
+        "puissance": "80",
+        "a_type": "9",
+        "name": "Force",
+        "effect": "Accumule de la puissance puis frappe l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "70",
+        "a_type": "9",
+        "name": "Force Cachee",
+        "effect": "Les effets de l'attaque dépendent du lieu.",
+        "precision": "100"
+    },
+    {
+        "puissance": "55",
+        "a_type": "9",
+        "name": "Force Poigne",
+        "effect": "Empoigne l'ennemi avec de puissantes pinces.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "35",
+        "a_type": "10",
+        "name": "Fouet Lianes",
+        "effect": "Fouette l'ennemi avec de fines lianes.",
+        "precision": "100"
+    },
+    {
+        "puissance": "15",
+        "a_type": "9",
+        "name": "Furie",
+        "effect": "Frappe l'ennemi avec des cornes, etc.",
+        "precision": "85"
+    },
+    {
+        "puissance": "60",
+        "a_type": "10",
+        "name": "Giga-Sangsue",
+        "effect": "Une attaque qui absorbe la moitié des dégâts infligés.",
+        "precision": "100"
+    },
+    {
+        "puissance": "40",
+        "a_type": "9",
+        "name": "Griffe",
+        "effect": "Lacère l'ennemi avec des griffes acérées.",
+        "precision": "100"
+    },
+    {
+        "puissance": "50",
+        "a_type": "1",
+        "name": "Griffe Acier",
+        "effect": "Attaque avec des griffes.",
+        "precision": "95"
+    },
+    {
+        "puissance": "150",
+        "a_type": "4",
+        "name": "Hydroblast",
+        "effect": "Puissante attaque d'eau.",
+        "precision": "90"
+    },
+    {
+        "puissance": "120",
+        "a_type": "4",
+        "name": "Hydrocanon",
+        "effect": "Envoie un puissant jet d'eau pour frapper l'ennemi.",
+        "precision": "80",
+        "paralise": True
+    },
+    {
+        "puissance": "40",
+        "a_type": "9",
+        "name": "Jackpot",
+        "effect": "Lance des pièces. L'argent est récupéré plus tard.",
+        "precision": "100"
+    },
+    {
+        "puissance": "50",
+        "a_type": "13",
+        "name": "Jet-Pierres",
+        "effect": "Envoie des cailloux pour frapper l'ennemi.",
+        "precision": "90"
+    },
+    {
+        "puissance": "65",
+        "a_type": "9",
+        "name": "Koud'Korne",
+        "effect": "Frappe l'ennemi d'un coup de corne pointue.",
+        "precision": "100"
+    },
+    {
+        "puissance": "90",
+        "a_type": "10",
+        "name": "Lame-Feuille",
+        "effect": "Tranche avec une feuille. Taux de critiques élevé.",
+        "precision": "100"
+    },
+    {
+        "puissance": "95",
+        "a_type": "6",
+        "name": "Lance-Flamme",
+        "effect": "Possibilité de brûler le défenseur.",
+        "precision": "100",
+        "brule": True
+    },
+    {
+        "puissance": "120",
+        "a_type": "10",
+        "name": "Lance-Soleil",
+        "effect": "Absorbe la lumière et attaque.",
+        "precision": "100"
+    },
+    {
+        "puissance": "95",
+        "a_type": "7",
+        "name": "Laser Glace",
+        "effect": "Envoie un rayon de glace pouvant paralyser l'ennemi.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "20",
+        "a_type": "15",
+        "name": "Lechouille",
+        "effect": "Blesse avec un long coup de langue. Peut paralyser.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "15",
+        "a_type": "9",
+        "name": "Ligotage",
+        "effect": "Ligote l'ennemi et l'étouffe avec des lianes.",
+        "precision": "85",
+        "paralise": True
+    },
+    {
+        "puissance": "70",
+        "a_type": "12",
+        "name": "Lumi-Eclat",
+        "effect": "Envoie une lueur intense.",
+        "precision": "100"
+    },
+    {
+        "puissance": "40",
+        "a_type": "2",
+        "name": "Mach Punch",
+        "effect": "Coup de poing fulgurant.",
+        "precision": "100"
+    },
+    {
+        "puissance": "90",
+        "a_type": "9",
+        "name": "Mania",
+        "effect": "Une attaque furieuse.",
+        "precision": "100"
+    },
+    {
+        "puissance": "65",
+        "a_type": "14",
+        "name": "Massd'Os",
+        "effect": "Cogne l'ennemi avec un os. Peut apeurer l'ennemi.",
+        "precision": "85"
+    },
+    {
+        "puissance": "60",
+        "a_type": "2",
+        "name": "Mawashi Geri",
+        "effect": "Un coup de pied tournoyant et extrêmement rapide.",
+        "precision": "85"
+    },
+    {
+        "puissance": "120",
+        "a_type": "8",
+        "name": "Megacorne",
+        "effect": "Une charge violente, toutes cornes en avant.",
+        "precision": "85"
+    },
+    {
+        "puissance": "90",
+        "a_type": "9",
+        "name": "Megaphone",
+        "effect": "Attaque bruyante blessant avec des ondes sonores.",
+        "precision": "100"
+    },
+    {
+        "puissance": "40",
+        "a_type": "10",
+        "name": "Mega-Sangsue",
+        "effect": "Une attaque absorbant la moitié des dégâts infligés.",
+        "precision": "100"
+    },
+    {
+        "puissance": "60",
+        "a_type": "9",
+        "name": "Meteores",
+        "effect": "Envoie des rayons en forme d'étoile. Touche toujours.",
+        "precision": "95"
+    },
+    {
+        "puissance": "150",
+        "a_type": "2",
+        "name": "Mitra-Poing",
+        "effect": "Lanceur apeuré si touché. Attaque puissante.",
+        "precision": "100"
+    },
+    {
+        "puissance": "60",
+        "a_type": "16",
+        "name": "Morsure",
+        "effect": "Mord méchamment l'ennemi et peut l'apeurer.",
+        "precision": "100"
+    },
+    {
+        "puissance": "95",
+        "a_type": "4",
+        "name": "Ocroupi",
+        "effect": "Attaque d'eau croupie. Peut baisser la précision.",
+        "precision": "85"
+    },
+    {
+        "puissance": "65",
+        "a_type": "4",
+        "name": "Octazooka",
+        "effect": "Jet d'encre qui blesse et baisse la précision.",
+        "precision": "85"
+    },
+    {
+        "puissance": "65",
+        "a_type": "7",
+        "name": "Onde Boreale",
+        "effect": "Envoie un rayon arc-en-ciel.",
+        "precision": "100"
+    },
+    {
+        "puissance": "60",
+        "a_type": "5",
+        "name": "Onde De Choc",
+        "effect": "Attaque électrique rapide et impossible à esquiver.",
+        "precision": "95",
+        "paralise": True
+    },
+    {
+        "puissance": "50",
+        "a_type": "14",
+        "name": "Osmerang",
+        "effect": "Lance un boomerang en os qui frappe en deux fois.",
+        "precision": "90"
+    },
+    {
+        "puissance": "40",
+        "a_type": "3",
+        "name": "Ouragan",
+        "effect": "Déclenche un terrible ouragan blessant l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "20",
+        "a_type": "9",
+        "name": "Picanon",
+        "effect": "Lance des pointes empoisonnées.",
+        "precision": "100",
+        "poison": True
+    },
+    {
+        "puissance": "35",
+        "a_type": "17",
+        "name": "Picpic",
+        "effect": "Attaque l'ennemi avec un bec pointu, etc.",
+        "precision": "100"
+    },
+    {
+        "puissance": "85",
+        "a_type": "6",
+        "name": "Pied Bruleur",
+        "effect": "Haut taux de coups critiques. Possibilité de brûlure.",
+        "precision": "90",
+        "brule": True
+    },
+    {
+        "puissance": "70",
+        "a_type": "2",
+        "name": "Pied Saute",
+        "effect": "Un coup de pied sauté.",
+        "precision": "95"
+    },
+    {
+        "puissance": "100",
+        "a_type": "2",
+        "name": "Pied Voltige",
+        "effect": "Coup de pied sauté.",
+        "precision": "90"
+    },
+    {
+        "puissance": "15",
+        "a_type": "9",
+        "name": "Pilonnage",
+        "effect": "Projette des objets vers l'ennemi.",
+        "precision": "85"
+    },
+    {
+        "puissance": "90",
+        "a_type": "4",
+        "name": "Pince-Masse",
+        "effect": "Cogne avec une pince. Taux de critiques élevé.",
+        "precision": "85"
+    },
+    {
+        "puissance": "140",
+        "a_type": "17",
+        "name": "Pique",
+        "effect": "Cherche les points faibles et frappe.",
+        "precision": "90"
+    },
+    {
+        "puissance": "40",
+        "a_type": "4",
+        "name": "Pistolet A O",
+        "effect": "Attaque l'ennemi en projetant de l'eau.",
+        "precision": "100"
+    },
+    {
+        "puissance": "85",
+        "a_type": "9",
+        "name": "Plaquage",
+        "effect": "30 % de chance de paralyser le Pokémon défenseur.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "60",
+        "a_type": "4",
+        "name": "Plongee",
+        "effect": "Plonge en apnée au premier tour et frappe.",
+        "precision": "100"
+    },
+    {
+        "puissance": "18",
+        "a_type": "9",
+        "name": "Poing Comete",
+        "effect": "Frappe rapidement l'ennemi.",
+        "precision": "85"
+    },
+    {
+        "puissance": "60",
+        "a_type": "10",
+        "name": "Poing Dard",
+        "effect": "Attaque avec bras épineux.",
+        "precision": "100",
+        "poison": True
+    },
+    {
+        "puissance": "75",
+        "a_type": "6",
+        "name": "Poing De Feu",
+        "effect": "Un poing de feu pouvant brûler l'ennemi.",
+        "precision": "100",
+        "brule": True
+    },
+    {
+        "puissance": "100",
+        "a_type": "1",
+        "name": "Poing Meteor",
+        "effect": "Coup de poing météore.",
+        "precision": "85"
+    },
+    {
+        "puissance": "60",
+        "a_type": "15",
+        "name": "Poing Ombre",
+        "effect": "Un coup de poing inévitable sortant de l'ombre.",
+        "precision": "100"
+    },
+    {
+        "puissance": "75",
+        "a_type": "5",
+        "name": "Poing-Eclair",
+        "effect": "10 % de chance de paralyser le Pokémon défenseur.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "50",
+        "a_type": "2",
+        "name": "Poing-Karate",
+        "effect": "Une attaque tranchante à taux de critiques élevé.",
+        "precision": "100"
+    },
+    {
+        "puissance": "75",
+        "a_type": "7",
+        "name": "Poinglace",
+        "effect": "Un poing de glace pouvant geler l'ennemi.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "40",
+        "a_type": "7",
+        "name": "Poudreuse",
+        "effect": "Envoie une rafale de neige. Peut geler l'ennemi.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "40",
+        "a_type": "16",
+        "name": "Poursuite",
+        "effect": "Inflige de sérieux dégâts lorsque l'ennemi change.",
+        "precision": "100"
+    },
+    {
+        "puissance": "60",
+        "a_type": "13",
+        "name": "Pouv.Antique",
+        "effect": "Une attaque envoyant des rochers sur l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "140",
+        "a_type": "12",
+        "name": "Psycho Boost",
+        "effect": "Attaque à pleine puissance.",
+        "precision": "90"
+    },
+    {
+        "puissance": "90",
+        "a_type": "12",
+        "name": "Psyko",
+        "effect": "Une puissante attaque PSY.",
+        "precision": "100"
+    },
+    {
+        "puissance": "20",
+        "a_type": "11",
+        "name": "Puredpois",
+        "effect": "Un gaz nocif pouvant empoisonner l'ennemi.",
+        "precision": "70",
+        "poison": True
+    },
+    {
+        "puissance": "100",
+        "a_type": "1",
+        "name": "Queue De Fer",
+        "effect": "Attaque avec sa queue.",
+        "precision": "75"
+    },
+    {
+        "puissance": "50",
+        "a_type": "11",
+        "name": "Queue-Poison",
+        "effect": "Haut taux de critiques. Peut aussi empoisonner.",
+        "precision": "100",
+        "poison": True
+    },
+    {
+        "puissance": "150",
+        "a_type": "6",
+        "name": "Rafale Feu",
+        "effect": "Puissant. Peut brûler.",
+        "precision": "90",
+        "brule": True
+    },
+    {
+        "puissance": "65",
+        "a_type": "12",
+        "name": "Rafale Psy",
+        "effect": "Etrange rayon pouvant rendre l'ennemi confus.",
+        "precision": "100"
+    },
+    {
+        "puissance": "75",
+        "a_type": "8",
+        "name": "Rayon Signal",
+        "effect": "Un étrange rayon qui peut rendre l'ennemi confus.",
+        "precision": "100"
+    },
+    {
+        "puissance": "85",
+        "a_type": "17",
+        "name": "Rebond",
+        "effect": "Saute et tombe sur l'ennemi. Peut paralyser.",
+        "precision": "85",
+        "paralise": True
+    },
+    {
+        "puissance": "100",
+        "a_type": "9",
+        "name": "Relache",
+        "effect": "Libère la puissance accumulée.",
+        "precision": "100"
+    },
+    {
+        "puissance": "60",
+        "a_type": "6",
+        "name": "Roue De Feu",
+        "effect": "Une charge enflammée qui peut brûler l'ennemi.",
+        "precision": "100",
+        "brule": True
+    },
+    {
+        "puissance": "80",
+        "a_type": "2",
+        "name": "Sacrifice",
+        "effect": "Une charge violente.",
+        "precision": "80"
+    },
+    {
+        "puissance": "100",
+        "a_type": "14",
+        "name": "Seisme",
+        "effect": "Tremblement de terre sans effet sur les adv. volants.",
+        "precision": "100"
+    },
+    {
+        "puissance": "15",
+        "a_type": "4",
+        "name": "Siphon",
+        "effect": "Piège l'ennemi dans un tourbillon.",
+        "precision": "70"
+    },
+    {
+        "puissance": "80",
+        "a_type": "9",
+        "name": "Souplesse",
+        "effect": "Fouette l'ennemi avec sa queue, une liane, etc.",
+        "precision": "75"
+    },
+    {
+        "puissance": "10",
+        "a_type": "7",
+        "name": "Stalagtite",
+        "effect": "Mitraille l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "85",
+        "a_type": "2",
+        "name": "Stratopercut",
+        "effect": "Un uppercut porté en direction du ciel.",
+        "precision": "90"
+    },
+    {
+        "puissance": "140",
+        "a_type": "6",
+        "name": "Surchauffe",
+        "effect": "Attaque à pleine puissance.",
+        "precision": "90"
+    },
+    {
+        "puissance": "95",
+        "a_type": "4",
+        "name": "Surf",
+        "effect": "Crée une énorme vague qui s'écrase sur l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "50",
+        "a_type": "13",
+        "name": "Tomberoche",
+        "effect": "Immobilise l'ennemi ave des rochers.",
+        "precision": "80"
+    },
+    {
+        "puissance": "95",
+        "a_type": "5",
+        "name": "Tonnerre",
+        "effect": "Forte attaque électrique pouvant paralyser l'ennemi.",
+        "precision": "100",
+        "paralise": True
+    },
+    {
+        "puissance": "15",
+        "a_type": "9",
+        "name": "Torgnoles",
+        "effect": "Gifle rapidement l'ennemi.",
+        "precision": "85"
+    },
+    {
+        "puissance": "40",
+        "a_type": "17",
+        "name": "Tornade",
+        "effect": "Envoie une rafale de vent en battant des ailes.",
+        "precision": "100"
+    },
+    {
+        "puissance": "20",
+        "a_type": "9",
+        "name": "Tour Rapide",
+        "effect": "Frappe l'ennemi en tournant sur soi-même.",
+        "precision": "100"
+    },
+    {
+        "puissance": "15",
+        "a_type": "14",
+        "name": "Tourbi-Sable",
+        "effect": "Piège l'ennemi dans un cyclone.",
+        "precision": "70"
+    },
+    {
+        "puissance": "55",
+        "a_type": "17",
+        "name": "Tranch'Air",
+        "effect": "Haut taux de coups critiques.",
+        "precision": "95"
+    },
+    {
+        "puissance": "70",
+        "a_type": "9",
+        "name": "Tranche",
+        "effect": "Coups de griffe, etc. Taux de critiques élevé.",
+        "precision": "100"
+    },
+    {
+        "puissance": "55",
+        "a_type": "10",
+        "name": "Tranch'Herbe",
+        "effect": "Tranche avec des feuilles. Taux de critiques élevé.",
+        "precision": "95"
+    },
+    {
+        "puissance": "80",
+        "a_type": "9",
+        "name": "Triplattaque",
+        "effect": "Envoie trois types de rayons en même temps.",
+        "precision": "100"
+    },
+    {
+        "puissance": "10",
+        "a_type": "2",
+        "name": "Triple Pied",
+        "effect": "Trois coups de pied de plus en plus puissants.",
+        "precision": "90"
+    },
+    {
+        "puissance": "100",
+        "a_type": "14",
+        "name": "Tunnel",
+        "effect": "Creuse sous terre au 1er temps et frappe au 2e.",
+        "precision": "100"
+    },
+    {
+        "puissance": "80",
+        "a_type": "9",
+        "name": "Ultimapoing",
+        "effect": "Un coup de poing d'une puissance incroyable.",
+        "precision": "85"
+    },
+    {
+        "puissance": "120",
+        "a_type": "9",
+        "name": "Ultimawashi",
+        "effect": "Un coup de pied super puissant et intense.",
+        "precision": "75"
+    },
+    {
+        "puissance": "150",
+        "a_type": "9",
+        "name": "Ultralaser",
+        "effect": "Puissant, mais immobilise le lanceur pour un tour.",
+        "precision": "90"
+    },
+    {
+        "puissance": "70",
+        "a_type": "9",
+        "name": "Uppercut",
+        "effect": "Un coup de poing cadencé. Peut rendre confus.",
+        "precision": "100"
+    },
+    {
+        "puissance": "150",
+        "a_type": "10",
+        "name": "Vege-Attak",
+        "effect": "Puissant, mais immobilise le lanceur le tour suivant.",
+        "precision": "90"
+    },
+    {
+        "puissance": "60",
+        "a_type": "2",
+        "name": "Vendetta",
+        "effect": "Gagne en puissance quand blessé par l'ennemi.",
+        "precision": "100"
+    },
+    {
+        "puissance": "60",
+        "a_type": "8",
+        "name": "Vent Argente",
+        "effect": "Attaque poudreuse qui peut augmenter les capacités.",
+        "precision": "100"
+    },
+    {
+        "puissance": "55",
+        "a_type": "7",
+        "name": "Vent Glace",
+        "effect": "Attaque glaciale.",
+        "precision": "95"
+    },
+    {
+        "puissance": "60",
+        "a_type": "4",
+        "name": "Vibraqua",
+        "effect": "Envoi d'ondes aquatiques. Peut rendre confus.",
+        "precision": "100"
+    },
+    {
+        "puissance": "80",
+        "a_type": "9",
+        "name": "Vit.Extreme",
+        "effect": "Une attaque extrêmement rapide et puissante.",
+        "precision": "100"
+    },
+    {
+        "puissance": "40",
+        "a_type": "9",
+        "name": "Vive-Attaque",
+        "effect": "Attaque fulgurante qui permet de frapper d'abord.",
+        "precision": "100"
+    },
+    {
+        "puissance": "90",
+        "a_type": "17",
+        "name": "Vol",
+        "effect": "S'envole au premier tour et frappe au second tour.",
+        "precision": "95"
+    },
+    {
+        "puissance": "20",
+        "a_type": "10",
+        "name": "Vol-Vie",
+        "effect": "Une attaque absorbant la moitié des dégâts infligés.",
+        "precision": "100"
+    }
+]

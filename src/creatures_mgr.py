@@ -92,6 +92,9 @@ class Creature:
     def get_state(self):
         return self.specs[SPEC_ETAT]
 
+    def set_state(self, new: int):
+        self.specs[SPEC_ETAT] = new
+
     def get_formatted_state(self):
         work = ""
         if self.specs[SPEC_ETAT] == SPEC_ETATS.poisone:

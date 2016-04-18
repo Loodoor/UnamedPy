@@ -70,7 +70,7 @@ class GUIBulleWaiting(GUIBulle):
 
 
 class GUIBulle2Choices(GUIBulleWaiting):
-    def __init__(self, ecran, pos: tuple, texte: str, font,
+    def __init__(self, ecran, pos: tuple, texte: str or list, font,
                  screenshotkey=K_F5):
         super().__init__(ecran, pos, texte, font, screenshotkey)
         self.ok = False
@@ -90,7 +90,7 @@ class GUIBulle2Choices(GUIBulleWaiting):
 
 
 class GUIBulleAsking(GUIBulleWaiting):
-    def __init__(self, ecran, pos: tuple, texte: str, font,
+    def __init__(self, ecran, pos: tuple, texte: str or list, font,
                  screenshotkey=K_F5):
         super().__init__(ecran, pos, texte, font, screenshotkey)
         self.create_text_renderers()

@@ -129,7 +129,7 @@ class ParametresManager:
             }
         }
         self.params = {}
-        self.path_to_settings = os.path.join("..", "assets", "configuration", "config.json")
+        self.path_to_settings = os.path.join("..", "assets", "configuration", "config" + EXTENSION)
 
     def _pre_load(self):
         if not os.path.exists(self.path_to_settings):

@@ -10,7 +10,7 @@ import debug
 
 def calcul_degats(degats_basiques: int, specs_atk: dict, specs_def: dict, coeff_types: int, my_type: int) -> int:
     x = 1.3 if specs_atk[ATK_TYP] == my_type else 1
-    return (((specs_atk[SPEC_NIVEAU] * 0.4 + 2) * x * degats_basiques / (specs_def[SPEC_DEF] * 50)) + 2) * coeff_types
+    return (((specs_atk[SPEC_NIV] * 0.4 + 2) * x * degats_basiques / (specs_def[SPEC_DEF] * 50)) + 2) * coeff_types
 
 
 def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
@@ -28,7 +28,7 @@ class AttaquesTable:
 
     def can_i_learn(self, type_crea: int, niv_crea: int, attaque_name: str, attacks_learnt: list) -> bool:
         attacks_learnt = [atk.get_nom() for atk in attacks_learnt]
-        if attaque_name in self._attacks.keys():*
+        if attaque_name in self._attacks.keys():
             obligator = self._attacks[attaque_name]
             if type_crea in obligator[0] and obligator[1] <= niv_crea and not (attaque_name in attacks_learnt):
                 return True
@@ -66,7 +66,7 @@ class AttaquesTable:
                 attaque['min level']
             ]
             type_ = T_NORMAL
-            cout_ = int(int(attaque['precision']) / 37)  # à modifier par la suite
+            cout_ = int(int(attaque['precision']) / 37)
             if attaque.get("paralise", False):
                 state_ = "paralise"
             if attaque.get("poison", False):
@@ -322,6 +322,15 @@ class Combat:
                                                              self.get_adversary().get_type()
                                                          ),
                                                          self.get_my_creature().get_type()))
+
+                state = self.get_my_creature().get_attacks()[self.selected_atk].get_state()
+                if random.random() <= SPEC_ETAT_AFFECT_PERCENT:
+                    if state == "poisone":
+                        self.get_adversary().set_spec(SPEC_ETATS.poison)
+                    if state == "brule":
+                        self.get_adversary().set_spec(SPEC_ETATS.brule)
+                    if state == "paralise":
+                        self.get_adversary().set_spec(SPEC_ETATS.paralise)
 
                 self.render()
 
