@@ -496,7 +496,7 @@ SPEC_DEF = 'defense'
 SPEC_VIT = 'vitesse'
 SPEC_NOM = 'pseudo'
 SPEC_ETAT = 'etat'
-SPEC_ID = "unique_id"
+SPEC_ID = 'unique_id'
 SPEC_TYP = 'type'
 SPEC_NIV = 'niveau'
 SPEC_PVS = 'points de vie'
@@ -527,6 +527,7 @@ ATK_TYP = 'type'
 ATK_DEGATS = 'degats'
 ATK_TXT = 'texte'
 ATK_COUT = 'cout de l\'attaque'
+ATK_STATE = 'etat infligeable'
 ATK_IMPOSSIBLE = -4
 
 PC_MAX_CREA = 150

@@ -7,14 +7,18 @@ import random
 
 
 class Attaque:
-    def __init__(self, nom: str, type_: int, degats: int, texte: str, cout: int=1):
+    def __init__(self, nom: str, type_: int, degats: int, texte: str, state: str="", cout: int=1):
         self.attaque = {
             ATK_NOM: nom,
             ATK_TYP: type_,
             ATK_DEGATS: degats,
             ATK_TXT: texte,
-            ATK_COUT: cout
+            ATK_COUT: cout,
+            ATK_STATE: state
         }
+
+    def get_state(self):
+        return self.attaque[ATK_STATE]
 
     def utiliser(self):
         return self.attaque[ATK_DEGATS]

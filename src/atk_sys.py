@@ -10,7 +10,7 @@ import debug
 
 def calcul_degats(degats_basiques: int, specs_atk: dict, specs_def: dict, coeff_types: int, my_type: int) -> int:
     x = 1.3 if specs_atk[ATK_TYP] == my_type else 1
-    return (degats_basiques + specs_atk[SPEC_ATK] / specs_def[SPEC_DEF]) * coeff_types * x
+    return (((specs_atk[SPEC_NIVEAU] * 0.4 + 2) * x * degats_basiques / (specs_def[SPEC_DEF] * 50)) + 2) * coeff_types
 
 
 def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
@@ -28,11 +28,11 @@ class AttaquesTable:
 
     def can_i_learn(self, type_crea: int, niv_crea: int, attaque_name: str, attacks_learnt: list) -> bool:
         attacks_learnt = [atk.get_nom() for atk in attacks_learnt]
-        for name, obligator in self._attacks.items():
-            if name == attaque_name:
-                if type_crea in obligator[0] and obligator[1] <= niv_crea and not (name in attacks_learnt):
-                    return True
-                return False
+        if attaque_name in self._attacks.keys():*
+            obligator = self._attacks[attaque_name]
+            if type_crea in obligator[0] and obligator[1] <= niv_crea and not (attaque_name in attacks_learnt):
+                return True
+            return False
         return True
 
     def get_attack_from_name(self, name: str):
@@ -51,45 +51,29 @@ class AttaquesTable:
     def load(self):
         try:
             with open(self.path, 'r', encoding='utf-8') as file:
-                datas = file.readlines()
+                datas = file.read()
         except OSError:
             datas = []
 
         self._traiter_datas(datas)
 
     def _traiter_datas(self, datas: list):
-        for line in datas:
-            if line[0] != "#" and line.strip():
-                work = line.split('::')
-                type_ = T_NORMAL  # defaut
-                if work[1] == "FEU":
-                    type_ = T_FEU
-                if work[1] == "EAU":
-                    type_ = T_EAU
-                if work[1] == "PLANTE":
-                    type_ = T_PLANTE
-                if work[1] == "ELEC":
-                    type_ = T_ELEC
-                if work[1] == "AIR":
-                    type_ = T_AIR
-                if work[1] == "NORMAL":
-                    type_ = T_NORMAL
-                if work[1] == "TERRE":
-                    type_ = T_TERRE
-                if work[1] == "PLASMA":
-                    type_ = T_PLASMA
-                if work[1] == "LUMIERE":
-                    type_ = T_LUMIERE
-                if work[1] == "TENEBRE":
-                    type_ = T_TENEBRE
-
-                try:
-                    cout = int(work[4])
-                except ValueError:
-                    cout = 1
-
-                self._attacks[work[0]] = [[int(i) for i in work[5].split('&')[0].split('-')], int(work[5].split('&')[1].strip())]
-                self.table.append(creatures_mgr.Attaque(work[0], type_, int(work[2]), work[3], cout))
+        dct = eval(datas)
+        # nom::type::degats::description::cout::type1(int)-type2(int)-...&niveau_necessaire
+        for attaque in dct:
+            self._attacks[attaque['name']] = [
+                [None],  # liste de types pouvant apprendre l'attaque
+                attaque['min level']
+            ]
+            type_ = T_NORMAL
+            cout_ = int(int(attaque['precision']) / 37)  # à modifier par la suite
+            if attaque.get("paralise", False):
+                state_ = "paralise"
+            if attaque.get("poison", False):
+                state_ = "poison"
+            if attaque.get("brule", False):
+                state_ = "brule"
+            self.table.append(creatures_mgr.Attaque(attaque['name'], type_, int(attaque['puissance']), attaque['effect'], state=state_, cout=cout_))
 
 
 class Combat:
