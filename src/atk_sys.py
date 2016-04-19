@@ -26,11 +26,11 @@ class AttaquesTable:
         self._attacks = {}
         self.path = os.path.join("..", "assets", "configuration", "attaques" + EXTENSION)
 
-    def can_i_learn(self, type_crea: int, niv_crea: int, attaque_name: str, attacks_learnt: list) -> bool:
+    def can_i_learn(self, type_crea: int, attaque_name: str, attacks_learnt: list) -> bool:
         attacks_learnt = [atk.get_nom() for atk in attacks_learnt]
         if attaque_name in self._attacks.keys():
             obligator = self._attacks[attaque_name]
-            if type_crea in obligator[0] and obligator[1] <= niv_crea and not (attaque_name in attacks_learnt):
+            if type_crea in obligator and not (attaque_name in attacks_learnt):
                 return True
             return False
         return True
@@ -62,11 +62,11 @@ class AttaquesTable:
         # nom::type::degats::description::cout::type1(int)-type2(int)-...&niveau_necessaire
         for attaque in dct:
             self._attacks[attaque['name']] = [
-                [None],  # liste de types pouvant apprendre l'attaque
-                attaque['min level']
+                None,  # liste de types pouvant apprendre l'attaque
             ]
             type_ = T_NORMAL
             cout_ = int(int(attaque['precision']) / 37)
+            state_ = None
             if attaque.get("paralise", False):
                 state_ = "paralise"
             if attaque.get("poison", False):
@@ -245,7 +245,6 @@ class Combat:
                 for attaque in self.indexer.get_attacks_table().table:
                     if self.indexer.get_attacks_table().can_i_learn(
                         self.get_my_creature().get_type(),
-                        self.get_my_creature().get_niv(),
                         attaque.get_nom(),
                         self.get_my_creature().get_attacks_learnt()
                     ):
