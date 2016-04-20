@@ -1,0 +1,64 @@
+{
+    "chemin": {
+        "name": "c",
+        "used": [
+            "-",
+            "*",
+            "/"
+        ]
+    },
+    "chenal": {
+        "name": "h",
+        "used": [
+            "o"
+        ]
+    },
+    "lieux": {
+        "name": "l",
+        "used": [
+            "#"
+        ]
+    },
+    "ville": {
+        "name": "v",
+        "used": [
+            "0",
+            "1",
+            "2"
+        ]
+    },
+    "descriptions": {
+        "*": {
+            "name": "Chemin sans nom",
+            "desc": ""
+        },
+        "-": {
+            "name": "Un autre chemin",
+            "desc": ""
+        },
+        "/": {
+            "name": "Encore un chemin",
+            "desc": ""
+        },
+        "o": {
+            "name": "Mon petit chenal !",
+            "desc": ""
+        },
+        "#": {
+            "name": "Tour super sacrée",
+            "desc": ""
+        },
+        "0": {
+            "name": "Paris",
+            "desc": ""
+        },
+        "1": {
+            "name": "Tokyo",
+            "desc": ""
+        },
+        "2": {
+            "name": "New-York",
+            "desc": ""
+        }
+    }
+}

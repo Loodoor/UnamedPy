@@ -622,10 +622,13 @@ class CartesManager:
 
 
 class CarteRenderer:
-    def __init__(self, ecran, carte_mgr: CartesManager):
+    def __init__(self, ecran, carte_mgr: CartesManager, police: object):
         self.ecran = ecran
         self.carte_mgr = carte_mgr
+        self.police = police
         self.path = os.path.join("..", "assets", "configuration", "worldmap" + EXTENSION)
+        self.map_desc = ""
+        self.path_map_desc = os.path.join("..", "assets", "configuration", "worldmap_desc" + EXTENSION)
         self.carte_paths = rendering_engine.create_surface((MAP_RDR_SX, MAP_RDR_SY), rendering_engine.get_alpha_channel(), 32)
         self.carte_mgr = rendering_engine.rescale(rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")), (MAP_RDR_SX, MAP_RDR_SY))
         self._scheme = []
@@ -633,36 +636,50 @@ class CarteRenderer:
         self.selected = None
 
     def load(self):
-        with open(self.path) as code:
+        with open(self.path, encoding="utf-8") as code:
             for line in code.readlines():
                 self._scheme.append([_ for _ in line.strip()])
 
-        self._surfs[MAP_RDR_CHEMIN] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[MAP_RDR_CHEMIN].fill((215, 185, 15))
+        with open(self.path_map_desc, encoding="utf-8") as desc:
+            self.map_desc = eval(desc.read())
 
-        self._surfs[MAP_RDR_CHENAL] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[MAP_RDR_CHENAL].fill((20, 215, 200))
+        self._surfs[self.map_desc['chemin']['name']] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[self.map_desc['chemin']['name']].fill((215, 185, 15))
 
-        self._surfs[MAP_RDR_LIEUX_SPEC] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[MAP_RDR_LIEUX_SPEC].fill((50, 190, 20))
+        self._surfs[self.map_desc['chenal']['name']] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[self.map_desc['chenal']['name']].fill((20, 215, 200))
 
-        self._surfs[MAP_RDR_VILLE] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[MAP_RDR_VILLE].fill((215, 25, 25))
+        self._surfs[self.map_desc['lieux']['name']] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[self.map_desc['lieux']['name']].fill((50, 190, 20))
+
+        self._surfs[self.map_desc['ville']['name']] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[self.map_desc['ville']['name']].fill((215, 25, 25))
 
         for y, line in enumerate(self._scheme):
             for x, case in enumerate(line):
                 if case != MAP_RDR_VIDE:
                     rx, ry = MAP_RDR_POSX + x * MAP_RDR_CASE_SIZE, MAP_RDR_POSY + y * MAP_RDR_CASE_SIZE
-
-                    if case not in MAP_RDR_VILLES:
-                        surf = self._surfs[case]
-                    else:
-                        surf = self._surfs[MAP_RDR_VILLE]
-
-                    self.carte_paths.blit(surf, (rx, ry))
+                    tile = ""
+                    for t in self.map_desc.keys():
+                        if t != 'descriptions' and case in self.map_desc[t]['used']:
+                            tile = self.map_desc[t]['name']
+                            break
+                    if tile:
+                        surf = self._surfs[tile]
+                        self.carte_paths.blit(surf, (rx, ry))
 
     def clic(self, x: int, y: int):
-        pass
+        self.selected = (
+            (x - MAP_RDR_POSX) // MAP_RDR_CASE_SIZE,
+            (y - MAP_RDR_POSY) // MAP_RDR_CASE_SIZE
+        )
+
+        if MAP_RDR_POSX <= x <= MAP_RDR_POSX + self.carte_paths.get_width() and \
+                MAP_RDR_POSY <= y <= MAP_RDR_POSY + self.carte_paths.get_height() and \
+                self._scheme[self.selected[1]][self.selected[0]] != MAP_RDR_VIDE:
+            pass
+        else:
+            self.selected = None
 
     def update(self):
         self.render()
@@ -670,3 +687,11 @@ class CarteRenderer:
     def render(self):
         self.ecran.blit(self.carte_mgr, (MAP_RDR_POSX, MAP_RDR_POSY))
         self.ecran.blit(self.carte_paths, (MAP_RDR_POSX, MAP_RDR_POSY))
+
+        if self.selected:
+            case = self._scheme[self.selected[1]][self.selected[0]]
+            obj = self.map_desc['descriptions'][case]
+            self.ecran.blit(self.police.render(obj['name'], POL_ANTIALISING, (10, 10, 10)),
+                            (MAP_RDR_POSX, MAP_RDR_POSY))
+            self.ecran.blit(self.police.render(obj['desc'], POL_ANTIALISING, (10, 10, 10)),
+                            (MAP_RDR_POSX, MAP_RDR_POSY + 20))
