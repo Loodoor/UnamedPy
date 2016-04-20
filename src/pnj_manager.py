@@ -3,7 +3,7 @@
 from constantes import *
 from gui import GUIBulleWaiting
 from animator import PlayerAnimator
-import rendering_engine
+import ree
 
 
 STANDART_MOVE = [
@@ -56,7 +56,7 @@ class PNJ:
     def __init__(self, pos: tuple, type_mvt: list, texte: str, dir_: int=1, sprite: str='first') -> None:
         self.pos = [t * TILE_SIZE for t in pos]
         self.type_mvt = type_mvt
-        self.font = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
+        self.font = ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
         self.cur_scheme = 0
         self.real_pos = []
         self.speed = 4
@@ -102,7 +102,7 @@ class PNJ:
         return self.pos
 
     def get_rect(self) -> tuple:
-        return rendering_engine.create_rect(self.pos[0], self.pos[1], TILE_SIZE, TILE_SIZE)
+        return ree.create_rect(self.pos[0], self.pos[1], TILE_SIZE, TILE_SIZE)
 
     def move_scheme(self):
         self.cur_scheme += self.dir

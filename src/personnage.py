@@ -99,7 +99,7 @@ class Personnage:
 
         def colliding(i: int, j: int):
             carte = self.carte_mgr.collide_at(i, j)
-            pnj = rendering_engine.create_rect(int(i) * TILE_SIZE, int(j) * TILE_SIZE, TILE_SIZE, TILE_SIZE).collidelist(pnjs_rect)
+            pnj = ree.create_rect(int(i) * TILE_SIZE, int(j) * TILE_SIZE, TILE_SIZE, TILE_SIZE).collidelist(pnjs_rect)
             return carte or pnj != -1
 
         x1, y1 = x, y
@@ -177,13 +177,13 @@ class Personnage:
 
     def create_hitbox_parole(self, i: int, j: int):
         if self.direction == HAUT:
-            return rendering_engine.create_rect(i - 2, j - TILE_SIZE - 2, TILE_SIZE + 4, TILE_SIZE * 2 + 4)
+            return ree.create_rect(i - 2, j - TILE_SIZE - 2, TILE_SIZE + 4, TILE_SIZE * 2 + 4)
         if self.direction == BAS:
-            return rendering_engine.create_rect(i - 2, j, TILE_SIZE + 4, TILE_SIZE * 2 + 4)
+            return ree.create_rect(i - 2, j, TILE_SIZE + 4, TILE_SIZE * 2 + 4)
         if self.direction == DROITE:
-            return rendering_engine.create_rect(i, j - 2, TILE_SIZE * 2 + 4, TILE_SIZE + 4)
+            return ree.create_rect(i, j - 2, TILE_SIZE * 2 + 4, TILE_SIZE + 4)
         if self.direction == GAUCHE:
-            return rendering_engine.create_rect(i - TILE_SIZE - 4, j - 2, TILE_SIZE * 2 + 4, TILE_SIZE + 4)
+            return ree.create_rect(i - TILE_SIZE - 4, j - 2, TILE_SIZE * 2 + 4, TILE_SIZE + 4)
 
     def search_and_talk_to_pnj(self):
         i, j = self.pos
@@ -224,7 +224,7 @@ class Personnage:
     def render(self):
         self.ecran.blit(self.perso, self.pos)
         if DEBUG_LEVEL >= 1:
-            rendering_engine.draw_rect(self.ecran, self.create_hitbox_parole(*self.pos), (255, 0, 0), width=2)
+            ree.draw_rect(self.ecran, self.create_hitbox_parole(*self.pos), (255, 0, 0), width=2)
 
     def get_pos(self):
         return tuple(int(i) for i in self.pos)
@@ -258,16 +258,16 @@ class OthPersonnagesManager:
             directory = os.path.split(dir_)[1]
             self._sprites[directory] = {}
             self._sprites[directory][BAS] = [
-                rendering_engine.load_image(i) for i in glob.glob(os.path.join(dir_, "bas*.png"))
+                ree.load_image(i) for i in glob.glob(os.path.join(dir_, "bas*.png"))
             ]
             self._sprites[directory][HAUT] = [
-                rendering_engine.load_image(i) for i in glob.glob(os.path.join(dir_, "haut*.png"))
+                ree.load_image(i) for i in glob.glob(os.path.join(dir_, "haut*.png"))
             ]
             self._sprites[directory][GAUCHE] = [
-                rendering_engine.load_image(i) for i in glob.glob(os.path.join(dir_, "gauche*.png"))
+                ree.load_image(i) for i in glob.glob(os.path.join(dir_, "gauche*.png"))
             ]
             self._sprites[directory][DROITE] = [
-                rendering_engine.load_image(i) for i in glob.glob(os.path.join(dir_, "droite*.png"))
+                ree.load_image(i) for i in glob.glob(os.path.join(dir_, "droite*.png"))
             ]
 
     def add_new(self, id_: float, avatar: str, pseudo: str):

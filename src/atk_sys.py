@@ -91,17 +91,17 @@ class Combat:
         self.has_captured = False
         self.is_running = True
         self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
-        self.indic_captured = rendering_engine.load_image(os.path.join("..", "assets", "gui", "captured.png"))
+        self.indic_captured = ree.load_image(os.path.join("..", "assets", "gui", "captured.png"))
         self.font = font
         self.selected_atk = 0
         self.storage = storage
         self.renderer_manager = renderer_manager
         self.equipe = equipe
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_combat.png"))
-        self._fond_atk = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_attaque.png"))
-        self._fond_atk_selected = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_attaque_selected.png"))
-        self._fond_barre_vie = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_barre_vie_creature.png"))
-        self._fond_socle_pokemon = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_combat_pokemon.png"))
+        self.fond = ree.load_image(os.path.join("..", "assets", "gui", "fd_combat.png"))
+        self._fond_atk = ree.load_image(os.path.join("..", "assets", "gui", "fd_attaque.png"))
+        self._fond_atk_selected = ree.load_image(os.path.join("..", "assets", "gui", "fd_attaque_selected.png"))
+        self._fond_barre_vie = ree.load_image(os.path.join("..", "assets", "gui", "fd_barre_vie_creature.png"))
+        self._fond_socle_pokemon = ree.load_image(os.path.join("..", "assets", "gui", "fd_combat_pokemon.png"))
 
     def on_start(self):
         debug.println("adv id", self.adversaire.get_id())
@@ -210,7 +210,7 @@ class Combat:
         global Y_ADV_FALL
         while Y_ADV_FALL < 50:
             self.render()
-            rendering_engine.flip()
+            ree.flip()
         g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
                             self.get_adversary().get_pseudo() + " est vaincu !", self.font)
 

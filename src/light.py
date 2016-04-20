@@ -22,9 +22,9 @@ class PreRenderedLight():
     def load(self):
         for number in range(0, self.nbImages):
             self.imageList.append(
-                rendering_engine.create_surface(
+                ree.create_surface(
                     (self.lightSize * 2 + self.variation * 2, self.lightSize * 2 + self.variation * 2),
-                    rendering_engine.get_alpha_channel(),
+                    ree.get_alpha_channel(),
                     32
                 )
             )
@@ -43,7 +43,7 @@ class PreRenderedLight():
                 g = self.lightColor[1] * (i / maxRange)
                 b = self.lightColor[2] * (i / maxRange)
                 t = int(255 - (self.ambiantLight * (i / maxRange)))
-                rendering_engine.gfxdraw_filled_circle(
+                ree.gfxdraw_filled_circle(
                     self.imageList[number],
                     int(self.lightSize + self.variation / 2),
                     int(self.lightSize + self.variation / 2),

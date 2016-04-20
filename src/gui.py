@@ -12,7 +12,7 @@ class GUIBulle:
         self.pos = pos
         self.texte = texte
         self.font = font
-        self.image = rendering_engine.load_image(os.path.join("..", "assets", "gui", "bulle.png"))
+        self.image = ree.load_image(os.path.join("..", "assets", "gui", "bulle.png"))
         self.iw, self.ih = self.image.get_size()
         self.txt_renderer = self.font.render(" ", POL_ANTIALISING, (10, 10, 10))
         self.create_text_renderers()
@@ -60,13 +60,13 @@ class GUIBulleWaiting(GUIBulle):
 
     def update(self, dt: int=1):
         while not self.done:
-            ev = rendering_engine.poll_event()
+            ev = ree.poll_event()
             if ev.type == KEYDOWN:
                 if ev.key != self.screenkey:
                     self.done = True
 
             self.render()
-            rendering_engine.flip()
+            ree.flip()
 
 
 class GUIBulle2Choices(GUIBulleWaiting):
@@ -77,7 +77,7 @@ class GUIBulle2Choices(GUIBulleWaiting):
 
     def update(self, dt: int=1):
         while not self.done:
-            ev = rendering_engine.poll_event()
+            ev = ree.poll_event()
             if ev.type == KEYDOWN:
                 if ev.key == K_RETURN:
                     self.ok = True
@@ -85,7 +85,7 @@ class GUIBulle2Choices(GUIBulleWaiting):
                     self.done = True
 
             self.render()
-            rendering_engine.flip()
+            ree.flip()
         return self.ok
 
 
@@ -123,13 +123,13 @@ class GUIBulleAsking(GUIBulleWaiting):
 
     def update(self, dt: int=1):
         while not self.done:
-            ev = rendering_engine.poll_event()
+            ev = ree.poll_event()
             if ev.type == KEYDOWN:
                 if ev.key != self.screenkey:
                     self.text_box.event(ev)
 
             self.render()
-            rendering_engine.flip()
+            ree.flip()
 
 
 class GUISauvegarde:
@@ -146,10 +146,10 @@ class GUISauvegarde:
         self.callback = None
         self.firstcall = None
         self.has_started_saving = False
-        self.ldroite = [rendering_engine.load_image(_) for _ in
+        self.ldroite = [ree.load_image(_) for _ in
                         glob(os.path.join("..", "assets", "personnages", "first", "droite*.png"))]
         self.cur_anim = 0
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_sauvegarde.png"))
+        self.fond = ree.load_image(os.path.join("..", "assets", "gui", "fd_sauvegarde.png"))
 
     def reinit(self):
         self.waiting = False

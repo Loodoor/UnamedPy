@@ -67,7 +67,7 @@ def uround(nb: int or float, lim: float=0.5):
 
 def uscreenschot(surface):
     path_ = os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png")
-    rendering_engine.save_image(surface, path_)
+    ree.save_image(surface, path_)
     debug.println("Screenshot sauvegardée sous '" + path_ + "'")
 
 
@@ -121,8 +121,8 @@ def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 
         progress /= max_progress
         progress *= rect_bg[2] - 2 * esp
     if bg:
-        rendering_engine.draw_rect(screen, rect_bg, bg_color)
-    rendering_engine.draw_rect(screen, (rect_bg[0] + esp, rect_bg[1] + esp, progress, rect_bg[3] - esp * 2), fg_color)
+        ree.draw_rect(screen, rect_bg, bg_color)
+    ree.draw_rect(screen, (rect_bg[0] + esp, rect_bg[1] + esp, progress, rect_bg[3] - esp * 2), fg_color)
 
 
 class UMoment:

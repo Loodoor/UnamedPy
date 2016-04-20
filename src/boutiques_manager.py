@@ -20,7 +20,7 @@ class BoutiqueManager:
         self.objects_to_sell = {}
         self.money = money
         self.confirm_selling_of = ObjectSold
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_boutique.png"))
+        self.fond = ree.load_image(os.path.join("..", "assets", "gui", "fd_boutique.png"))
 
     def buy(self, object_: str, quantity: int):
         self.confirm_selling_of = ObjectSold()

@@ -5,7 +5,7 @@ Licence MIT
 """
 
 from constantes import *
-import rendering_engine
+import ree
 
 from glob import glob
 import time
@@ -57,8 +57,8 @@ class MusicPlayer:
             self.__start_playing_at = time.time()
             self.__looping = True if loop == -1 else False
 
-            rendering_engine.load_music(self.sounds_path[self.__current])
-            rendering_engine.play_music(loops=loop)
+            ree.load_music(self.sounds_path[self.__current])
+            ree.play_music(loops=loop)
         else:
             if not self.__looping:
                 if time.time() >= self.__start_playing_at + self.__music_lenght:
@@ -66,13 +66,13 @@ class MusicPlayer:
 
     def stop(self):
         if self.__current != -1 and self.is_playing():
-            rendering_engine.stop_music()
+            ree.stop_music()
             self.__playing = False
             self.__stop = True
 
     def fadeout(self, value: float):
         if self.__current != -1 and self.is_playing():
-            rendering_engine.fadeout_music(value)
+            ree.fadeout_music(value)
             self.__playing = False
             self.__stop = True
 

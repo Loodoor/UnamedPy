@@ -347,7 +347,7 @@ class CartesManager:
         self.police = police
         self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
         self.world_path = os.path.join("..", "saves", "world" + EXTENSION)
-        self._fd_nom_map = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_nom_map.png"))
+        self._fd_nom_map = ree.load_image(os.path.join("..", "assets", "gui", "fd_nom_map.png"))
         self.map = MAP_DEFAULT
         self.world = WORLD_DEFAULT  # default
         self.offsets = [0, 0]
@@ -389,7 +389,7 @@ class CartesManager:
             # chargement automatique des tiles, leur nom déterminent si elles sont bloquantes ou non
             # chargement d'une tile simple
             if os.path.isfile(i):
-                self.images[os.path.split(i)[1][:-4]] = rendering_engine.load_image(i)
+                self.images[os.path.split(i)[1][:-4]] = ree.load_image(i)
                 self.lassets.append(os.path.split(i)[1][:-4])
             # chargement d'une animation
             elif os.path.isdir(i):
@@ -496,7 +496,7 @@ class CartesManager:
             if tile not in self.callback_end_rendering:
                 self.callback_end_rendering.append(tile)
         else:
-            if isinstance(self.images[tile], rendering_engine.get_surface_class()):
+            if isinstance(self.images[tile], ree.get_surface_class()):
                 self.ecran.blit(self.images[tile], (at_x, at_y))
             elif isinstance(self.images[tile], BaseMultipleSpritesAnimator):
                 self.ecran.blit(self.images[tile].get_anim(), (at_x, at_y))
@@ -547,7 +547,7 @@ class CartesManager:
 
     def render(self, dt: float=1.0):
         objects_at = self.current_carte.get_objects()
-        rendering_engine.draw_rect(self.ecran, (0, 0, FEN_large, FEN_haut), (0, 0, 0))
+        ree.draw_rect(self.ecran, (0, 0, FEN_large, FEN_haut), (0, 0, 0))
 
         for y in range(len(self.carte)):
             for x in range(len(self.carte[y])):
@@ -567,9 +567,9 @@ class CartesManager:
 
                 if DEBUG_LEVEL >= 1:
                     if self.current_carte.building_at(x, y):
-                        rendering_engine.draw_rect(self.ecran, (xpos, ypos, TILE_SIZE, TILE_SIZE), (255, 0, 0))
+                        ree.draw_rect(self.ecran, (xpos, ypos, TILE_SIZE, TILE_SIZE), (255, 0, 0))
                     if self.current_carte.spawn_at(x, y):
-                        rendering_engine.draw_rect(self.ecran, (xpos, ypos, TILE_SIZE, TILE_SIZE), (0, 0, 255))
+                        ree.draw_rect(self.ecran, (xpos, ypos, TILE_SIZE, TILE_SIZE), (0, 0, 255))
 
                 # objets
                 if (x, y) in objects_at:
@@ -629,8 +629,8 @@ class CarteRenderer:
         self.path = os.path.join("..", "assets", "configuration", "worldmap" + EXTENSION)
         self.map_desc = ""
         self.path_map_desc = os.path.join("..", "assets", "configuration", "worldmap_desc" + EXTENSION)
-        self.carte_paths = rendering_engine.create_surface((MAP_RDR_SX, MAP_RDR_SY), rendering_engine.get_alpha_channel(), 32)
-        self.carte_mgr = rendering_engine.rescale(rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")), (MAP_RDR_SX, MAP_RDR_SY))
+        self.carte_paths = ree.create_surface((MAP_RDR_SX, MAP_RDR_SY), ree.get_alpha_channel(), 32)
+        self.carte_mgr = ree.rescale(ree.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")), (MAP_RDR_SX, MAP_RDR_SY))
         self._scheme = []
         self._surfs = {}
         self._fond = None
@@ -644,16 +644,16 @@ class CarteRenderer:
         with open(self.path_map_desc, encoding="utf-8") as desc:
             self.map_desc = eval(desc.read())
 
-        self._surfs[self.map_desc['chemin']['name']] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[self.map_desc['chemin']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
         self._surfs[self.map_desc['chemin']['name']].fill((215, 185, 15))
 
-        self._surfs[self.map_desc['chenal']['name']] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[self.map_desc['chenal']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
         self._surfs[self.map_desc['chenal']['name']].fill((20, 215, 200))
 
-        self._surfs[self.map_desc['lieux']['name']] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[self.map_desc['lieux']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
         self._surfs[self.map_desc['lieux']['name']].fill((50, 190, 20))
 
-        self._surfs[self.map_desc['ville']['name']] = rendering_engine.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
+        self._surfs[self.map_desc['ville']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
         self._surfs[self.map_desc['ville']['name']].fill((215, 25, 25))
 
         for y, line in enumerate(self._scheme):
@@ -701,12 +701,12 @@ class CarteRenderer:
 
             if not self._fond or self._fond.get_width() < desc.get_width() or self._fond.get_width() < name.get_width() or \
                     self._fond.get_height() < desc.get_height() or self._fond.get_height() < name.get_height():
-                self._fond = rendering_engine.create_surface(
+                self._fond = ree.create_surface(
                     (
                         max(desc.get_width(), name.get_width()) + MAP_RDR_MARGE,
                         max(desc.get_height(), name.get_height()) + MAP_RDR_MARGE
                     ),
-                    rendering_engine.get_alpha_channel(),
+                    ree.get_alpha_channel(),
                     32
                 )
                 self._fond.fill(0)

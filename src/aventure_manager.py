@@ -17,10 +17,10 @@ class Adventure:
         self.beginning_text = []
         self.loaded = False
         self.values = {}
-        self._first_creature_image = rendering_engine.rescale(rendering_engine.load_image(os.path.join("..", "assets", "creatures", "1 base.png")), (250, 250))
-        self._image_prof = rendering_engine.load_image(os.path.join("..", "assets", "aventure", "professeur.png"))
-        self._world_map = rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png"))
-        self.fond = rendering_engine.load_image(os.path.join('..', 'assets', 'gui', 'fd_aventure.png'))
+        self._first_creature_image = ree.rescale(ree.load_image(os.path.join("..", "assets", "creatures", "1 base.png")), (250, 250))
+        self._image_prof = ree.load_image(os.path.join("..", "assets", "aventure", "professeur.png"))
+        self._world_map = ree.load_image(os.path.join("..", "assets", "aventure", "worldmap.png"))
+        self.fond = ree.load_image(os.path.join('..', 'assets', 'gui', 'fd_aventure.png'))
 
     def get_progress(self):
         return self.progress
@@ -83,7 +83,7 @@ class Adventure:
                     self.values["first creature name"] = t.get_text()
             i += 1
 
-            rendering_engine.flip()
+            ree.flip()
         del g
 
     def next(self):

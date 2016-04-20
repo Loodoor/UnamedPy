@@ -4,7 +4,7 @@ import pickle, _pickle
 from constantes import *
 from pygame.locals import *
 from exceptions import ClassNonChargee
-import rendering_engine
+import ree
 from utils import ureplace_bool_str
 import debug
 from gui import GUIBulleAsking
@@ -170,7 +170,7 @@ class ParametresManager:
 def gui_access(ecran, police):
     def create_textes():
         return [police.render("Contrôles", POL_ANTIALISING, (10, 10, 10))] + [
-            police.render("{} : {}".format(const_to_str[cst], rendering_engine.get_key_name(controls[cst])),
+            police.render("{} : {}".format(const_to_str[cst], ree.get_key_name(controls[cst])),
                           POL_ANTIALISING, (10, 10, 10)) for cst in order
         ] + [
             police.render(
@@ -190,7 +190,7 @@ def gui_access(ecran, police):
     params = ParametresManager()
     params.load()
 
-    fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_params.png"))
+    fond = ree.load_image(os.path.join("..", "assets", "gui", "fd_params.png"))
     titre = police.render("Paramètres", POL_ANTIALISING, (10, 10, 10))
     const_to_str = {
         HAUT: "HAUT",
@@ -213,7 +213,7 @@ def gui_access(ecran, police):
     ecran.fill(0)  # besoin d'effacer l'écran sinon c'est moche :p
 
     while not done:
-        for event in rendering_engine.get_event():
+        for event in ree.get_event():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 done = True
             if event.type == KEYUP:
@@ -246,7 +246,7 @@ def gui_access(ecran, police):
         ecran.blit(titre, ((FEN_large - titre.get_width()) // 2, PARAMS_Y_TITRE))
         for i, texte in enumerate(settings_txt_list):
             if i == selected and i:
-                rendering_engine.draw_rect(
+                ree.draw_rect(
                     ecran,
                     (
                         PARAMS_X_LISTE - 2,
@@ -258,6 +258,6 @@ def gui_access(ecran, police):
                 )
             ecran.blit(texte, (PARAMS_X_LISTE, PARAMS_Y_START_LISTE + i * PARAMS_ESP_Y_LIGNE))
 
-        rendering_engine.flip()
+        ree.flip()
 
     params.save()

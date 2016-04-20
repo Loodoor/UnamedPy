@@ -20,7 +20,7 @@ class BaseSideAnimator:
 
         time_ = 0
         for _ in range(self.decalage):
-            surf = rendering_engine.create_surface((TILE_SIZE, TILE_SIZE))
+            surf = ree.create_surface((TILE_SIZE, TILE_SIZE))
             surf.fill((76, 76, 76))
             surf.set_colorkey((76, 76, 76))
 
@@ -71,7 +71,7 @@ class BaseMultipleSpritesAnimator:
 
     def _create_anims(self):
         for img in glob.glob(os.path.join(self.path, "*.png")):
-            self.anims.append(rendering_engine.load_image(img))
+            self.anims.append(ree.load_image(img))
             self._max_anim += 1
 
 
@@ -137,10 +137,10 @@ class PlayerAnimator:
         raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
 
     def _create_anims(self):
-        lhaut = [rendering_engine.load_image(_) for _ in glob.glob(os.path.join(self.path, "haut*.png"))]
-        lbas = [rendering_engine.load_image(_) for _ in glob.glob(os.path.join(self.path, "bas*.png"))]
-        lgauche = [rendering_engine.load_image(_) for _ in glob.glob(os.path.join(self.path, "gauche*.png"))]
-        ldroite = [rendering_engine.load_image(_) for _ in glob.glob(os.path.join(self.path, "droite*.png"))]
+        lhaut = [ree.load_image(_) for _ in glob.glob(os.path.join(self.path, "haut*.png"))]
+        lbas = [ree.load_image(_) for _ in glob.glob(os.path.join(self.path, "bas*.png"))]
+        lgauche = [ree.load_image(_) for _ in glob.glob(os.path.join(self.path, "gauche*.png"))]
+        ldroite = [ree.load_image(_) for _ in glob.glob(os.path.join(self.path, "droite*.png"))]
 
         self.anims = {
             HAUT: lhaut,

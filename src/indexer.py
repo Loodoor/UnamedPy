@@ -145,11 +145,11 @@ class Indexer:
         self.rd_mgr = render_manager
         self.selected_creature = -1
         self.selected_type = -1
-        self._btn_types = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_types_indexeur.png"))
-        self._btn_creatures = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_creatures_indexeur.png"))
+        self._btn_types = ree.load_image(os.path.join("..", "assets", "gui", "fd_bouton_types_indexeur.png"))
+        self._btn_creatures = ree.load_image(os.path.join("..", "assets", "gui", "fd_bouton_creatures_indexeur.png"))
         self.creas_selected = []
         self._attaque_table = None
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_indexer.png"))
+        self.fond = ree.load_image(os.path.join("..", "assets", "gui", "fd_indexer.png"))
 
     @staticmethod
     def static_select_all_crea_with_stade(stade: int):
@@ -213,8 +213,8 @@ class Indexer:
             with open(self.save_path, "rb") as read_index:
                 self.indexer = pickle.Unpickler(read_index).load()
                 for elem in self.indexer:
-                    img = rendering_engine.load_image(elem.path)
-                    self.images_crea[elem.id] = rendering_engine.rescale(img, (POK_SX_IMAGE_CREA, POK_SY_IMAGE_CREA))
+                    img = ree.load_image(elem.path)
+                    self.images_crea[elem.id] = ree.rescale(img, (POK_SX_IMAGE_CREA, POK_SY_IMAGE_CREA))
                     yield 1
                 self.creas_selected = self.indexer
                 yield 1
@@ -237,7 +237,7 @@ class Indexer:
                 break
 
     def get_image_by_id(self, id_: int):
-        return self.images_crea[id_] if id_ in self.images_crea.keys() else rendering_engine.create_surface((150, 150))
+        return self.images_crea[id_] if id_ in self.images_crea.keys() else ree.create_surface((150, 150))
 
     def next(self):
         self.page = self.page + 1 if self.page <= self.max_page else self.max_page
@@ -309,11 +309,11 @@ class Indexer:
 
     def render_sel_stade(self):
         while True:
-            rendering_engine.draw_rect(self.ecran, (POK_X_FENSST, POK_Y_FENSST, POK_SX_FENSST, POK_SY_FENSST), (0, 0, 0))
+            ree.draw_rect(self.ecran, (POK_X_FENSST, POK_Y_FENSST, POK_SX_FENSST, POK_SY_FENSST), (0, 0, 0))
             selected = 0
             tmp = self.police.render("Stade à sélectionner : " + str(selected), POL_ANTIALISING, (255, 255, 255))
 
-            ev = rendering_engine.poll_event()
+            ev = ree.poll_event()
             if ev.type == KEYDOWN:
                 if ev.unicode.isdigit():
                     selected = int(ev.unicode)
@@ -325,7 +325,7 @@ class Indexer:
                             (POK_X_FENSST + (POK_SX_FENSST - tmp.get_width()) // 2,
                              POK_Y_FENSST + (POK_SY_FENSST - POK_ESP_Y_ITEM) // 2))
 
-            rendering_engine.flip()
+            ree.flip()
 
     def render(self):
         self.ecran.blit(self.fond, (POK_POSX, POK_POSY))

@@ -26,17 +26,17 @@ class Inventaire:
 
         # Poches
         self.images_poches = {
-            os.path.split(image_path)[1].split('.')[0]: rendering_engine.load_image(image_path) for image_path in glob(
+            os.path.split(image_path)[1].split('.')[0]: ree.load_image(image_path) for image_path in glob(
                 os.path.join("..", "assets", "inventaire", "poches", "*.png")
             )
         }
 
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_inventaire.png"))
-        self._btn_next = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_next.png"))
-        self._btn_previous = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_previous.png"))
-        self._btn_jeter = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_jeter.png"))
-        self._btn_vider = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_vider.png"))
-        self._btn_utiliser = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_bouton_utiliser.png"))
+        self.fond = ree.load_image(os.path.join("..", "assets", "gui", "fd_inventaire.png"))
+        self._btn_next = ree.load_image(os.path.join("..", "assets", "gui", "fd_bouton_next.png"))
+        self._btn_previous = ree.load_image(os.path.join("..", "assets", "gui", "fd_bouton_previous.png"))
+        self._btn_jeter = ree.load_image(os.path.join("..", "assets", "gui", "fd_bouton_jeter.png"))
+        self._btn_vider = ree.load_image(os.path.join("..", "assets", "gui", "fd_bouton_vider.png"))
+        self._btn_utiliser = ree.load_image(os.path.join("..", "assets", "gui", "fd_bouton_utiliser.png"))
 
     def get_obj_messenger(self):
         if self.obj_messenger:

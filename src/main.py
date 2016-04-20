@@ -17,7 +17,7 @@ import time
 
 import game
 import utils
-import rendering_engine
+import ree
 from textentry import TextBox
 from aventure_manager import Adventure
 from parametres import gui_access
@@ -32,24 +32,24 @@ def get_alea_text(path: str="textes") -> str:
 
 def main():
     start_at = time.time()
-    tmp = rendering_engine.init()
+    tmp = ree.init()
     debug.println("Initialisation de Pygame ... {modules} ; {erreurs}".format(
         modules="Modules chargés : {}".format(tmp[0]),
         erreurs="Erreurs de chargement : {}".format(tmp[1])
     ))
-    debug.println("Initialisation de Pygame.Font ...", rendering_engine.init_font())
-    debug.println("Initialisation de Pygame.Mixer ...", rendering_engine.init_mixer())
+    debug.println("Initialisation de Pygame.Font ...", ree.init_font())
+    debug.println("Initialisation de Pygame.Mixer ...", ree.init_mixer())
 
     if DEBUG_LEVEL >= 1:
-        ecran = rendering_engine.create_window((DEBUG_FEN_large, DEBUG_FEN_haut), HWSURFACE)
+        ecran = ree.create_window((DEBUG_FEN_large, DEBUG_FEN_haut), HWSURFACE)
     else:
-        ecran = rendering_engine.create_window((FEN_large, FEN_haut), HWSURFACE)
-    clock = rendering_engine.create_clock()
-    rendering_engine.set_caption("Unamed - v{}".format(VERSION))
-    police = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
-    police_annot = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
+        ecran = ree.create_window((FEN_large, FEN_haut), HWSURFACE)
+    clock = ree.create_clock()
+    ree.set_caption("Unamed - v{}".format(VERSION))
+    police = ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
+    police_annot = ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
     police_annot.set_italic(True)
-    title = rendering_engine.load_image(os.path.join("..", "assets", "menu", "logo_alpha.png"))
+    title = ree.load_image(os.path.join("..", "assets", "menu", "logo_alpha.png"))
     bienvenue = [
         "Bienvenue à toi, chercheur !",
         "Tu vas entrer sur l'île d'Unamed, prépare toi à une toute nouvelle aventure !"
@@ -57,7 +57,7 @@ def main():
     adventure = Adventure(ecran, police)
     adventure.load()
     alea_texte = police_annot.render(get_alea_text(), POL_ANTIALISING, (0, 0, 0))
-    fond = rendering_engine.load_image(os.path.join("..", "assets", "menu", "fond.png"))
+    fond = ree.load_image(os.path.join("..", "assets", "menu", "fond.png"))
     load_texts = glob(os.path.join("..", "assets", "menu", "chargement", "*.txt"))
     max_len = int(MENU_SIZE_BAR // len(load_texts))
     loading_text = police.render(open(load_texts.pop(random.randint(0, len(load_texts) - 1)),
@@ -73,9 +73,9 @@ def main():
     loadeur = None
     finished_loading = False
     avancement = 0
-    btn_reseau = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_reseau.png"))
-    btn_jeu = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_jeu.png"))
-    btn_params = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_btn_params.png"))
+    btn_reseau = ree.load_image(os.path.join("..", "assets", "gui", "fd_btn_reseau.png"))
+    btn_jeu = ree.load_image(os.path.join("..", "assets", "gui", "fd_btn_jeu.png"))
+    btn_params = ree.load_image(os.path.join("..", "assets", "gui", "fd_btn_params.png"))
 
     try:
         with open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "r") as file:
@@ -93,7 +93,7 @@ def main():
 
     while continuer:
         dt = clock.tick()
-        for event in rendering_engine.get_event():
+        for event in ree.get_event():
             if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
                 continuer = 0
             if event.type == KEYDOWN:
@@ -110,7 +110,7 @@ def main():
                     chargement = True
                     debug.println("Entrée en mode réseau ...")
                     ecran.fill(0)
-                    rendering_engine.flip()
+                    ree.flip()
                     ip = TextBox(ecran, x=100, y=ecran.get_height() // 2,
                                  sx=ecran.get_width(),
                                  sy=ecran.get_height(),
@@ -177,9 +177,9 @@ def main():
             ecran.blit(btn_reseau, (MENU_BTN_RESEAU_X, MENU_BTN_RESEAU_Y))
             ecran.blit(btn_params, (MENU_BTN_PARAMS_X, MENU_BTN_PARAMS_Y))
 
-        rendering_engine.flip()
+        ree.flip()
 
-    rendering_engine.quit_()
+    ree.quit_()
 
     with open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "w") as file:
         file.write(str(max_avancement))

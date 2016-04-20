@@ -27,7 +27,7 @@ class TextBox:
         self.clignote = False
         self.mdt = 0
 
-        self.font = kwargs.get("font", rendering_engine.load_sys_font("arial", 18))
+        self.font = kwargs.get("font", ree.load_sys_font("arial", 18))
         self.max_length = kwargs.get("max_length", 32)
         self.color = kwargs.get("color", (255, 255, 255))
         self.pos_x = kwargs.get("x", 0)
@@ -52,7 +52,7 @@ class TextBox:
                 self.input += e.unicode
 
     def render(self):
-        rendering_engine.draw_rect(self.window, (self.pos_x, self.pos_y, self.sx, self.sy), self.bg_color)
+        ree.draw_rect(self.window, (self.pos_x, self.pos_y, self.sx, self.sy), self.bg_color)
         texte = self.font.render(self.input, POL_ANTIALISING, self.color)
         if not self.center:
             self.window.blit(self.placeholder, (self.pos_x, self.pos_y))
@@ -73,11 +73,11 @@ class TextBox:
             self.mdt = 1
 
     def update(self):
-        for event in rendering_engine.get_event():
+        for event in ree.get_event():
             self.event(event)
 
         self.render()
-        rendering_engine.flip()
+        ree.flip()
 
     def mainloop(self):
         while self.running:

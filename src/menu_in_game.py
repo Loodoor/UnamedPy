@@ -16,9 +16,9 @@ class Menu:
             MENU_POKEDEX,
             MENU_QUITTER
         ]
-        self.fond = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_menu.png"))
-        self.fond_cat = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_categorie_menu.png"))
-        self.fond_cat_sel = rendering_engine.load_image(os.path.join("..", "assets", "gui", "fd_categorie_selected_menu.png"))
+        self.fond = ree.load_image(os.path.join("..", "assets", "gui", "fd_menu.png"))
+        self.fond_cat = ree.load_image(os.path.join("..", "assets", "gui", "fd_categorie_menu.png"))
+        self.fond_cat_sel = ree.load_image(os.path.join("..", "assets", "gui", "fd_categorie_selected_menu.png"))
 
     def update(self):
         self.render()

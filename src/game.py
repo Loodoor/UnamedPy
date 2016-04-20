@@ -37,7 +37,7 @@ class Game:
         self.adventure = adventure
 
         # self.fps_regulator = IAFPS(FPS_base)
-        self.fps_regulator = rendering_engine.create_clock()
+        self.fps_regulator = ree.create_clock()
         self.continuer = 1
         self.ecran = ecran
         self.sock = s
@@ -51,9 +51,9 @@ class Game:
         self.bottom = False
 
         # Polices
-        self.police_normale = rendering_engine.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
-        self.police_grande = rendering_engine.load_font(POLICE_PATH, POL_GRANDE_TAILLE)
-        self.police_petite = rendering_engine.load_font(POLICE_PATH, POL_PETITE_TAILLE)
+        self.police_normale = ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
+        self.police_grande = ree.load_font(POLICE_PATH, POL_GRANDE_TAILLE)
+        self.police_petite = ree.load_font(POLICE_PATH, POL_PETITE_TAILLE)
 
         # Managers
         self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager, self.police_normale)
@@ -261,7 +261,7 @@ class Game:
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.invert_renderer()
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = rendering_engine.get_mouse_pos()
+                xp, yp = ree.get_mouse_pos()
                 self.mini_map.clic(xp, yp)
 
     def process_events_save(self, event, dt: int=1):
@@ -279,7 +279,7 @@ class Game:
         if self.joystick:
             self.joystick_deplace_souris()
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = rendering_engine.get_mouse_pos()
+                xp, yp = ree.get_mouse_pos()
                 self.indexeur.clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.invert_renderer()
@@ -296,7 +296,7 @@ class Game:
         if self.joystick:
             self.joystick_deplace_souris()
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = rendering_engine.get_mouse_pos()
+                xp, yp = ree.get_mouse_pos()
                 self.pc_mgr.clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.invert_renderer()
@@ -335,7 +335,7 @@ class Game:
                 if new_renderer == RENDER_INVENTAIRE:
                     self.personnage.inventaire.open(RENDER_GAME)
 
-        self.menu_in_game.mouseover(rendering_engine.get_mouse_pos())
+        self.menu_in_game.mouseover(ree.get_mouse_pos())
 
     def process_events_creatures(self, event, dt: int=1):
         if event.type == KEYDOWN:
@@ -349,7 +349,7 @@ class Game:
         if self.joystick:
             self.joystick_deplace_souris()
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = rendering_engine.get_mouse_pos()
+                xp, yp = ree.get_mouse_pos()
                 self.equipe_mgr.clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):
                 self.renderer_manager.invert_renderer()
@@ -385,10 +385,10 @@ class Game:
         # joystick
         if self.joystick:
             self.joystick_deplace_souris()
-            xp, yp = rendering_engine.get_mouse_pos()
+            xp, yp = ree.get_mouse_pos()
             self.cur_combat.mouseover(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = rendering_engine.get_mouse_pos()
+                xp, yp = ree.get_mouse_pos()
                 self.cur_combat.clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[NEXT_PAGE]["button"]):
                 self.cur_combat.next()
@@ -400,13 +400,13 @@ class Game:
 
     def joystick_deplace_souris(self):
         if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
-            rendering_engine.set_mouse_pos(rendering_engine.get_mouse_pos()[0], rendering_engine.get_mouse_pos()[1] - JOY_DEPLACE_SOURIS)
+            ree.set_mouse_pos(ree.get_mouse_pos()[0], ree.get_mouse_pos()[1] - JOY_DEPLACE_SOURIS)
         if self.joystick.get_axis(self.controles_joy[BAS]["axis"]["nb"]) == self.controles_joy[BAS]["axis"]["value"]:
-            rendering_engine.set_mouse_pos(rendering_engine.get_mouse_pos()[0], rendering_engine.get_mouse_pos() + JOY_DEPLACE_SOURIS)
+            ree.set_mouse_pos(ree.get_mouse_pos()[0], ree.get_mouse_pos() + JOY_DEPLACE_SOURIS)
         if self.joystick.get_axis(self.controles_joy[GAUCHE]["axis"]["nb"]) == self.controles_joy[GAUCHE]["axis"]["value"]:
-            rendering_engine.set_mouse_pos(rendering_engine.get_mouse_pos()[0] - JOY_DEPLACE_SOURIS, rendering_engine.get_mouse_pos())
+            ree.set_mouse_pos(ree.get_mouse_pos()[0] - JOY_DEPLACE_SOURIS, ree.get_mouse_pos())
         if self.joystick.get_axis(self.controles_joy[DROITE]["axis"]["nb"]) == self.controles_joy[DROITE]["axis"]["value"]:
-            rendering_engine.set_mouse_pos(rendering_engine.get_mouse_pos()[0] + JOY_DEPLACE_SOURIS, rendering_engine.get_mouse_pos())
+            ree.set_mouse_pos(ree.get_mouse_pos()[0] + JOY_DEPLACE_SOURIS, ree.get_mouse_pos())
 
     def process_events_inventaire(self, event, dt: int=1):
         if event.type == KEYDOWN:
@@ -425,7 +425,7 @@ class Game:
         if self.joystick:
             self.joystick_deplace_souris()
             if self.joystick.is_button_pressed(self.controles_joy[VALIDATION]["button"]):
-                xp, yp = rendering_engine.get_mouse_pos()
+                xp, yp = ree.get_mouse_pos()
                 self.personnage.inventaire_clic(xp, yp)
             if self.joystick.is_button_pressed(self.controles_joy[NEXT_PAGE]["button"]):
                 self.personnage.inventaire_next()
@@ -566,15 +566,15 @@ class Game:
         for i in self.load():
             yield i
 
-        rendering_engine.init_joystick()
+        ree.init_joystick()
         yield 1
-        if rendering_engine.count_joysticks() > 0:
-            joystick = rendering_engine.create_joystick()
+        if ree.count_joysticks() > 0:
+            joystick = ree.create_joystick()
             joystick.init()
             self.joystick = JoystickController(joystick)
             debug.println("Un joystick a été trouvé")
 
-        rendering_engine.set_key_repeat(200, 100)
+        ree.set_key_repeat(200, 100)
         yield 1
         if self.joystick:
             self.joystick.set_repeat(40)
@@ -617,7 +617,7 @@ class Game:
             if not self.equipe_mgr.is_not_empty():
                 self.renderer_manager.change_without_logging_last(RENDER_GAME)
         elif self.renderer_manager.get_renderer() == RENDER_MENU_IN_GAME:
-            rendering_engine.draw_rect(self.ecran, (0, 0) + self.ecran.get_size(), (0, 0, 0))
+            ree.draw_rect(self.ecran, (0, 0) + self.ecran.get_size(), (0, 0, 0))
             self.menu_in_game.update()
         elif self.renderer_manager.get_renderer() == RENDER_SAVE:
             if not self.gui_save_mgr.is_saving():
@@ -636,7 +636,7 @@ class Game:
 
         if self.show_fps:
             texte = self.police_normale.render("%3i FPS" % int(self.fps_regulator.get_fps()), 1, (0, 0, 0))
-            rendering_engine.draw_rect(self.ecran, (0, 0, 10 + texte.get_width(), 10 + texte.get_height()),
+            ree.draw_rect(self.ecran, (0, 0, 10 + texte.get_width(), 10 + texte.get_height()),
                                        (150, 150, 150))
             self.ecran.blit(texte, (5, 5))
 
@@ -654,7 +654,7 @@ class Game:
             dt = self.fps_regulator.tick()
 
             # Evénements
-            self.process_event(rendering_engine.poll_event(), dt)
+            self.process_event(ree.poll_event(), dt)
             self.network_ev_listener.listen()
 
             # Affichage
@@ -696,16 +696,16 @@ class Game:
             if self._play_music:
                 self.musics_player.play()
 
-            rendering_engine.flip()
+            ree.flip()
 
         self.renderer_manager.change_renderer_for(RENDER_SAVE)
         while True:
             dt = self.fps_regulator.tick(FPS_base)
             self.render(dt)
 
-            rendering_engine.poll_event()
+            ree.poll_event()
 
-            rendering_engine.flip()
+            ree.flip()
 
             if self.renderer_manager != RENDER_SAVE:
                 break
