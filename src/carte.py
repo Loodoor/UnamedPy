@@ -678,7 +678,18 @@ class CarteRenderer:
         if MAP_RDR_POSX <= x <= MAP_RDR_POSX + self.carte_paths.get_width() and \
                 MAP_RDR_POSY <= y <= MAP_RDR_POSY + self.carte_paths.get_height() and \
                 self._scheme[self.selected[1]][self.selected[0]] != MAP_RDR_VIDE:
-            pass
+            obj = self.map_desc['descriptions'][self._scheme[self.selected[1]][self.selected[0]]]
+            name = self.police.render(obj['name'], POL_ANTIALISING, (0, 0, 0))
+            desc = self.police.render(obj['desc'], POL_ANTIALISING, (0, 0, 0))
+            self._fond = ree.create_surface(
+                (
+                    max(desc.get_width(), name.get_width()) + MAP_RDR_MARGE,
+                    max(desc.get_height(), name.get_height()) + MAP_RDR_MARGE
+                )
+            )
+            self._fond.fill(0)
+            self._fond.convert_alpha()
+            self._fond.set_alpha(128)
         else:
             self.selected = None
 
@@ -694,19 +705,7 @@ class CarteRenderer:
                 self.ecran.blit(self._fond, (MAP_RDR_POSX_DESC - MAP_RDR_MARGE // 2, MAP_RDR_POSY_DESC - MAP_RDR_MARGE // 2))
 
             obj = self.map_desc['descriptions'][self._scheme[self.selected[1]][self.selected[0]]]
-            name = self.police.render(obj['name'], POL_ANTIALISING, (10, 10, 10))
+            name = self.police.render(obj['name'], POL_ANTIALISING, (255, 255, 255))
             self.ecran.blit(name, (MAP_RDR_POSX_DESC, MAP_RDR_POSY_DESC))
-            desc = self.police.render(obj['desc'], POL_ANTIALISING, (10, 10, 10))
+            desc = self.police.render(obj['desc'], POL_ANTIALISING, (255, 255, 255))
             self.ecran.blit(desc, (MAP_RDR_POSX_DESC, MAP_RDR_POSY_DESC + 20))
-
-            if not self._fond or self._fond.get_width() < desc.get_width() or self._fond.get_width() < name.get_width() or \
-                    self._fond.get_height() < desc.get_height() or self._fond.get_height() < name.get_height():
-                self._fond = ree.create_surface(
-                    (
-                        max(desc.get_width(), name.get_width()) + MAP_RDR_MARGE,
-                        max(desc.get_height(), name.get_height()) + MAP_RDR_MARGE
-                    ),
-                    ree.get_alpha_channel(),
-                    32
-                )
-                self._fond.fill(0)
