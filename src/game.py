@@ -163,7 +163,7 @@ class Game:
         if self.joystick:
             self.joystick.update_states()
 
-        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+        if event == QUIT or event == (KEYDOWN, K_ESCAPE):
             if self.network_ev_listener.is_enabled():
                 self.network_ev_listener.disconnect()
             self.musics_player.fadeout(300)
@@ -209,31 +209,31 @@ class Game:
             raise FonctionnaliteNonImplementee("Cas non géré. Merci de reporter ce traceback à Folaefolc, main dev' d'Unamed")
 
         # Global
-        if event.type == KEYUP and event.key == self.controles[SCREENSCHOT] or \
+        if event == (KEYUP, self.controles[SCREENSCHOT]) or \
                 (self.joystick and self.joystick.is_button_pressed(self.controles_joy[SCREENSCHOT]["button"])):
             self.screenshot()
-        if event.type == KEYUP and event.key == self.controles[SHOW_FPS] or \
+        if event == (KEYUP, self.controles[SHOW_FPS]) or \
                 (self.joystick and self.joystick.is_button_pressed(self.controles_joy[SHOW_FPS]["button"])):
             self.show_fps = not self.show_fps
-        if event.type == KEYUP and event.key == self.controles[CHAT] or \
+        if event == (KEYUP, self.controles[CHAT]) or \
                 (self.joystick and self.joystick.is_button_pressed(self.controles_joy[CHAT]["button"])):
             if not self.renderer_manager.get_renderer() == RENDER_CHAT:
                 self.renderer_manager.change_renderer_for(RENDER_CHAT)
             else:
                 self.renderer_manager.invert_renderer()
-        if event.type == KEYUP:
-            if event.key == self.controles[HAUT]:
-                self.top = False
-                self.personnage.end_move()
-            if event.key == self.controles[BAS]:
-                self.bottom = False
-                self.personnage.end_move()
-            if event.key == self.controles[GAUCHE]:
-                self.left = False
-                self.personnage.end_move()
-            if event.key == self.controles[DROITE]:
-                self.right = False
-                self.personnage.end_move()
+
+        if event == (KEYUP, self.controles[HAUT]):
+            self.top = False
+            self.personnage.end_move()
+        if event == (KEYUP, self.controles[BAS]):
+            self.bottom = False
+            self.personnage.end_move()
+        if event == (KEYUP, self.controles[GAUCHE]):
+            self.left = False
+            self.personnage.end_move()
+        if event == (KEYUP, self.controles[DROITE]):
+            self.right = False
+            self.personnage.end_move()
 
         # Gestion des objets
         if self.personnage.inventaire.get_obj_messenger():
@@ -248,10 +248,9 @@ class Game:
             self._manage_object_action()
 
     def process_events_carte(self, event, dt: int=1):
-        if event.type == KEYDOWN:
-            if event.key == self.controles[MENU]:
-                self.renderer_manager.invert_renderer()
-        if event.type == MOUSEBUTTONUP:
+        if event == (KEYDOWN, self.controles[MENU]):
+            self.renderer_manager.invert_renderer()
+        if event == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.mini_map.clic(xp, yp)
 
@@ -268,10 +267,9 @@ class Game:
         pass
 
     def process_events_pokedex(self, event, dt: int=1):
-        if event.type == KEYDOWN:
-            if event.key == self.controles[MENU]:
-                self.renderer_manager.invert_renderer()
-        if event.type == MOUSEBUTTONUP:
+        if event == (KEYDOWN, self.controles[MENU]):
+            self.renderer_manager.invert_renderer()
+        if event == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.indexeur.clic(xp, yp)
 
@@ -285,10 +283,9 @@ class Game:
                 self.renderer_manager.invert_renderer()
 
     def process_events_pc(self, event, dt: int=1):
-        if event.type == KEYDOWN:
-            if event.key == self.controles[MENU]:
-                self.renderer_manager.invert_renderer()
-        if event.type == MOUSEBUTTONUP:
+        if event == (KEYDOWN, self.controles[MENU]):
+            self.renderer_manager.invert_renderer()
+        if event == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.pc_mgr.clic(xp, yp)
 
@@ -302,19 +299,18 @@ class Game:
                 self.renderer_manager.invert_renderer()
 
     def process_events_menu_in_game(self, event, dt: int=1):
-        if event.type == KEYDOWN:
-            if event.key == self.controles[MENU]:
-                self.renderer_manager.invert_renderer()
-            if event.key == self.__ctrls[NEXT_PAGE]:
-                self.menu_in_game.next()
-            if event.key == self.__ctrls[PREVIOUS_PAGE]:
-                self.menu_in_game.previous()
-            if event.key == self.controles[VALIDATION]:
-                new_renderer = self.menu_in_game.valider_choix()
-                self.renderer_manager.change_renderer_for(new_renderer)
-                if new_renderer == RENDER_INVENTAIRE:
-                    self.personnage.inventaire.open(RENDER_GAME)
-        if event.type == MOUSEBUTTONUP:
+        if event == (KEYDOWN, self.controles[MENU]):
+            self.renderer_manager.invert_renderer()
+        if event == (KEYDOWN, self.__ctrls[NEXT_PAGE]):
+            self.menu_in_game.next()
+        if event == (KEYDOWN, self.__ctrls[PREVIOUS_PAGE]):
+            self.menu_in_game.previous()
+        if event == (KEYDOWN, self.controles[VALIDATION]):
+            new_renderer = self.menu_in_game.valider_choix()
+            self.renderer_manager.change_renderer_for(new_renderer)
+            if new_renderer == RENDER_INVENTAIRE:
+                self.personnage.inventaire.open(RENDER_GAME)
+        if event == MOUSEBUTTONUP:
             xp, yp = event.pos
             tmp = self.menu_in_game.clic(xp, yp)
             if tmp != RENDER_ERROR:
@@ -338,10 +334,9 @@ class Game:
         self.menu_in_game.mouseover(ree.get_mouse_pos())
 
     def process_events_creatures(self, event, dt: int=1):
-        if event.type == KEYDOWN:
-            if event.key == self.controles[MENU]:
-                self.renderer_manager.invert_renderer()
-        if event.type == MOUSEBUTTONUP:
+        if event == (KEYDOWN, self.controles[MENU]):
+            self.renderer_manager.invert_renderer()
+        if event == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.equipe_mgr.clic(xp, yp)
 
@@ -364,21 +359,20 @@ class Game:
         raise FonctionnaliteNonImplementee
 
     def process_events_combat(self, event, dt: int=1):
-        if event.type == KEYDOWN:
-            if event.key == self.__ctrls[NEXT_PAGE] or event.key == self.__ctrls[DOWN_PAGE]:
-                self.cur_combat.next()
-            if event.key == self.__ctrls[PREVIOUS_PAGE] or event.key == self.__ctrls[UP_PAGE]:
-                self.cur_combat.previous()
-            if event.key == self.controles[VALIDATION]:
-                self.cur_combat.valide()
-            if event.key == self.controles[MENU]:
-                self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
-                self.personnage.inventaire.open(RENDER_COMBAT)
-        if event.type == MOUSEBUTTONUP:
+        if event == (KEYDOWN, self.__ctrls[NEXT_PAGE]) or event == (KEYDOWN, self.__ctrls[DOWN_PAGE]):
+            self.cur_combat.next()
+        if event == (KEYDOWN, self.__ctrls[PREVIOUS_PAGE]) or event == (KEYDOWN, self.__ctrls[UP_PAGE]):
+            self.cur_combat.previous()
+        if event == (KEYDOWN, self.controles[VALIDATION]):
+            self.cur_combat.valide()
+        if event == (KEYDOWN, self.controles[MENU]):
+            self.renderer_manager.change_renderer_for(RENDER_INVENTAIRE)
+            self.personnage.inventaire.open(RENDER_COMBAT)
+        if event == MOUSEBUTTONUP:
             xp, yp = event.pos
             if event.button == 1:
                 self.cur_combat.clic(xp, yp)
-        if event.type == MOUSEMOTION:
+        if event == MOUSEMOTION:
             xp, yp = event.pos
             self.cur_combat.mouseover(xp, yp)
 
@@ -409,15 +403,14 @@ class Game:
             ree.set_mouse_pos(ree.get_mouse_pos()[0] + JOY_DEPLACE_SOURIS, ree.get_mouse_pos())
 
     def process_events_inventaire(self, event, dt: int=1):
-        if event.type == KEYDOWN:
-            if event.key == self.controles[MENU]:
-                self.renderer_manager.change_for_last_renderer()
-                self.personnage.inventaire.close()
-            if event.key == self.__ctrls[NEXT_PAGE]:
-                self.personnage.inventaire_next()
-            if event.key == self.__ctrls[PREVIOUS_PAGE]:
-                self.personnage.inventaire_previous()
-        if event.type == MOUSEBUTTONUP:
+        if event == (KEYDOWN, self.controles[MENU]):
+            self.renderer_manager.change_for_last_renderer()
+            self.personnage.inventaire.close()
+        if event == (KEYDOWN, self.__ctrls[NEXT_PAGE]):
+            self.personnage.inventaire_next()
+        if event == (KEYDOWN, self.__ctrls[PREVIOUS_PAGE]):
+            self.personnage.inventaire_previous()
+        if event == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.personnage.inventaire_clic(xp, yp)
 
@@ -468,22 +461,21 @@ class Game:
 
     def process_events_game(self, event, dt: int=1):
         # clavier
-        if event.type == KEYDOWN:
-            if event.key == self.controles[HAUT]:
-                self.top, self.bottom = True, False
-            if event.key == self.controles[BAS]:
-                self.top, self.bottom = False, True
-            if event.key == self.controles[GAUCHE]:
-                self.left, self.right = True, False
-            if event.key == self.controles[DROITE]:
-                self.left, self.right = False, True
-            if event.key == self.controles[MENU]:
-                self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
-        if event.type == KEYUP:
-            if event.key == self.controles[VALIDATION]:
-                self.personnage.search_and_talk_to_pnj()
-            if event.key == self.controles[MAJ]:
-                self.personnage.change_moving_state()
+        if event == (KEYDOWN, self.controles[HAUT]):
+            self.top, self.bottom = True, False
+        if event == (KEYDOWN, self.controles[BAS]):
+            self.top, self.bottom = False, True
+        if event == (KEYDOWN, self.controles[GAUCHE]):
+            self.left, self.right = True, False
+        if event == (KEYDOWN, self.controles[DROITE]):
+            self.left, self.right = False, True
+        if event == (KEYDOWN, self.controles[MENU]):
+            self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
+
+        if event == (KEYUP, self.controles[VALIDATION]):
+            self.personnage.search_and_talk_to_pnj()
+        if event == (KEYUP, self.controles[MAJ]):
+            self.personnage.change_moving_state()
         self.move_perso(dt)
 
         # joystick

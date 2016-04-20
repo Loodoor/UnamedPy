@@ -314,12 +314,11 @@ class Indexer:
             tmp = self.police.render("Stade à sélectionner : " + str(selected), POL_ANTIALISING, (255, 255, 255))
 
             ev = ree.poll_event()
-            if ev.type == KEYDOWN:
-                if ev.unicode.isdigit():
-                    selected = int(ev.unicode)
-                if ev.key == K_RETURN:
-                    self.creas_selected = self.select_all_crea_with_stade(selected)
-                    break
+            if ev == KEYDOWN and ev.unicode.isdigit():
+                selected = int(ev.unicode)
+            if ev == (KEYDOWN, K_RETURN):
+                self.creas_selected = self.select_all_crea_with_stade(selected)
+                break
 
             self.ecran.blit(tmp,
                             (POK_X_FENSST + (POK_SX_FENSST - tmp.get_width()) // 2,

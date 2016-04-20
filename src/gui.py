@@ -61,9 +61,8 @@ class GUIBulleWaiting(GUIBulle):
     def update(self, dt: int=1):
         while not self.done:
             ev = ree.poll_event()
-            if ev.type == KEYDOWN:
-                if ev.key != self.screenkey:
-                    self.done = True
+            if ev != (KEYDOWN, self.screenkey) and ev == KEYDOWN:
+                self.done = True
 
             self.render()
             ree.flip()
@@ -78,11 +77,10 @@ class GUIBulle2Choices(GUIBulleWaiting):
     def update(self, dt: int=1):
         while not self.done:
             ev = ree.poll_event()
-            if ev.type == KEYDOWN:
-                if ev.key == K_RETURN:
-                    self.ok = True
-                if ev.key != self.screenkey:
-                    self.done = True
+            if ev == (KEYUP, K_RETURN):
+                self.ok = True
+            if ev != (KEYUP, self.screenkey):
+                self.done = True
 
             self.render()
             ree.flip()
@@ -124,9 +122,8 @@ class GUIBulleAsking(GUIBulleWaiting):
     def update(self, dt: int=1):
         while not self.done:
             ev = ree.poll_event()
-            if ev.type == KEYDOWN:
-                if ev.key != self.screenkey:
-                    self.text_box.event(ev)
+            if ev != (KEYDOWN, self.screenkey) and ev == KEYDOWN:
+                self.text_box.event(ev)
 
             self.render()
             ree.flip()

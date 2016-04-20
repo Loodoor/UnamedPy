@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import pygame
 import pickle
 from glob import glob
 from constantes import *

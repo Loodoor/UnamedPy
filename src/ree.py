@@ -55,20 +55,21 @@ class Event:
             return self._ev.__getattribute__(item)
         raise AttributeError(str(item) + " not found in " + str(self._ev))
 
-    def __cmp__(self, other) -> bool:
+    def __eq__(self, other) -> bool:
         if not isinstance(other, tuple):
             if other in TYPES:
                 return self._ev.type == other
         else:
             if other[0] in TYPES:
-                tmp = None
                 for attr in ATTRIBS:
                     if hasattr(self._ev, attr):
-                        tmp = self._ev.__getattr__(attr)
-                        break
-                if tmp:
-                    return self._ev.type == other[0] and tmp == other[1]
+                        tmp = self._ev.__getattribute__(attr)
+                        if self._ev.type == other[0] and tmp == other[1]:
+                            return True
         return False
+
+    def __ne__(self, other) -> bool:
+        return not self == other
 
 
 def get_method() -> str:

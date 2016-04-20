@@ -60,7 +60,7 @@ class ChatManager:
         return self.text_entry.is_running()
 
     def event(self, e):
-        if e.type == KEYDOWN and e.key != self.quit:
+        if e == KEYDOWN and not e == (KEYDOWN, self.quit):
             self.text_entry.event(e)
 
     def new_message(self, msg: str):

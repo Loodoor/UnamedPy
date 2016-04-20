@@ -214,27 +214,28 @@ def gui_access(ecran, police):
 
     while not done:
         for event in ree.get_event():
-            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+            if event == QUIT or event == (KEYDOWN, K_ESCAPE):
                 done = True
-            if event.type == KEYUP:
-                if event.key == K_RETURN:
-                    if selected == 10:
-                        params.set("music", not params.get("music"))
-                    if selected == 11:
-                        params.set("play_anims", not params.get("play_anims"))
-                    if selected == 12:
-                        tmp = params.get("delta_time")
-                        tmp.update({"has_default": not tmp["has_default"]})
-                        params.set("delta_time", tmp)
-                    if selected == 13:
-                        debug.println("DEMANDE à FAIRE !")
-                if 0 < selected < 10:
-                    code = event.key
-                    tmp = params.get("controls")
-                    tmp.update({order[selected - 1]: code})
-                    params.set("controls", tmp)
-                settings_txt_list = create_textes()
-            if event.type == MOUSEBUTTONUP:
+
+            if event == (KEYUP, K_RETURN):
+                if selected == 10:
+                    params.set("music", not params.get("music"))
+                if selected == 11:
+                    params.set("play_anims", not params.get("play_anims"))
+                if selected == 12:
+                    tmp = params.get("delta_time")
+                    tmp.update({"has_default": not tmp["has_default"]})
+                    params.set("delta_time", tmp)
+                if selected == 13:
+                    debug.println("DEMANDE à FAIRE !")
+            if 0 < selected < 10:
+                code = event.key
+                tmp = params.get("controls")
+                tmp.update({order[selected - 1]: code})
+                params.set("controls", tmp)
+            settings_txt_list = create_textes()
+
+            if event == MOUSEBUTTONUP:
                 xp, yp = event.pos
                 real_y = (yp - PARAMS_Y_START_LISTE) // PARAMS_ESP_Y_LIGNE
                 if 0 <= real_y < len(settings_txt_list):

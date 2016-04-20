@@ -93,13 +93,13 @@ def main():
 
     while continuer:
         dt = clock.tick()
+
         for event in ree.get_event():
-            if (event.type == KEYDOWN and event.key == K_ESCAPE) or event.type == QUIT:
+            if event == (KEYDOWN, K_ESCAPE) or event == QUIT:
                 continuer = 0
-            if event.type == KEYDOWN:
-                if event.key == K_RIGHT or event.key == K_LEFT:
-                    alea_texte = police_annot.render(get_alea_text(), POL_ANTIALISING, (0, 0, 0))
-            if event.type == MOUSEBUTTONUP and not chargement:
+            if event == (KEYUP, K_RIGHT) or event == (KEYUP, K_LEFT):
+                alea_texte = police_annot.render(get_alea_text(), POL_ANTIALISING, (0, 0, 0))
+            if event == MOUSEBUTTONUP and not chargement:
                 xp, yp = event.pos
                 if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_SX and \
                         MENU_BTN_JOUER_Y <= yp <= MENU_BTN_JOUER_Y + MENU_BTN_SY:

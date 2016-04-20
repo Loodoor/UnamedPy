@@ -40,16 +40,15 @@ class TextBox:
         self.placeholder = self.font.render(kwargs.get("placeholder", ""), POL_ANTIALISING, self.color)
 
     def event(self, e):
-        if e.type == QUIT:
+        if e == QUIT:
             self.running = False
-        elif e.type == KEYDOWN:
-            if e.key == K_ESCAPE or e.key == K_RETURN:
-                self.running = False
-                self.enter = True
-            elif e.key == K_BACKSPACE:
-                self.input = self.input[:-1]
-            elif len(self.input) < self.max_length:
-                self.input += e.unicode
+        if e == (KEYDOWN, K_ESCAPE) or e == (KEYDOWN, K_RETURN):
+            self.running = False
+            self.enter = True
+        elif e == (KEYDOWN, K_BACKSPACE):
+            self.input = self.input[:-1]
+        elif len(self.input) < self.max_length:
+            self.input += e.unicode
 
     def render(self):
         ree.draw_rect(self.window, (self.pos_x, self.pos_y, self.sx, self.sy), self.bg_color)
