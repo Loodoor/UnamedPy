@@ -633,6 +633,7 @@ class CarteRenderer:
         self.carte_mgr = rendering_engine.rescale(rendering_engine.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")), (MAP_RDR_SX, MAP_RDR_SY))
         self._scheme = []
         self._surfs = {}
+        self._fond = None
         self.selected = None
 
     def load(self):
@@ -689,9 +690,23 @@ class CarteRenderer:
         self.ecran.blit(self.carte_paths, (MAP_RDR_POSX, MAP_RDR_POSY))
 
         if self.selected:
-            case = self._scheme[self.selected[1]][self.selected[0]]
-            obj = self.map_desc['descriptions'][case]
-            self.ecran.blit(self.police.render(obj['name'], POL_ANTIALISING, (10, 10, 10)),
-                            (MAP_RDR_POSX, MAP_RDR_POSY))
-            self.ecran.blit(self.police.render(obj['desc'], POL_ANTIALISING, (10, 10, 10)),
-                            (MAP_RDR_POSX, MAP_RDR_POSY + 20))
+            if self._fond:
+                self.ecran.blit(self._fond, (MAP_RDR_POSX_DESC - MAP_RDR_MARGE // 2, MAP_RDR_POSY_DESC - MAP_RDR_MARGE // 2))
+
+            obj = self.map_desc['descriptions'][self._scheme[self.selected[1]][self.selected[0]]]
+            name = self.police.render(obj['name'], POL_ANTIALISING, (10, 10, 10))
+            self.ecran.blit(name, (MAP_RDR_POSX_DESC, MAP_RDR_POSY_DESC))
+            desc = self.police.render(obj['desc'], POL_ANTIALISING, (10, 10, 10))
+            self.ecran.blit(desc, (MAP_RDR_POSX_DESC, MAP_RDR_POSY_DESC + 20))
+
+            if not self._fond or self._fond.get_width() < desc.get_width() or self._fond.get_width() < name.get_width() or \
+                    self._fond.get_height() < desc.get_height() or self._fond.get_height() < name.get_height():
+                self._fond = rendering_engine.create_surface(
+                    (
+                        max(desc.get_width(), name.get_width()) + MAP_RDR_MARGE,
+                        max(desc.get_height(), name.get_height()) + MAP_RDR_MARGE
+                    ),
+                    rendering_engine.get_alpha_channel(),
+                    32
+                )
+                self._fond.fill(0)

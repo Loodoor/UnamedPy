@@ -1,6 +1,3 @@
-import pygame
-from pygame import gfxdraw
-import random
 from constantes import *
 
 
@@ -24,7 +21,13 @@ class PreRenderedLight():
     
     def load(self):
         for number in range(0, self.nbImages):
-            self.imageList.append(pygame.Surface((self.lightSize * 2 + self.variation * 2, self.lightSize * 2 + self.variation * 2), pygame.SRCALPHA, 32))
+            self.imageList.append(
+                rendering_engine.create_surface(
+                    (self.lightSize * 2 + self.variation * 2, self.lightSize * 2 + self.variation * 2),
+                    rendering_engine.get_alpha_channel(),
+                    32
+                )
+            )
             self.imageList[number].convert_alpha()
             self.imageList[number].fill((0, 0, 0, 0))
         self._render()
@@ -40,7 +43,7 @@ class PreRenderedLight():
                 g = self.lightColor[1] * (i / maxRange)
                 b = self.lightColor[2] * (i / maxRange)
                 t = int(255 - (self.ambiantLight * (i / maxRange)))
-                pygame.gfxdraw.filled_circle(
+                rendering_engine.gfxdraw_filled_circle(
                     self.imageList[number],
                     int(self.lightSize + self.variation / 2),
                     int(self.lightSize + self.variation / 2),
