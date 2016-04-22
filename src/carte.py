@@ -127,7 +127,7 @@ def parse_pnjs_dict(pnjs: dict) -> list:
                 type_mvt,
                 pnj_details["text"],
                 pnj_details["dir"],
-                pnj_details["image"]
+                # pnj_details["image"]
             )
         )
 
@@ -209,15 +209,15 @@ class SubCarte:
         self.id = datas['id']
         self.lights = datas['lights']
         self.name = datas['name']
-        self._rainy = random.random() < PROB_RAIN if not datas.get('rainy') else random.random() < datas['rainy']
+        self._rainy = random.random() < datas['rainy']
 
-    def is_rainy(self):
+    def is_rainy(self) -> bool:
         return self._rainy
 
     def create_pnj(self, pnj: PNJ):
         self.pnjs.append(pnj)
 
-    def get_all(self):
+    def get_all(self) -> list:
         return self.carte
 
     def get_name(self):
@@ -226,47 +226,56 @@ class SubCarte:
     def get_at(self, x: int, y: int):
         return self.carte[y][x]
 
-    def get_objects(self):
+    def get_objects(self) -> dict:
         return self.objets
 
-    def get_lights(self):
+    def get_lights(self) -> dict:
         return self.lights
 
-    def get_pnjs(self):
+    def get_pnjs(self) -> list:
         return self.pnjs
 
-    def spawn_at(self, x: int, y: int):
+    def spawn_at(self, x: int, y: int) -> bool:
         for _, content in self.maplinks.items():
             if int(content["i"]) == x and int(content["j"]) == y and int(content["type"]) == 0:
                 return True
         return False
 
-    def building_at(self, x: int, y: int):
+    def building_at(self, x: int, y: int) -> bool:
         for _, content in self.maplinks.items():
             if int(content["i"]) == x and int(content["j"]) == y and int(content["type"]) == 1:
                 return True
         return False
 
-    def get_spawn_pos_with_tag(self, tag: str):
+    def get_spawn_pos_with_tag(self, tag: str) -> tuple:
         for _, content in self.maplinks.items():
             if int(content["type"]) == 0 and content["spawn_tag"] == tag:
                 return content["i"], content["j"]
         return None
 
-    def get_building_id_tag_at(self, x: int, y: int):
+    def get_building_id_tag_at(self, x: int, y: int) -> tuple:
         if self.building_at(x, y):
             for _, content in self.maplinks.items():
                 if int(content["i"]) == x and int(content["j"]) == y and int(content["type"]) == 1:
                     return content["destination"]["map_id"], content["destination"]["spawn_tag"]
         return BUILDING_GET_ERROR
 
-    def get_zid(self):
+    def get_zid(self) -> int:
         return self.zid
 
-    def size(self):
+    @property
+    def size(self) -> tuple:
         return len(self.carte[0]), len(self.carte)
 
-    def get_object_at(self, x: int, y: int):
+    @property
+    def width(self) -> int:
+        return len(self.carte[0])
+
+    @property
+    def height(self) -> int:
+        return len(self.carte)
+
+    def get_object_at(self, x: int, y: int) -> object:
         if (x, y) in self.objets.keys():
             work = self.objets[x, y]
             del self.objets[x, y]
@@ -279,21 +288,21 @@ class SubCarte:
     def set_at(self, x: int, y: int, new):
         self.carte[y][x] = new
 
-    def collide_at(self, x: int, y: int):
+    def collide_at(self, x: int, y: int) -> bool:
         if 0 <= int(y) < len(self.carte) and 0 <= int(x) < len(self.carte[0]):
             return True if COLLIDE_ITEM(self.carte[int(y)][int(x)][1]) else False
         return True
 
-    def trigger_at(self, x: int, y: int):
+    def trigger_at(self, x: int, y: int) -> bool:
         return (x, y) in self.triggers.keys()
 
-    def call_trigger_at(self, x: int, y: int, triggers_mgr: TriggersManager):
+    def call_trigger_at(self, x: int, y: int, triggers_mgr: TriggersManager) -> bool:
         if self.trigger_at(x, y):
             triggers_mgr.call_trigger_with_id(self.triggers[x, y], self.id)
             return True
         return False
 
-    def has_object(self, x: int, y: int):
+    def has_object(self, x: int, y: int) -> bool:
         return True if (x, y) in self.objets.keys() else False
 
     def drop_object_at(self, x: int, y: int, obj, from_poche):
@@ -404,7 +413,7 @@ class CartesManager:
             pickle.Pickler(file).dump(self.world)
         self.triggers_mgr.save()
 
-    def collide_at(self, x, y):
+    def collide_at(self, x, y) -> bool:
         if self.current_carte.get_building_id_tag_at(x, y) == BUILDING_GET_ERROR:
             return self.current_carte.collide_at(x, y)
         return True
@@ -430,19 +439,19 @@ class CartesManager:
         if FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
             self.adjust_offset()
         elif FEN_large > len(self.carte[0] * TILE_SIZE) and FEN_haut <= len(self.carte) * TILE_SIZE:
-            if spawn_tiles_pos[1] < (self.current_carte.size()[1] * TILE_SIZE) // 2:
-                origin_view = spawn_tiles_pos[0] - FEN_large // 2, (self.current_carte.size()[1] - FEN_haut) // 2
+            if spawn_tiles_pos[1] < (self.current_carte.height * TILE_SIZE) // 2:
+                origin_view = spawn_tiles_pos[0] - FEN_large // 2, (self.current_carte.height - FEN_haut) // 2
             else:
-                origin_view = spawn_tiles_pos[0] - FEN_large // 2, (FEN_haut - self.current_carte.size()[1]) // 2
+                origin_view = spawn_tiles_pos[0] - FEN_large // 2, (FEN_haut - self.current_carte.height) // 2
             self.offsets = [
                 -origin_view[0],
                 -origin_view[1]
             ]
         elif FEN_large <= len(self.carte[0] * TILE_SIZE) and FEN_haut > len(self.carte) * TILE_SIZE:
-            if spawn_tiles_pos[0] < (self.current_carte.size()[0] * TILE_SIZE) // 2:
-                origin_view = (self.current_carte.size()[0] - FEN_large) // 2, spawn_tiles_pos[1] - FEN_haut // 2
+            if spawn_tiles_pos[0] < (self.current_carte.width * TILE_SIZE) // 2:
+                origin_view = (self.current_carte.width - FEN_large) // 2, spawn_tiles_pos[1] - FEN_haut // 2
             else:
-                origin_view = (FEN_large - self.current_carte.size()[0]) // 2, spawn_tiles_pos[1] - FEN_haut // 2
+                origin_view = (FEN_large - self.current_carte.width) // 2, spawn_tiles_pos[1] - FEN_haut // 2
             self.offsets = [
                 -origin_view[0],
                 -origin_view[1]
