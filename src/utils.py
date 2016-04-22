@@ -125,6 +125,36 @@ def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 
     ree.draw_rect(screen, (rect_bg[0] + esp, rect_bg[1] + esp, progress, rect_bg[3] - esp * 2), fg_color)
 
 
+class Point:
+    def __init__(self, *args, **kwargs):
+        self.x = kwargs.get('x') if kwargs.get('x') else args[0]
+        self.y = kwargs.get('y') if kwargs.get('y') else args[1]
+
+    def move(self, x: int=0, y: int=0):
+        self.x += x
+        self.y += y
+
+    def move_tile(self, i: int=0, j: int=0):
+        self.move(i * TILE_SIZE, j * TILE_SIZE)
+
+    @property
+    def tile(self) -> tuple:
+        return self.x // TILE_SIZE, self.y // TILE_SIZE
+
+    @tile.setter
+    def tile(self, pos: tuple):
+        self.x = pos[0] * TILE_SIZE
+        self.y = pos[1] * TILE_SIZE
+
+    @property
+    def pos(self):
+        return self.x, self.y
+
+    @pos.setter
+    def pos(self, new: tuple):
+        self.x, self.y = new
+
+
 class UMoment:
     def __init__(self, description_job: str=""):
         self.time = time.time()
