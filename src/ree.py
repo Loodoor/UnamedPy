@@ -45,6 +45,10 @@ ATTRIBS = [
     "code"
 ]
 
+# consts
+surf = pygame.Surface
+rect = pygame.Rect
+
 
 class Event:
     def __init__(self, pg_event: pygame.event):

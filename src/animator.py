@@ -6,7 +6,7 @@ from constantes import *
 
 
 class BaseSideAnimator:
-    def __init__(self, base_image: object, velocity: float, vertical: bool):
+    def __init__(self, base_image: ree.surf, velocity: float, vertical: bool):
         self.base_image = base_image
         self.velocity = velocity
         self.decalage = int(self.base_image.get_width() // self.velocity + 1)
@@ -40,7 +40,7 @@ class BaseSideAnimator:
     def next(self):
         self.time += self.velocity
 
-    def draw_at(self, ecran: object, pos: tuple=(-1, -1)):
+    def draw_at(self, ecran: ree.surf, pos: tuple=(-1, -1)):
         ecran.blit(self.output[int(self.time % len(self.output))], pos)
 
 
@@ -78,9 +78,6 @@ class BaseMultipleSpritesAnimator:
 class FluidesAnimator(BaseSideAnimator):
     def __init__(self, base_image, velocity: float):
         super().__init__(base_image, velocity, False)
-
-    def next(self):
-        self._draw()
 
     def get_anim(self):
         return self.output[int(self.time % len(self.output))]

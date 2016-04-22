@@ -7,7 +7,7 @@ from constantes import *
 from trigger_manager import TriggersManager
 from exceptions import ErreurContenuCarte
 from utils import udel_same_occurence
-from pnj_manager import PNJ, CROSS_MOVE, HORIZONTAL_MOVE, STANDART_MOVE, VERTICAL_MOVE
+from pnj_manager import PNJ, CROSS_MOVE, HORIZONTAL_MOVE, STANDART_MOVE, VERTICAL_MOVE, STATIC_MOVE
 from animator import FluidesAnimator, BaseMultipleSpritesAnimator, BaseSideAnimator
 from random import randint
 from urllib import error
@@ -116,8 +116,10 @@ def parse_pnjs_dict(pnjs: dict) -> list:
             type_mvt = CROSS_MOVE
         elif pnj_details["type_mvt"] == "2":
             type_mvt = VERTICAL_MOVE
-        else:  # if pnj_details["type_mvt"] == "3":
+        elif pnj_details["type_mvt"] == "3":
             type_mvt = HORIZONTAL_MOVE
+        else:  # type_mvt = "4"
+            type_mvt = STATIC_MOVE
 
         work.append(
             PNJ(
@@ -125,7 +127,7 @@ def parse_pnjs_dict(pnjs: dict) -> list:
                 type_mvt,
                 pnj_details["text"],
                 pnj_details["dir"],
-                # pnj_details["image"]
+                pnj_details["image"]
             )
         )
 
@@ -161,45 +163,23 @@ def load_map_from_id(id_: int, wid: int):
             content = file.read()
         content = eval(content)
 
-        try:
-            _object = content['objects'] if content['objects'] else {}
-        except KeyError:
-            _object = {}
+        parsed = {
+            'objects': {},
+            'zid': 0,
+            'pnjs': [],
+            'maplinks': {},
+            'triggers': {},
+            'id': MAP_DEFAULT,
+            'lights': [],
+            'name': "DEFAULT MAP NAME",
+            'rainy': 0.1
+        }
 
-        try:
-            _zid = content['zid']
-        except KeyError:
-            _zid = 0
-
-        try:
-            _pnjs = parse_pnjs_dict(content['pnjs'])
-        except KeyError:
-            _pnjs = []
-
-        try:
-            _maplinks = content["maplinks"] if content['maplinks'] else {}
-        except KeyError:
-            _maplinks = {}
-
-        try:
-            _triggers = content['triggers'] if content['triggers'] else {}
-        except KeyError:
-            _triggers = {}
-
-        try:
-            _id = content['id']
-        except KeyError:
-            _id = MAP_DEFAULT
-
-        try:
-            _lights = parse_lights_dict(content['lights'])
-        except KeyError:
-            _lights = []
-
-        try:
-            _name = content['name']
-        except KeyError:
-            _name = "DEFAULT MAP NAME"
+        for key in parsed.keys():
+            try:
+                parsed[key] = content[key]
+            except KeyError:
+                continue
 
         carte = SubCarte(
             parse_layers_to_map(
@@ -207,14 +187,7 @@ def load_map_from_id(id_: int, wid: int):
                 parse_monoline_layer(content['layer2'], (int(content['width']), int(content['height']))),
                 parse_monoline_layer(content['layer1'], (int(content['width']), int(content['height'])))
             ),
-            _object,
-            _maplinks,
-            _zid,
-            _pnjs,
-            _triggers,
-            _id,
-            _name,
-            _lights
+            parsed
         )
 
     return carte
@@ -226,18 +199,17 @@ class SubCarte:
     chaque carte s'occupe aussi de gérer ses objets (au sol), et les chemins vers d'autres cartes
     elles gérent aussi leur ZID
     """
-    def __init__(self, carte: list, objets: dict, maplinks: dict, zid: int, pnjs: list,
-                 triggers: dict, id_: int, name: str, lights: list=None):
+    def __init__(self, carte: list, datas: dict):
         self.carte = carte
-        self.objets = objets
-        self.maplinks = maplinks
-        self.zid = zid
-        self.pnjs = pnjs
-        self.triggers = triggers
-        self.id = id_
-        self.lights = lights
-        self.name = name
-        self._rainy = random.random() < PROB_RAIN
+        self.objets = datas['objects']
+        self.maplinks = datas['maplinks']
+        self.zid = datas['zid']
+        self.pnjs = datas['pnjs']
+        self.triggers = datas['triggers']
+        self.id = datas['id']
+        self.lights = datas['lights']
+        self.name = datas['name']
+        self._rainy = random.random() < PROB_RAIN if not datas.get('rainy') else random.random() < datas['rainy']
 
     def is_rainy(self):
         return self._rainy

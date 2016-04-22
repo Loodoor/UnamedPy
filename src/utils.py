@@ -127,8 +127,15 @@ def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 
 
 class Point:
     def __init__(self, *args, **kwargs):
-        self.x = kwargs.get('x') if kwargs.get('x') else args[0]
-        self.y = kwargs.get('y') if kwargs.get('y') else args[1]
+        try:
+            self.x = kwargs.get('x') if kwargs.get('x') else args[0]
+        except IndexError:
+            self.x = 0
+
+        try:
+            self.y = kwargs.get('y') if kwargs.get('y') else args[1]
+        except IndexError:
+            self.y = 0
 
     def move(self, x: int=0, y: int=0):
         self.x += x
