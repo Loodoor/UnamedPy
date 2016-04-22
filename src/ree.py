@@ -48,6 +48,7 @@ ATTRIBS = [
 # consts
 surf = pygame.Surface
 rect = pygame.Rect
+font = pygame.font.Font
 
 
 class Event:
@@ -193,8 +194,7 @@ def load_music_object(path: str) -> pygame.mixer.Sound:
 
 
 def load_music(path: str):
-    if METHOD == "pygame":
-        pygame.mixer.music.load(path)
+    pygame.mixer.music.load(path)
 
 
 def play_music(loops: int=-1):

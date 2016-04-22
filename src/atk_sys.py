@@ -17,6 +17,20 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
     return True if specs_atk[SPEC_VIT] >= 2 * specs_def[SPEC_VIT] else False
 
 
+def run_bulle(kind: str, ecran: ree.surf, texte: str or list, font: ree.font, pos: tuple=(POS_BULLE_X, POS_BULLE_Y)) -> str or bool or None:
+    if kind == "waiting":
+        g = GUIBulleWaiting(ecran, pos, texte, font)
+        g.update()
+        return
+    elif kind == "asking":
+        g = GUIBulleAsking(ecran, pos, texte, font)
+        g.update()
+        return g.get_text()
+    elif kind == "choice":
+        g = GUIBulle2Choices(ecran, pos, texte, font)
+        return g.update()
+
+
 Y_ADV_FALL = 0
 
 
@@ -90,7 +104,7 @@ class Combat:
         self.has_attacked = False
         self.has_captured = False
         self.is_running = True
-        self.bulle_que_doit_faire = GUIBulle(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE), "Que doit faire ?", font)
+        self.bulle_que_doit_faire = GUIBulle(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Que doit faire ?", font)
         self.indic_captured = ree.load_image(os.path.join("..", "assets", "gui", "captured.png"))
         self.font = font
         self.selected_atk = 0
@@ -112,16 +126,10 @@ class Combat:
 
     def on_end(self):
         if not self.indexer.get_viewed(self.get_adversary().get_id()):
-            t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour cette créature : ", self.font)
-            t.update()
-            name_for_crea = t.get_text()
-            del t
+            name_for_crea = run_bulle("asking", self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour cette créature : ", self.font)
             self.indexer.add_name_to_crea(self.adversaire.get_id(), name_for_crea)
         if not self.indexer.get_typeur().get_name(self.get_adversary().get_type()):
-            g = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour ce type de créature : ", self.font)
-            g.update()
-            type_name = g.get_text()
-            del g
+            type_name = run_bulle("asking", self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour ce type de créature : ", self.font)
             self.indexer.get_typeur().change_name(self.get_adversary().get_type(), type_name)
 
         self.indexer.vu_(self.get_adversary().get_id())
@@ -141,12 +149,9 @@ class Combat:
         return self.adversaire
 
     def end_fight_for_capture(self):
-        g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                            "Bravo ! Vous venez de capturer une nouvelle créature !",
-                            self.font)
-
-        g.update()
-        del g
+        run_bulle("waiting", self.ecran, (POS_BULLE_Y, POS_BULLE_Y),
+                  "Bravo ! Vous venez de capturer une nouvelle créature !",
+                  self.font)
         self.has_captured = True
         self.equipe.add_creature(self.get_adversary())
         self.is_running = False
@@ -168,12 +173,10 @@ class Combat:
             if self.mon_tour():
                 self._manage_my_turn()
             else:
-                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                    self.get_adversary().get_pseudo() +
-                                    " ne sait pas quoi faire pour le moment !",
-                                    self.font)
-                g.update()
-                del g
+                run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                                      self.get_adversary().get_pseudo() +
+                                      " ne sait pas quoi faire pour le moment !",
+                                      self.font)
                 self.compteur_tour += 1
 
             if self.get_adversary().is_dead():
@@ -199,11 +202,9 @@ class Combat:
                 self.has_attacked = False
                 self.compteur_tour += 1
         else:
-            g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                self.get_my_creature().get_pseudo() + " est paralisé ! Il n'a pas pu attaquer",
-                                self.font)
-            g.update()
-            del g
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      self.get_my_creature().get_pseudo() + " est paralisé ! Il n'a pas pu attaquer",
+                      self.font)
             self.compteur_tour += 1
 
     def _manage_adversary_death(self):
@@ -211,32 +212,24 @@ class Combat:
         while Y_ADV_FALL < 50:
             self.render()
             ree.flip()
-        g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                            self.get_adversary().get_pseudo() + " est vaincu !", self.font)
-
-        g.update()
-        del g
+        run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                  self.get_adversary().get_pseudo() + " est vaincu !", self.font)
 
         # gestion de l'xp
         level_up = self.get_my_creature().gagner_xp(self.get_adversary())
         self.render()  # mise à jour de la barre d'xp
         if not isinstance(level_up, (int, float)):
-            g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                self.get_my_creature().get_pseudo() + " a gagné un niveau !",
-                                self.font)
-            g.update()
-            del g
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      self.get_my_creature().get_pseudo() + " a gagné un niveau !",
+                      self.font)
 
             has_level_up = False
             for new in level_up:
-                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                    [
-                                        "Niveau : +1 !   Attaque : +" + str(new[SPEC_ATK]) + " !",
-                                        "Défense : +" + str(new[SPEC_DEF]) + " !   Vitesse : +" + str(new[SPEC_VIT]) + " !",
-                                        "Points de vie : +" + str(new[SPEC_MAX_PVS]) + " !"
-                                    ], self.font)
-                g.update()
-                del g
+                run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                          [
+                              "Niveau : +1 !   Attaque : +" + str(new[SPEC_ATK]) + " !   Défense : +" + str(new[SPEC_DEF]) + " !",
+                              "Vitesse : +" + str(new[SPEC_VIT]) + " !   Points de vie : +" + str(new[SPEC_MAX_PVS]) + " !"
+                          ], self.font)
                 has_level_up = True
             if has_level_up:
                 id_ = self.indexer.get_evolve_by_id_level(self.get_my_creature().get_id(), self.get_my_creature().get_niv())
@@ -249,54 +242,46 @@ class Combat:
                         self.get_my_creature().get_attacks_learnt()
                     ):
                         if not self.get_my_creature().add_attack_bis(attaque):
-                            g = GUIBulle2Choices(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                                 [
-                                                     self.get_my_creature().get_pseudo() + " va apprendre {} !".format(attaque.get_nom()),
-                                                     "Pour continuer, appuyez sur Entrée. Sinon appuyez sur une autre touche pour abandonner"
-                                                 ],
-                                                 self.font)
-                            if g.update():
+                            a = run_bulle("choice", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                                          [
+                                              self.get_my_creature().get_pseudo() + " va apprendre {} !".format(
+                                                  attaque.get_nom()),
+                                              "Pour continuer, appuyez sur Entrée. Sinon appuyez sur une autre touche pour abandonner"
+                                          ],
+                                          self.font)
+                            if a:
                                 # faire choisir une attaque à oublier
-                                g2 = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                                     "Quelle attaque {} doit oublier ?".format(self.get_my_creature().get_pseudo()),
-                                                     self.font)
-                                g2.update()
-                                g3 = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Laquelle ? ", self.font)
-                                g3.update()
+                                run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                                          "Quelle attaque {} doit oublier ?".format(
+                                              self.get_my_creature().get_pseudo()),
+                                          self.font)
+
+                                g3 = run_bulle("asking", self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Laquelle ? ", self.font)
+
                                 attacks_names_available = [a.get_nom() for a in self.get_my_creature().get_attacks()]
-                                while g3.get_text() not in attacks_names_available:
-                                    g3 = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y),
-                                                        [
-                                                            " - ".join(attacks_names_available),
-                                                            "Laquelle ? "
-                                                        ],
-                                                        self.font)
-                                    g3.update()
-                                self.get_my_creature().forget_attack_by_name(g3.get_text())
-                                g4 = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                                     "{} va oublier l'attaque {} !".format(
-                                                         self.get_my_creature().get_pseudo(),
-                                                         g3.get_text()
-                                                     ),
-                                                     self.font)
-                                g4.update()
+                                while g3 not in attacks_names_available:
+                                    g3 = run_bulle("asking", self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Laquelle ? ",
+                                                   self.font)
+
+                                self.get_my_creature().forget_attack_by_name(g3)
+
+                                run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                                          "{} va oublier l'attaque {} !".format(
+                                              self.get_my_creature().get_pseudo(),
+                                              g3
+                                          ),
+                                          self.font)
                                 self.get_my_creature().add_attack_bis(attaque)
-                                del g2, g3, g4
-                            del g
                         else:
-                            g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                                self.get_my_creature().get_pseudo() + " a appris {} !".format(
-                                                    attaque.get_nom()),
-                                                self.font)
-                            g.update()
-                            del g
+                            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                                      self.get_my_creature().get_pseudo() + " a appris {} !".format(
+                                          attaque.get_nom()),
+                                      self.font)
                         break
         else:
-            g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                self.get_my_creature().get_pseudo() + " a gagné {} xp !".format(level_up),
-                                self.font)
-            g.update()
-            del g
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      self.get_my_creature().get_pseudo() + " a gagné {} xp !".format(level_up),
+                      self.font)
 
         self.is_running = False
 
@@ -325,22 +310,20 @@ class Combat:
                 state = self.get_my_creature().get_attacks()[self.selected_atk].get_state()
                 if random.random() <= SPEC_ETAT_AFFECT_PERCENT:
                     if state == "poisone":
-                        self.get_adversary().set_spec(SPEC_ETATS.poison)
+                        self.get_adversary().set_state(SPEC_ETATS.poison)
                     if state == "brule":
-                        self.get_adversary().set_spec(SPEC_ETATS.brule)
+                        self.get_adversary().set_state(SPEC_ETATS.brule)
                     if state == "paralise":
-                        self.get_adversary().set_spec(SPEC_ETATS.paralise)
+                        self.get_adversary().set_state(SPEC_ETATS.paralise)
 
                 self.render()
 
-                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                    self.get_my_creature().get_pseudo() +
-                                    " utilise " +
-                                    self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
-                                    " !",
-                                    self.font)
-                g.update()
-                del g
+                run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                          self.get_my_creature().get_pseudo() +
+                          " utilise " +
+                          self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
+                          " !",
+                          self.font)
             else:
                 self.get_adversary().taper(
                     calcul_degats(self.get_my_creature().lutte(),
@@ -353,13 +336,11 @@ class Combat:
                                   self.get_my_creature().get_type()))
                 self.render()
 
-                g = GUIBulleWaiting(self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
-                                    [
-                                        "{} n'a plus de PP pour attaquer !".format(self.get_my_creature().get_pseudo()),
-                                        "{} utilise lutte !".format(self.get_my_creature().get_pseudo())
-                                    ], self.font)
-                g.update()
-                del g
+                run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                          [
+                              "{} n'a plus de PP pour attaquer !".format(self.get_my_creature().get_pseudo()),
+                              "{} utilise lutte !".format(self.get_my_creature().get_pseudo())
+                          ], self.font)
 
     def valide(self):
         if 0 <= self.selected_atk < len(self.get_my_creature().get_attacks()):
