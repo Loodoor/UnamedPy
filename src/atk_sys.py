@@ -29,6 +29,7 @@ def run_bulle(kind: str, ecran: ree.surf, texte: str or list, font: ree.font, po
     elif kind == "choice":
         g = GUIBulle2Choices(ecran, pos, texte, font)
         return g.update()
+    raise ValueError("This kind ('{}') for GUIBulle does not exist".format(kind))
 
 
 Y_ADV_FALL = 0
