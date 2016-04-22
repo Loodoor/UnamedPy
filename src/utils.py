@@ -220,8 +220,8 @@ class ULoader:
                         type_ = T_NORMAL
                     if work[1] == "TERRE":
                         type_ = T_TERRE
-                    if work[1] == "PLASMA":
-                        type_ = T_PLASMA
+                    if work[1] == "POISON":
+                        type_ = T_POISON
                     if work[1] == "LUMIERE":
                         type_ = T_LUMIERE
                     if work[1] == "TENEBRE":

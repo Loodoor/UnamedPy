@@ -17,6 +17,29 @@ def calcul_esquive(specs_atk: list, specs_def: list) -> bool:
     return True if specs_atk[SPEC_VIT] >= 2 * specs_def[SPEC_VIT] else False
 
 
+def parse_type(kind: str) -> int:
+    if kind == "FEU":
+        return T_FEU
+    if kind == "EAU":
+        return T_EAU
+    if kind == "PLANTE":
+        return T_PLANTE
+    if kind == "ELEC":
+        return T_ELEC
+    if kind == "AIR":
+        return T_AIR
+    if kind == "TERRE":
+        return T_TERRE
+    if kind == "POISON":
+        return T_POISON
+    if kind == "LUMIERE":
+        return T_LUMIERE
+    if kind == "TENEBRE":
+        return T_TENEBRE
+
+    return T_NORMAL
+
+
 def run_bulle(kind: str, ecran: ree.surf, texte: str or list, font: ree.font, pos: tuple=(POS_BULLE_X, POS_BULLE_Y)) -> str or bool or None:
     if kind == "waiting":
         g = GUIBulleWaiting(ecran, pos, texte, font)
@@ -50,13 +73,13 @@ class AttaquesTable:
             return False
         return True
 
-    def get_attack_from_name(self, name: str):
+    def get_attack_from_name(self, name: str) -> creatures_mgr.Attaque:
         for attack in self.table:
             if attack.get_nom() == name:
                 return attack
         return GLOBAL_ERROR
 
-    def get_all_attacks_with_type(self, type_: int):
+    def get_all_attacks_with_type(self, type_: int) -> list:
         work = []
         for attack in self.table:
             if attack.get_type() == type_:
@@ -74,12 +97,11 @@ class AttaquesTable:
 
     def _traiter_datas(self, datas: list):
         dct = eval(datas)
-        # nom::type::degats::description::cout::type1(int)-type2(int)-...&niveau_necessaire
         for attaque in dct:
             self._attacks[attaque['name']] = [
                 None,  # liste de types pouvant apprendre l'attaque
             ]
-            type_ = T_NORMAL
+            type_ = parse_type(attaque['a_type'])
             cout_ = int(int(attaque['precision']) / 37)
             state_ = None
             if attaque.get("paralise", False):

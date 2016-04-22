@@ -16,7 +16,7 @@ class Storage:
         self.tab[T_FEU][T_AIR] = 1
         self.tab[T_FEU][T_NORMAL] = 1
         self.tab[T_FEU][T_TERRE] = 0.75
-        self.tab[T_FEU][T_PLASMA] = 0.75
+        self.tab[T_FEU][T_POISON] = 0.75
         self.tab[T_FEU][T_LUMIERE] = 1
         self.tab[T_FEU][T_TENEBRE] = 0
 
@@ -28,7 +28,7 @@ class Storage:
         self.tab[T_EAU][T_AIR] = 1
         self.tab[T_EAU][T_NORMAL] = 1
         self.tab[T_EAU][T_TERRE] = 0.75
-        self.tab[T_EAU][T_PLASMA] = 1.25
+        self.tab[T_EAU][T_POISON] = 1.25
         self.tab[T_EAU][T_LUMIERE] = 0
         self.tab[T_EAU][T_TENEBRE] = 1
 
@@ -40,7 +40,7 @@ class Storage:
         self.tab[T_PLANTE][T_AIR] = 1
         self.tab[T_PLANTE][T_NORMAL] = 1
         self.tab[T_PLANTE][T_TERRE] = 1.25
-        self.tab[T_PLANTE][T_PLASMA] = 0.5
+        self.tab[T_PLANTE][T_POISON] = 0.5
         self.tab[T_PLANTE][T_LUMIERE] = 1
         self.tab[T_PLANTE][T_TENEBRE] = 1
 
@@ -52,7 +52,7 @@ class Storage:
         self.tab[T_ELEC][T_AIR] = 0.75
         self.tab[T_ELEC][T_NORMAL] = 1
         self.tab[T_ELEC][T_TERRE] = 0.5
-        self.tab[T_ELEC][T_PLASMA] = 1
+        self.tab[T_ELEC][T_POISON] = 1
         self.tab[T_ELEC][T_LUMIERE] = 0.75
         self.tab[T_ELEC][T_TENEBRE] = 1.25
 
@@ -64,7 +64,7 @@ class Storage:
         self.tab[T_AIR][T_AIR] = 1
         self.tab[T_AIR][T_NORMAL] = 1
         self.tab[T_AIR][T_TERRE] = 0.75
-        self.tab[T_AIR][T_PLASMA] = 0.75
+        self.tab[T_AIR][T_POISON] = 0.75
         self.tab[T_AIR][T_LUMIERE] = 1
         self.tab[T_AIR][T_TENEBRE] = 1
 
@@ -76,7 +76,7 @@ class Storage:
         self.tab[T_NORMAL][T_AIR] = 1
         self.tab[T_NORMAL][T_NORMAL] = 1
         self.tab[T_NORMAL][T_TERRE] = 1
-        self.tab[T_NORMAL][T_PLASMA] = 1
+        self.tab[T_NORMAL][T_POISON] = 1
         self.tab[T_NORMAL][T_LUMIERE] = 1
         self.tab[T_NORMAL][T_TENEBRE] = 1
 
@@ -88,21 +88,21 @@ class Storage:
         self.tab[T_TERRE][T_AIR] = 1
         self.tab[T_TERRE][T_NORMAL] = 1
         self.tab[T_TERRE][T_TERRE] = 1
-        self.tab[T_TERRE][T_PLASMA] = 0.75
+        self.tab[T_TERRE][T_POISON] = 0.75
         self.tab[T_TERRE][T_LUMIERE] = 1
         self.tab[T_TERRE][T_TENEBRE] = 1
 
-        # Plasma
-        self.tab[T_PLASMA][T_FEU] = 1.25
-        self.tab[T_PLASMA][T_EAU] = 0.75
-        self.tab[T_PLASMA][T_PLANTE] = 1.5
-        self.tab[T_PLASMA][T_ELEC] = 1
-        self.tab[T_PLASMA][T_AIR] = 1.25
-        self.tab[T_PLASMA][T_NORMAL] = 1
-        self.tab[T_PLASMA][T_TERRE] = 1.25
-        self.tab[T_PLASMA][T_PLASMA] = 1
-        self.tab[T_PLASMA][T_LUMIERE] = 0.75
-        self.tab[T_PLASMA][T_TENEBRE] = 0.75
+        # Poison
+        self.tab[T_POISON][T_FEU] = 1.25
+        self.tab[T_POISON][T_EAU] = 0.75
+        self.tab[T_POISON][T_PLANTE] = 1.5
+        self.tab[T_POISON][T_ELEC] = 1
+        self.tab[T_POISON][T_AIR] = 1.25
+        self.tab[T_POISON][T_NORMAL] = 1
+        self.tab[T_POISON][T_TERRE] = 1.25
+        self.tab[T_POISON][T_POISON] = 1
+        self.tab[T_POISON][T_LUMIERE] = 0.75
+        self.tab[T_POISON][T_TENEBRE] = 0.75
 
         # Lumière
         self.tab[T_LUMIERE][T_FEU] = 1
@@ -112,7 +112,7 @@ class Storage:
         self.tab[T_LUMIERE][T_AIR] = 1
         self.tab[T_LUMIERE][T_NORMAL] = 1
         self.tab[T_LUMIERE][T_TERRE] = 1
-        self.tab[T_LUMIERE][T_PLASMA] = 1
+        self.tab[T_LUMIERE][T_POISON] = 1
         self.tab[T_LUMIERE][T_LUMIERE] = 1
         self.tab[T_LUMIERE][T_TENEBRE] = 2
 
@@ -124,7 +124,7 @@ class Storage:
         self.tab[T_TENEBRE][T_AIR] = 1
         self.tab[T_TENEBRE][T_NORMAL] = 1
         self.tab[T_TENEBRE][T_TERRE] = 1
-        self.tab[T_TENEBRE][T_PLASMA] = 1
+        self.tab[T_TENEBRE][T_POISON] = 1
         self.tab[T_TENEBRE][T_LUMIERE] = 2
         self.tab[T_TENEBRE][T_TENEBRE] = 1
 

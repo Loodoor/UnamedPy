@@ -5,7 +5,7 @@
 3::ELEC::0::2 base::Cette créature est capable de provoquer de petits court-circuits::4::35
 4::ELEC::1::2 evolve::Cette créature aime tout ce qui est chargé d'électricité et le mange avec grande joie::5::112
 5::ELEC::2::2 final::Cette créature peut faire des éclairs comme elle le souhaite ! Attention les oreilles !::-1::-1
-6::PLASMA::0::3 base::On n'a jamais pu voir de très près cette créature, étant donné que son aura électrique est très brillante::-1::-1
+6::ELEC::0::3 base::On n'a jamais pu voir de très près cette créature, étant donné que son aura électrique est très brillante::-1::-1
 7::FEU::0::4 base::Cette créature ressemble à du magma refoidissant, faites attention à où vous mettez les pieds !::8::42
 8::FEU::1::4 evolve::Ressemblant à une tortue, cette créature aime se laisser flotter sur l'eau::9::170
 9::FEU::2::4 final::Un véritable dragon magmatique capabl de tout détruire au moindre accès de rage::-1::-1
@@ -17,7 +17,7 @@
 15::AIR::0::7 base::Cette créature peut parcourir plusieurs kilomètres sans avoir besoin de se poser. C'est pourquoi il est très dur de la voir::-1::-1
 16::TENEBRE::0::8 base::Cette créature est capable de s'accrocher aux plafonds des grottes, regardez bien en haut, la chute est douloureuse !::-1::-1
 17::PLANTE::0::9 base::Cette créature se sert de ses extensions aux mains pour attraper des fruits en hauteur et ainsi se nourrir::-1::-1
-18::NORMAL::0::10 base::Cette créature se sert de ses piquants pour repousser ses adversaires::-1::-1
+18::POISON::0::10 base::Cette créature se sert de ses piquants pour repousser ses adversaires::-1::-1
 19::TERRE::0::11 base::Son crâne est si dûr que cette créature s'en sert pour casser de petits rochers::-1::-1
 20::LUMIERE::0::12 base::Cette créature toute de lumière vêtue n'apparait presque jamais dans le monde des hommes. Sa venue est signe de grand désastre::-1::-1
 21::EAU::0::13 base::Cette créature ressemblant fortement à une aiguille peut vous mordre les orteilles si vous allez sur son territoire !::21::58
@@ -38,11 +38,11 @@
 36::FEU::0::dragon feu base::Ce dragon de feu est sûrement à l'origine de catastrophes "naturelles" tel des feux de forêt::-1::-1
 37::EAU::0::eau base::Ce petit poisson est presque inoffensif::38::102
 38::EAU::1::eau evolve::Cette créature est une terreur des mers et océans, il vaut mieux ne pas être sur son chemin !::-1::-1
-39::PLASMA::0::elec base::Ce petit écureuil vit dans les forêts, sans trop se préocuper de ce qui peut se passer autour de lui::40::79
-40::PLASMA::1::elec evolve::Cet écureuil aime déclencher de mini tornades électriques::-1::-1
+39::ELEC::0::elec base::Ce petit écureuil vit dans les forêts, sans trop se préocuper de ce qui peut se passer autour de lui::40::79
+40::ELEC::1::elec evolve::Cet écureuil aime déclencher de mini tornades électriques::-1::-1
 41::EAU::0::esprit eau::Cette créature est considérée comme une légende pouvant commander aux océans::-1::-1
 42::PLANTE::0::esprit plante::Cette créature est considérée comme une légende pouvant commander à la nature::-1::-1
-43::NORMAL::0::esprit psy::Cette créature est considérée comme une légende pouvant commander aux humains::-1::-1
+43::POISON::0::esprit psy::Cette créature est considérée comme une légende pouvant commander aux humains::-1::-1
 44::FEU::0::feu base::Cette créature est souvent prise pour une statue ou un brasero::45::98
 45::FEU::1::feu evolve::Cette créature est considérée comme un brasero ... mais vivant, ce qui effraie beaucoup la population !::-1::-1
 46::EAU::0::glace base::Cette petite chose ressemble à un simple rocher et n'est jamais prise au sérieux::47::65
@@ -71,5 +71,5 @@
 69::NORMAL::0::vers base:::Ce vers est très présent au fond des grottes où il chasse de petits insectes::70::83
 70::NORMAL::1::vers evolve::Ce vers attends patiemment pour évoluer comme ses ainés::71::164
 71::AIR::2::vers final::Ce majesteux oiseau règne sans pitié sur la forêt::-1::-1
-72::NORMAL::0::violet base::Un petit insect redoutant absolument toutes les créature. Il se cache dans les grottes pour survivre::73::89
-73::NORMAL::1::violet evolve::Ayant évolué, il craint beaucoup moins les attaques et peut maintenant sortir sans se cacher::-1::-1
+72::POISON::0::violet base::Un petit insect redoutant absolument toutes les créature. Il se cache dans les grottes pour survivre::73::89
+73::POISON::1::violet evolve::Ayant évolué, il craint beaucoup moins les attaques et peut maintenant sortir sans se cacher::-1::-1

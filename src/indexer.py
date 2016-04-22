@@ -75,8 +75,8 @@ class Typeur:
                 'user': '',
                 'saw': 0
             },
-            T_PLASMA: {
-                'default': "plasma",
+            T_POISON: {
+                'default': "poison",
                 'user': '',
                 'saw': 0
             },

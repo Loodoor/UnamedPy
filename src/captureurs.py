@@ -25,22 +25,22 @@ class CapturersTable:
         self.table = [
             Capturer(
                 10,
-                [T_FEU, T_AIR, T_EAU, T_TENEBRE, T_TERRE, T_ELEC, T_PLASMA, T_PLANTE, T_LUMIERE, T_NORMAL],
+                [T_FEU, T_AIR, T_EAU, T_TENEBRE, T_TERRE, T_ELEC, T_POISON, T_PLANTE, T_LUMIERE, T_NORMAL],
                 OBJETS_ID.SimpleBall
             ),
             Capturer(
                 25,
-                [T_FEU, T_AIR, T_EAU, T_TENEBRE, T_TERRE, T_ELEC, T_PLASMA, T_PLANTE, T_LUMIERE, T_NORMAL],
+                [T_FEU, T_AIR, T_EAU, T_TENEBRE, T_TERRE, T_ELEC, T_POISON, T_PLANTE, T_LUMIERE, T_NORMAL],
                 OBJETS_ID.NormalBall
             ),
             Capturer(
                 55,
-                [T_FEU, T_AIR, T_EAU, T_TENEBRE, T_TERRE, T_ELEC, T_PLASMA, T_PLANTE, T_LUMIERE, T_NORMAL],
+                [T_FEU, T_AIR, T_EAU, T_TENEBRE, T_TERRE, T_ELEC, T_POISON, T_PLANTE, T_LUMIERE, T_NORMAL],
                 OBJETS_ID.SuperiorBall
             ),
             Capturer(
                 100,
-                [T_FEU, T_AIR, T_EAU, T_TENEBRE, T_TERRE, T_ELEC, T_PLASMA, T_PLANTE, T_LUMIERE, T_NORMAL],
+                [T_FEU, T_AIR, T_EAU, T_TENEBRE, T_TERRE, T_ELEC, T_POISON, T_PLANTE, T_LUMIERE, T_NORMAL],
                 OBJETS_ID.UltraBall
             )
         ]
