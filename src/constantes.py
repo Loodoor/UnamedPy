@@ -381,6 +381,18 @@ T_POISON = 7
 T_LUMIERE = 8
 T_TENEBRE = 9
 MAX_T_NBR = 9
+TYPES = [
+    T_FEU,
+    T_EAU,
+    T_PLANTE,
+    T_ELEC,
+    T_AIR,
+    T_NORMAL,
+    T_TERRE,
+    T_POISON,
+    T_LUMIERE,
+    T_TENEBRE,
+]
 TYPES_NUMBER = 10
 
 MAP_RDR_POSX = 0

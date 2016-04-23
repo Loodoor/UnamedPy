@@ -98,9 +98,7 @@ class AttaquesTable:
     def _traiter_datas(self, datas: list):
         dct = eval(datas)
         for attaque in dct:
-            self._attacks[attaque['name']] = [
-                None,  # liste de types pouvant apprendre l'attaque
-            ]
+            self._attacks[attaque['name']] = attaque['types_ok']  # liste de types pouvant apprendre l'attaque
             type_ = parse_type(attaque['a_type'])
             cout_ = int(int(attaque['precision']) / 37)
             state_ = None
