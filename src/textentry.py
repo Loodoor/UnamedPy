@@ -47,7 +47,7 @@ class TextBox:
             self.enter = True
         elif e == (KEYDOWN, K_BACKSPACE):
             self.input = self.input[:-1]
-        elif len(self.input) < self.max_length:
+        elif len(self.input) < self.max_length and e == KEYDOWN:
             self.input += e.unicode
 
     def render(self):

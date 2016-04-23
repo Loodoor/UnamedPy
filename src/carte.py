@@ -174,10 +174,25 @@ def load_map_from_id(id_: int, wid: int):
             'name': "DEFAULT MAP NAME",
             'rainy': 0.1
         }
+        funcs = {
+            'objects': None,
+            'zid': int,
+            'pnjs': parse_pnjs_dict,
+            'maplinks': None,
+            'triggers': None,
+            'id': int,
+            'lights': parse_lights_dict,
+            'name': str,
+            'rainy': int
+        }
 
         for key in parsed.keys():
             try:
-                parsed[key] = content[key]
+                if content[key]:
+                    if funcs[key]:
+                        parsed[key] = funcs[key](content[key])
+                    else:
+                        parsed[key] = content[key]
             except KeyError:
                 continue
 

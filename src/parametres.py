@@ -228,7 +228,7 @@ def gui_access(ecran, police):
                     params.set("delta_time", tmp)
                 if selected == 13:
                     debug.println("DEMANDE à FAIRE !")
-            if 0 < selected < 10:
+            if 0 < selected < 10 and event == KEYUP:
                 code = event.key
                 tmp = params.get("controls")
                 tmp.update({order[selected - 1]: code})

@@ -913,8 +913,8 @@
         "poison": True
     },
     {
-        "puissance": "FEU",
-        "a_type": "6",
+        "puissance": "70",
+        "a_type": "FEU",
         "name": "Poing De Feu",
         "effect": "Un poing de feu pouvant brûler l'ennemi.",
         "precision": "100",
