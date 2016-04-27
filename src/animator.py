@@ -87,6 +87,7 @@ class PlayerAnimator:
     def __init__(self, path: str):
         self.path = path
         self.anims = {}
+        self.masks = {}
         self._cur_anim = PAUSE
         self._correspondances = {
             PAUSE: ANIM1,
@@ -98,6 +99,7 @@ class PlayerAnimator:
         self._count = 0
 
         self._create_anims()
+        self._create_masks()
 
     def set_speed(self, speed: int):
         self._speed = speed
@@ -127,17 +129,30 @@ class PlayerAnimator:
             raise ValueError("L'animation demandée n'existe pas (n°{})".format(anim_curs))
         raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
 
+    def get_mask(self, direc: int, anim_curs: int):
+        if direc in self.masks.keys():
+            if anim_curs < len(self.masks):
+                return self.masks[direc][anim_curs]
+            raise ValueError("Le mask demandé n'existe pas (n°{})".format(anim_curs))
+        raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.masks".format(direc))
+
     def get_sprite_moving_from_dir(self, direc: int):
         if direc in self.anims.keys():
             # ici on assume complètement qu'il est en mouvement
             return self.anims[direc][(self.get_anim_cursor() % 2) + 1]
         raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
 
+    def get_mask_moving_from_dir(self, direc: int):
+        if direc in self.masks.keys():
+            # ici on assume complètement qu'il est en mouvement
+            return self.masks[direc][(self.get_anim_cursor() % 2) + 1]
+        raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.masks".format(direc))
+
     def _create_anims(self):
-        lhaut = [ree.load_image(_) for _ in glob.glob(os.path.join(self.path, "haut*.png"))]
-        lbas = [ree.load_image(_) for _ in glob.glob(os.path.join(self.path, "bas*.png"))]
-        lgauche = [ree.load_image(_) for _ in glob.glob(os.path.join(self.path, "gauche*.png"))]
-        ldroite = [ree.load_image(_) for _ in glob.glob(os.path.join(self.path, "droite*.png"))]
+        lhaut = [ree.load_image(_, True) for _ in glob.glob(os.path.join(self.path, "haut*.png"))]
+        lbas = [ree.load_image(_, True) for _ in glob.glob(os.path.join(self.path, "bas*.png"))]
+        lgauche = [ree.load_image(_, True) for _ in glob.glob(os.path.join(self.path, "gauche*.png"))]
+        ldroite = [ree.load_image(_, True) for _ in glob.glob(os.path.join(self.path, "droite*.png"))]
 
         self.anims = {
             HAUT: lhaut,
@@ -149,3 +164,6 @@ class PlayerAnimator:
         for li in self.anims.values():
             for ei in li:
                 ei.set_colorkey((255, 0, 255))
+
+    def _create_masks(self):
+        self.masks = {k: [ree.create_mask_from_surface(e) for e in v] for k, v in self.anims.items()}

@@ -49,6 +49,7 @@ ATTRIBS = [
 surf = pygame.Surface
 rect = pygame.Rect
 font = pygame.font.Font
+mask = pygame.mask.Mask
 
 
 class Event:
@@ -121,8 +122,10 @@ def draw_rect(screen, rect: tuple, fgcolor: tuple, bgcolor: tuple=(0, 0, 0), wid
     pygame.draw.rect(screen, fgcolor, rect, width)
 
 
-def load_image(path: str) -> pygame.Surface:
-    return pygame.image.load(path).convert_alpha()
+def load_image(path: str, normal_convert: bool=False) -> pygame.Surface:
+    if not normal_convert:
+        return pygame.image.load(path).convert_alpha()
+    return pygame.image.load(path).convert()
 
 
 def load_sys_font(name: str, size: int) -> pygame.font.SysFont:
@@ -223,3 +226,12 @@ def get_alpha_channel() -> int or float:
 
 def gfxdraw_filled_circle(image, x, y, r, color):
     pygame.gfxdraw.filled_circle(image, x, y, r, color)
+
+
+def create_mask_from_surface(surface: surf) -> mask:
+    return pygame.mask.from_surface(surface)
+
+
+def collide_rect_with_mask(mask_: mask, rectangle: rect) -> bool:
+    overlapper = mask((rectangle[2], rectangle[3]))
+    return mask_.overlap_mask(overlapper, (rectangle[0], rectangle[1])).count()
