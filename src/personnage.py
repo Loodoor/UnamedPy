@@ -104,10 +104,16 @@ class Personnage:
         pnjs_rect = [pnj.get_rect() for pnj in pnjs]
 
         def colliding(i: int, j: int):
+            """
             tiles_in = self.carte_mgr.get_tiles_from_rect(i + self.carte_mgr.get_of1(), j + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y)
-            total = [p for p in [ree.collide_rect_with_mask(self._get_mask(), pnj) for pnj in pnjs_rect] if p]
-            total += [t for t in [ree.collide_rect_with_mask(self._get_mask(), tile) for tile in tiles_in] if t]
-            return total
+
+            for rect in pnjs_rect + tiles_in:
+                rect.x = self.pos.x - self.carte_mgr.get_of1()
+                rect.y = self.pos.y - self.carte_mgr.get_of2()
+                if rect.collidelist(self._get_mask().get_bounding_rects()) != -1:
+                    return True
+            """
+            return False
 
         x1, y1 = x, y
         x2, y2 = x1 + TILE_SIZE, y1
@@ -232,8 +238,8 @@ class Personnage:
         if DEBUG_LEVEL >= 1:
             ree.draw_rect(self.ecran, self.create_hitbox_parole(*self.pos.pos), (255, 0, 0), width=2)
             ree.draw_rect(self.ecran, (self.pos.x, self.pos.y, PERSO_SIZE_X, PERSO_SIZE_Y), (0, 0, 255))
-            for tile in self.carte_mgr.get_tiles_from_rect(self.pos.x + self.carte_mgr.get_of1(), self.pos.y + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y):
-                ree.draw_rect(self.ecran, (tile[0] * TILE_SIZE - self.carte_mgr.get_of1(), tile[1] * TILE_SIZE - self.carte_mgr.get_of2(), tile[2], tile[3]), (0, 255, 0))
+            # for tile in self.carte_mgr.get_tiles_from_rect(self.pos.x + self.carte_mgr.get_of1(), self.pos.y + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y):
+            #     ree.draw_rect(self.ecran, (tile[0] * TILE_SIZE - self.carte_mgr.get_of1(), tile[1] * TILE_SIZE - self.carte_mgr.get_of2(), tile[2], tile[3]), (0, 255, 0))
         self.ecran.blit(self.perso, self.pos.pos)
 
     def get_pos(self) -> tuple:

@@ -343,11 +343,13 @@ class CartesManager:
         self.police = police
         self.map_path = os.path.join("..", "saves", "map" + EXTENSION)
         self.world_path = os.path.join("..", "saves", "world" + EXTENSION)
+        self.tiles_rects_path = os.path.join("..", "assets", "configuration", "tilesrect" + EXTENSION)
         self._fd_nom_map = ree.load_image(os.path.join("..", "assets", "gui", "fd_nom_map.png"))
         self.map = MAP_DEFAULT
         self.world = WORLD_DEFAULT  # default
         self.offsets = [0, 0]
         self.images = {}
+        self.tiles_rects = {}
         self.lassets = []
         self.triggers_mgr = TriggersManager()
         self.current_carte = None
@@ -375,10 +377,21 @@ class CartesManager:
         self.animators['rain'] = BaseSideAnimator(self.images[TILE_RAIN], ANIM_SPEED_RAIN, True)
         self.animators['rain'].load()
 
+        debug.println("Création et chargement des animateurs terminé")
+
     def _load_lights(self):
         self.lights = self.current_carte.get_lights()
         for _light in self.lights:
             _light.load()
+        debug.println("Chargement des lights terminé")
+
+    def _load_tiles_rects(self):
+        try:
+            with open(self.tiles_rects_path, "rb") as file:
+                self.tiles_rects = pickle.Unpickler(file).load()
+                debug.println("Chargement des tiles rects terminé")
+        except OSError:
+            pass
 
     def general_load(self):
         for i in glob(os.path.join("..", "assets", "tiles", "*")):
@@ -391,12 +404,16 @@ class CartesManager:
             elif os.path.isdir(i):
                 self.images[i.split(os.sep)[-1]] = BaseMultipleSpritesAnimator(i)
                 self.lassets.append(i.split(os.sep)[-1])
+
         self._load_animators()
+        self._load_tiles_rects()
 
         with open(os.path.join("..", "assets", "configuration", "tiles.umd"), "r") as file:
             self.specials_blocs = eval(file.read())
 
         self.loaded = True
+
+        debug.println("Chargement global terminé")
 
     def load(self):
         if not self.loaded:
@@ -412,9 +429,8 @@ class CartesManager:
 
         self.current_carte = load_map_from_id(self.map, self.world)
         self.carte = self.current_carte.get_all()
-        self.adjust_offset()
-
         self._load_lights()
+        self.adjust_offset()
 
     def adjust_offset(self):
         x = (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 if FEN_large >= len(self.carte[0]) * TILE_SIZE else 0
@@ -433,12 +449,19 @@ class CartesManager:
             return self.current_carte.collide_at(x, y)
         return True
 
+    def _get_tile_rect(self, code: str) -> ree.rect:
+        return ree.rect(0, 0, TILE_SIZE, TILE_SIZE)
+
     # todo : ajouter le système de rect par tile de iReplace
     def get_tiles_from_rect(self, x: int, y: int, h: int, w: int) -> list:
         tiles = []
         for i in range(h):
             for j in range(w):
-                tiles.append(((x + j) // TILE_SIZE, (y + i) // TILE_SIZE, TILE_SIZE, TILE_SIZE))
+                code = self.get_tile_code_at((x + j) // TILE_SIZE, (y + i) // TILE_SIZE)
+                r = self._get_tile_rect(code)
+                r.x = (x + j) // TILE_SIZE
+                r.y = (y + i) // TILE_SIZE
+                tiles.append(r)
         return tiles
 
     def check_changing_map(self, x, y):
@@ -453,6 +476,7 @@ class CartesManager:
 
         self.current_carte = load_map_from_id(new_id, self.world)
         self.carte = self.current_carte.get_all()
+        self._load_lights()
         tmp = self.current_carte.get_spawn_pos_with_tag(tag)
 
         if not tmp:
