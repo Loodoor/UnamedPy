@@ -69,6 +69,12 @@ class Personnage:
         else:
             self.perso = self.player_anim.get_sprite_pause(self.direction)
 
+    def _get_mask(self) -> ree.mask:
+        if self.is_moving:
+            return self.player_anim.get_mask_moving_from_dir(self.direction)
+        else:
+            return self.player_anim.get_mask(self.direction, 0)
+
     def _check_collisions(self, direction: int, vecteur: list, new_speed: float, pnjs: list) -> tuple:
         inverse_dir = unegate_vect(vecteur)
         new_of1, new_of2 = inverse_dir[0] * new_speed, inverse_dir[1] * new_speed
@@ -98,9 +104,10 @@ class Personnage:
         pnjs_rect = [pnj.get_rect() for pnj in pnjs]
 
         def colliding(i: int, j: int):
-            carte = self.carte_mgr.collide_at(i, j)
-            pnj = ree.create_rect(int(i) * TILE_SIZE, int(j) * TILE_SIZE, TILE_SIZE, TILE_SIZE).collidelist(pnjs_rect)
-            return carte or pnj != -1
+            tiles_in = self.carte_mgr.get_tiles_from_rect(i + self.carte_mgr.get_of1(), j + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y)
+            total = [p for p in [ree.collide_rect_with_mask(self._get_mask(), pnj) for pnj in pnjs_rect] if p]
+            total += [t for t in [ree.collide_rect_with_mask(self._get_mask(), tile) for tile in tiles_in] if t]
+            return total
 
         x1, y1 = x, y
         x2, y2 = x1 + TILE_SIZE, y1
@@ -108,25 +115,25 @@ class Personnage:
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
 
         if direction == HAUT:
-            if colliding(x1 / TILE_SIZE, y1 / TILE_SIZE) or (colliding(x2 / TILE_SIZE, y2 / TILE_SIZE) and x % TILE_SIZE):
+            if colliding(x1, y1) or (colliding(x2, y2) and x % TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y += TILE_SIZE - decy
                 new_of2 -= TILE_SIZE - decy
 
         if direction == GAUCHE:
-            if colliding(x1 / TILE_SIZE, y1 / TILE_SIZE) or (self.carte_mgr.collide_at(x3 / TILE_SIZE, y3 / TILE_SIZE) and y % TILE_SIZE):
+            if colliding(x1, y1) or (colliding(x3, y3) and y % TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x += TILE_SIZE - decx
                 new_of1 -= TILE_SIZE - decx
 
         if direction == DROITE:
-            if colliding(x2 / TILE_SIZE, y2 / TILE_SIZE) or (colliding(x4 / TILE_SIZE, y4 / TILE_SIZE) and y % TILE_SIZE):
+            if colliding(x2, y2) or (colliding(x4, y4) and y % TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 x -= decx
                 new_of1 += decx
 
         if direction == BAS:
-            if colliding(x3 / TILE_SIZE, y3 / TILE_SIZE) or (colliding(x4 / TILE_SIZE, y4 / TILE_SIZE) and x % TILE_SIZE):
+            if colliding(x3, y3) or (colliding(x4, y4) and x % TILE_SIZE):
                 decx, decy = x % TILE_SIZE, y % TILE_SIZE
                 y -= decy
                 new_of2 += decy
@@ -225,6 +232,8 @@ class Personnage:
         if DEBUG_LEVEL >= 1:
             ree.draw_rect(self.ecran, self.create_hitbox_parole(*self.pos.pos), (255, 0, 0), width=2)
             ree.draw_rect(self.ecran, (self.pos.x, self.pos.y, PERSO_SIZE_X, PERSO_SIZE_Y), (0, 0, 255))
+            for tile in self.carte_mgr.get_tiles_from_rect(self.pos.x + self.carte_mgr.get_of1(), self.pos.y + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y):
+                ree.draw_rect(self.ecran, (tile[0] * TILE_SIZE - self.carte_mgr.get_of1(), tile[1] * TILE_SIZE - self.carte_mgr.get_of2(), tile[2], tile[3]), (0, 255, 0))
         self.ecran.blit(self.perso, self.pos.pos)
 
     def get_pos(self) -> tuple:

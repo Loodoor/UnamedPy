@@ -234,4 +234,4 @@ def create_mask_from_surface(surface: surf) -> mask:
 
 def collide_rect_with_mask(mask_: mask, rectangle: rect) -> bool:
     overlapper = mask((rectangle[2], rectangle[3]))
-    return mask_.overlap_mask(overlapper, (rectangle[0], rectangle[1])).count()
+    return mask_.overlap_mask(overlapper, (int(rectangle[0]), int(rectangle[1]))).count()

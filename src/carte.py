@@ -428,10 +428,18 @@ class CartesManager:
             pickle.Pickler(file).dump(self.world)
         self.triggers_mgr.save()
 
-    def collide_at(self, x, y) -> bool:
+    def collide_at(self, x: int, y: int) -> bool:
         if self.current_carte.get_building_id_tag_at(x, y) == BUILDING_GET_ERROR:
             return self.current_carte.collide_at(x, y)
         return True
+
+    # todo : ajouter le système de rect par tile de iReplace
+    def get_tiles_from_rect(self, x: int, y: int, h: int, w: int) -> list:
+        tiles = []
+        for i in range(h):
+            for j in range(w):
+                tiles.append(((x + j) // TILE_SIZE, (y + i) // TILE_SIZE, TILE_SIZE, TILE_SIZE))
+        return tiles
 
     def check_changing_map(self, x, y):
         if self.current_carte.get_building_id_tag_at(x, y) != BUILDING_GET_ERROR:
