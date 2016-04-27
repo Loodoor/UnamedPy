@@ -2,25 +2,25 @@
 
 import pygame
 import pygame.gfxdraw
-import pygame.locals
+from pygame.locals import *
 
 
 METHOD = "pygame"
 TYPES = [
-    pygame.locals.QUIT,
-    pygame.locals.ACTIVEEVENT,
-    pygame.locals.KEYDOWN,
-    pygame.locals.KEYUP,
-    pygame.locals.MOUSEMOTION,
-    pygame.locals.MOUSEBUTTONUP,
-    pygame.locals.MOUSEBUTTONDOWN,
-    pygame.locals.JOYAXISMOTION,
-    pygame.locals.JOYBALLMOTION,
-    pygame.locals.JOYHATMOTION,
-    pygame.locals.JOYBUTTONUP,
-    pygame.locals.JOYBUTTONDOWN,
-    pygame.locals.VIDEORESIZE,
-    pygame.locals.VIDEOEXPOSE
+    QUIT,
+    ACTIVEEVENT,
+    KEYDOWN,
+    KEYUP,
+    MOUSEMOTION,
+    MOUSEBUTTONUP,
+    MOUSEBUTTONDOWN,
+    JOYAXISMOTION,
+    JOYBALLMOTION,
+    JOYHATMOTION,
+    JOYBUTTONUP,
+    JOYBUTTONDOWN,
+    VIDEORESIZE,
+    VIDEOEXPOSE
 ]
 ATTRIBS = [
     "gain",
