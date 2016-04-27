@@ -128,14 +128,14 @@ def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 
 class Point:
     def __init__(self, *args, **kwargs):
         try:
-            self.x = kwargs.get('x') if kwargs.get('x') else args[0]
+            self.x = args[0][0] if isinstance(args[0], tuple) else args[0]
         except IndexError:
-            self.x = 0
+            self.x = kwargs.get('x') if kwargs.get('x') else 0
 
         try:
-            self.y = kwargs.get('y') if kwargs.get('y') else args[1]
+            self.y = args[0][1] if isinstance(args[1], tuple) else args[1]
         except IndexError:
-            self.y = 0
+            self.y = kwargs.get('y') if kwargs.get('y') else 0
 
     def move(self, x: int=0, y: int=0):
         self.x += x
@@ -145,8 +145,8 @@ class Point:
         self.move(i * TILE_SIZE, j * TILE_SIZE)
 
     @property
-    def tile(self) -> tuple:
-        return self.x // TILE_SIZE, self.y // TILE_SIZE
+    def tile(self) -> object:
+        return Point(self.x // TILE_SIZE, self.y // TILE_SIZE)
 
     @tile.setter
     def tile(self, pos: tuple):
@@ -154,7 +154,7 @@ class Point:
         self.y = pos[1] * TILE_SIZE
 
     @property
-    def pos(self):
+    def pos(self) -> tuple:
         return self.x, self.y
 
     @pos.setter

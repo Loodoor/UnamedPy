@@ -4,7 +4,7 @@ import pickle
 from constantes import *
 from carte import CartesManager
 from gui import GUIBulleWaiting
-from utils import udir_to_vect, unegate_vect
+from utils import udir_to_vect, unegate_vect, Point
 import inventaire
 import glob
 from animator import PlayerAnimator
@@ -22,10 +22,10 @@ class Personnage:
         self.player_anim = PlayerAnimator(os.path.join("..", "assets", "personnages", self._choice))
         self.perso = self.player_anim.get_sprite_pause(self.direction)
         self.is_moving = False
-        self.pos = list(pos)
+        self.pos = Point(pos)
         self.carte_mgr = carte
         self.inventaire = inventaire.Inventaire(self.ecran, self.police, self.carte_mgr)
-        self.last_case = self.pos[0] // TILE_SIZE, self.pos[1] // TILE_SIZE
+        self.last_case = self.pos.tile
         self.same_as_before = False
 
     def change_moving_state(self) -> None:
@@ -55,7 +55,7 @@ class Personnage:
         self.inventaire.previous()
 
     def inventaire_update(self):
-        self.inventaire.update((self.pos[0] - self.carte_mgr.get_of1(), self.pos[1] - self.carte_mgr.get_of2()))
+        self.inventaire.update((self.pos.x - self.carte_mgr.get_of1(), self.pos.y - self.carte_mgr.get_of2()))
 
     def changed_cur_case(self):
         return not self.same_as_before
@@ -72,7 +72,7 @@ class Personnage:
     def _check_collisions(self, direction: int, vecteur: list, new_speed: float, pnjs: list) -> tuple:
         inverse_dir = unegate_vect(vecteur)
         new_of1, new_of2 = inverse_dir[0] * new_speed, inverse_dir[1] * new_speed
-        x, y = self.pos[0], self.pos[1]
+        x, y = self.pos.pos
         x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
         y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
         tile_code = self.carte_mgr.get_tile_code_at(x // TILE_SIZE, y // TILE_SIZE)
@@ -142,8 +142,8 @@ class Personnage:
         self._move_player(direction, dt)
 
         tmp_obj = self.carte_mgr.get_object_at(
-            (self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE,
-            (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE
+            (self.pos.x - self.carte_mgr.get_of1()) // TILE_SIZE,
+            (self.pos.y - self.carte_mgr.get_of2()) // TILE_SIZE
         )
         if tmp_obj and tmp_obj != OBJET_GET_ERROR:
             g = GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Youpi ! Vous venez de trouver " +
@@ -154,12 +154,12 @@ class Personnage:
             self.inventaire.find_object(tmp_obj)
         del tmp_obj
 
-        self.same_as_before = self.last_case == ((self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE, (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE)
+        self.same_as_before = self.last_case == ((self.pos.x - self.carte_mgr.get_of1()) // TILE_SIZE, (self.pos.y - self.carte_mgr.get_of2()) // TILE_SIZE)
 
-        self.last_case = (self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE, (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE
+        self.last_case = (self.pos.x - self.carte_mgr.get_of1()) // TILE_SIZE, (self.pos.y - self.carte_mgr.get_of2()) // TILE_SIZE
 
-        self.carte_mgr.check_changing_map((self.pos[0] - self.carte_mgr.get_of1()) // TILE_SIZE,
-                                          (self.pos[1] - self.carte_mgr.get_of2()) // TILE_SIZE)
+        self.carte_mgr.check_changing_map((self.pos.x - self.carte_mgr.get_of1()) // TILE_SIZE,
+                                          (self.pos.y - self.carte_mgr.get_of2()) // TILE_SIZE)
 
     def _move_player(self, direction: int=HAUT, dt: int=1):
         new_speed = self.speed * (dt / 50) / self.cur_div
@@ -177,16 +177,16 @@ class Personnage:
 
     def create_hitbox_parole(self, i: int, j: int):
         if self.direction == HAUT:
-            return ree.create_rect(i - 2, j - TILE_SIZE - 2, TILE_SIZE + 4, TILE_SIZE * 2 + 4)
+            return ree.create_rect(i - 2, j - TILE_SIZE - 2, PERSO_SIZE_X + 4, TILE_SIZE * 2 + 4)
         if self.direction == BAS:
-            return ree.create_rect(i - 2, j, TILE_SIZE + 4, TILE_SIZE * 2 + 4)
+            return ree.create_rect(i - 2, j + PERSO_SIZE_Y // 2, PERSO_SIZE_X + 4, TILE_SIZE * 2 + 4)
         if self.direction == DROITE:
-            return ree.create_rect(i, j - 2, TILE_SIZE * 2 + 4, TILE_SIZE + 4)
+            return ree.create_rect(i + PERSO_SIZE_X // 2, j - 2, TILE_SIZE * 2 + 4, PERSO_SIZE_Y + 4)
         if self.direction == GAUCHE:
-            return ree.create_rect(i - TILE_SIZE - 4, j - 2, TILE_SIZE * 2 + 4, TILE_SIZE + 4)
+            return ree.create_rect(i - TILE_SIZE - 4, j - 2, TILE_SIZE * 2 + 4, PERSO_SIZE_Y + 4)
 
     def search_and_talk_to_pnj(self):
-        i, j = self.pos
+        i, j = self.pos.pos
         i -= self.carte_mgr.get_of1()
         j -= self.carte_mgr.get_of2()
         pnjs_rect = [pnj.get_rect() for pnj in self.carte_mgr.get_pnjs()]
@@ -222,16 +222,16 @@ class Personnage:
         self.render()
 
     def render(self):
-        self.ecran.blit(self.perso, self.pos)
         if DEBUG_LEVEL >= 1:
-            ree.draw_rect(self.ecran, self.create_hitbox_parole(*self.pos), (255, 0, 0), width=2)
+            ree.draw_rect(self.ecran, self.create_hitbox_parole(*self.pos.pos), (255, 0, 0), width=2)
+            ree.draw_rect(self.ecran, (self.pos.x, self.pos.y, PERSO_SIZE_X, PERSO_SIZE_Y), (0, 0, 255))
+        self.ecran.blit(self.perso, self.pos.pos)
 
-    def get_pos(self):
-        return tuple(int(i) for i in self.pos)
+    def get_pos(self) -> tuple:
+        return self.pos.pos
 
-    def get_pos_in_tiles(self):
-        pos_px = self.get_pos()
-        return (pos_px[0] - self.carte_mgr.get_of1()) // TILE_SIZE, (pos_px[1] - self.carte_mgr.get_of2()) // TILE_SIZE
+    def get_pos_in_tiles(self) -> tuple:
+        return self.pos.tile
 
     def load(self):
         if os.path.exists(self.path):
@@ -239,7 +239,7 @@ class Personnage:
                 self.pos = pickle.Unpickler(read_perso).load()
         else:
             # on charge une position par défaut
-            self.pos = DEFAULT_POS_AT_BEGINNING
+            self.pos = Point(*DEFAULT_POS_AT_BEGINNING)
         self.inventaire.load()
         self.player_anim.set_speed(20)
 
