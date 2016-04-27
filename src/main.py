@@ -104,7 +104,9 @@ def main():
                 if MENU_BTN_JOUER_X <= xp <= MENU_BTN_JOUER_X + MENU_BTN_SX and \
                         MENU_BTN_JOUER_Y <= yp <= MENU_BTN_JOUER_Y + MENU_BTN_SY:
                     chargement = True
-                    jeu = game.Game(ecran, "first", adventure=adventure)
+                    jeu = game.Game(ecran, adventure=adventure)
+                    if not has_already_played and DEBUG_LEVEL:
+                        adventure.muted_next()
                 if MENU_BTN_RESEAU_X <= xp <= MENU_BTN_RESEAU_X + MENU_BTN_SX and \
                         MENU_BTN_RESEAU_Y <= yp <= MENU_BTN_RESEAU_Y + MENU_BTN_SY:
                     chargement = True
@@ -116,9 +118,11 @@ def main():
                                  sy=ecran.get_height(),
                                  placeholder="IP du serveur : ")
                     ip.mainloop()
-                    jeu = game.Game(ecran, "first", adventure=adventure,
+                    jeu = game.Game(ecran, adventure=adventure,
                                     s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM),
                                     p=(ip.get_text(), 5500))
+                    if not has_already_played and DEBUG_LEVEL:
+                        adventure.muted_next()
                 if MENU_BTN_PARAMS_X <= xp <= MENU_BTN_PARAMS_X + MENU_BTN_SX and \
                         MENU_BTN_PARAMS_Y <= yp <= MENU_BTN_PARAMS_Y + MENU_BTN_SY:
                     gui_access(ecran, police)
@@ -163,8 +167,6 @@ def main():
                 avancement = 0
                 if not has_already_played and not DEBUG_LEVEL:
                     adventure.next()
-                elif not has_already_played and DEBUG_LEVEL:
-                    adventure.muted_next()
                 jeu.start()
 
                 # on remet tout à 0

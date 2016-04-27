@@ -30,7 +30,7 @@ from network_event_listener import NetworkEventsListener
 
 
 class Game:
-    def __init__(self, ecran, perso_choice: str, adventure: Adventure, s: socket.socket=None,
+    def __init__(self, ecran, adventure: Adventure, s: socket.socket=None,
                  p: tuple=('127.0.0.1', 5500)):
         self.__start_at__ = 0
 
@@ -76,7 +76,7 @@ class Game:
         self.musics_player = music_player.MusicPlayer()
 
         # Entités
-        self.personnage = personnage.Personnage(self.carte_mgr, self.ecran, self.police_grande, perso_choice)
+        self.personnage = None
 
         # Contrôles
         self.controles = {}
@@ -108,9 +108,9 @@ class Game:
         self._play_anims = self.parametres.get("play_anims")
         yield 1
 
-        self.carte_mgr.load()
-        yield 1
         self.personnage.load()
+        yield 1
+        self.carte_mgr.load()
         yield 1
         for i in self.indexeur.load():
             yield i
@@ -445,7 +445,7 @@ class Game:
                     self.cur_combat.end_fight_for_capture()
                 else:
                     g = GUIBulleWaiting(
-                        self.ecran, (COMB_X_BULLE, COMB_Y_BULLE),
+                        self.ecran, (POS_BULLE_X, POS_BULLE_Y),
                         "Zut alors ! La capture a ratée :(",
                         self.police_normale
                     )
@@ -527,6 +527,10 @@ class Game:
 
         # Variables ayant besoin d'être rechargées avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
+        yield 1
+
+        self.personnage = personnage.Personnage(self.carte_mgr, self.ecran, self.police_grande,
+                                                self.adventure.get_values()['sprite'])
         yield 1
 
         self.renderer_manager.clear_all()

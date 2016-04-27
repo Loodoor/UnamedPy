@@ -57,7 +57,7 @@ STATIC_MOVE = [
 
 
 class PNJ:
-    def __init__(self, pos: tuple, type_mvt: list, texte: str, dir_: int=1, sprite: str='first', then: callable=None) -> None:
+    def __init__(self, pos: tuple, type_mvt: list, texte: str, dir_: int=1, sprite: str='dad', then: callable=None) -> None:
         self.pos = Point(*[t * TILE_SIZE for t in pos])
         self.type_mvt = type_mvt
         self.font = ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE)

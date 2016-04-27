@@ -145,3 +145,7 @@ class PlayerAnimator:
             GAUCHE: lgauche,
             DROITE: ldroite
         }
+
+        for li in self.anims.values():
+            for ei in li:
+                ei.set_colorkey((255, 0, 255))

@@ -144,7 +144,7 @@ class GUISauvegarde:
         self.firstcall = None
         self.has_started_saving = False
         self.ldroite = [ree.load_image(_) for _ in
-                        glob(os.path.join("..", "assets", "personnages", "first", "droite*.png"))]
+                        glob(os.path.join("..", "assets", "pnj", "dad", "droite*.png"))]
         self.cur_anim = 0
         self.fond = ree.load_image(os.path.join("..", "assets", "gui", "fd_sauvegarde.png"))
 
@@ -175,7 +175,8 @@ class GUISauvegarde:
         if not self._time % self.time_between:
             self.waiting = not self.waiting
         if not self._time % (self.time_between * 2):
-            self.cur_anim = self.cur_anim + 1 if self.cur_anim + 1 < len(self.ldroite) else 0
+            self.cur_anim += 1
+            self.cur_anim %= len(self.ldroite)
         if time.time() >= self.start_time + self.save_time:
             self.callback() if self.callback is not None else None
         self.render()
