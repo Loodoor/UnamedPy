@@ -103,7 +103,7 @@ class PNJ:
         return self.pos.pos
 
     def get_rect(self) -> tuple:
-        return ree.create_rect(self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE)
+        return ree.create_rect(self.pos.x, self.pos.y, PERSO_SIZE_X, PERSO_SIZE_Y)
 
     def move_scheme(self):
         self.cur_scheme += self.dir
