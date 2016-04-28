@@ -111,8 +111,6 @@ class PlayerAnimator:
         debug.println("Animateur chargé, anims : {}, masks : {}".format(self.anims is not None, self.masks is not None))
 
     def next(self):
-        if not self._count:
-            self._cur_anim = STATES_MOVE.walking
         self._tot += 1
         if not self._tot % self.speed:
             self._count += 1

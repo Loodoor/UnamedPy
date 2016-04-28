@@ -137,10 +137,18 @@ class Personnage:
 
         return x, y, new_of1, new_of2
 
+    def change_animator_for_current_state(self):
+        if self.cur_div == DIV_DT_BASIC:
+            self.player_anim.set_state(STATES_MOVE.walking)
+        if self.cur_div == DIV_DT_COURSE:
+            self.player_anim.set_state(STATES_MOVE.running)
+        if self.cur_div == DIV_DT_VELO:
+            self.player_anim.set_state(STATES_MOVE.riding)
+
     def move(self, direction: int, dt: int):
+        self.change_animator_for_current_state()
+
         self.direction = direction
-        self.player_anim.next()
-        self._actualise_sprite()
         self.is_moving = True
 
         self._move_player(direction, dt)
