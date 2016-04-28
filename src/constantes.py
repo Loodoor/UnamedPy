@@ -328,9 +328,14 @@ SHOP_Y = 10
 SHOP_SX = FEN_large - 2 * SHOP_X
 SHOP_SY = FEN_haut - 2 * SHOP_Y
 
+STATES_MOVE = UEnumFactory("idle", "running", "walking", "riding").create()
 PAUSE = 0
 ANIM1 = 1
 ANIM2 = 2
+ANIM3 = 3
+RIDE1 = 4
+RIDE2 = 5
+RIDE3 = 6  # optionnel
 ANIM_SPEED_EAU = 0.75
 ANIM_SPEED_RAIN = 0.8
 ANIM_DEFAULT_SPEED_MSPA = 0.1

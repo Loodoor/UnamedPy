@@ -3,6 +3,7 @@
 from exceptions import ListePleine
 import glob
 from constantes import *
+import debug
 
 
 class BaseSideAnimator:
@@ -84,71 +85,85 @@ class FluidesAnimator(BaseSideAnimator):
 
 
 class PlayerAnimator:
-    def __init__(self, path: str):
+    def __init__(self, path: str=""):
         self.path = path
         self.anims = {}
         self.masks = {}
-        self._cur_anim = PAUSE
-        self._correspondances = {
-            PAUSE: ANIM1,
-            ANIM1: ANIM2,
-            ANIM2: ANIM1
-        }
-        self._moves = {key: value for key, value in self._correspondances.items() if key != PAUSE}
-        self._speed = 1
+        self._cur_anim = STATES_MOVE.idle
+        self.curseur = 0
+        self.idle = [PAUSE, ANIM2]
+        self.walking = [ANIM1, ANIM2, ANIM3]
+        self.running = [ANIM1, ANIM3]
+        self.riding = [RIDE1, RIDE2, RIDE3]
         self._count = 0
+        self._tot = 0
+        self.speed = 1
 
+    def get_state(self) -> int:
+        return self._cur_anim
+
+    def set_speed(self, new: int):
+        self.speed = new
+
+    def load(self):
         self._create_anims()
         self._create_masks()
-
-    def set_speed(self, speed: int):
-        self._speed = speed
-
-    def pause(self):
-        self._cur_anim = PAUSE
+        debug.println("Animateur chargé, anims : {}, masks : {}".format(self.anims is not None, self.masks is not None))
 
     def next(self):
-        self._count += 1
-        if not self._count % self._speed:
-            self._cur_anim += 1
-            self._count = 1
+        if not self._count:
+            self._cur_anim = STATES_MOVE.walking
+        self._tot += 1
+        if not self._tot % self.speed:
+            self._count += 1
 
-    def get_anim_cursor(self):
-        return self._cur_anim % 3
+    def set_state(self, state: int):
+        self._cur_anim = state  # dans STATES_MOVE
 
-    def get_sprite_pause(self, direc: int):
+    def get_anim_cursor(self) -> int:
+        if self._cur_anim == STATES_MOVE.idle:
+            return self._count % len(self.idle)
+        elif self._cur_anim == STATES_MOVE.walking:
+            return self._count % len(self.walking)
+        elif self._cur_anim == STATES_MOVE.riding:
+            return self._count % len(self.riding)
+        else:
+            # self._cur_anim == STATES_MOVE.running
+            return self._count % len(self.running)
+
+    def get_sprite_path(self) -> str:
+        return self.path
+
+    def get_sprite_pause(self, direc: int) -> ree.surf:
         if direc in self.anims.keys():
-            # ici on assume complètement qu'il est en mouvement
-            return self.anims[direc][PAUSE]
+            # ici on assume complètement qu'il est pas en mouvement
+            return self.anims[direc][self.idle[self.get_anim_cursor()]]
         raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
 
-    def get_sprite(self, direc: int, anim_curs: int):
+    def get_sprite(self, direc: int, anim_curs: int=-1) -> ree.surf:
         if direc in self.anims.keys():
-            if anim_curs < len(self.anims):
-                return self.anims[direc][anim_curs]
-            raise ValueError("L'animation demandée n'existe pas (n°{})".format(anim_curs))
+            if anim_curs == -1:
+                anim_curs = self.get_anim_cursor()
+            move_lst = self.walking if self._cur_anim == STATES_MOVE.walking else self.running if self._cur_anim == STATES_MOVE.running else self.riding if self._cur_anim == STATES_MOVE.riding else self.idle
+            return self.anims[direc][move_lst[anim_curs % len(move_lst)]]
         raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
 
-    def get_mask(self, direc: int, anim_curs: int):
+    def get_mask(self, direc: int, anim_curs: int=-1) -> list:
         if direc in self.masks.keys():
-            if anim_curs < len(self.masks):
-                return self.masks[direc][anim_curs]
-            raise ValueError("Le mask demandé n'existe pas (n°{})".format(anim_curs))
+            if anim_curs == -1:
+                anim_curs = self.get_anim_cursor()
+            move_lst = self.walking if self._cur_anim == STATES_MOVE.walking else self.running if self._cur_anim == STATES_MOVE.running else self.riding if self._cur_anim == STATES_MOVE.riding else self.idle
+            return self.masks[direc][move_lst[anim_curs % len(move_lst)]]
         raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.masks".format(direc))
 
     def get_sprite_moving_from_dir(self, direc: int):
-        if direc in self.anims.keys():
-            # ici on assume complètement qu'il est en mouvement
-            return self.anims[direc][(self.get_anim_cursor() % 2) + 1]
-        raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.anims".format(direc))
+        return self.get_sprite(direc, self.get_anim_cursor())
 
     def get_mask_moving_from_dir(self, direc: int):
-        if direc in self.masks.keys():
-            # ici on assume complètement qu'il est en mouvement
-            return self.masks[direc][(self.get_anim_cursor() % 2) + 1]
-        raise ValueError("La clé '{}' n'existe pas pour le dictionnaire self.masks".format(direc))
+        return self.get_mask(direc, self.get_anim_cursor())
 
     def _create_anims(self):
+        debug.println(self.path)
         lhaut = [ree.load_image(_, True) for _ in glob.glob(os.path.join(self.path, "haut*.png"))]
         lbas = [ree.load_image(_, True) for _ in glob.glob(os.path.join(self.path, "bas*.png"))]
         lgauche = [ree.load_image(_, True) for _ in glob.glob(os.path.join(self.path, "gauche*.png"))]
@@ -166,4 +181,4 @@ class PlayerAnimator:
                 ei.set_colorkey((255, 0, 255))
 
     def _create_masks(self):
-        self.masks = {k: [ree.create_mask_from_surface(e) for e in v] for k, v in self.anims.items()}
+        self.masks = {k: [ree.create_mask_from_surface(e).get_bounding_rects() for e in v] for k, v in self.anims.items()}

@@ -71,28 +71,26 @@ class PNJ:
         self.mdt = 0
         self.orientation = BAS
         self.sprites_anim = PlayerAnimator(os.path.join("..", "assets", "pnj", sprite))
-        self.perso = None
+        self.sprites_anim.load()
         self.sprites_anim.set_speed(20)
+        self.perso = None
         self.texte = texte
         self.on_speak = None
         self.then = then
         self._screenshot = None
 
     def _actualise_sprite(self):
-        if self.is_moving:
-            self.perso = self.sprites_anim.get_sprite_moving_from_dir(self.orientation)
-        else:
-            self.perso = self.sprites_anim.get_sprite_pause(self.orientation)
+        self.perso = self.sprites_anim.get_sprite(self.orientation)
 
     def update(self, ecran, carte_mgr, dt: int=1):
         self.real_pos.x = carte_mgr.get_of1() + self.pos.x
         self.real_pos.y = carte_mgr.get_of2() + self.pos.y
 
         self.mdt += dt
-        self.sprites_anim.next()
         self._actualise_sprite()
+        self.sprites_anim.next()
 
-        if not self.mdt % 35:
+        if not self.mdt % 20:
             self.move(carte_mgr)
             self.pos.x = self.real_pos.x - carte_mgr.get_of1()
             self.pos.y = self.real_pos.y - carte_mgr.get_of2()

@@ -11,16 +11,16 @@ from animator import PlayerAnimator
 
 
 class Personnage:
-    def __init__(self, carte, ecran, police, choice: str, pos: tuple=(0, 0)):
+    def __init__(self, carte, ecran, police, pos: tuple=(0, 0)):
         self.ecran = ecran
         self.direction = BAS
         self.police = police
         self.speed = BASIC_SPEED
         self.path = os.path.join("..", "saves", "pos" + EXTENSION)
         self.cur_div = DIV_DT_BASIC
-        self._choice = choice
-        self.player_anim = PlayerAnimator(os.path.join("..", "assets", "personnages", self._choice))
-        self.perso = self.player_anim.get_sprite_pause(self.direction)
+        self.player_anim = PlayerAnimator()
+        self.player_anim.set_speed(20)
+        self.perso = None
         self.is_moving = False
         self.pos = Point(pos)
         self.carte_mgr = carte
@@ -39,8 +39,12 @@ class Personnage:
             self.walk()
             return
 
-    def get_skin_path(self):
-        return self._choice
+    def set_skin_path(self, value: str):
+        self.player_anim.path = os.path.join("..", "assets", "personnages", value)
+        self.player_anim.load()
+
+    def get_skin_path(self) -> str:
+        return self.player_anim.get_sprite_path()
 
     def set_carte_mgr(self, new: CartesManager):
         self.carte_mgr = new
@@ -64,16 +68,10 @@ class Personnage:
         return self.cur_div
 
     def _actualise_sprite(self):
-        if self.is_moving:
-            self.perso = self.player_anim.get_sprite_moving_from_dir(self.direction)
-        else:
-            self.perso = self.player_anim.get_sprite_pause(self.direction)
+        self.perso = self.player_anim.get_sprite(self.direction)
 
     def _get_mask(self) -> ree.mask:
-        if self.is_moving:
-            return self.player_anim.get_mask_moving_from_dir(self.direction)
-        else:
-            return self.player_anim.get_mask(self.direction, 0)
+        return self.player_anim.get_mask(self.direction)
 
     def _check_collisions(self, direction: int, vecteur: list, new_speed: float, pnjs: list) -> tuple:
         inverse_dir = unegate_vect(vecteur)
@@ -104,15 +102,8 @@ class Personnage:
         pnjs_rect = [pnj.get_rect() for pnj in pnjs]
 
         def colliding(i: int, j: int):
-            """
             tiles_in = self.carte_mgr.get_tiles_from_rect(i + self.carte_mgr.get_of1(), j + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y)
 
-            for rect in pnjs_rect + tiles_in:
-                rect.x = self.pos.x - self.carte_mgr.get_of1()
-                rect.y = self.pos.y - self.carte_mgr.get_of2()
-                if rect.collidelist(self._get_mask().get_bounding_rects()) != -1:
-                    return True
-            """
             return False
 
         x1, y1 = x, y
@@ -146,7 +137,7 @@ class Personnage:
 
         return x, y, new_of1, new_of2
 
-    def move(self, direction: int=AUCUNE, dt: int=1):
+    def move(self, direction: int, dt: int):
         self.direction = direction
         self.player_anim.next()
         self._actualise_sprite()
@@ -174,8 +165,8 @@ class Personnage:
         self.carte_mgr.check_changing_map((self.pos.x - self.carte_mgr.get_of1()) // TILE_SIZE,
                                           (self.pos.y - self.carte_mgr.get_of2()) // TILE_SIZE)
 
-    def _move_player(self, direction: int=HAUT, dt: int=1):
-        new_speed = self.speed * (dt / 50) / self.cur_div
+    def _move_player(self, direction: int, dt: int):
+        new_speed = self.speed * (dt / 25) / self.cur_div
 
         vecteur = udir_to_vect(direction)
         pnjs = self.carte_mgr.get_pnjs()
@@ -212,26 +203,29 @@ class Personnage:
 
     def end_move(self):
         self.is_moving = False
-        self.player_anim.pause()
+        self.player_anim.set_state(STATES_MOVE.idle)
 
     def walk(self):
         self.cur_div = DIV_DT_BASIC
+        self.player_anim.set_state(STATES_MOVE.walking)
 
     def run(self):
         self.cur_div = DIV_DT_COURSE
+        self.player_anim.set_state(STATES_MOVE.running)
 
+    # todo : ajouter les images du vélo
     def ride(self):
         self.cur_div = DIV_DT_VELO
+        # self.player_anim.set_state(STATES_MOVE.riding)
 
     def get_dir(self):
         return self.direction
 
     def update(self):
         if not self.is_moving:
-            self.player_anim.pause()
-            self._actualise_sprite()
-        else:
-            self.player_anim.next()
+            self.player_anim.set_state(STATES_MOVE.idle)
+        self.player_anim.next()
+        self._actualise_sprite()
         self.render()
 
     def render(self):
@@ -256,7 +250,6 @@ class Personnage:
             # on charge une position par défaut
             self.pos = Point(*DEFAULT_POS_AT_BEGINNING)
         self.inventaire.load()
-        self.player_anim.set_speed(20)
 
     def save(self):
         with open(self.path, "wb") as save_perso:

@@ -45,11 +45,6 @@ class Game:
         self.renderer_manager = renderer_manager.RendererManager()
         self.show_fps = False
 
-        self.right = False
-        self.left = False
-        self.top = False
-        self.bottom = False
-
         # Polices
         self.police_normale = ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
         self.police_grande = ree.load_font(POLICE_PATH, POL_GRANDE_TAILLE)
@@ -76,7 +71,7 @@ class Game:
         self.musics_player = music_player.MusicPlayer()
 
         # Entités
-        self.personnage = None
+        self.personnage = personnage.Personnage(self.carte_mgr, self.ecran, self.police_grande)
 
         # Contrôles
         self.controles = {}
@@ -159,7 +154,7 @@ class Game:
     def screenshot(self):
         uscreenschot(self.ecran)
 
-    def process_event(self, event, dt: int=1):
+    def process_event(self, event, dt: int):
         if self.joystick:
             self.joystick.update_states()
 
@@ -221,19 +216,6 @@ class Game:
                 self.renderer_manager.change_renderer_for(RENDER_CHAT)
             else:
                 self.renderer_manager.invert_renderer()
-
-        if event == (KEYUP, self.controles[HAUT]):
-            self.top = False
-            self.personnage.end_move()
-        if event == (KEYUP, self.controles[BAS]):
-            self.bottom = False
-            self.personnage.end_move()
-        if event == (KEYUP, self.controles[GAUCHE]):
-            self.left = False
-            self.personnage.end_move()
-        if event == (KEYUP, self.controles[DROITE]):
-            self.right = False
-            self.personnage.end_move()
 
         # Gestion des objets
         if self.personnage.inventaire.get_obj_messenger():
@@ -459,24 +441,32 @@ class Game:
                 self.equipe_mgr.get_selected_creature().set_spec(categorie=cat, new=new)
                 done(self)
 
-    def process_events_game(self, event, dt: int=1):
+    def process_events_game(self, event, dt: int):
         # clavier
         if event == (KEYDOWN, self.controles[HAUT]):
-            self.top, self.bottom = True, False
+            self.personnage.move(HAUT, dt)
         if event == (KEYDOWN, self.controles[BAS]):
-            self.top, self.bottom = False, True
+            self.personnage.move(BAS, dt)
         if event == (KEYDOWN, self.controles[GAUCHE]):
-            self.left, self.right = True, False
+            self.personnage.move(GAUCHE, dt)
         if event == (KEYDOWN, self.controles[DROITE]):
-            self.left, self.right = False, True
+            self.personnage.move(DROITE, dt)
         if event == (KEYDOWN, self.controles[MENU]):
             self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
+
+        if event == (KEYUP, self.controles[HAUT]):
+            self.personnage.end_move()
+        if event == (KEYUP, self.controles[BAS]):
+            self.personnage.end_move()
+        if event == (KEYUP, self.controles[GAUCHE]):
+            self.personnage.end_move()
+        if event == (KEYUP, self.controles[DROITE]):
+            self.personnage.end_move()
 
         if event == (KEYUP, self.controles[VALIDATION]):
             self.personnage.search_and_talk_to_pnj()
         if event == (KEYUP, self.controles[MAJ]):
             self.personnage.change_moving_state()
-        self.move_perso(dt)
 
         # joystick
         if self.joystick:
@@ -484,42 +474,24 @@ class Game:
                 self.renderer_manager.change_renderer_for(RENDER_MENU_IN_GAME)
 
             if self.joystick.get_axis(self.controles_joy[HAUT]["axis"]["nb"]) == self.controles_joy[HAUT]["axis"]["value"]:
-                self.top, self.bottom = True, False
+                self.personnage.move(HAUT, dt)
             else:
-                self.top = False
                 self.personnage.end_move()
 
             if self.joystick.get_axis(self.controles_joy[BAS]["axis"]["nb"]) == self.controles_joy[BAS]["axis"]["value"]:
-                self.top, self.bottom = False, True
+                self.personnage.move(BAS, dt)
             else:
-                self.bottom = False
                 self.personnage.end_move()
 
             if self.joystick.get_axis(self.controles_joy[GAUCHE]["axis"]["nb"]) == self.controles_joy[GAUCHE]["axis"]["value"]:
-                self.left, self.right = True, False
+                self.personnage.move(GAUCHE, dt)
             else:
-                self.left = False
                 self.personnage.end_move()
 
             if self.joystick.get_axis(self.controles_joy[DROITE]["axis"]["nb"]) == self.controles_joy[DROITE]["axis"]["value"]:
-                self.left, self.right = False, True
+                self.personnage.move(DROITE, dt)
             else:
-                self.right = False
                 self.personnage.end_move()
-            self.move_perso(dt)
-
-    def move_perso(self, dt: int=1):
-        if self.top:
-            self.personnage.move(HAUT, dt)
-        if self.bottom:
-            self.personnage.move(BAS, dt)
-        if self.right:
-            self.personnage.move(DROITE, dt)
-        if self.left:
-            self.personnage.move(GAUCHE, dt)
-
-    def reset_moves(self):
-        self.top, self.bottom, self.right, self.left = [False] * 4
 
     def prepare(self):
         debug.println("Le jeu démarre ...")
@@ -527,10 +499,6 @@ class Game:
 
         # Variables ayant besoin d'être rechargées avant le lancement du jeu (en cas de lancement multiple du jeu)
         self.continuer = 1
-        yield 1
-
-        self.personnage = personnage.Personnage(self.carte_mgr, self.ecran, self.police_grande,
-                                                self.adventure.get_values()['sprite'])
         yield 1
 
         self.renderer_manager.clear_all()
@@ -598,7 +566,6 @@ class Game:
             raise FonctionnaliteNonImplementee
         elif self.renderer_manager.get_renderer() == RENDER_COMBAT:
             if self.equipe_mgr.is_not_empty() and not self.cur_combat:
-                self.reset_moves()
                 self.cur_combat = atk_sys.Combat(self.ecran, self.equipe_mgr.get_creature(0), self.zones_manager,
                                                  self.carte_mgr.get_zid(), self.indexeur, self.police_normale,
                                                  self.tab_types, self.renderer_manager, self.equipe_mgr)
@@ -643,6 +610,7 @@ class Game:
                 Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))
             self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
             self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poids")
+        self.personnage.set_skin_path(self.adventure.get_values()['sprite'])
 
         while self.continuer:
             # FPS
@@ -679,8 +647,6 @@ class Game:
                                  "Direction: {}".format(self.personnage.get_dir()),
                                  "Position: {}".format(self.personnage.get_pos()),
                                  "Position (cases): {}".format(self.personnage.get_pos_in_tiles()),
-                                 "UP: {} | DOWN: {}".format(self.top, self.bottom),
-                                 "RIGHT: {} | LEFT: {}".format(self.right, self.left),
                                  "DivDt : {}".format(self.personnage.get_speed_diviseur()),
                                  "- - Réseau - -",
                                  "En réseau: {}".format(self.sock is not None),
