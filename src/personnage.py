@@ -166,7 +166,7 @@ class Personnage:
                                           (self.pos.y - self.carte_mgr.get_of2()) // TILE_SIZE)
 
     def _move_player(self, direction: int, dt: int):
-        new_speed = self.speed * (dt / 25) / self.cur_div
+        new_speed = self.speed * (dt / 15) / self.cur_div
 
         vecteur = udir_to_vect(direction)
         pnjs = self.carte_mgr.get_pnjs()
