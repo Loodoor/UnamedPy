@@ -132,6 +132,7 @@ class NetworkEventsListener:
                             changes[key] = self._recv()
                     if changes:
                         for key, val in changes.items():
+                            # todo : gérer le changement de monde et de carte
                             if key == UDP_CARTE_CHANGE:
                                 pass
                             if key == UDP_PLAYERS_CHANGE:
