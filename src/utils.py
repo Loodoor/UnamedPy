@@ -11,6 +11,7 @@ from glob import glob
 import random
 import pickle
 import time
+import threading
 import debug
 
 
@@ -123,6 +124,16 @@ def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 
     if bg:
         ree.draw_rect(screen, rect_bg, bg_color)
     ree.draw_rect(screen, (rect_bg[0] + esp, rect_bg[1] + esp, progress, rect_bg[3] - esp * 2), fg_color)
+
+
+class UThreadFunction(threading.Thread):
+    def __init__(self, func: callable, *args):
+        super().__init__()
+        self.func = func
+        self.args = args
+
+    def run(self):
+        self.func(*self.args)
 
 
 class Point:

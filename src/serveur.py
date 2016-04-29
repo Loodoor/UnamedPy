@@ -2,9 +2,13 @@
 
 import json
 import socket
-from utils import usep_lst_in_smallers
+from utils import usep_lst_in_smallers, UThreadFunction
 from constantes import *
 from datetime import datetime
+import wsgicore
+from io import StringIO
+from contextlib import redirect_stdout
+import serveur_pages
 
 
 buffer_for_file = []
@@ -15,9 +19,9 @@ def get_from_where(usr: dict, news: list, kindof: str, address) -> list:
     todel = []
     i = 0
     for e in news:
-        if usr[address]['pseudo'] not in e['sawit'] and e['type'] == kindof:
+        if address not in e['sawit'] and e['type'] == kindof:
             smth.append(e['content'])
-            news[i]['sawit'].append(usr[address]['pseudo'])
+            news[i]['sawit'].append(address)
             if len(news[i]['sawit']) == len(usr):
                 todel.append(i)
         i += 1
@@ -123,7 +127,7 @@ while True:
 
 infile = False
 while 1:
-    tmp = input("Voulez-vous enregistrer les log dans des fichiers (ou les afficher) [O/N] ?\n> ")
+    tmp = input("Voulez-vous enregistrer les log dans des fichiers (si non, ils seront affichés) [O/N] ?\n> ")
     if tmp.lower() in 'on' and tmp.strip():
         if tmp.lower() == 'o':
             infile = True
@@ -163,6 +167,21 @@ askers = (
     UDP_ASK_PLAYERS_CHANGES
 )
 
+
+serv_http = wsgicore.utils.create_server(rooter=wsgicore.utils.create_router(
+    **serveur_pages.pages_dict
+))
+
+
+def tmp():
+    stream = StringIO()
+    with redirect_stdout(stream):
+        serv_http.serve_forever()
+
+
+serv = UThreadFunction(tmp)
+serv.start()
+
 while serveur_lance:
     data, addr = connexion_principale.recvfrom(BUFFER_SIZE)
     if data:
@@ -171,7 +190,8 @@ while serveur_lance:
             if datas['pseudo'] not in predefined['banlist']:
                 users[addr] = datas
                 send(connexion_principale, UDP_CONNECTED, addr)
-                print_or_save("Un client s'est connecté ! Youpi !\t* Pseudo : {0}".format(users[addr]['pseudo']))
+                print_or_save("Un client s'est connecté ! Youpi !\n\t* Pseudo : {0}\n\t* Adresse : {1}\n".format(users[addr]['pseudo'], addr))
+                print("Un client s'est connecté ! Youpi !\n\t* Pseudo : {0}\n\t* Adresse : {1}\n".format(users[addr]['pseudo'], addr))
             else:
                 send(connexion_principale, UDP_CONNECTION_REFUSED, addr)
                 print_or_save("La connexion a été refusée pour {} en raison des paramètres de configuration".format(datas['pseudo']))
@@ -200,7 +220,7 @@ while serveur_lance:
                     if datas == UDP_ASK_NEWS:
                         kind = []
                         for elem in news_:
-                            if users[addr]['pseudo'] not in elem['sawit'] and elem['type'] != UDP_MESSAGES_CHANGE:
+                            if addr not in elem['sawit'] and elem['type'] != UDP_MESSAGES_CHANGE:
                                 kind.append(elem['type'])
                         if kind:
                             send(connexion_principale, kind, addr)
@@ -222,7 +242,7 @@ while serveur_lance:
                             cnt = {
                                 'type': UDP_MESSAGES_CHANGE,
                                 'content': content,
-                                'sawit': [],
+                                'sawit': [a_tmp],
                                 'from': users[addr]['pseudo']
                             }
                             news_ += [cnt]
@@ -245,7 +265,7 @@ while serveur_lance:
                                     'avatar': users[addr]['avatar'],
                                     'id': users[addr]['key']
                                 },
-                                'sawit': [],
+                                'sawit': [a_tmp],
                                 'from': users[addr]['pseudo']
                             }
                             news_ += [cnt]
