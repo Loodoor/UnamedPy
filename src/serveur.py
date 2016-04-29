@@ -6,36 +6,36 @@ from utils import usep_lst_in_smallers, UThreadFunction
 from constantes import *
 from datetime import datetime
 import wsgicore
-from io import StringIO
-from contextlib import redirect_stdout
 import serveur_pages
 
 
 buffer_for_file = []
+send_errors = 0
 
 
 def get_from_where(usr: dict, news: list, kindof: str, address) -> list:
     smth = []
     todel = []
-    i = 0
-    for e in news:
+    for i, e in enumerate(news):
         if address not in e['sawit'] and e['type'] == kindof:
             smth.append(e['content'])
             news[i]['sawit'].append(address)
             if len(news[i]['sawit']) == len(usr):
                 todel.append(i)
-        i += 1
     for elem in todel[::-1]:
         news.pop(elem)
     return smth
 
 
-def send(co, message, addr) -> None:
+def send(co, message, addr) -> bool:
+    global send_errors
     try:
         co.sendto(json.dumps(message).encode(), addr)
+        return True
     except OSError:
-        print("Le message était : ", message, ", et l'adresse : ", addr)
-        sys.exit(0)
+        send_errors += 1
+        print_or_save("[no ", send_errors, "] - Le message était de type : ", type(message), ", de taille :", len(message), ", et l'adresse du receveur était : ", addr)
+        return False
 
 
 def print_or_save(*msg, sep=' ', end='\n') -> None:
@@ -171,15 +171,7 @@ askers = (
 serv_http = wsgicore.utils.create_server(rooter=wsgicore.utils.create_router(
     **serveur_pages.pages_dict
 ))
-
-
-def tmp():
-    stream = StringIO()
-    with redirect_stdout(stream):
-        serv_http.serve_forever()
-
-
-serv = UThreadFunction(tmp)
+serv = UThreadFunction(serv_http.serve_forever)
 serv.start()
 
 while serveur_lance:
@@ -242,8 +234,8 @@ while serveur_lance:
                             cnt = {
                                 'type': UDP_MESSAGES_CHANGE,
                                 'content': content,
-                                'sawit': [a_tmp],
-                                'from': users[addr]['pseudo']
+                                'sawit': [addr],
+                                'from': addr
                             }
                             news_ += [cnt]
                             print_or_save("{} a ajouté un message : {}".format(users[addr]['pseudo'], cnt))
@@ -265,9 +257,12 @@ while serveur_lance:
                                     'avatar': users[addr]['avatar'],
                                     'id': users[addr]['key']
                                 },
-                                'sawit': [a_tmp],
-                                'from': users[addr]['pseudo']
+                                'sawit': [addr],
+                                'from': addr
                             }
+                            pops = [i for i, v in enumerate(news_) if v['from'] == addr][::-1]
+                            for i in pops:
+                                news_.pop(i)
                             news_ += [cnt]
                             print_or_save("{} se déplace. Nouvelles informations : {}".format(users[addr]['pseudo'], cnt))
 

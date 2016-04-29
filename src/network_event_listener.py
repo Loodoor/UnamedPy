@@ -33,7 +33,7 @@ class NetworkEventsListener:
             'pseudo': self._controlers['adventure'].get_pseudo(),
             'pos': self._controlers['perso'].get_pos(),
             'key': self._connection_key,
-            'avatar': self._controlers['perso'].get_skin_path()
+            'avatar': os.path.basename(self._controlers['perso'].get_skin_path())
         })
         debug.println("Connexion")
 
@@ -96,7 +96,7 @@ class NetworkEventsListener:
         self.send(UDP_SEND_MYPOS)
         if self._recv() == UDP_LISTENNING:
             self.send({
-                'pos': self._controlers['perso'].get_pos(),
+                'pos': self._controlers['perso'].get_real_pos(),
                 'dir': self._controlers['perso'].get_dir()
             })
 
@@ -136,7 +136,14 @@ class NetworkEventsListener:
                                 pass
                             if key == UDP_PLAYERS_CHANGE:
                                 if isinstance(val, list):
+                                    self.send(UDP_ASK_MYWORLD)
+                                    world = self._recv()
+                                    self.send(UDP_ASK_MYMAP)
+                                    map_ = self._recv()
                                     for perso in val:
-                                        self._controlers['others'].move_this(perso)
+                                        if perso['world'] == world and perso['map'] == map_:
+                                            self._controlers['others'].move_this(perso)
+                                        elif perso['world'] != world or perso['map'] != map_ and perso in self._controlers['others'].get_them():
+                                            self._controlers['others'].remove(perso)
 
             self.refresh_mypos()

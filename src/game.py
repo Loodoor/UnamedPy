@@ -52,7 +52,7 @@ class Game:
 
         # Managers
         self.carte_mgr = carte.CartesManager(self.ecran, self.renderer_manager, self.police_normale)
-        self.oth_persos_mgr = personnage.OthPersonnagesManager(self.ecran)
+        self.oth_persos_mgr = personnage.OthPersonnagesManager(self.ecran, self.carte_mgr)
         self.indexeur = indexer.Indexer(self.ecran, self.police_grande, self.renderer_manager)
         self.equipe_mgr = equipe_manager.EquipeManager(self.ecran, self.police_grande, self.indexeur, self.renderer_manager)
         self.pc_mgr = computer_manager.ComputerManager(self.ecran, self.police_grande, self.renderer_manager)

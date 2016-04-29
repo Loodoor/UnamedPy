@@ -247,6 +247,9 @@ class Personnage:
     def get_pos(self) -> tuple:
         return self.pos.pos
 
+    def get_real_pos(self) -> tuple:
+        return self.pos.x - self.carte_mgr.get_of1(), self.pos.y - self.carte_mgr.get_of2()
+
     def get_pos_in_tiles(self) -> tuple:
         return self.pos.tile
 
@@ -266,12 +269,27 @@ class Personnage:
 
 
 class OthPersonnagesManager:
-    def __init__(self, ecran):
+    def __init__(self, ecran: ree.surf, carte_mgr: CartesManager):
         self.ecran = ecran
+        self.carte_mgr = carte_mgr
         self._others = {}
         self._sprites = {}
-        for dir_ in glob.glob(os.path.join("..", "assets", "personnages", "*")):
-            directory = os.path.split(dir_)[1]
+
+        self._load()
+
+    def get_them(self) -> dict:
+        return self._others
+
+    def remove(self, perso: dict):
+        for id_, player in self._others.items():
+            if id_ == perso['id'] and player['pseudo'] == perso['pseudo']:
+                del self._others[id_]
+                break
+
+    def _load(self):
+        for dir_ in glob.glob(os.path.join("..", "assets", "personnages", "*")) + glob.glob(
+                os.path.join("..", "assets", "pnj", "*")):
+            directory = os.path.basename(dir_)
             self._sprites[directory] = {}
             self._sprites[directory][BAS] = [
                 ree.load_image(i) for i in glob.glob(os.path.join(dir_, "bas*.png"))
@@ -302,4 +320,7 @@ class OthPersonnagesManager:
     def draw_them(self):
         if self._others:
             for id_, perso in self._others.items():
-                self.ecran.blit(self._sprites[perso["avatar"]][perso['direction']][perso['state']], perso['pos'])
+                pos = perso['pos'][:]  # au cas où la pos ne change pas, on fait une deepcopy
+                pos[0] += self.carte_mgr.get_of1()
+                pos[1] += self.carte_mgr.get_of2()
+                self.ecran.blit(self._sprites[perso["avatar"]][perso['direction']][perso['state']], pos)
