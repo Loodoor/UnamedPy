@@ -19,7 +19,7 @@
             "text": {
                 "with_gui": False,
                 "at_time": 1,
-                "end_at": 2.9,
+                "end_at": 2.5,
                 "type": "plain",
                 "content": "Voici une petite ville (Bélâriskï)"
             }
@@ -34,7 +34,7 @@
             "text": {
                 "with_gui": False,
                 "at_time": 1,
-                "end_at": 3.9,
+                "end_at": 3.5,
                 "type": "plain",
                 "content": "Voici une rue dans cette petite ville"
             }
@@ -49,9 +49,9 @@
             "text": {
                 "with_gui": False,
                 "at_time": 1,
-                "end_at": 3.9,
+                "end_at": 3.5,
                 "type": "plain",
-                "content": "Voici une rue"
+                "content": "Voici ta maison"
             }
         },
         "chambre": {
@@ -64,10 +64,9 @@
             "text": {
                 "with_gui": True,
                 "at_time": 1,
-                "end_at": -1,
-                "type": "input",
-                "content": "Quel sera ton nom ?",
-                "store_in": "player name"
+                "end_at": 5.5,
+                "type": "plain",
+                "content": "Tu es moche :p"
             }
         }
     }

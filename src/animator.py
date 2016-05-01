@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from exceptions import ListePleine
+from exceptions import ListePleine, CinematiqueIntrouvable
 import debug
 from gui import *
 
@@ -185,27 +185,56 @@ class PlayerAnimator:
 class Fading:
     def __init__(self, duration: float, ecran: ree.surf, *args):
         self.type = "in" if "in" in args else "out"
-        self.duration = duration * 1000
+        self.duration = int(duration * 1000)
         self._time = 0
         self.ecran = ecran
-        self.modifier = -self.duration // 255 if self.type == "in" else self.duration // 255
-        self.alpha = 255 if self.type == "in" else 0
+        self.modifier = 255 / self.duration
+        self._surfaces = []
+        self._count = 0
+        self._playing = False
+        self._load()
+
+    def _load(self):
+        for i in range(self.duration):
+            surf = ree.create_surface((FEN_large, FEN_haut), ree.get_alpha_channel(), 32)
+            surf.convert_alpha()
+            surf.fill((0, 0, 0, int(i * self.modifier)))
+            self._surfaces.append(surf)
+        if self.type == "in":
+            self._surfaces = self._surfaces[::-1]
+
+    def playing(self) -> bool:
+        return self._playing
+
+    def current(self) -> str:
+        return self.type
+
+    def reverse(self):
+        self._surfaces = self._surfaces[::-1]
+
+    def reinit(self):
+        self._count = 0
+        self._time = 0
+        self._playing = False
 
     def render(self):
-        ree.draw_rect(self.ecran, (0, 0) + self.ecran.get_size(), (0, 0, 0, self.alpha))
+        self.ecran.blit(self._surfaces[int(self._count)], (0, 0))
+        self._count += self.modifier
+        if self._count >= len(self._surfaces):
+            self._count = len(self._surfaces) - 1
 
     def update(self, dt: float):
+        self._playing = True
         self._time += dt
         if self._time >= self.duration:
             return
         self.render()
-        self.alpha += self.modifier
 
 
 class CinematiqueCreator:
     def __init__(self, ecran: ree.surf, path: str):
         self.ecran = ecran
-        self.path = os.path.join("..", "assets", "cinematiques", path)
+        self.path = path
         self._images = {}
         self._sounds = {}
         self._conf = {}
@@ -224,15 +253,16 @@ class CinematiqueCreator:
     def load(self):
         if not self._loaded:
             try:
-                with open(os.path.join(self.path), "r", encoding="utf-8") as conf:
+                with open(self.path, "r", encoding="utf-8") as conf:
                     self._conf = eval(conf.read())
                 for file in glob(os.path.join(self._conf["frames_folder"], "*.*")):
                     self._images[os.path.basename(file)] = ree.load_image(file)
                 for file in glob(os.path.join(self._conf["musics_folder"], "*.*")):
                     self._sounds[os.path.basename(file)] = ree.load_music_object(file)
                 self._current = self._conf["frames_order"][0]
+                self._fade = Fading(self._conf["fade_duration"], self.ecran, "in")
             except OSError:
-                pass
+                raise CinematiqueIntrouvable("Avec le path suivant :", self.path)
             self._loaded = True
 
     def _process_event(self, ev: ree.Event):
@@ -246,21 +276,16 @@ class CinematiqueCreator:
 
         # fadeout
         if self._time >= self._conf["frames"][self._current].get("duration", 0) * 1000 - self._conf["fade_duration"] * 1000:
-            self._fade = Fading(self._conf["fade_duration"], self.ecran,  "out")
+            if self._fade.current() == "in":
+                self._fade.reverse()
+            if not self._fade.playing():
+                self._fade.reinit()
             self._fading = True
         # début affichage texte
         if self._time >= self._conf["frames"][self._current]["text"].get("at_time", 0) * 1000 and not self._displaying_text:
             self._displaying_text = True
             if self._conf["frames"][self._current]["text"].get("type", "plain") == "plain":
                 self._text = GUIBulle(
-                    self.ecran,
-                    (POS_BULLE_X, POS_BULLE_Y),
-                    self._conf["frames"][self._current]["text"].get("content", ""),
-                    self.font,
-                    self._conf["frames"][self._current]["text"].get("with_gui", True)
-                )
-            elif self._conf["frames"][self._current]["text"].get("type", "plain") == "input":
-                self._text = GUIBulleAsking(
                     self.ecran,
                     (POS_BULLE_X, POS_BULLE_Y),
                     self._conf["frames"][self._current]["text"].get("content", ""),
@@ -277,6 +302,8 @@ class CinematiqueCreator:
             self._text.update_one_frame(ev)
         if self._fading and self._fade:
             self._fade.update(dt)
+        if not self._fade.playing():
+            self._fading = False
 
     def _next(self):
         self._time = 0
@@ -287,13 +314,17 @@ class CinematiqueCreator:
             self._current = self._conf["frames_order"][self._conf["frames_order"].index(self._current) + 1]
         except IndexError:
             err = True
+            self._running = False
 
-        if self._playing_music and not self._conf["frames"][self._current]["last_music_continue_here"]:
+        if self._playing_music and not self._conf["frames"][self._current].get("last_music_continue_here", False):
             self._sounds[self._conf["frames"][last]["music"]].stop()
 
         # fadein
         if self._conf["frames"][self._current].get("fadein", False) and not err:
-            self._fade = Fading(self._conf["fade_duration"], self.ecran,  "in")
+            if self._fade.current() == "out":
+                self._fade.reverse()
+            if not self._fade.playing():
+                self._fade.reinit()
             self._fading = True
         # music
         if self._conf["frames"][self._current].get("music", False) and not err:

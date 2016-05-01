@@ -615,11 +615,8 @@ class Game:
         self.personnage.set_skin_path(self.adventure.get_values()['sprite'])
 
         # TEST
-        print("1")
         cine = CinematiqueCreator(self.ecran, os.path.join("..", "assets", "cinematiques", "test" + EXTENSION))
-        print("2")
         cine.load()
-        print("3")
         cine.play()
 
         while self.continuer:

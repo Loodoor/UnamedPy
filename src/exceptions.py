@@ -74,3 +74,8 @@ class ClassNonChargee(Exception):
             "La méthode load() de la class {} ayant levé cette exception aurait dû être appelée avant de vouloir "
             "accéder à la méthode {}".format(class_name, method)
         )
+
+
+class CinematiqueIntrouvable(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
