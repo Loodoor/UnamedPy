@@ -41,7 +41,7 @@ class TextBox:
 
     def event(self, e):
         if e == QUIT:
-            self.running = False
+            exit(1)
         if e == (KEYDOWN, K_ESCAPE) or e == (KEYDOWN, K_RETURN):
             self.running = False
             self.enter = True

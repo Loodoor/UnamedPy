@@ -43,7 +43,7 @@ def maps_retriver(site: str):
             data = str(tmp).replace('false', 'False').replace('true', 'True').replace('null', 'None')
             maps = eval(data)
 
-            with open(os.path.join(directory, 'config.txt'), 'w') as file:
+            with open(os.path.join(directory, 'config' + EXTENSION), 'w') as file:
                 file.write(str(
                     {
                         "name": maps['name']
@@ -183,7 +183,7 @@ def load_map_from_id(id_: int, wid: int):
             'id': int,
             'lights': parse_lights_dict,
             'name': str,
-            'rainy': int
+            'rainy': float
         }
 
         for key in parsed.keys():
@@ -650,12 +650,12 @@ class CartesManager:
 
 
 class CarteRenderer:
-    def __init__(self, ecran, carte_mgr: CartesManager, police: object):
+    def __init__(self, ecran: ree.surf, carte_mgr: CartesManager, police: ree.font):
         self.ecran = ecran
         self.carte_mgr = carte_mgr
         self.police = police
         self.path = os.path.join("..", "assets", "configuration", "worldmap" + EXTENSION)
-        self.map_desc = ""
+        self.map_desc = {}
         self.path_map_desc = os.path.join("..", "assets", "configuration", "worldmap_desc" + EXTENSION)
         self.carte_paths = ree.create_surface((MAP_RDR_SX, MAP_RDR_SY), ree.get_alpha_channel(), 32)
         self.carte_mgr = ree.rescale(ree.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")), (MAP_RDR_SX, MAP_RDR_SY))

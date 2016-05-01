@@ -28,6 +28,8 @@ from exceptions import FonctionnaliteNonImplementee
 from network_event_listener import NetworkEventsListener
 # from fpsregulator import IAFPS
 
+from animator import CinematiqueCreator
+
 
 class Game:
     def __init__(self, ecran, adventure: Adventure, s: socket.socket=None,
@@ -611,6 +613,14 @@ class Game:
             self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
             self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poids")
         self.personnage.set_skin_path(self.adventure.get_values()['sprite'])
+
+        # TEST
+        print("1")
+        cine = CinematiqueCreator(self.ecran, os.path.join("..", "assets", "cinematiques", "test" + EXTENSION))
+        print("2")
+        cine.load()
+        print("3")
+        cine.play()
 
         while self.continuer:
             # FPS

@@ -214,7 +214,9 @@ def gui_access(ecran, police):
 
     while not done:
         for event in ree.get_event():
-            if event == QUIT or event == (KEYDOWN, K_ESCAPE):
+            if event == QUIT:
+                exit(1)
+            if event == (KEYDOWN, K_ESCAPE):
                 done = True
 
             if event == (KEYUP, K_RETURN):

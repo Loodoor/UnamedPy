@@ -1,8 +1,8 @@
-REM launcher du jeu
+# launcher du jeu
 cd src/
-py -3.4 main.py "err_log.log" 2>&1
+python3 main.py >"err_log.log" 2>&1
 echo "Si le jeu se coupe brutalement et que vous pensez que cela est dû à un bug,"
 echo "je vous serais reconnaissant de m'envoyer le contenu du fichier qui va s'ouvrir"
-notepad "err_log.log"
+gedit "err_log.log"
 cd ..
-pause
+read -n1 -r -p "Appuyez sur une touche pour terminer le programme ..." key

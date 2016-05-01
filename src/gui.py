@@ -7,7 +7,7 @@ from glob import glob
 
 
 class GUIBulle:
-    def __init__(self, ecran, pos: tuple, texte: str or list, font):
+    def __init__(self, ecran, pos: tuple, texte: str or list, font: ree.font, show_bulle: bool=True):
         self.ecran = ecran
         self.pos = pos
         self.texte = texte
@@ -15,6 +15,7 @@ class GUIBulle:
         self.image = ree.load_image(os.path.join("..", "assets", "gui", "bulle.png"))
         self.iw, self.ih = self.image.get_size()
         self.txt_renderer = self.font.render(" ", POL_ANTIALISING, (10, 10, 10))
+        self.show_bulle = show_bulle
         self.create_text_renderers()
 
     def set_text(self, new: str or list):
@@ -30,8 +31,12 @@ class GUIBulle:
     def update(self, dt: int=1):
         self.render()
 
+    def update_one_frame(self, ev: ree.Event):
+        self.update()
+
     def render(self):
-        self.ecran.blit(self.image, self.pos)
+        if self.show_bulle:
+            self.ecran.blit(self.image, self.pos)
         if not isinstance(self.txt_renderer, list):
             self.ecran.blit(self.txt_renderer, (self.pos[0] + self.iw // 2 - self.txt_renderer.get_width() // 2,
                                                 self.pos[1] + self.ih // 2 - self.txt_renderer.get_height() // 2))
@@ -45,8 +50,9 @@ class GUIBulle:
 
 
 class GUIBulleWaiting(GUIBulle):
-    def __init__(self, ecran, pos: tuple, texte: str or list, font, screenshotkey=K_F5):
-        super().__init__(ecran, pos, texte, font)
+    def __init__(self, ecran, pos: tuple, texte: str or list, font: ree.font, show_bulle: bool=True,
+                 screenshotkey=K_F5):
+        super().__init__(ecran, pos, texte, font, show_bulle)
         self.done = False
         self.screenkey = screenshotkey
 
@@ -57,6 +63,11 @@ class GUIBulleWaiting(GUIBulle):
         self.texte = new
         self.create_text_renderers()
         self.done = False
+
+    def update_one_frame(self, ev: ree.Event):
+        if ev != (KEYDOWN, self.screenkey) and ev == KEYDOWN:
+            self.done = True
+        self.render()
 
     def update(self, dt: int=1):
         while not self.done:
@@ -69,10 +80,20 @@ class GUIBulleWaiting(GUIBulle):
 
 
 class GUIBulle2Choices(GUIBulleWaiting):
-    def __init__(self, ecran, pos: tuple, texte: str or list, font,
+    def __init__(self, ecran, pos: tuple, texte: str or list, font: ree.font, show_bulle: bool=True,
                  screenshotkey=K_F5):
-        super().__init__(ecran, pos, texte, font, screenshotkey)
+        super().__init__(ecran, pos, texte, font, screenshotkey, show_bulle)
         self.ok = False
+
+    def is_ok(self):
+        return self.ok
+
+    def update_one_frame(self, ev: ree.Event):
+        if ev == (KEYUP, K_RETURN):
+            self.ok = True
+        if ev != (KEYUP, self.screenkey):
+            self.done = True
+        self.render()
 
     def update(self, dt: int=1):
         while not self.done:
@@ -88,9 +109,9 @@ class GUIBulle2Choices(GUIBulleWaiting):
 
 
 class GUIBulleAsking(GUIBulleWaiting):
-    def __init__(self, ecran, pos: tuple, texte: str or list, font,
+    def __init__(self, ecran, pos: tuple, texte: str or list, font: ree.font, show_bulle: bool=True,
                  screenshotkey=K_F5):
-        super().__init__(ecran, pos, texte, font, screenshotkey)
+        super().__init__(ecran, pos, texte, font, screenshotkey, show_bulle)
         self.create_text_renderers()
         self.text_box = TextBox(self.ecran, x=self.pos[0] + self.txt_renderer.get_width() // 2 + self.iw // 2,
                                 y=self.pos[1] + (self.ih - self.txt_renderer.get_height() - 4) // 2,
@@ -99,7 +120,8 @@ class GUIBulleAsking(GUIBulleWaiting):
                                 font=self.font)
 
     def render(self):
-        self.ecran.blit(self.image, self.pos)
+        if self.show_bulle:
+            self.ecran.blit(self.image, self.pos)
         if not isinstance(self.txt_renderer, list):
             self.ecran.blit(self.txt_renderer, (self.pos[0] + self.iw // 2 - self.txt_renderer.get_width() // 2,
                                                 self.pos[1] + self.ih // 2 - self.txt_renderer.get_height() // 2))
@@ -118,6 +140,11 @@ class GUIBulleAsking(GUIBulleWaiting):
 
     def get_text(self):
         return self.text_box.get_text()
+
+    def update_one_frame(self, ev: ree.Event):
+        if ev != (KEYDOWN, self.screenkey) and ev == KEYDOWN:
+            self.text_box.event(ev)
+        self.render()
 
     def update(self, dt: int=1):
         while not self.done:
