@@ -49,9 +49,10 @@ class BaseMultipleSpritesAnimator:
     def __init__(self, path: str):
         self.path = path
         self.anims = []
-        if os.path.exists(os.path.join(path, "config.txt")):
-            self._config_file = eval(open(os.path.join(path, "config.txt"), "r", encoding="utf-8").read())
-        else:
+        try:
+            with open(os.path.join(path, "config" + EXTENSION), "r", encoding="utf-8") as file:
+                self._config_file = eval(file.read())
+        except OSError:
             self._config_file = {}
         self._wait = self._config_file.get("anim_time", ANIM_DEFAULT_SPEED_MSPA)
         self._cur_anim = 0
@@ -180,3 +181,22 @@ class PlayerAnimator:
 
     def _create_masks(self):
         self.masks = {k: [ree.create_mask_from_surface(e).get_bounding_rects() for e in v] for k, v in self.anims.items()}
+
+
+class CinematiqueCreator:
+    def __init__(self, path: str):
+        self.path = os.path.join("..", "assets", "cinematiques", path)
+        self._images = {}
+        self._conf = {}
+        self._loaded = False
+
+    def load(self):
+        if not self._loaded:
+            for file in glob.glob(os.path.join(self.path, "*.*")):
+                self._images[os.path.basename(file).split('.')[0]] = ree.load_image(file)
+            try:
+                with open(os.path.join(self.path, "config" + EXTENSION), "r", encoding="utf-8") as conf:
+                    self._conf = eval(conf.read())
+            except OSError:
+                pass
+            self._loaded = True
