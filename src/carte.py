@@ -43,7 +43,7 @@ def maps_retriver(site: str):
             data = str(tmp).replace('false', 'False').replace('true', 'True').replace('null', 'None')
             maps = eval(data)
 
-            with open(os.path.join(directory, 'config.txt'), 'w') as file:
+            with open(os.path.join(directory, 'config' + EXTENSION), 'w') as file:
                 file.write(str(
                     {
                         "name": maps['name']
@@ -183,7 +183,7 @@ def load_map_from_id(id_: int, wid: int):
             'id': int,
             'lights': parse_lights_dict,
             'name': str,
-            'rainy': int
+            'rainy': float
         }
 
         for key in parsed.keys():

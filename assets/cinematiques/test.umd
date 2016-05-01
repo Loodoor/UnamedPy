@@ -1,0 +1,65 @@
+{
+    "frames_order": [
+        "ville",
+        "rue",
+        "maison",
+        "chambre"
+    ],
+    "musics_folder": "../assets/sons/",
+    "frames_folder": "../assets/cinematiques/premiere/",
+    "frames": {
+        "ville": {
+            "duration": 3,
+            "fadein": True,
+            "fadeout": False,
+            "image": "ville.png",
+            "music": None,
+            "text": {
+                "at_time": 1,
+                "end_at": 2.9,
+                "type": "plain",
+                "content": "Voici une petite ville (Bélouriskï)"
+            }
+        },
+        "rue": {
+            "duration": 4,
+            "fadein": True,
+            "fadeout": False,
+            "image": "rue.png",
+            "music": None,
+            "text": {
+                "at_time": 1,
+                "end_at": 3.9,
+                "type": "plain",
+                "content": "Voici une rue dans cette petite ville"
+            }
+        },
+        "maison": {
+            "duration": 5,
+            "fadein": True,
+            "fadeout": False,
+            "image": "maison.png",
+            "music": None,
+            "text": {
+                "at_time": 1,
+                "end_at": 3.9,
+                "type": "plain",
+                "content": "Voici une rue"
+            }
+        },
+        "chambre": {
+            "duration": 6,
+            "fadein": True,
+            "fadeout": True,
+            "image": "chambre.png",
+            "music": "06.wav",
+            "text": {
+                "at_time": 1,
+                "end_at": -1,
+                "type": "input",
+                "content": "Quel sera ton nom ?",
+                "store_in": "player name"
+            }
+        }
+    }
+}
