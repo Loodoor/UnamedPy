@@ -31,6 +31,9 @@ class GUIBulle:
     def update(self, dt: int=1):
         self.render()
 
+    def update_one_frame(self, ev: ree.Event):
+        self.update()
+
     def render(self):
         if self.show_bulle:
             self.ecran.blit(self.image, self.pos)
@@ -61,6 +64,11 @@ class GUIBulleWaiting(GUIBulle):
         self.create_text_renderers()
         self.done = False
 
+    def update_one_frame(self, ev: ree.Event):
+        if ev != (KEYDOWN, self.screenkey) and ev == KEYDOWN:
+            self.done = True
+        self.render()
+
     def update(self, dt: int=1):
         while not self.done:
             ev = ree.poll_event()
@@ -76,6 +84,16 @@ class GUIBulle2Choices(GUIBulleWaiting):
                  screenshotkey=K_F5):
         super().__init__(ecran, pos, texte, font, screenshotkey, show_bulle)
         self.ok = False
+
+    def is_ok(self):
+        return self.ok
+
+    def update_one_frame(self, ev: ree.Event):
+        if ev == (KEYUP, K_RETURN):
+            self.ok = True
+        if ev != (KEYUP, self.screenkey):
+            self.done = True
+        self.render()
 
     def update(self, dt: int=1):
         while not self.done:
@@ -122,6 +140,11 @@ class GUIBulleAsking(GUIBulleWaiting):
 
     def get_text(self):
         return self.text_box.get_text()
+
+    def update_one_frame(self, ev: ree.Event):
+        if ev != (KEYDOWN, self.screenkey) and ev == KEYDOWN:
+            self.text_box.event(ev)
+        self.render()
 
     def update(self, dt: int=1):
         while not self.done:
