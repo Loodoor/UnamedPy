@@ -62,6 +62,8 @@ class ChatManager:
     def event(self, e):
         if e == KEYDOWN and not e == (KEYDOWN, self.quit):
             self.text_entry.event(e)
+        elif e == QUIT:
+            exit(1)
 
     def new_message(self, msg: str):
         self.stack += [
