@@ -7,6 +7,7 @@
     ],
     "musics_folder": "../assets/sons/",
     "frames_folder": "../assets/cinematiques/premiere/",
+    "fade_duration": 0.3,
     "frames": {
         "ville": {
             "duration": 3,
