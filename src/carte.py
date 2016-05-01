@@ -650,12 +650,12 @@ class CartesManager:
 
 
 class CarteRenderer:
-    def __init__(self, ecran, carte_mgr: CartesManager, police: object):
+    def __init__(self, ecran: ree.surf, carte_mgr: CartesManager, police: ree.font):
         self.ecran = ecran
         self.carte_mgr = carte_mgr
         self.police = police
         self.path = os.path.join("..", "assets", "configuration", "worldmap" + EXTENSION)
-        self.map_desc = ""
+        self.map_desc = {}
         self.path_map_desc = os.path.join("..", "assets", "configuration", "worldmap_desc" + EXTENSION)
         self.carte_paths = ree.create_surface((MAP_RDR_SX, MAP_RDR_SY), ree.get_alpha_channel(), 32)
         self.carte_mgr = ree.rescale(ree.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")), (MAP_RDR_SX, MAP_RDR_SY))
