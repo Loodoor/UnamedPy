@@ -56,6 +56,7 @@ def run_bulle(kind: str, ecran: ree.surf, texte: str or list, font: ree.font, po
 
 
 Y_ADV_FALL = 0
+Y_FALL = 0
 
 
 class AttaquesTable:
@@ -144,6 +145,8 @@ class Combat:
         self.has_started = True
         global Y_ADV_FALL
         Y_ADV_FALL = 0
+        global Y_FALL
+        Y_FALL = 0
 
     def on_end(self):
         if not self.indexer.get_viewed(self.get_adversary().get_id()):
@@ -202,6 +205,8 @@ class Combat:
 
             if self.get_adversary().is_dead():
                 self._manage_adversary_death()
+            if self.get_my_creature().is_dead():
+                self._manage_my_death()
 
     def _gerer_etats(self):
         for crea in [self.get_my_creature(), self.get_adversary()]:
@@ -228,13 +233,35 @@ class Combat:
                       self.font)
             self.compteur_tour += 1
 
+    def _manage_my_death(self):
+        global Y_FALL
+        Y_FALL = 0
+        while Y_FALL < 50:
+            self.render()
+            ree.flip()
+        if "nuzlocke" not in CORE_SETTINGS:
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      self.get_my_creature().get_pseudo() + " est vaincu !", self.font)
+        else:
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      self.get_my_creature().get_pseudo() + " est mort !", self.font)
+            self.equipe.remove(self.get_my_creature())
+            del self.creature_joueur
+
+        self.is_running = False
+
     def _manage_adversary_death(self):
         global Y_ADV_FALL
+        Y_ADV_FALL = 0
         while Y_ADV_FALL < 50:
             self.render()
             ree.flip()
-        run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
-                  self.get_adversary().get_pseudo() + " est vaincu !", self.font)
+        if "nuzlocke" not in CORE_SETTINGS:
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      self.get_adversary().get_pseudo() + " est vaincu !", self.font)
+        else:
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      self.get_adversary().get_pseudo() + " est mort !", self.font)
 
         # gestion de l'xp
         level_up = self.get_my_creature().gagner_xp(self.get_adversary())
@@ -386,12 +413,18 @@ class Combat:
         self.ecran.blit(self._fond_socle_pokemon, (COMB_X_ME - (self._fond_socle_pokemon.get_width() - 150) // 2, COMB_Y_ME + (150 - self._fond_socle_pokemon.get_height())))
 
         # affichage des créatures
+        # adversaire
         global Y_ADV_FALL
         if self.get_adversary().is_dead() and Y_ADV_FALL < 50:
             Y_ADV_FALL += 0.25
         if Y_ADV_FALL < 50:
             self.ecran.blit(self.get_adversary().get_image(), (COMB_X_ADV, COMB_Y_ADV + Y_ADV_FALL))
-        self.ecran.blit(self.get_my_creature().get_image(), (COMB_X_ME, COMB_Y_ME))
+        # ma créature
+        global Y_FALL
+        if self.get_my_creature().is_dead() and Y_FALL < 50:
+            Y_FALL += 0.25
+        if Y_ADV_FALL < 50:
+            self.ecran.blit(self.get_my_creature().get_image(), (COMB_X_ME, COMB_Y_ME + Y_FALL))
 
         # affichage des barres de vie
         if not self.get_adversary().is_dead():

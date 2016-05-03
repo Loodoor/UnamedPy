@@ -34,6 +34,11 @@ class UEnum:
     def __str__(self):
         return "__dict__ : " + str(self.__dict__) + "\nself.dict_reverse : " + str(self.dict_reverse)
 
+    def __contains__(self, item):
+        if item in self.dict_reverse.keys():
+            return True
+        return False
+
 
 FEN_large = 640
 FEN_haut = 640
@@ -46,6 +51,10 @@ DEBUG_FEN_haut = 640
 VERSION = "0.0.3"
 
 GLOBAL_ERROR = -1
+
+CORE_SETTINGS = UEnumFactory(
+    "nuzlocke"
+).create()
 
 """
 -1 : GLOBAL_ERROR
@@ -60,7 +69,7 @@ GLOBAL_ERROR = -1
 -10 : TILE_GET_ERROR
 """
 
-temp = UEnumFactory(
+OBJETS_ID = UEnumFactory(
     "AntiPara",
     "AntiBrule",
     "AntiPoison",
@@ -81,9 +90,7 @@ temp = UEnumFactory(
     "NormalBall",
     "SuperiorBall",
     "UltraBall"
-)
-OBJETS_ID = temp.create()
-del temp
+).create()
 
 ID_STARTER = 0
 

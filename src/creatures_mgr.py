@@ -73,6 +73,19 @@ class Creature:
             self.__image.get_size(): self.__image
         }
 
+    def __eq__(self, other) -> bool:
+        if isinstance(other, type(self)):
+            if self is other:
+                return True
+            if self.get_pseudo() == other.get_pseudo() and self.get_def() == other.get_def() and \
+                            self.get_atk() == other.get_atk() and self.get_id() == other.get_id() and \
+                            self.get_niv() == other.get_niv() and self.get_attacks() == other.get_attacks() and \
+                            self.get_state() == other.get_state() and self.get_pps() == other.get_pps() and \
+                            self.get_pvs() == other.get_pvs() and self.get_type() == other.get_type() and \
+                            self.get_vit() == other.get_vit() and self.get_xp() == other.get_xp():
+                return True
+        return False
+
     def evolve_in(self, id_: int):
         self.specs[SPEC_ID] = id_
         self.__image = self.indexer.get_image_by_id(self.specs[SPEC_ID]) if not self.is_shiney() else \

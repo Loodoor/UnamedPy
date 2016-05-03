@@ -129,14 +129,25 @@ class EquipeManager:
         if self.pc.add_creature(self.creatures[which]):
             self.remove_creature(which)
 
-    def remove_creature(self, index: int):
+    def remove(self, entity: Creature) -> bool:
+        v = -1
+        for i, crea in enumerate(self.creatures):
+            if crea == entity:
+                v = i
+                break
+        if v != -1:
+            self.creatures.pop(v)
+            return True
+        return False
+
+    def remove_creature(self, index: int) -> Creature:
         return self.creatures.pop(index)
 
-    def get_creature(self, index: int):
+    def get_creature(self, index: int) -> Creature:
         return self.creatures[index]
 
-    def get_all(self):
+    def get_all(self) -> list:
         return self.creatures
 
-    def is_not_empty(self):
+    def is_not_empty(self) -> bool:
         return True if self.creatures else False
