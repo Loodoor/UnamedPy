@@ -650,15 +650,20 @@ class CartesManager:
 
 
 class CarteRenderer:
-    def __init__(self, ecran: ree.surf, carte_mgr: CartesManager, police: ree.font):
+    def __init__(self, ecran: ree.surf, police: ree.font):
         self.ecran = ecran
-        self.carte_mgr = carte_mgr
         self.police = police
         self.path = os.path.join("..", "assets", "configuration", "worldmap" + EXTENSION)
         self.map_desc = {}
         self.path_map_desc = os.path.join("..", "assets", "configuration", "worldmap_desc" + EXTENSION)
         self.carte_paths = ree.create_surface((MAP_RDR_SX, MAP_RDR_SY), ree.get_alpha_channel(), 32)
         self.carte_mgr = ree.rescale(ree.load_image(os.path.join("..", "assets", "aventure", "worldmap.png")), (MAP_RDR_SX, MAP_RDR_SY))
+        self._txts = {
+            "chemin": self.police.render("Chemin", POL_ANTIALISING, (10, 10, 10)),
+            "chenal": self.police.render("Chenal", POL_ANTIALISING, (10, 10, 10)),
+            "ville": self.police.render("Ville", POL_ANTIALISING, (10, 10, 10)),
+            "lieu": self.police.render("Lieu", POL_ANTIALISING, (10, 10, 10))
+        }
         self._scheme = []
         self._surfs = {}
         self._fond = None
@@ -673,13 +678,13 @@ class CarteRenderer:
             self.map_desc = eval(desc.read())
 
         self._surfs[self.map_desc['chemin']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[self.map_desc['chemin']['name']].fill((215, 185, 15))
+        self._surfs[self.map_desc['chemin']['name']].fill((255, 255, 255))
 
         self._surfs[self.map_desc['chenal']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[self.map_desc['chenal']['name']].fill((20, 215, 200))
+        self._surfs[self.map_desc['chenal']['name']].fill((25, 25, 215))
 
         self._surfs[self.map_desc['lieux']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[self.map_desc['lieux']['name']].fill((50, 190, 20))
+        self._surfs[self.map_desc['lieux']['name']].fill((0, 0, 0))
 
         self._surfs[self.map_desc['ville']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
         self._surfs[self.map_desc['ville']['name']].fill((215, 25, 25))
@@ -711,8 +716,8 @@ class CarteRenderer:
             desc = self.police.render(obj['desc'], POL_ANTIALISING, (0, 0, 0))
             self._fond = ree.create_surface(
                 (
-                    max(desc.get_width(), name.get_width()) + MAP_RDR_MARGE,
-                    max(desc.get_height(), name.get_height()) + MAP_RDR_MARGE
+                    max(desc.get_width(), name.get_width()) + MAP_RDR_MARGE * 2,
+                    name.get_height() + desc.get_height() + MAP_RDR_MARGE * 2 + 8
                 )
             )
             self._fond.fill(0)
@@ -728,12 +733,26 @@ class CarteRenderer:
         self.ecran.blit(self.carte_mgr, (MAP_RDR_POSX, MAP_RDR_POSY))
         self.ecran.blit(self.carte_paths, (MAP_RDR_POSX, MAP_RDR_POSY))
 
+        # légende
+        # chemins
+        self.ecran.blit(self._txts["chemin"], (MAP_RDR_LEGENDE_X + MAP_RDR_CASE_SIZE + 4, MAP_RDR_LEGENDE_Y))
+        self.ecran.blit(self._surfs[self.map_desc["chemin"]["name"]], (MAP_RDR_LEGENDE_X, MAP_RDR_LEGENDE_Y))
+        # chenaux
+        self.ecran.blit(self._txts["chenal"], (MAP_RDR_LEGENDE_X + MAP_RDR_CASE_SIZE + 4, MAP_RDR_LEGENDE_Y + MAP_RDR_LEGENDE_MARGEY))
+        self.ecran.blit(self._surfs[self.map_desc["chenal"]["name"]], (MAP_RDR_LEGENDE_X, MAP_RDR_LEGENDE_Y + MAP_RDR_LEGENDE_MARGEY))
+        # lieux
+        self.ecran.blit(self._txts["lieu"], (MAP_RDR_LEGENDE_X + MAP_RDR_CASE_SIZE + 4, MAP_RDR_LEGENDE_Y + MAP_RDR_LEGENDE_MARGEY * 2))
+        self.ecran.blit(self._surfs[self.map_desc["lieux"]["name"]], (MAP_RDR_LEGENDE_X, MAP_RDR_LEGENDE_Y + MAP_RDR_LEGENDE_MARGEY * 2))
+        # villes
+        self.ecran.blit(self._txts["ville"], (MAP_RDR_LEGENDE_X + MAP_RDR_CASE_SIZE + 4, MAP_RDR_LEGENDE_Y + MAP_RDR_LEGENDE_MARGEY * 3))
+        self.ecran.blit(self._surfs[self.map_desc["ville"]["name"]], (MAP_RDR_LEGENDE_X, MAP_RDR_LEGENDE_Y + MAP_RDR_LEGENDE_MARGEY * 3))
+
         if self.selected:
             if self._fond:
-                self.ecran.blit(self._fond, (MAP_RDR_POSX_DESC - MAP_RDR_MARGE // 2, MAP_RDR_POSY_DESC - MAP_RDR_MARGE // 2))
+                self.ecran.blit(self._fond, (MAP_RDR_POSX_DESC, MAP_RDR_POSY_DESC))
 
             obj = self.map_desc['descriptions'][self._scheme[self.selected[1]][self.selected[0]]]
             name = self.police.render(obj['name'], POL_ANTIALISING, (255, 255, 255))
-            self.ecran.blit(name, (MAP_RDR_POSX_DESC, MAP_RDR_POSY_DESC))
+            self.ecran.blit(name, (MAP_RDR_POSX_DESC + MAP_RDR_MARGE, MAP_RDR_POSY_DESC + MAP_RDR_MARGE))
             desc = self.police.render(obj['desc'], POL_ANTIALISING, (255, 255, 255))
-            self.ecran.blit(desc, (MAP_RDR_POSX_DESC, MAP_RDR_POSY_DESC + 20))
+            self.ecran.blit(desc, (MAP_RDR_POSX_DESC + MAP_RDR_MARGE, MAP_RDR_POSY_DESC + MAP_RDR_MARGE + 25))

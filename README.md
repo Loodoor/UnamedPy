@@ -20,6 +20,16 @@ Tiles d'intérieur faites par Slash
 
 World Map faite par Sansonic
 
+Noms de ces 3 villes :
+
+- Piderflor
+
+- Muth'ira
+
+- Silancard
+
+Trouvés par ShootingStarD
+
 (Les différentes conversations que j'ai eu avec ces honorables graphistes (les messages les plus récents sont les premiers)) :
 
 loodoor said the following:  

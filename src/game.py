@@ -67,7 +67,7 @@ class Game:
         self.network_ev_listener = NetworkEventsListener(self.sock, self.params)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
                                                  self.adventure.get_pseudo(), RANG_NUL)
-        self.mini_map = carte.CarteRenderer(self.ecran, self.carte_mgr, self.police_normale)
+        self.mini_map = carte.CarteRenderer(self.ecran, self.police_normale)
         self.attaques_table = atk_sys.AttaquesTable()
         self.parametres = ParametresManager()
         self.musics_player = music_player.MusicPlayer()
