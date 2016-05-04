@@ -48,12 +48,12 @@ DEBUG_LEVEL = 3
 DEBUG_FEN_large = 840
 DEBUG_FEN_haut = 640
 
-VERSION = "0.0.3"
+VERSION = "0.1"
 
 GLOBAL_ERROR = -1
 
 CORE_SETTINGS = UEnumFactory(
-    "nuzlocke"
+    # "nuzlocke"
 ).create()
 
 """

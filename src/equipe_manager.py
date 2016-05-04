@@ -3,10 +3,12 @@
 from creatures_mgr import Creature
 import pickle
 from constantes import *
+from exceptions import NuzlockeError
 
 
 class EquipeManager:
     def __init__(self, ecran, police, indexer, render_manager, size: int=6):
+        self.death_counter = 0 if "nuzlocke" in CORE_SETTINGS else None
         self.size = size
         self.ecran = ecran
         self.police = police
@@ -23,6 +25,12 @@ class EquipeManager:
         self._btn_pc = ree.load_image(os.path.join("..", "assets", "gui", "fd_bouton_pc.png"))
         self._btn_to_pc = ree.load_image(os.path.join("..", "assets", "gui", "fd_bouton_to_pc.png"))
         self._fond_spec = ree.load_image(os.path.join("..", "assets", "gui", "fd_spec_creatures.png"))
+
+    def increment_death_counter(self):
+        try:
+            self.death_counter += 1
+        except TypeError:
+            raise NuzlockeError()
 
     def get_selected_creature(self) -> Creature:
         if self.selected_crea != -1:

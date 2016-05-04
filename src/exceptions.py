@@ -79,3 +79,8 @@ class ClassNonChargee(Exception):
 class CinematiqueIntrouvable(Exception):
     def __init__(self, *args):
         super().__init__(*args)
+
+
+class NuzlockeError(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)

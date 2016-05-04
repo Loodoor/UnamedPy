@@ -245,6 +245,7 @@ class Combat:
         else:
             run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
                       self.get_my_creature().get_pseudo() + " est mort !", self.font)
+            self.equipe.increment_death_counter()
             self.equipe.remove(self.get_my_creature())
             del self.creature_joueur
 
