@@ -240,8 +240,7 @@ class Personnage:
         if DEBUG_LEVEL >= 1:
             ree.draw_rect(self.ecran, self.create_hitbox_parole(*self.pos.pos), (255, 0, 0), width=2)
             ree.draw_rect(self.ecran, (self.pos.x, self.pos.y, PERSO_SIZE_X, PERSO_SIZE_Y), (0, 0, 255))
-            # for tile in self.carte_mgr.get_tiles_from_rect(self.pos.x + self.carte_mgr.get_of1(), self.pos.y + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y):
-            #     ree.draw_rect(self.ecran, (tile[0] * TILE_SIZE - self.carte_mgr.get_of1(), tile[1] * TILE_SIZE - self.carte_mgr.get_of2(), tile[2], tile[3]), (0, 255, 0))
+            ree.draw_rect(self.ecran, (self.pos.x - self.carte_mgr.get_of1(), self.pos.y * TILE_SIZE - self.carte_mgr.get_of2(), TILE_SIZE, TILE_SIZE), (0, 255, 0))
         self.ecran.blit(self.perso, self.pos.pos)
 
     def get_pos(self) -> tuple:
@@ -251,7 +250,7 @@ class Personnage:
         return self.pos.x - self.carte_mgr.get_of1(), self.pos.y - self.carte_mgr.get_of2()
 
     def get_pos_in_tiles(self) -> tuple:
-        return self.pos.tile
+        return self.pos.tile.x - self.carte_mgr.get_of1() // TILE_SIZE, self.pos.tile.y - self.carte_mgr.get_of2() // TILE_SIZE
 
     def load(self):
         if os.path.exists(self.path):

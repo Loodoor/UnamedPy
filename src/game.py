@@ -232,7 +232,7 @@ class Game:
             self._manage_object_action()
 
     def process_events_carte(self, event, dt: int=1):
-        if event == (KEYDOWN, self.controles[MENU]):
+        if event == (KEYUP, self.controles[MENU]):
             self.renderer_manager.invert_renderer()
         if event == MOUSEBUTTONUP:
             xp, yp = event.pos
@@ -652,7 +652,7 @@ class Game:
                                  "Offsets : {}".format([float("%4.3f" % i) for i in self.carte_mgr.get_ofs()]),
                                  "- - Personnage - -",
                                  "Direction: {}".format(self.personnage.get_dir()),
-                                 "Position: {}".format(self.personnage.get_pos()),
+                                 "Position: {}".format(self.personnage.get_real_pos()),
                                  "Position (cases): {}".format(self.personnage.get_pos_in_tiles()),
                                  "DivDt : {}".format(self.personnage.get_speed_diviseur()),
                                  "- - Réseau - -",

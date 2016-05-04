@@ -54,7 +54,7 @@ class ComputerManager:
             self.change_renderer()
         if FCREA_PASSE_CREA_TO__X <= xp <= FCREA_PASSE_CREA_TO__X + FCREA_PASSE_CREA_TO__SX and \
                 FCREA_PASSE_CREA_TO__Y <= yp <= FCREA_PASSE_CREA_TO__Y + FCREA_PASSE_CREA_TO__SY:
-            if self.selected_crea != -1:
+            if 0 <= self.selected_crea < len(self.storage):
                 self.move_creature_to_equipe(self.selected_crea)
         if FCREA_X <= xp <= FCREA_X + FCREA_SIZE_X_CASE and FCREA_Y + FCREA_IMAGE_XY_MARGE <= yp <= \
                 FCREA_Y + FCREA_IMAGE_XY_MARGE + FCREA_SIZE_Y_CASE * len(self.storage) + FCREA_MARGE_Y * \
@@ -124,7 +124,7 @@ class ComputerManager:
         return self.storage
 
     def get_selected_creature(self):
-        if self.selected_crea != -1:
+        if 0 <= self.selected_crea < len(self.storage):
             return self.storage[self.selected_crea]
         raise ValueError("Impossible d'obtenir la créature demandée")
 

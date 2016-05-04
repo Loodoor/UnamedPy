@@ -33,7 +33,7 @@ class EquipeManager:
             raise NuzlockeError()
 
     def get_selected_creature(self) -> Creature:
-        if self.selected_crea != -1:
+        if 0 <= self.selected_crea < len(self.creatures):
             return self.creatures[self.selected_crea]
         return None
 
@@ -112,7 +112,7 @@ class EquipeManager:
             self.change_renderer()
         if FCREA_PASSE_CREA_TO__X <= xp <= FCREA_PASSE_CREA_TO__X + FCREA_PASSE_CREA_TO__SX and \
                 FCREA_PASSE_CREA_TO__Y <= yp <= FCREA_PASSE_CREA_TO__Y + FCREA_PASSE_CREA_TO__SY:
-            if self.selected_crea != -1:
+            if 0 <= self.selected_crea < len(self.creatures):
                 self.move_creature_to_pc(self.selected_crea)
         if FCREA_X <= xp <= FCREA_X + FCREA_SIZE_X_CASE and FCREA_Y + FCREA_IMAGE_XY_MARGE <= yp <= \
                 FCREA_Y + FCREA_IMAGE_XY_MARGE + FCREA_SIZE_Y_CASE * len(self.creatures) + FCREA_MARGE_Y * \
