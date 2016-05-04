@@ -188,14 +188,15 @@ class Fading:
         self.duration = int(duration * 1000)
         self._time = 0
         self.ecran = ecran
-        self.modifier = 255 / self.duration
+        self.modifier = 255 / self.duration * 10
         self._surfaces = []
         self._count = 0
         self._playing = False
         self._load()
+        self._diviseur = self.duration / len(self._surfaces) * 10
 
     def _load(self):
-        for i in range(self.duration):
+        for i in range(self.duration // 10):
             surf = ree.create_surface((FEN_large, FEN_haut), ree.get_alpha_channel(), 32)
             surf.convert_alpha()
             surf.fill((0, 0, 0, int(i * self.modifier)))
@@ -217,16 +218,20 @@ class Fading:
         self._time = 0
         self._playing = False
 
+    def start(self):
+        self._playing = True
+
     def render(self):
         self.ecran.blit(self._surfaces[int(self._count)], (0, 0))
-        self._count += self.modifier
+        if self._time >= self._count * self._diviseur:
+            self._count += self.modifier
         if self._count >= len(self._surfaces):
             self._count = len(self._surfaces) - 1
 
     def update(self, dt: float):
-        self._playing = True
         self._time += dt
         if self._time >= self.duration:
+            self._playing = False
             return
         self.render()
 
@@ -246,7 +251,6 @@ class CinematiqueCreator:
         self._time = 0
         self._playing_music = False
         self._displaying_text = False
-        self._fading = False
         self._text = None
         self._fade = None
 
@@ -275,12 +279,12 @@ class CinematiqueCreator:
         self.ecran.blit(self._images[self._conf["frames"][self._current]["image"]], self._conf["frames"][self._current]["position"])
 
         # fadeout
-        if self._time >= self._conf["frames"][self._current].get("duration", 0) * 1000 - self._conf["fade_duration"] * 1000:
-            if self._fade.current() == "in":
+        if self._time >= self._conf["frames"][self._current].get("duration", 99999) * 1000 - self._conf["fade_duration"] * 1000:
+            if self._fade.current() == "in" and not self._fade.playing():
                 self._fade.reverse()
             if not self._fade.playing():
                 self._fade.reinit()
-            self._fading = True
+                self._fade.start()
         # début affichage texte
         if self._time >= self._conf["frames"][self._current]["text"].get("at_time", 0) * 1000 and not self._displaying_text:
             self._displaying_text = True
@@ -300,10 +304,8 @@ class CinematiqueCreator:
 
         if self._displaying_text and self._text:
             self._text.update_one_frame(ev)
-        if self._fading and self._fade:
+        if self._fade.playing():
             self._fade.update(dt)
-        if not self._fade.playing():
-            self._fading = False
 
     def _next(self):
         self._time = 0
@@ -316,16 +318,16 @@ class CinematiqueCreator:
             err = True
             self._running = False
 
+        # continuation de la musique
         if self._playing_music and not self._conf["frames"][self._current].get("last_music_continue_here", False):
             self._sounds[self._conf["frames"][last]["music"]].stop()
-
         # fadein
         if self._conf["frames"][self._current].get("fadein", False) and not err:
-            if self._fade.current() == "out":
+            if self._fade.current() == "out" and not self._fade.playing():
                 self._fade.reverse()
             if not self._fade.playing():
                 self._fade.reinit()
-            self._fading = True
+                self._fade.start()
         # music
         if self._conf["frames"][self._current].get("music", False) and not err:
             self._playing_music = True
@@ -333,6 +335,8 @@ class CinematiqueCreator:
 
     def play(self):
         self._running = True
+
+        debug.println(self._time)
 
         # on a besoin d'une configuration pour faire tourner la cinématique
         while self._running and self._conf:
