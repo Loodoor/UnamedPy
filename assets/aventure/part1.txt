@@ -1,0 +1,4 @@
+@part1
+:image prof:
+>D'ailleurs ... *it's ARPG time !* Quel est ton nom ? ?>pseudo
+@part1bis

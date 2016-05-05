@@ -62,7 +62,7 @@ Notes :  - régions fictives souvent évoquées dans l'histoire : - Tanjoh
 # Sur l'île - Cinématique
     [Prof, notre future première créature, nous]
     -> Maintenant que nous avons fait connaissance, laisse moi détailler un peu plus nos différents jobs.
-    -> Tu es chargé d'apparter cette île de long en large, de travers en pas-travers, bref d'aller partout. Et ce dans le but de récolter des données sur l'environnement et les créatures y vivant.
+    -> Tu es chargé d'arpenter cette île de long en large, de travers en pas-travers, bref d'aller partout. Et ce dans le but de récolter des données sur l'environnement et les créatures y vivant.
     -> Grâce à toutes ces données, je pourrais améliorer ta carte (très sommaire pour le moment, même les habitants ont peur d'explorer l'île à cause des créatures).
     -> Tu vas sûrement rencontrer des créatures sauvages, il va te falloir du courage (ben oui, on est dans un ARPG quand même ! Si t'as pas les boules, je serais pas contente :( ) !
     ... Pardon ? Je comprends plus trop là ... C'est toi, Mirabel, qui me parle là ? Où c'est le zozo qu'a fait ce jeu ?
