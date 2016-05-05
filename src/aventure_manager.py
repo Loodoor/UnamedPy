@@ -124,6 +124,16 @@ class Adventure:
             ree.flip()
         del g
 
+    def determine_sexe(self):
+        if self.values['garcon'] == 'oui' and self.values['sur_choix_sex'] == 'oui':
+            return 'male'
+        if self.values['garcon'] == 'oui' and self.values['sur_choix_sex'] != 'oui':
+            return 'female'
+        if self.values['garcon'] != 'oui' and self.values['sur_choix_sex'] == 'oui':
+            return 'female'
+        if self.values['garcon'] != 'oui' and self.values['sur_choix_sex'] != 'oui':
+            return 'male'
+
     def next(self):
         if self.loaded:
             try:

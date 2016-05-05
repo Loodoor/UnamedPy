@@ -621,12 +621,12 @@ class Game:
             self.ecran.blit(texte, (5, 5))
 
     def start(self):
-        if self.adventure.get_progress() == 1:
-            # on vient de commencer
-            self.equipe_mgr.add_creature(
-                Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))
-            self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
-            self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poids")
+        # if self.adventure.get_progress() == 1:
+        #     # on vient de commencer
+        #     self.equipe_mgr.add_creature(
+        #         Creature(ID_STARTER, self.indexeur.get_type_of(0), indexer=self.indexeur, alea_niv=0))
+        #     self.equipe_mgr.get_creature(0).set_pseudo(self.adventure.get_values()['first creature name'])
+        #     self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poids")
         self.personnage.set_skin_path(self.adventure.get_values()['sprite'])
 
         # TEST
