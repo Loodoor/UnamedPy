@@ -24,17 +24,21 @@ class ChatManager:
 
     @staticmethod
     def is_cheat_code(chaine: str) -> bool:
-        if re.match(r'!(\d+|\w+)', chaine):
+        if re.match(r'^!(\d+|\w+) *.*', chaine):
             return True
         return False
 
     def _manage_cheat_code(self, code: str):
-        code = code[1:]
+        try:
+            code, args = code[1:].split(' ')
+        except ValueError:
+            code = code[1:]
+            args = []
         if code in CHEATS_CODES.keys():
             if CHEATS_CODES[code]['controler'] in self._controlers.keys():
                 if hasattr(self._controlers[CHEATS_CODES[code]['controler']], CHEATS_CODES[code]['methode']):
                     m = getattr(self._controlers[CHEATS_CODES[code]['controler']], CHEATS_CODES[code]['methode'])
-                    m(*CHEATS_CODES[code].get("args", []))
+                    m(*args)
                 else:
                     raise MethodeManquante("La méthode", CHEATS_CODES[code]['methode'], "du controler", CHEATS_CODES[code]['controler'], "est manquante")
             else:
