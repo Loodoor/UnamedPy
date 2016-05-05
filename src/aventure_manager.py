@@ -14,13 +14,17 @@ class Adventure:
         self.ecran = ecran
         self.font = font
         self.path = os.path.join("..", "saves", "adventure" + EXTENSION)
-        self.beginning_text = []
+        self.textes = {}
         self.loaded = False
         self.values = {}
+        self._actions = []
         self.villes_vues = []
-        self._first_creature_image = ree.rescale(ree.load_image(os.path.join("..", "assets", "creatures", "1 base.png")), (250, 250))
+
         self._image_prof = ree.load_image(os.path.join("..", "assets", "aventure", "professeur.png"))
+        self._image_ombre_prof = ree.load_image(os.path.join("..", "assets", "aventure", "professeur_ombre.png"))
+        self._image_conduc = ree.load_image(os.path.join("..", "assets", "aventure", "conducteur_avion.png"))
         self._world_map = ree.load_image(os.path.join("..", "assets", "aventure", "worldmap.png"))
+
         self.fond = ree.load_image(os.path.join('..', 'assets', 'gui', 'fd_aventure.png'))
 
     def get_progress(self):
@@ -36,7 +40,7 @@ class Adventure:
         name_of_image = ""
         g = GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "", self.font)
         i = 0
-        for texte in self.beginning_text:
+        for texte in self.textes['part2']:
             self.ecran.blit(self.fond, (0, 0))
 
             if texte[0] == INPUT_CHAR:
@@ -46,6 +50,8 @@ class Adventure:
             elif texte[0] == IMAGE_SHOW_CHAR:
                 name_of_image = texte.replace(":", "")
                 continue
+            elif texte[0] == ME_SPEAKING_CHAR:
+                g.set_color('green')
             else:
                 ask_smth = False
                 if '{' not in texte and '}' not in texte:
@@ -53,21 +59,25 @@ class Adventure:
                 else:
                     g.set_text(texte[:-1].format(pseudo=self.user_pseudo))
 
-            if "creature image" in name_of_image:
-                self.ecran.blit(self._first_creature_image, (
-                    (FEN_large - self._first_creature_image.get_width()) // 2,
-                    (FEN_haut - self._first_creature_image.get_height()) // 2
-                ))
+            if texte[0] != ME_SPEAKING_CHAR:
+                g.reinit_color()
+
             if "image prof" in name_of_image:
                 self.ecran.blit(self._image_prof, (
                     (FEN_large - self._image_prof.get_width()) // 2,
                     (FEN_haut - self._image_prof.get_height() - BULLE_SY) // 2
                 ))
-            if "worldmap" in name_of_image:
-                self.ecran.blit(self._world_map, (
-                    (FEN_large - self._world_map.get_width()) // 2,
-                    (FEN_haut - self._world_map.get_height()) // 2
+            if "image ombre prof" in name_of_image:
+                self.ecran.blit(self._image_ombre_prof, (
+                    (FEN_large - self._image_ombre_prof.get_width()) // 2,
+                    (FEN_haut - self._image_ombre_prof.get_height() - BULLE_SY) // 2
                 ))
+            if "conducteur avion" in name_of_image:
+                self.ecran.blit(self._image_conduc, (
+                    (FEN_large - self._image_conduc.get_width()) // 2,
+                    (FEN_haut - self._image_conduc.get_height() - BULLE_SY) // 2
+                ))
+
             g.update()
 
             if ask_smth:
@@ -87,10 +97,15 @@ class Adventure:
             ree.flip()
         del g
 
+    def _part2(self):
+        pass
+
     def next(self):
         if self.loaded:
-            if not self.progress:
-                self._begin()
+            try:
+                self._actions[self.progress]()
+            except IndexError:
+                debug.println("L'aventure semble terminée, impossible d'avencer plus")
             self.progress += 1
         else:
             debug.println("Merci de charger l'AdventureManager avant d'utiliser cette méthode")
@@ -116,14 +131,20 @@ class Adventure:
         return self.values
 
     def load(self):
+        self._actions.append(self._begin)
+        self._actions.append(self._part2)
+
         if os.path.exists(self.path):
             with open(self.path, "rb") as reader:
                 tmp = Unpickler(reader).load()
                 self.user_pseudo = tmp['pseudo']
                 self.progress = tmp['progress']
+
+        files = ['beginning.txt', 'part2.txt']
         try:
-            with open(os.path.join("..", "assets", "aventure", "beginning_text.txt"), "r", encoding="utf-8") as begin_read:
-                self.beginning_text = begin_read.readlines()
+            for name in files:
+                with open(os.path.join("..", "assets", "aventure", name), "r", encoding="utf-8") as file:
+                    self.textes[name.split('.')[0]] = file.readlines()
         except OSError:
             debug.println("Un fichier de sauvegarde n'existe pas. Impossible de continuer.")
             sys.exit(0)
