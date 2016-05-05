@@ -4,6 +4,7 @@ from constantes import *
 from textentry import TextBox
 import time
 from glob import glob
+import debug
 
 
 class GUIBulle:
@@ -27,6 +28,15 @@ class GUIBulle:
             self.txt_renderer = self.font.render(self.texte, POL_ANTIALISING, (10, 10, 10))
         else:
             self.txt_renderer = [self.font.render(t, POL_ANTIALISING, (10, 10, 10)) for t in self.texte]
+
+    def reinit_color(self):
+        self.image = ree.load_image(os.path.join("..", "assets", "gui", "bulle.png"))
+
+    def set_color(self, color: str):
+        try:
+            self.image = ree.load_image(os.path.join("..", "assets", "gui", "bulle_{}.png".format(color)))
+        except OSError:
+            debug.println("La couleur demandée n'est pas trouvable pour la gui bulle ('{}')".format(color))
 
     def update(self, dt: int=1):
         self.render()
