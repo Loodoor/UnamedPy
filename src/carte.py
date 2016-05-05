@@ -666,8 +666,21 @@ class CarteRenderer:
         }
         self._scheme = []
         self._surfs = {}
+        self.transp = 128
         self._fond = None
         self.selected = None
+
+    def increase_transparency(self):
+        self.transp += 16
+        if self.transp >= 256:
+            self.transp = 0
+        self.load()
+
+    def decrease_transparency(self):
+        self.transp -= 16
+        if self.transp < 0:
+            self.transp = 255
+        self.load()
 
     def load(self):
         with open(self.path, encoding="utf-8") as code:
@@ -677,17 +690,21 @@ class CarteRenderer:
         with open(self.path_map_desc, encoding="utf-8") as desc:
             self.map_desc = eval(desc.read())
 
-        self._surfs[self.map_desc['chemin']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[self.map_desc['chemin']['name']].fill((255, 255, 255))
+        self._surfs[self.map_desc['chemin']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE), ree.get_alpha_channel(), 32)
+        self._surfs[self.map_desc['chemin']['name']].convert_alpha()
+        self._surfs[self.map_desc['chemin']['name']].fill((255, 255, 255, self.transp))
 
-        self._surfs[self.map_desc['chenal']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[self.map_desc['chenal']['name']].fill((25, 25, 215))
+        self._surfs[self.map_desc['chenal']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE), ree.get_alpha_channel(), 32)
+        self._surfs[self.map_desc['chenal']['name']].convert_alpha()
+        self._surfs[self.map_desc['chenal']['name']].fill((25, 25, 215, self.transp))
 
-        self._surfs[self.map_desc['lieux']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[self.map_desc['lieux']['name']].fill((0, 0, 0))
+        self._surfs[self.map_desc['lieux']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE), ree.get_alpha_channel(), 32)
+        self._surfs[self.map_desc['lieux']['name']].convert_alpha()
+        self._surfs[self.map_desc['lieux']['name']].fill((0, 0, 0, self.transp))
 
-        self._surfs[self.map_desc['ville']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE))
-        self._surfs[self.map_desc['ville']['name']].fill((215, 25, 25))
+        self._surfs[self.map_desc['ville']['name']] = ree.create_surface((MAP_RDR_CASE_SIZE, MAP_RDR_CASE_SIZE), ree.get_alpha_channel(), 32)
+        self._surfs[self.map_desc['ville']['name']].convert_alpha()
+        self._surfs[self.map_desc['ville']['name']].fill((215, 25, 25, self.transp))
 
         for y, line in enumerate(self._scheme):
             for x, case in enumerate(line):

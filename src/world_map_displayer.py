@@ -24,6 +24,10 @@ while True:
         break
     if ev == ree.MOUSEBUTTONDOWN:
         m.clic(*ev.pos)
+    if ev == (MOUSEBUTTONDOWN, 5):
+        m.increase_transparency()
+    if ev == (MOUSEBUTTONDOWN, 4):
+        m.decrease_transparency()
     if ev == ree.KEYUP:
         m = CarteRenderer(w, ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE))
         m.load()

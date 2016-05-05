@@ -132,6 +132,17 @@ class Game:
         self.network_ev_listener.add_controler('adventure', self.adventure)
         yield 1
 
+        self.chat_mgr.add_controler("perso", self.personnage)
+        yield 1
+        self.chat_mgr.add_controler("adventure", self.adventure)
+        yield 1
+        self.chat_mgr.add_controler("equipe", self.equipe_mgr)
+        yield 1
+        self.chat_mgr.add_controler("computer", self.pc_mgr)
+        yield 1
+        self.chat_mgr.add_controler("music", self.musics_player)
+        yield 1
+
         self.carte_mgr.add_perso(self.personnage)
         yield 1
 
@@ -237,6 +248,10 @@ class Game:
         if event == MOUSEBUTTONUP:
             xp, yp = event.pos
             self.mini_map.clic(xp, yp)
+        if event == (MOUSEBUTTONDOWN, 5):
+            self.mini_map.increase_transparency()
+        if event == (MOUSEBUTTONDOWN, 4):
+            self.mini_map.decrease_transparency()
 
         # joystick
         if self.joystick:
