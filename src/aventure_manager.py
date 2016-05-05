@@ -127,8 +127,8 @@ class Adventure:
         return self.values
 
     def load(self):
-        self._actions.append("beginning")
-        self._actions.append("part2")
+        with open(os.path.join("..", "assets", "aventure", "scenes.txt")) as scenesrd:
+            self._actions = eval(scenesrd)
 
         if os.path.exists(self.path):
             with open(self.path, "rb") as reader:
