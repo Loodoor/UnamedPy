@@ -650,9 +650,10 @@ class CartesManager:
 
 
 class CarteRenderer:
-    def __init__(self, ecran: ree.surf, police: ree.font):
+    def __init__(self, ecran: ree.surf, police: ree.font, adventure):
         self.ecran = ecran
         self.police = police
+        self.adventure = adventure
         self.path = os.path.join("..", "assets", "configuration", "worldmap" + EXTENSION)
         self.map_desc = {}
         self.path_map_desc = os.path.join("..", "assets", "configuration", "worldmap_desc" + EXTENSION)
@@ -731,8 +732,12 @@ class CarteRenderer:
                 MAP_RDR_POSY <= y <= MAP_RDR_POSY + self.carte_paths.get_height() and \
                 self._scheme[self.selected[1]][self.selected[0]] != MAP_RDR_VIDE:
             obj = self.map_desc['descriptions'][self._scheme[self.selected[1]][self.selected[0]]]
-            name = self.police.render(obj['name'], POL_ANTIALISING, (0, 0, 0))
-            desc = self.police.render(obj['desc'], POL_ANTIALISING, (0, 0, 0))
+            if obj['name'] in self.adventure.villes_vues:
+                name = self.police.render(obj['name'], POL_ANTIALISING, (0, 0, 0))
+                desc = self.police.render(obj['desc'], POL_ANTIALISING, (0, 0, 0))
+            else:
+                name = self.police.render("???", POL_ANTIALISING, (0, 0, 0))
+                desc = name
             self._fond = ree.create_surface(
                 (
                     max(desc.get_width(), name.get_width()) + MAP_RDR_MARGE * 2,
@@ -781,7 +786,11 @@ class CarteRenderer:
                 self.ecran.blit(self._fond, (MAP_RDR_POSX_DESC, MAP_RDR_POSY_DESC))
 
             obj = self.map_desc['descriptions'][self._scheme[self.selected[1]][self.selected[0]]]
-            name = self.police.render(obj['name'], POL_ANTIALISING, (255, 255, 255))
+            if obj['name'] in self.adventure.villes_vues:
+                name = self.police.render(obj['name'], POL_ANTIALISING, (255, 255, 255))
+                desc = self.police.render(obj['desc'], POL_ANTIALISING, (255, 255, 255))
+            else:
+                name = self.police.render("???", POL_ANTIALISING, (255, 255, 255))
+                desc = self.police.render("???", POL_ANTIALISING, (255, 255, 255))
             self.ecran.blit(name, (MAP_RDR_POSX_DESC + MAP_RDR_MARGE, MAP_RDR_POSY_DESC + MAP_RDR_MARGE))
-            desc = self.police.render(obj['desc'], POL_ANTIALISING, (255, 255, 255))
             self.ecran.blit(desc, (MAP_RDR_POSX_DESC + MAP_RDR_MARGE, MAP_RDR_POSY_DESC + MAP_RDR_MARGE + 25))

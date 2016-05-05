@@ -17,6 +17,7 @@ class Adventure:
         self.beginning_text = []
         self.loaded = False
         self.values = {}
+        self.villes_vues = []
         self._first_creature_image = ree.rescale(ree.load_image(os.path.join("..", "assets", "creatures", "1 base.png")), (250, 250))
         self._image_prof = ree.load_image(os.path.join("..", "assets", "aventure", "professeur.png"))
         self._world_map = ree.load_image(os.path.join("..", "assets", "aventure", "worldmap.png"))
