@@ -20,21 +20,22 @@
         "r",
         "s",
         "t",
-        "u"
+        "u",
+        "v"
     ],
     "musics_folder": "../assets/sons/",
     "frames_folder": "../assets/cinematiques/part2bis/",
     "fade_duration": 1,
     "frames": {
         "a": {
-            "duration": 5,
-            "image": ".png",
+            "duration": 4,
+            "image": "professeur.png",
             "position": (0, 0),
             "music": "02.wav,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 4,
                 "type": "plain",
                 "content": "Je pense avoir bien tout dit."
             }
@@ -46,20 +47,20 @@
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 4,
                 "type": "plain",
                 "content": "Ah ah ! Je l'avais vu venir en plus, mais comme tu m'écoutais pas ... tu vas le regretter :D !"
             }
         },
         "c": {
-            "duration": 5,
-            "image": ".png",
+            "duration": 3,
+            "image": "creature2.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
+                "at_time": 0,
                 "end_at": 2.5,
                 "type": "plain",
                 "color": "green",
@@ -67,27 +68,27 @@
             }
         },
         "d": {
-            "duration": 5,
-            "image": ".png",
+            "duration": 4,
+            "image": "professeur.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 3,
                 "type": "plain",
                 "content": "Oignon (notez qu'on peut dire ognon aussi xP)"
             }
         },
         "e": {
-            "duration": 5,
-            "image": ".png",
+            "duration": 4,
+            "image": "ombre.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 3,
                 "type": "plain",
                 "color": "green",
                 "content": "S'pas drôle, elle m'a blessée"
@@ -95,52 +96,52 @@
         },
         "f": {
             "duration": 5,
-            "image": ".png",
+            "image": "professeur.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 4,
                 "type": "plain",
                 "content": "Tiens, utilise vite ce capturateur-ultra-sonic-boom-très-cool !"
             }
         },
         "g": {
-            "duration": 5,
-            "image": ".png",
+            "duration": 4,
+            "image": "ombre.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 3,
                 "type": "plain",
                 "color": "green",
                 "content": "La baballe quoi"
             }
         },
         "h": {
-            "duration": 5,
-            "image": ".png",
+            "duration": 4,
+            "image": "professeur_colere.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 3,
                 "type": "plain",
                 "content": "Tais toi et obéis"
             }
         },
         "i": {
-            "duration": 2,
-            "image": ".png",
+            "duration": 3,
+            "image": "ombre.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
+                "at_time": 0,
                 "end_at": 2.5,
                 "type": "plain",
                 "color": "green",
@@ -148,13 +149,13 @@
             }
         },
         "j": {
-            "duration": 2,
-            "image": ".png",
+            "duration": 3,
+            "image": "ombre.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
+                "at_time": 0,
                 "end_at": 2.5,
                 "type": "plain",
                 "color": "green",
@@ -163,12 +164,12 @@
         },
         "k": {
             "duration": 3,
-            "image": ".png",
+            "image": "ombre.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
+                "at_time": 0,
                 "end_at": 2.5,
                 "type": "plain",
                 "color": "green",
@@ -177,133 +178,147 @@
         },
         "l": {
             "duration": 5,
-            "image": ".png",
+            "image": "professeur.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 4,
                 "type": "plain",
                 "content": "Elles sont corriaces ces créa', j'aurais pas croivu"
             }
         },
         "m": {
-            "duration": 5,
-            "image": ".png",
+            "duration": 4,
+            "image": "ombre.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 3,
                 "type": "plain",
-                "content": "S't'ais pour voir si tu suivais. Reprenons. Tu as chopé avec brio ce ... cette ... enfin ce \"trukibidule\""
+                "color": "green",
+                "content": "Oh mer** une STMG qui sait pas parler"
             }
         },
         "n": {
             "duration": 5,
-            "image": ".png",
+            "image": "professeur.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 4,
+                "type": "plain",
+                "content": "S't'ais pour voir si tu suivais. Reprenons. Tu as chopé avec brio ce ... cette ... enfin ce \"trukibidule\""
+            }
+        },
+        "o": {
+            "duration": 4,
+            "image": "professeur.png",
+            "position": (0, 0),
+            "last_music_continue_here": True,
+            "text": {
+                "with_gui": True,
+                "at_time": 0,
+                "end_at": 3,
                 "type": "plain",
                 "content": "Maintenant on va le tuer pour le disséquer"
             }
         },
-        "o": {
+        "p": {
             "duration": 3,
-            "image": ".png",
+            "image": "ombre.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
+                "at_time": 0,
                 "end_at": 2.5,
                 "type": "plain",
                 "color": "green",
                 "content": "O_o Mirabel, tu fais peur"
             }
         },
-        "p": {
+        "q": {
             "duration": 3,
-            "image": ".png",
+            "image": "professeur.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
+                "at_time": 0,
                 "end_at": 2.5,
                 "type": "plain",
                 "content": "Je rigole (gros kikoo va)"
             }
         },
-        "q": {
-            "duration": 2,
-            "image": ".png",
+        "r": {
+            "duration": 3,
+            "image": "ombre.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
+                "at_time": 0,
                 "end_at": 2.5,
                 "type": "plain",
                 "color": "green",
                 "content": "..."
             }
         },
-        "r": {
+        "s": {
             "duration": 5,
-            "image": ".png",
+            "image": "professeur.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 4,
                 "type": "plain",
                 "content": "Elle a l'air de t'apprécier, c'est étrange ! Tu te rappelles à Ult'af avec le Mporf..."
             }
         },
-        "s": {
-            "duration": 5,
-            "image": ".png",
+        "t": {
+            "duration": 4,
+            "image": "ombre.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 3,
                 "type": "plain",
                 "color": "green",
                 "content": "Pas un mot de plus."
             }
         },
-        "t": {
-            "duration": 5,
-            "image": ".png",
+        "u": {
+            "duration": 3,
+            "image": "professeur.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
+                "at_time": 0,
                 "end_at": 2.5,
                 "type": "plain",
-                "content": "Comme tu voudras"
+                "content": "Comme tu voudras. :P"
             }
         },
-        "u": {
+        "v": {
             "duration": 5,
-            "image": ".png",
+            "image": "professeur.png",
             "position": (0, 0),
             "last_music_continue_here": True,
             "text": {
                 "with_gui": True,
-                "at_time": 1,
-                "end_at": 2.5,
+                "at_time": 0,
+                "end_at": 4,
                 "type": "plain",
                 "content": "Direction la ville, on va dans mon labo (et oui, en à peine 2 minutes de cinématique, j'ai déjà trouvé un labo ^^ la magie des jeux videos)"
             }
