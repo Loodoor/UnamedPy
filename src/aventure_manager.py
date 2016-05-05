@@ -10,14 +10,15 @@ from animator import CinematiqueCreator
 # Attention, y a du hardcode dans l'air ^^'
 class Adventure:
     def __init__(self, ecran, font):
-        self.user_pseudo = "testeur"
         self.progress = 0
         self.ecran = ecran
         self.font = font
         self.path = os.path.join("..", "saves", "adventure" + EXTENSION)
         self.textes = {}
         self.loaded = False
-        self.values = {}
+        self.values = {
+            "pseudo": "testeur"
+        }
         self._actions = []
         self.villes_vues = []
 
@@ -67,7 +68,7 @@ class Adventure:
                 if '{' not in texte and '}' not in texte:
                     g.set_text(texte[:-1])
                 else:
-                    g.set_text(texte[:-1].format(pseudo=self.user_pseudo))
+                    g.set_text(texte[:-1].format(**self.values))
 
             if texte[0] != ME_SPEAKING_CHAR:
                 g.reinit_color()
@@ -84,13 +85,11 @@ class Adventure:
                 ask_smth = False
                 t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), ask_for, self.font)
                 t.update()
+                self.values[ask_for] = t.get_text()
 
                 if ask_for == "pseudo":
-                    self.user_pseudo = t.get_text()
                     with open(os.path.join("..", "saves", "pseudo" + EXTENSION), "wb") as pseudo_w:
-                        Pickler(pseudo_w).dump(self.user_pseudo)
-                elif ask_for == "creature":
-                    self.values["first creature name"] = t.get_text()
+                        Pickler(pseudo_w).dump(self.values["pseudo"])
             i += 1
 
             ree.flip()
@@ -109,19 +108,18 @@ class Adventure:
     def muted_next(self):
         if self.loaded:
             if not self.progress:
-                with open(os.path.join("..", "saves", "pseudo" + EXTENSION), "wb") as pseudo_w:
-                    Pickler(pseudo_w).dump(self.user_pseudo)
                 self.values["first creature name"] = "testeur"
                 self.values["sprite"] = "maleplayer"
+                self.values["pseudo"] = "testeur"
             self.progress += 1
         else:
             debug.println("Merci de charger l'AdventureManager avant d'utiliser cette méthode")
 
     def set_pseudo(self, new: str):
-        self.user_pseudo = new
+        self.values["pseudo"] = new
 
     def get_pseudo(self):
-        return self.user_pseudo
+        return self.values["pseudo"]
 
     def get_values(self):
         return self.values
@@ -133,7 +131,6 @@ class Adventure:
         if os.path.exists(self.path):
             with open(self.path, "rb") as reader:
                 tmp = Unpickler(reader).load()
-                self.user_pseudo = tmp['p']
                 self.progress = tmp['r']
                 self.values = tmp['l']
                 self.villes_vues = tmp["v"]
@@ -144,13 +141,12 @@ class Adventure:
                     self.textes[name] = file.readlines()
         except OSError:
             debug.println("Un fichier de sauvegarde n'existe pas. Impossible de continuer.")
-            sys.exit(0)
+            exit(1)
         self.loaded = True
 
     def save(self):
         with open(self.path, "wb") as writer:
             Pickler(writer).dump({
-                "p": self.user_pseudo,
                 "r": self.progress,
                 "l": self.values,
                 "v": self.villes_vues
