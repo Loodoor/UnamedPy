@@ -279,7 +279,7 @@ class CinematiqueCreator:
         self.ecran.blit(self._images[self._conf["frames"][self._current]["image"]], self._conf["frames"][self._current]["position"])
 
         # fadeout
-        if self._time >= self._conf["frames"][self._current].get("duration", 99999) * 1000 - self._conf["fade_duration"] * 1000:
+        if self._conf["frames"][self._current].get("fadeout", False) and self._time >= self._conf["frames"][self._current].get("duration", 99999) * 1000 - self._conf["fade_duration"] * 1000:
             if self._fade.current() == "in" and not self._fade.playing():
                 self._fade.reverse()
             if not self._fade.playing():
@@ -296,6 +296,10 @@ class CinematiqueCreator:
                     self.font,
                     self._conf["frames"][self._current]["text"].get("with_gui", True)
                 )
+                if self._conf["frames"][self._current]["text"].get("with_gui", True):
+                    cl = self._conf["frames"][self._current]["text"].get("color", None)
+                    if cl:
+                        self._text.set_color(cl)
         # fin affichage texte
         if self._time >= self._conf["frames"][self._current]["text"].get("end_at", 0) * 1000 and self._displaying_text and \
                 self._conf["frames"][self._current]["text"].get("end_at", -1) != -1:
