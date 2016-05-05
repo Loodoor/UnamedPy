@@ -668,6 +668,8 @@ class CarteRenderer:
         self._surfs = {}
         self.transp = 128
         self._fond = None
+        self._rect_select = (0, 0, 0, 0)
+        self._count_rect_select = 0
         self.selected = None
 
     def increase_transparency(self):
@@ -765,6 +767,16 @@ class CarteRenderer:
         self.ecran.blit(self._surfs[self.map_desc["ville"]["name"]], (MAP_RDR_LEGENDE_X, MAP_RDR_LEGENDE_Y + MAP_RDR_LEGENDE_MARGEY * 3))
 
         if self.selected:
+            self._count_rect_select += 0.5
+            self._count_rect_select %= 16
+            self._rect_select = (
+                self.selected[0] * MAP_RDR_CASE_SIZE - self._count_rect_select,
+                self.selected[1] * MAP_RDR_CASE_SIZE - self._count_rect_select,
+                MAP_RDR_CASE_SIZE + self._count_rect_select * 2,
+                MAP_RDR_CASE_SIZE + self._count_rect_select * 2
+            )
+            ree.draw_rect(self.ecran, self._rect_select, (255, 0, 0), width=2)
+
             if self._fond:
                 self.ecran.blit(self._fond, (MAP_RDR_POSX_DESC, MAP_RDR_POSY_DESC))
 
