@@ -33,7 +33,8 @@ class ChatManager:
         if code in CHEATS_CODES.keys():
             if CHEATS_CODES[code]['controler'] in self._controlers.keys():
                 if hasattr(self._controlers[CHEATS_CODES[code]['controler']], CHEATS_CODES[code]['methode']):
-                    self._controlers[CHEATS_CODES[code]['controler']].__getattr__(CHEATS_CODES[code]['methode'])
+                    m = getattr(self._controlers[CHEATS_CODES[code]['controler']], CHEATS_CODES[code]['methode'])
+                    m(*CHEATS_CODES[code].get("args", []))
                 else:
                     raise MethodeManquante("La méthode", CHEATS_CODES[code]['methode'], "du controler", CHEATS_CODES[code]['controler'], "est manquante")
             else:
