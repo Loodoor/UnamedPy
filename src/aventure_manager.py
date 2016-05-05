@@ -128,9 +128,9 @@ class Adventure:
         if self.values['garcon'] == 'oui' and self.values['sur_choix_sex'] == 'oui':
             return 'male'
         if self.values['garcon'] == 'oui' and self.values['sur_choix_sex'] != 'oui':
-            return 'female'
+            return 'girl'
         if self.values['garcon'] != 'oui' and self.values['sur_choix_sex'] == 'oui':
-            return 'female'
+            return 'girl'
         if self.values['garcon'] != 'oui' and self.values['sur_choix_sex'] != 'oui':
             return 'male'
 
@@ -138,6 +138,9 @@ class Adventure:
         if self.loaded:
             try:
                 self._parse_scene(self._actions[self.progress])
+                # on récupère les valeurs après
+                if self.progress == 0:
+                    self.values['sprite'] = self.determine_sexe() + 'player'
             except IndexError:
                 debug.println("L'aventure semble terminée, impossible d'avencer plus")
             self.progress += 1
