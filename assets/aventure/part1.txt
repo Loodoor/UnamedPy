@@ -1,4 +1,6 @@
 @part1
 :professeur:
->D'ailleurs ... *it's ARPG time !* Quel est ton nom ? ?>pseudo
+D'ailleurs ... *it's ARPG time !*
+:professeur:
+>Quel est ton nom ?>pseudo
 @part1bis

@@ -12,7 +12,7 @@
             "duration": 5,
             "image": "professeur.png",
             "position": (0, 0),
-            "music": "01.wav,
+            "music": "01.wav",
             "text": {
                 "with_gui": True,
                 "at_time": 0,
@@ -32,7 +32,7 @@
                 "end_at": 4,
                 "type": "plain",
                 "color": "red",
-                "content": Voilà l'île ! On atterit bientôt, accrochez vooooooooooooous !
+                "content": "Voilà l'île ! On atterit bientôt, accrochez vooooooooooooous !"
             }
         },
         "c": {
@@ -48,5 +48,6 @@
                 "color": "green",
                 "content": "J'vais ... vomir"
             }
+        }
     }
 }

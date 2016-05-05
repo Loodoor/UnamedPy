@@ -112,7 +112,7 @@ class Adventure:
 
             if ask_smth:
                 ask_smth = False
-                t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), ask_for, self.font)
+                t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), texte[1:texte[1:].index(INPUT_CHAR) + 1], self.font)
                 t.update()
                 self.values[ask_for] = t.get_text()
 
