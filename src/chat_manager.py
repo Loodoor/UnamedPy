@@ -92,9 +92,13 @@ class ChatManager:
         return self.text_entry.is_running()
 
     def event(self, e):
-        if e == KEYDOWN and not e == (KEYDOWN, self.quit):
-            self.text_entry.event(e)
-        elif e == QUIT:
+        if e != (KEYDOWN, self.quit):
+            if e == KEYDOWN:
+                self.text_entry.event(e)
+        else:
+            self.text_entry.running = False
+
+        if e == QUIT:
             exit(1)
 
     def new_message(self, msg: str):

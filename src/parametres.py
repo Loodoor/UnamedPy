@@ -18,7 +18,7 @@ class ParametresManager:
                 BAS: K_DOWN,
                 GAUCHE: K_LEFT,
                 DROITE: K_RIGHT,
-                CHAT: K_KP0,
+                CHAT: K_KP_DIVIDE,
                 MENU: K_RSHIFT,
                 SCREENSCHOT: K_F5,
                 SHOW_FPS: K_BACKSPACE,

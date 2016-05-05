@@ -173,7 +173,7 @@ class Game:
         if self.joystick:
             self.joystick.update_states()
 
-        if event == QUIT or event == (KEYDOWN, K_ESCAPE):
+        if event == QUIT:
             if self.network_ev_listener.is_enabled():
                 self.network_ev_listener.disconnect()
             self.musics_player.fadeout(300)
@@ -229,8 +229,6 @@ class Game:
                 (self.joystick and self.joystick.is_button_pressed(self.controles_joy[CHAT]["button"])):
             if not self.renderer_manager.get_renderer() == RENDER_CHAT:
                 self.renderer_manager.change_renderer_for(RENDER_CHAT)
-            else:
-                self.renderer_manager.invert_renderer()
 
         # Gestion des objets
         if self.personnage.inventaire.get_obj_messenger():
