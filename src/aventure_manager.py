@@ -55,6 +55,35 @@ class Adventure:
             elif texte[0] == IMAGE_SHOW_CHAR:
                 name_of_image = texte.replace(":", "").strip()
                 continue
+            elif texte[0] == IF_CHAR:
+                if texte[1] != NOT_CHAR:
+                    var, cond, next = texte[1:].split('^')
+                else:
+                    var, cond, next = texte[2:].split('^')
+                next = next.split('|')
+                var = var.format(**self.values)
+                if texte[1] == NOT_CHAR:
+                    test = var != cond
+                else:
+                    test = var == cond
+                if test:
+                    if next[0][0] != ME_SPEAKING_CHAR:
+                        if next[0].strip():
+                            g.set_text(next[0])
+                        else:
+                            continue
+                    else:
+                        g.set_text(next[0][1:])
+                        g.set_color('green')
+                else:
+                    if next[1][0] != ME_SPEAKING_CHAR:
+                        if next[1].strip():
+                            g.set_text(next[1])
+                        else:
+                            continue
+                    else:
+                        g.set_text(next[1][1:])
+                        g.set_color('green')
             elif texte[0] == LOAD_CINEMATIQUE_CHAR:
                 sc = CinematiqueCreator(self.ecran, os.path.join("..", "assets", "cinematiques", texte[1:]))
                 sc.load()
