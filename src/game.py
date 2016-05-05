@@ -67,7 +67,7 @@ class Game:
         self.network_ev_listener = NetworkEventsListener(self.sock, self.params)
         self.chat_mgr = chat_manager.ChatManager(self.ecran, self.police_normale, self.network_ev_listener,
                                                  self.adventure.get_pseudo(), RANG_NUL)
-        self.mini_map = carte.CarteRenderer(self.ecran, self.police_normale)
+        self.mini_map = carte.CarteRenderer(self.ecran, self.police_normale, self.adventure)
         self.attaques_table = atk_sys.AttaquesTable()
         self.parametres = ParametresManager()
         self.musics_player = music_player.MusicPlayer()
@@ -122,7 +122,7 @@ class Game:
         self.attaques_table.load()
         yield 1
 
-        self.chat_mgr.update_quit_event(self.controles[CHAT])
+        self.chat_mgr.update_quit_event(K_ESCAPE)
         yield 1
 
         self.network_ev_listener.add_controler('perso', self.personnage)
@@ -141,6 +141,8 @@ class Game:
         self.chat_mgr.add_controler("computer", self.pc_mgr)
         yield 1
         self.chat_mgr.add_controler("music", self.musics_player)
+        yield 1
+        self.chat_mgr.add_controler("renderer", self.renderer_manager)
         yield 1
 
         self.carte_mgr.add_perso(self.personnage)

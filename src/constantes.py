@@ -66,9 +66,17 @@ controlers disponnibles :
 """
 
 CHEATS_CODES = {
-    "code": {
-        "controler": "controler sur lequel agir",
-        "methode": "methode"
+    # "code": {
+    #     "controler": "controler sur lequel agir",
+    #     "methode": "methode"
+    # }
+    "0001": {
+        "controler": "perso",
+        "methode": "change_moving_state"
+    },
+    "0002": {
+        "controler": "renderer",
+        "methode": "invert_renderer"
     }
 }
 

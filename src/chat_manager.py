@@ -56,8 +56,12 @@ class ChatManager:
         if not self.text_entry.type_enter():
             self.text_entry.render()
         else:
-            self.reseau_mgr.chat_message(self.text_entry.get_text())
-            self.new_message(self.text_entry.get_text())
+            if self.text_entry.get_text().strip():
+                if not ChatManager.is_cheat_code(self.text_entry.get_text()):
+                    self.reseau_mgr.chat_message(self.text_entry.get_text())
+                    self.new_message(self.text_entry.get_text())
+                else:
+                    self._manage_cheat_code(self.text_entry.get_text())
             self.text_entry.reset()
 
     def network_fetch_messages(self):
@@ -94,16 +98,13 @@ class ChatManager:
             exit(1)
 
     def new_message(self, msg: str):
-        if not ChatManager.is_cheat_code(msg):
-            self.stack += [
-                {
-                    "pseudo": self.pseudo,
-                    "message": msg,
-                    "rang": self.rang
-                }
-            ]
-        else:
-            self._manage_cheat_code(msg)
+        self.stack += [
+            {
+                "pseudo": self.pseudo,
+                "message": msg,
+                "rang": self.rang
+            }
+        ]
 
     def render(self):
         self.ecran.blit(self.fond, (CHAT_X_MESSAGES, CHAT_Y_MESSAGES))
