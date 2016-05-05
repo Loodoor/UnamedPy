@@ -84,3 +84,13 @@ class CinematiqueIntrouvable(Exception):
 class NuzlockeError(Exception):
     def __init__(self, *args):
         super().__init__(*args)
+
+
+class ControlerManquant(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
+
+
+class MethodeManquante(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)

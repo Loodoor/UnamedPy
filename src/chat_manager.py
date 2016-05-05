@@ -1,8 +1,10 @@
 # coding=utf-8
 
+import re
 import textentry
 from constantes import *
 from network_event_listener import NetworkEventsListener
+from exceptions import ControlerManquant, MethodeManquante
 
 
 class ChatManager:
@@ -18,6 +20,27 @@ class ChatManager:
                                             sx=CHAT_SX_BOX, sy=CHAT_SY_BOX, bgcolor=(70, 70, 70))
         self.quit = None
         self.fond = ree.load_image(os.path.join("..", "assets", "gui", "fd_chat.png"))
+        self._controlers = {}
+
+    @staticmethod
+    def is_cheat_code(chaine: str) -> bool:
+        if re.match(r'!(\d+|\w+)', chaine):
+            return True
+        return False
+
+    def _manage_cheat_code(self, code: str):
+        code = code[1:]
+        if code in CHEATS_CODES.keys():
+            if CHEATS_CODES[code]['controler'] in self._controlers.keys():
+                if hasattr(self._controlers[CHEATS_CODES[code]['controler']], CHEATS_CODES[code]['methode']):
+                    self._controlers[CHEATS_CODES[code]['controler']].__getattr__(CHEATS_CODES[code]['methode'])
+                else:
+                    raise MethodeManquante("La méthode", CHEATS_CODES[code]['methode'], "du controler", CHEATS_CODES[code]['controler'], "est manquante")
+            else:
+                raise ControlerManquant("Le controler", CHEATS_CODES[code]['controler'], "manque à l'appel. Cheat code impossible à utiliser")
+
+    def add_controler(self, name: str, controler: object):
+        self._controlers[name] = controler
 
     def update_quit_event(self, new):
         self.quit = new
@@ -66,13 +89,16 @@ class ChatManager:
             exit(1)
 
     def new_message(self, msg: str):
-        self.stack += [
-            {
-                "pseudo": self.pseudo,
-                "message": msg,
-                "rang": self.rang
-            }
-        ]
+        if not ChatManager.is_cheat_code(msg):
+            self.stack += [
+                {
+                    "pseudo": self.pseudo,
+                    "message": msg,
+                    "rang": self.rang
+                }
+            ]
+        else:
+            self._manage_cheat_code(msg)
 
     def render(self):
         self.ecran.blit(self.fond, (CHAT_X_MESSAGES, CHAT_Y_MESSAGES))

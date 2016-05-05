@@ -57,6 +57,22 @@ CORE_SETTINGS = UEnumFactory(
 ).create()
 
 """
+controlers disponnibles :
+    perso
+    adventure
+    equipe
+    computer
+    music
+"""
+
+CHEATS_CODES = {
+    "code": {
+        "controler": "controler sur lequel agir",
+        "methode": "methode"
+    }
+}
+
+"""
 -1 : GLOBAL_ERROR
 -2 : ZONE_ADV_ERROR
 -3 : RENDER_ERROR
