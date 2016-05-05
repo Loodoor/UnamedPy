@@ -85,7 +85,7 @@ class Adventure:
                         g.set_text(next[1][1:])
                         g.set_color('green')
             elif texte[0] == LOAD_CINEMATIQUE_CHAR:
-                sc = CinematiqueCreator(self.ecran, os.path.join("..", "assets", "cinematiques", texte[1:]))
+                sc = CinematiqueCreator(self.ecran, os.path.join("..", "assets", "cinematiques", texte[1:].strip() + EXTENSION))
                 sc.load()
                 sc.play()
                 continue
@@ -154,8 +154,8 @@ class Adventure:
         return self.values
 
     def load(self):
-        with open(os.path.join("..", "assets", "aventure", "scenes.txt")) as scenesrd:
-            self._actions = eval(scenesrd)
+        with open(os.path.join("..", "assets", "aventure", "scenes.txt"), "r", encoding="utf-8") as scenesrd:
+            self._actions = eval(scenesrd.read())
 
         if os.path.exists(self.path):
             with open(self.path, "rb") as reader:
