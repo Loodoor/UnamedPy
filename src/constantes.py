@@ -110,6 +110,8 @@ OBJETS_ID = UEnumFactory(
 
 ID_STARTER = 0
 
+NOM_POKEDEX = "Dexeur"
+
 INPUT_CHAR = ">"
 IMAGE_SHOW_CHAR = ":"
 

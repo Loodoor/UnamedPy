@@ -152,9 +152,13 @@ class Combat:
         if not self.indexer.get_viewed(self.get_adversary().get_id()):
             name_for_crea = run_bulle("asking", self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour cette créature : ", self.font)
             self.indexer.add_name_to_crea(self.adversaire.get_id(), name_for_crea)
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      "La créature a été ajouté au " + NOM_POKEDEX + " !")
         if not self.indexer.get_typeur().get_name(self.get_adversary().get_type()):
             type_name = run_bulle("asking", self.ecran, (POS_BULLE_X, POS_BULLE_Y), "Nom pour ce type de créature : ", self.font)
             self.indexer.get_typeur().change_name(self.get_adversary().get_type(), type_name)
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      "Le type a été ajouté au " + NOM_POKEDEX + " !")
 
         self.indexer.vu_(self.get_adversary().get_id())
         if self.has_captured:

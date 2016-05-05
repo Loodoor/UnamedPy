@@ -328,7 +328,7 @@ class Indexer:
 
     def render(self):
         self.ecran.blit(self.fond, (POK_POSX, POK_POSY))
-        titre = self.police.render("Indexeur" if self.render_creatures else "Indexer -> Types", POL_ANTIALISING, (255, 255, 255))
+        titre = self.police.render(NOM_POKEDEX if self.render_creatures else NOM_POKEDEX + " -> Types", POL_ANTIALISING, (255, 255, 255))
         self.ecran.blit(titre, (POK_X_TITRE, POK_Y_TITRE))
         if not self.render_creatures:
             self.ecran.blit(self._btn_creatures, (POK_X_VIEWT, POK_Y_VIEWT))
