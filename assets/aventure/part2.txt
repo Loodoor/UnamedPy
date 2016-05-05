@@ -1,4 +1,4 @@
-﻿@part2.umd
+@part2.umd
 >Tu m'écoutes quand je te parle ou pas ?>tu_ecoutes
 &{tu_ecoutes}^oui^J'en avais pas l'impression|Bon ok, je recommence du début alors
 &!{tu_ecoutes}^oui^|$... Naaaaaaaaaaan !
