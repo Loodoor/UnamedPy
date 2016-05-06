@@ -292,7 +292,7 @@ class CinematiqueCreator:
                 self._text = GUIBulle(
                     self.ecran,
                     (POS_BULLE_X, POS_BULLE_Y),
-                    self._conf["frames"][self._current]["text"].get("content", ""),
+                    self._conf["frames"][self._current]["text"].get("content", [""]),
                     self.font,
                     self._conf["frames"][self._current]["text"].get("with_gui", True)
                 )

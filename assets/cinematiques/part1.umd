@@ -4,7 +4,8 @@
         "b",
         "c",
         "d",
-        "e"
+        "e",
+        "f"
     ],
     "musics_folder": "../assets/sons/",
     "frames_folder": "../assets/cinematiques/part1/",
@@ -75,6 +76,19 @@
                 "end_at": 4,
                 "type": "plain",
                 "content": "Oui toi tu connais mon nom puisque tu travailles avec moi mais le gars qui nous observe derrière son écran lui ne le sais pas :P"
+            }
+        },
+        "f": {
+            "duration": 4,
+            "image": "professeur.png",
+            "position": (0, 0),
+            "last_music_continue_here": True,
+            "text": {
+                "with_gui": True,
+                "at_time": 0,
+                "end_at": 3,
+                "type": "plain",
+                "content": "D'ailleurs ... *it's ARPG time !*"
             }
         }
     }

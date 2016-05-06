@@ -40,18 +40,19 @@ class Adventure:
         return True
 
     def _parse_scene(self, scene: str):
-        ask_for = ""
         name_of_image = ""
-        ask_smth = False
         g = GUIBulleWaiting(self.ecran, (POS_BULLE_X, POS_BULLE_Y), "", self.font)
-        i = 0
-        for texte in self.textes[scene]:
+
+        for i, texte in enumerate(self.textes[scene]):
             self.ecran.blit(self.fond, (0, 0))
 
             if texte[0] == INPUT_CHAR:
-                ask_smth = True
                 ask_for = texte[texte[1:].index(INPUT_CHAR) + 2:-1]
-                g.set_text(texte[1:texte[1:].index(INPUT_CHAR) + 1])
+                t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), texte[1:texte[1:].index(INPUT_CHAR) + 1],
+                                   self.font)
+                t.update()
+                self.values[ask_for] = t.get_text()
+                continue
             elif texte[0] == IMAGE_SHOW_CHAR:
                 name_of_image = texte.replace(":", "").strip()
                 continue
@@ -93,7 +94,6 @@ class Adventure:
                 g.set_color('green')
                 g.set_text(texte[1:])
             else:
-                ask_smth = False
                 if '{' not in texte and '}' not in texte:
                     g.set_text(texte[:-1])
                 else:
@@ -109,17 +109,6 @@ class Adventure:
                 ))
 
             g.update()
-
-            if ask_smth:
-                ask_smth = False
-                t = GUIBulleAsking(self.ecran, (POS_BULLE_X, POS_BULLE_Y), texte[1:texte[1:].index(INPUT_CHAR) + 1], self.font)
-                t.update()
-                self.values[ask_for] = t.get_text()
-
-                if ask_for == "pseudo":
-                    with open(os.path.join("..", "saves", "pseudo" + EXTENSION), "wb") as pseudo_w:
-                        Pickler(pseudo_w).dump(self.values["pseudo"])
-            i += 1
 
             ree.flip()
         del g

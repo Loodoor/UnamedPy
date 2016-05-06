@@ -9,14 +9,14 @@ import debug
 
 
 class GUIBulle:
-    def __init__(self, ecran, pos: tuple, texte: str or list, font: ree.font, show_bulle: bool=True):
+    def __init__(self, ecran, pos: tuple, texte: str, font: ree.font, show_bulle: bool=True):
         self.ecran = ecran
         self.pos = pos
         self.texte = texte
         self.font = font
         self.image = ree.load_image(os.path.join("..", "assets", "gui", "bulle.png"))
         self.iw, self.ih = self.image.get_size()
-        self.txt_renderer = self.font.render(" ", POL_ANTIALISING, (10, 10, 10))
+        self.txt_renderer = [self.font.render(" ", POL_ANTIALISING, (10, 10, 10))]
         self.show_bulle = show_bulle
         self.create_text_renderers()
 
@@ -50,19 +50,15 @@ class GUIBulle:
     def render(self):
         if self.show_bulle:
             self.ecran.blit(self.image, self.pos)
-        if not isinstance(self.txt_renderer, list):
-            self.ecran.blit(self.txt_renderer, (self.pos[0] + self.iw // 2 - self.txt_renderer.get_width() // 2,
-                                                self.pos[1] + self.ih // 2 - self.txt_renderer.get_height() // 2))
-        else:
-            line_height = self.txt_renderer[0].get_height()
-            for i, trender in enumerate(self.txt_renderer):
-                self.ecran.blit(
-                    trender,
-                    (
-                        self.pos[0] + self.iw // 2 - trender.get_width() // 2,
-                        self.pos[1] + self.ih // 2 - (line_height * len(self.txt_renderer)) + i * GUI_Y_ESP
-                    )
+        line_height = self.txt_renderer[0].get_height()
+        for i, trender in enumerate(self.txt_renderer):
+            self.ecran.blit(
+                trender,
+                (
+                    self.pos[0] + self.iw // 2 - trender.get_width() // 2,
+                    self.pos[1] + self.ih // 2 - (line_height * len(self.txt_renderer)) // 2 + i * GUI_Y_ESP
                 )
+            )
 
 
 class GUIBulleWaiting(GUIBulle):
@@ -75,7 +71,7 @@ class GUIBulleWaiting(GUIBulle):
     def is_done(self):
         return self.done
 
-    def set_text(self, new: str or list):
+    def set_text(self, new: list):
         self.texte = new
         self.create_text_renderers()
         self.done = False
@@ -129,25 +125,24 @@ class GUIBulleAsking(GUIBulleWaiting):
                  screenshotkey=K_F5):
         super().__init__(ecran, pos, texte, font, screenshotkey, show_bulle)
         self.create_text_renderers()
-        self.text_box = TextBox(self.ecran, x=self.pos[0] + self.txt_renderer.get_width() // 2 + self.iw // 2,
-                                y=self.pos[1] + (self.ih - self.txt_renderer.get_height() - 4) // 2,
+        self.text_box = TextBox(self.ecran,
+                                x=self.pos[0] + self.iw // 2 - 120 // 2,
+                                y=self.pos[1] + (self.ih + sum(i.get_height() for i in self.txt_renderer)) // 2 + 6,
                                 bgcolor=(120, 120, 120),
-                                sy=self.txt_renderer.get_height() + 4,
+                                sy=self.txt_renderer[0].get_height() + 4,
                                 font=self.font)
 
     def render(self):
         if self.show_bulle:
             self.ecran.blit(self.image, self.pos)
-        if not isinstance(self.txt_renderer, list):
-            self.ecran.blit(self.txt_renderer, (self.pos[0] + self.iw // 2 - self.txt_renderer.get_width() // 2,
-                                                self.pos[1] + self.ih // 2 - self.txt_renderer.get_height() // 2))
-        else:
-            i = 0
-            for trender in self.txt_renderer:
-                self.ecran.blit(trender, (self.pos[0] + self.iw // 2 - trender.get_width() // 2,
-                                          self.pos[1] + self.ih // 2 -
-                                          (trender.get_height() * len(self.txt_renderer)) + i * GUI_Y_ESP))
-                i += 1
+        for i, trender in enumerate(self.txt_renderer):
+            self.ecran.blit(
+                trender,
+                (
+                    self.pos[0] + self.iw // 2 - trender.get_width() // 2,
+                    self.pos[1] + self.ih // 2 - (trender.get_height() * len(self.txt_renderer)) // 2 + i * GUI_Y_ESP
+                )
+            )
 
         if self.text_box.is_running():
             self.text_box.update()
