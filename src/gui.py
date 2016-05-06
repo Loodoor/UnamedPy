@@ -4,6 +4,7 @@ from constantes import *
 from textentry import TextBox
 import time
 from glob import glob
+import textwrap as tw
 import debug
 
 
@@ -25,7 +26,9 @@ class GUIBulle:
 
     def create_text_renderers(self):
         if not isinstance(self.texte, list):
-            self.txt_renderer = self.font.render(self.texte, POL_ANTIALISING, (10, 10, 10))
+            char_w = self.font.render("M", POL_ANTIALISING, (10, 10, 10)).get_width()
+            available_len = (self.image.get_width() - 20) / char_w
+            self.txt_renderer = [self.font.render(line, POL_ANTIALISING, (10, 10, 10)) for line in tw.wrap(self.texte, int(available_len))]
         else:
             self.txt_renderer = [self.font.render(t, POL_ANTIALISING, (10, 10, 10)) for t in self.texte]
 
@@ -51,12 +54,15 @@ class GUIBulle:
             self.ecran.blit(self.txt_renderer, (self.pos[0] + self.iw // 2 - self.txt_renderer.get_width() // 2,
                                                 self.pos[1] + self.ih // 2 - self.txt_renderer.get_height() // 2))
         else:
-            i = 0
-            for trender in self.txt_renderer:
-                self.ecran.blit(trender, (self.pos[0] + self.iw // 2 - trender.get_width() // 2,
-                                          self.pos[1] + self.ih // 2 -
-                                                (trender.get_height() * len(self.txt_renderer)) + i * GUI_Y_ESP))
-                i += 1
+            line_height = self.txt_renderer[0].get_height()
+            for i, trender in enumerate(self.txt_renderer):
+                self.ecran.blit(
+                    trender,
+                    (
+                        self.pos[0] + self.iw // 2 - trender.get_width() // 2,
+                        self.pos[1] + self.ih // 2 - (line_height * len(self.txt_renderer)) + i * GUI_Y_ESP
+                    )
+                )
 
 
 class GUIBulleWaiting(GUIBulle):
