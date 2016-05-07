@@ -74,11 +74,11 @@ class Personnage:
         return self.player_anim.get_mask(self.direction)
 
     def _check_collisions(self, direction: int, vecteur: list, new_speed: float, pnjs: list) -> tuple:
-        inverse_dir = unegate_vect(vecteur)
-        new_of1, new_of2 = inverse_dir[0] * new_speed, inverse_dir[1] * new_speed
         x, y = self.pos.pos
-        x += -self.carte_mgr.get_of1() + vecteur[0] * new_speed
-        y += -self.carte_mgr.get_of2() + vecteur[1] * new_speed
+        mx = vecteur[0] * new_speed
+        my = vecteur[1] * new_speed
+        x += self.carte_mgr.get_of1() + mx
+        y += self.carte_mgr.get_of2() + my
         tile_code = self.carte_mgr.get_tile_code_at(x // TILE_SIZE, y // TILE_SIZE)
 
         # pré-traitement avec les tiles de jump
@@ -87,22 +87,22 @@ class Personnage:
             tile_specs = jump_dict[tile_code]
             if tile_specs["from"] == "RIGHT" and direction == GAUCHE:
                 if tile_specs["to"] == "LEFT":
-                    x -= TILE_SIZE
+                    x -= new_speed
             if tile_specs["from"] == "LEFT" and direction == DROITE:
                 if tile_specs["to"] == "RIGHT":
-                    x += TILE_SIZE
+                    x += new_speed
             if tile_specs["from"] == "TOP" and direction == BAS:
                 if tile_specs["to"] == "BOTTOM":
-                    y += TILE_SIZE
+                    y += new_speed
             if tile_specs["from"] == "BOTTOM" and direction == HAUT:
                 if tile_specs["to"] == "TOP":
-                    y -= TILE_SIZE
+                    y -= new_speed
 
         # Détection des collisions avec les tiles et les pnjs (d'une pierre 2 coups :D)
         pnjs_rect = [pnj.get_rect() for pnj in pnjs]
 
         def colliding(i: int, j: int):
-            tiles_in = self.carte_mgr.get_tiles_from_rect(i + self.carte_mgr.get_of1(), j + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y)
+            # tiles_in = self.carte_mgr.get_tiles_from_rect(i + self.carte_mgr.get_of1(), j + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y)
 
             return False
 
@@ -112,30 +112,22 @@ class Personnage:
         x4, y4 = x1 + TILE_SIZE, y1 + TILE_SIZE
 
         if direction == HAUT:
-            if colliding(x1, y1) or (colliding(x2, y2) and x % TILE_SIZE):
-                decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                y += TILE_SIZE - decy
-                new_of2 -= TILE_SIZE - decy
+            if colliding(x1, y1) or colliding(x2, y2):
+                y -= my
 
         if direction == GAUCHE:
-            if colliding(x1, y1) or (colliding(x3, y3) and y % TILE_SIZE):
-                decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                x += TILE_SIZE - decx
-                new_of1 -= TILE_SIZE - decx
+            if colliding(x1, y1) or colliding(x3, y3):
+                x -= mx
 
         if direction == DROITE:
-            if colliding(x2, y2) or (colliding(x4, y4) and y % TILE_SIZE):
-                decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                x -= decx
-                new_of1 += decx
+            if colliding(x2, y2) or colliding(x4, y4):
+                x -= mx
 
         if direction == BAS:
-            if colliding(x3, y3) or (colliding(x4, y4) and x % TILE_SIZE):
-                decx, decy = x % TILE_SIZE, y % TILE_SIZE
-                y -= decy
-                new_of2 += decy
+            if colliding(x3, y3) or colliding(x4, y4):
+                y -= my
 
-        return x, y, new_of1, new_of2
+        return x, y
 
     def change_animator_for_current_state(self):
         if self.cur_div == DIV_DT_BASIC:
@@ -173,16 +165,39 @@ class Personnage:
         self.carte_mgr.check_changing_map((self.pos.x - self.carte_mgr.get_of1()) // TILE_SIZE,
                                           (self.pos.y - self.carte_mgr.get_of2()) // TILE_SIZE)
 
+    def _move_offsets(self, x: int, y: int) -> tuple:
+        if 0 <= x < TILE_SIZE:
+            # mouvement à gauche des offsets
+            if self.carte_mgr.get_of1() < 0:
+                self.carte_mgr.move_of1(FEN_large - TILE_SIZE)
+                x += FEN_large - 2 * TILE_SIZE
+        if 0 <= y < TILE_SIZE:
+            # mouvement en haut des offsets
+            if self.carte_mgr.get_of2() < 0:
+                self.carte_mgr.move_of2(FEN_haut - TILE_SIZE)
+                y += FEN_haut - 2 * TILE_SIZE
+        if FEN_large - TILE_SIZE < x + TILE_SIZE <= FEN_large:
+            # mouvement à droite des offsets
+            if self.carte_mgr.get_of1() - FEN_large + TILE_SIZE >= 0:
+                self.carte_mgr.move_of1(-FEN_large + TILE_SIZE)
+                x -= FEN_large - 2 * TILE_SIZE
+        if FEN_haut - TILE_SIZE < y + TILE_SIZE <= FEN_haut:
+            # mouvement en bas des offsets
+            if self.carte_mgr.get_of2() - FEN_haut + TILE_SIZE >= 0:
+                self.carte_mgr.move_of2(-FEN_haut + TILE_SIZE)
+                y -= FEN_haut - 2 * TILE_SIZE
+        return x, y
+
     def _move_player(self, direction: int, dt: int):
-        new_speed = self.speed * (dt / 15) / self.cur_div
+        new_speed = TILE_SIZE  # self.speed * (dt / 15) / self.cur_div
 
         vecteur = udir_to_vect(direction)
         pnjs = self.carte_mgr.get_pnjs()
 
-        x, y, new_of1, new_of2 = self._check_collisions(direction, vecteur, new_speed, pnjs)
-
-        self.carte_mgr.move_of1(new_of1)
-        self.carte_mgr.move_of2(new_of2)
+        x, y = self._check_collisions(direction, vecteur, new_speed, pnjs)
+        rx, ry = x - self.carte_mgr.get_of1(), y - self.carte_mgr.get_of2()
+        rx, ry = self._move_offsets(rx, ry)
+        self.pos.pos = rx, ry
 
         if self.changed_cur_case():
             self.carte_mgr.call_trigger_at(int(x // TILE_SIZE), int(y // TILE_SIZE))

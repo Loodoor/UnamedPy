@@ -358,6 +358,7 @@ class CartesManager:
         self.loaded = False
         self.has_changed_map = False
         self.time_changed_map = 0
+        self.drawn_entites = 0
         self.perso = None
         self.animators = {
             "water": None,
@@ -365,6 +366,9 @@ class CartesManager:
         }
         self.specials_blocs = None
         self.lights = []
+
+    def get_draw_entites(self) -> int:
+        return self.drawn_entites
 
     def add_perso(self, new):
         if not self.perso:
@@ -576,20 +580,22 @@ class CartesManager:
     def render(self, dt: float=1.0):
         objects_at = self.current_carte.get_objects()
         ree.draw_rect(self.ecran, (0, 0, FEN_large, FEN_haut), (0, 0, 0))
+        self.drawn_entites = 0
 
         for y in range(len(self.carte)):
             for x in range(len(self.carte[y])):
                 objet = self.carte[y][x]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
 
-                if xpos < -TILE_SIZE or xpos > FEN_large or ypos < -TILE_SIZE or ypos > FEN_haut:
+                if xpos < 0 or xpos > FEN_large or ypos < 0 or ypos > FEN_haut:
                     # optimisation
                     continue
+                self.drawn_entites += 1
 
                 if not isinstance(objet, list):
                     raise ErreurContenuCarte
                 else:
-                    for tile in udel_same_occurence(*objet[::-1]):
+                    for tile in objet[::-1]:  # udel_same_occurence(*objet[::-1]):
                         if tile != "9990":
                             self._draw_tile_at(xpos, ypos, tile)
 
@@ -605,6 +611,9 @@ class CartesManager:
 
         for _pnj in self.current_carte.get_pnjs():
             _pnj.update(self.ecran, self, dt)
+            self.drawn_entites += 1
+
+        return self.drawn_entites
 
     def get_tile_code_at(self, x: int, y: int, layer: int=1):
         return self.carte[int(y)][int(x)][layer] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR

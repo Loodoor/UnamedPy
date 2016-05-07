@@ -63,7 +63,7 @@ class PNJ:
         self.font = ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
         self.cur_scheme = 0
         self.real_pos = Point()
-        self.speed = 4
+        self.speed = TILE_SIZE
         self.speak = False
         self.is_moving = False
         self._a_parcouru = 0

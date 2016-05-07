@@ -569,7 +569,8 @@ class Game:
         debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
 
     def render(self, dt: float=1.0):
-        self.carte_mgr.update(dt) if self.renderer_manager.can_i_render() else None
+        if self.renderer_manager.can_i_render():
+            self.carte_mgr.update(dt)
 
         if self.renderer_manager.get_renderer() == RENDER_GAME:
             self.personnage.update()
@@ -629,11 +630,6 @@ class Game:
         #     self.equipe_mgr.get_creature(0).add_attack("Charge", T_NORMAL, 10, "Charge l'ennemi de tout son poids")
         self.personnage.set_skin_path(self.adventure.get_values()['sprite'])
 
-        # TEST
-        cine = CinematiqueCreator(self.ecran, os.path.join("..", "assets", "cinematiques", "test" + EXTENSION))
-        cine.load()
-        cine.play()
-
         while self.continuer:
             # FPS
             # self.fps_regulator.actualise() ; dt = self.fps_regulator.get_deltatime()
@@ -665,6 +661,7 @@ class Game:
                                  "Zone id: {}".format(self.carte_mgr.get_zid()),
                                  "Map id : {}".format(self.carte_mgr.current_carte.id),
                                  "Offsets : {}".format([float("%4.3f" % i) for i in self.carte_mgr.get_ofs()]),
+                                 "Entités affichées : {}".format(self.carte_mgr.get_draw_entites()),
                                  "- - Personnage - -",
                                  "Direction: {}".format(self.personnage.get_dir()),
                                  "Position: {}".format(self.personnage.get_real_pos()),
