@@ -247,7 +247,7 @@ class CinematiqueCreator:
         self._running = False
         self.font = ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
         self._current = None
-        self._clock = ree.create_clock()
+        self._clock = None
         self._time = 0
         self._playing_music = False
         self._displaying_text = False
@@ -266,6 +266,7 @@ class CinematiqueCreator:
                 self._current = self._conf["frames_order"][0]
                 if with_fade:
                     self._fade = Fading(self._conf["fade_duration"], self.ecran, "in")
+                self._clock = ree.create_clock()
             except OSError:
                 raise CinematiqueIntrouvable("Avec le path suivant :", self.path)
             self._loaded = True
@@ -273,7 +274,7 @@ class CinematiqueCreator:
     def _process_event(self, ev: ree.Event):
         if ev == ree.QUIT:
             exit(1)
-        if ev == ree.KEYDOWN:
+        if ev == ree.KEYUP:
             self._next()
 
     def _render(self, ev: ree.Event, dt: float):

@@ -44,7 +44,7 @@ FEN_large = 640
 FEN_haut = 640
 FEN_taille = (FEN_large, FEN_haut)
 
-DEBUG_LEVEL = 0
+DEBUG_LEVEL = 5
 DEBUG_FEN_large = 840
 DEBUG_FEN_haut = 640
 

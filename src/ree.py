@@ -12,7 +12,7 @@ def warning(fonction):
         warning.already_affiche.append(fonction.__name__)
         if fonction.__name__ not in warning.already_affiche:
             print("[REE]", fonction.__name__, "est dangereux à utiliser")
-        fonction(*args)
+        return fonction(*args)
     return wrapper
 
 
