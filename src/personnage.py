@@ -178,12 +178,12 @@ class Personnage:
                 y += FEN_haut - 2 * TILE_SIZE
         if FEN_large - TILE_SIZE < x + TILE_SIZE <= FEN_large:
             # mouvement à droite des offsets
-            if self.carte_mgr.get_of1() - FEN_large + TILE_SIZE >= 0:
+            if self.carte_mgr.get_of1() - FEN_large + TILE_SIZE < 0:
                 self.carte_mgr.move_of1(-FEN_large + TILE_SIZE)
                 x -= FEN_large - 2 * TILE_SIZE
         if FEN_haut - TILE_SIZE < y + TILE_SIZE <= FEN_haut:
             # mouvement en bas des offsets
-            if self.carte_mgr.get_of2() - FEN_haut + TILE_SIZE >= 0:
+            if self.carte_mgr.get_of2() - FEN_haut + TILE_SIZE < 0:
                 self.carte_mgr.move_of2(-FEN_haut + TILE_SIZE)
                 y -= FEN_haut - 2 * TILE_SIZE
         return x, y
@@ -197,6 +197,9 @@ class Personnage:
         x, y = self._check_collisions(direction, vecteur, new_speed, pnjs)
         rx, ry = x - self.carte_mgr.get_of1(), y - self.carte_mgr.get_of2()
         rx, ry = self._move_offsets(rx, ry)
+        # cs = self.carte_mgr.calculate_current_chunk_size_from_offsets()
+        # rx = 0 if rx < 0 else cs[0] * TILE_SIZE - 2 * TILE_SIZE if rx > cs[0] * TILE_SIZE - 2 * TILE_SIZE else rx
+        # ry = 0 if ry < 0 else cs[1] * TILE_SIZE - 2 * TILE_SIZE if ry > cs[1] * TILE_SIZE - 2 * TILE_SIZE else ry
         self.pos.pos = rx, ry
 
         if self.changed_cur_case():

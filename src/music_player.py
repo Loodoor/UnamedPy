@@ -15,7 +15,7 @@ import random
 class MusicPlayer:
     def __init__(self):
         self.folder = os.path.join("..", "assets", "sons")
-        self.sounds_path = glob(os.path.join(self.folder, "*.wav"))
+        self.sounds_path = glob(os.path.join(self.folder, "*.ogg"))
         self.__current = -1
         self.__rdm_playing_list = []
         self.__playing = False

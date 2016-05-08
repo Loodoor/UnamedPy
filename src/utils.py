@@ -117,6 +117,17 @@ def uremove(*files):
             os.remove(file)
 
 
+def deprecated(fonction):
+    deprecated.already_affiche = []
+
+    def wrapper(*args):
+        deprecated.already_affiche.append(fonction.__name__)
+        if fonction.__name__ not in deprecated.already_affiche:
+            print(fonction.__name__, "est déprécié")
+        fonction(*args)
+    return wrapper
+
+
 def upg_bar(screen, rect_bg: tuple, progress: int=0, bg_color: tuple=(128, 128, 128), fg_color: tuple=(50, 180, 50), esp=BAR_ESP, bg: bool=True, max_progress: int=-1):
     if max_progress != -1:
         progress /= max_progress

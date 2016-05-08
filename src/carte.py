@@ -6,7 +6,8 @@ from glob import glob
 from constantes import *
 from trigger_manager import TriggersManager
 from exceptions import ErreurContenuCarte
-from utils import udel_same_occurence
+from utils import udel_same_occurence, deprecated
+import numpy as np
 from pnj_manager import PNJ, CROSS_MOVE, HORIZONTAL_MOVE, STANDART_MOVE, VERTICAL_MOVE, STATIC_MOVE
 from animator import FluidesAnimator, BaseMultipleSpritesAnimator, BaseSideAnimator
 from random import randint
@@ -197,10 +198,12 @@ def load_map_from_id(id_: int, wid: int):
                 continue
 
         carte = SubCarte(
-            parse_layers_to_map(
-                parse_monoline_layer(content['layer3'], (int(content['width']), int(content['height']))),
-                parse_monoline_layer(content['layer2'], (int(content['width']), int(content['height']))),
-                parse_monoline_layer(content['layer1'], (int(content['width']), int(content['height'])))
+            np.array(
+                parse_layers_to_map(
+                    parse_monoline_layer(content['layer3'], (int(content['width']), int(content['height']))),
+                    parse_monoline_layer(content['layer2'], (int(content['width']), int(content['height']))),
+                    parse_monoline_layer(content['layer1'], (int(content['width']), int(content['height'])))
+                )
             ),
             parsed
         )
@@ -239,7 +242,7 @@ class SubCarte:
         return self.name
 
     def get_at(self, x: int, y: int):
-        return self.carte[y][x]
+        return self.carte[y, x]
 
     def get_objects(self) -> dict:
         return self.objets
@@ -280,15 +283,15 @@ class SubCarte:
 
     @property
     def size(self) -> tuple:
-        return len(self.carte[0]), len(self.carte)
+        return self.carte.shape[:2]
 
     @property
     def width(self) -> int:
-        return len(self.carte[0])
+        return self.carte.shape[1]
 
     @property
     def height(self) -> int:
-        return len(self.carte)
+        return self.carte.shape[0]
 
     def get_object_at(self, x: int, y: int) -> object:
         if (x, y) in self.objets.keys():
@@ -297,15 +300,15 @@ class SubCarte:
             return work
         return OBJET_GET_ERROR
 
-    def set_all(self, new: list):
+    def set_all(self, new: np.ndarray):
         self.carte = new
 
     def set_at(self, x: int, y: int, new):
-        self.carte[y][x] = new
+        self.carte[y, x] = new
 
     def collide_at(self, x: int, y: int) -> bool:
-        if 0 <= int(y) < len(self.carte) and 0 <= int(x) < len(self.carte[0]):
-            return True if COLLIDE_ITEM(self.carte[int(y)][int(x)][1]) else False
+        if 0 <= int(y) < self.height and 0 <= int(x) < self.width:
+            return True if COLLIDE_ITEM(self.carte[int(y), int(x), 1]) else False
         return True
 
     def trigger_at(self, x: int, y: int) -> bool:
@@ -353,7 +356,7 @@ class CartesManager:
         self.lassets = []
         self.triggers_mgr = TriggersManager()
         self.current_carte = None
-        self.carte = []
+        self.carte = None
         self.callback_end_rendering = []
         self.loaded = False
         self.has_changed_map = False
@@ -437,8 +440,8 @@ class CartesManager:
         self.adjust_offset()
 
     def adjust_offset(self):
-        x = (FEN_large - len(self.carte[0]) * TILE_SIZE) // 2 if FEN_large >= len(self.carte[0]) * TILE_SIZE else 0
-        y = (FEN_haut - len(self.carte) * TILE_SIZE) // 2 if FEN_haut >= len(self.carte) * TILE_SIZE else 0
+        x = (FEN_large - self.current_carte.width * TILE_SIZE) // 2 if FEN_large >= self.current_carte.width * TILE_SIZE else 0
+        y = (FEN_haut - self.current_carte.height * TILE_SIZE) // 2 if FEN_haut >= self.current_carte.height * TILE_SIZE else 0
         self.offsets = [x, y]
 
     def save(self):
@@ -487,9 +490,9 @@ class CartesManager:
             raise ReferenceError("Il manque un point d'entrée sur la map {} pour la map d'id {}".format(new_id, depuis))
         spawn_tiles_pos = [p * TILE_SIZE for p in tmp]
 
-        if FEN_large > len(self.carte[0]) * TILE_SIZE and FEN_haut > len(self.carte) * TILE_SIZE:
+        if FEN_large > self.current_carte.width * TILE_SIZE and FEN_haut > self.current_carte.height * TILE_SIZE:
             self.adjust_offset()
-        elif FEN_large > len(self.carte[0] * TILE_SIZE) and FEN_haut <= len(self.carte) * TILE_SIZE:
+        elif FEN_large > self.current_carte.width * TILE_SIZE and FEN_haut <= self.current_carte.height * TILE_SIZE:
             if spawn_tiles_pos[1] < (self.current_carte.height * TILE_SIZE) // 2:
                 origin_view = spawn_tiles_pos[0] - FEN_large // 2, (self.current_carte.height - FEN_haut) // 2
             else:
@@ -498,7 +501,7 @@ class CartesManager:
                 -origin_view[0],
                 -origin_view[1]
             ]
-        elif FEN_large <= len(self.carte[0] * TILE_SIZE) and FEN_haut > len(self.carte) * TILE_SIZE:
+        elif FEN_large <= self.current_carte.width * TILE_SIZE and FEN_haut > self.current_carte.height * TILE_SIZE:
             if spawn_tiles_pos[0] < (self.current_carte.width * TILE_SIZE) // 2:
                 origin_view = (self.current_carte.width - FEN_large) // 2, spawn_tiles_pos[1] - FEN_haut // 2
             else:
@@ -544,9 +547,9 @@ class CartesManager:
         self.callback_end_rendering = []
 
     def draw_top_layer(self):
-        for y in range(len(self.carte)):
-            for x in range(len(self.carte[y])):
-                tile = self.carte[y][x][0]
+        for y in range(self.current_carte.height):
+            for x in range(self.current_carte.width):
+                tile = self.carte[y, x, 0]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
 
                 if xpos < -TILE_SIZE or xpos > FEN_large or ypos < -TILE_SIZE or ypos > FEN_haut or tile == '9990':
@@ -560,8 +563,8 @@ class CartesManager:
 
         # pluie
         if self.current_carte.is_rainy():
-            for y in range(len(self.carte)):
-                for x in range(len(self.carte[y])):
+            for y in range(self.current_carte.height):
+                for x in range(self.current_carte.width):
                     rx, ry = x * TILE_SIZE + self.get_of1(), y * TILE_SIZE + self.get_of2()
                     if -TILE_SIZE < rx < FEN_large and -TILE_SIZE < ry < FEN_haut:
                         self.animators['rain'].draw_at(self.ecran, (rx, ry))
@@ -582,9 +585,9 @@ class CartesManager:
         ree.draw_rect(self.ecran, (0, 0, FEN_large, FEN_haut), (0, 0, 0))
         self.drawn_entites = 0
 
-        for y in range(len(self.carte)):
-            for x in range(len(self.carte[y])):
-                objet = self.carte[y][x]
+        for y in range(self.current_carte.height):
+            for x in range(self.current_carte.width):
+                objet = self.carte[y, x]
                 xpos, ypos = x * TILE_SIZE + self.offsets[0], y * TILE_SIZE + self.offsets[1]
 
                 if xpos < 0 or xpos > FEN_large or ypos < 0 or ypos > FEN_haut:
@@ -592,7 +595,7 @@ class CartesManager:
                     continue
                 self.drawn_entites += 1
 
-                if not isinstance(objet, list):
+                if not isinstance(objet, np.ndarray):
                     raise ErreurContenuCarte
                 else:
                     for tile in objet[::-1]:  # udel_same_occurence(*objet[::-1]):
@@ -616,7 +619,7 @@ class CartesManager:
         return self.drawn_entites
 
     def get_tile_code_at(self, x: int, y: int, layer: int=1):
-        return self.carte[int(y)][int(x)][layer] if 0 <= x < len(self.carte[0]) and 0 <= y < len(self.carte) else TILE_GET_ERROR
+        return self.carte[int(y), int(x), layer] if 0 <= x < self.current_carte.width and 0 <= y < self.current_carte.height else TILE_GET_ERROR
 
     def get_of1(self):
         return int(self.offsets[0])
@@ -628,7 +631,25 @@ class CartesManager:
         return [int(i) for i in self.offsets]
 
     def get_carte(self):
-        return self.current_carte.get_all()
+        return self.carte
+
+    @deprecated
+    def calculate_current_chunk_size_from_offsets(self) -> tuple:
+        otx, oty = self.offsets
+        otx = abs(otx) // TILE_SIZE
+        oty = abs(oty) // TILE_SIZE
+
+        if len(self.carte[oty:]) < FEN_haut // TILE_SIZE:
+            yc = len(self.carte[oty:])
+        else:
+            yc = FEN_haut // TILE_SIZE
+
+        if len(self.carte[oty:otx:]) < FEN_large // TILE_SIZE:
+            xc = len(self.carte[oty:otx:])
+        else:
+            xc = FEN_large // TILE_SIZE
+
+        return xc, yc
 
     def get_zid(self):
         return self.current_carte.get_zid()
@@ -653,7 +674,7 @@ class CartesManager:
 
     def call_trigger_at(self, x: int, y: int):
         if not self.current_carte.call_trigger_at(x, y, self.triggers_mgr):
-            if self.carte[y][x][2] in TILES_RDM_CREATURES and randint(*LUCK_RDM_CREA) >= LUCK_CREA_APPEAR:
+            if self.carte[y, x, 2] in TILES_RDM_CREATURES and randint(*LUCK_RDM_CREA) >= LUCK_CREA_APPEAR:
                 # combat !
                 self.rd_mgr.change_renderer_for(RENDER_COMBAT)
 
