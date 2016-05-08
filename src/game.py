@@ -566,6 +566,9 @@ class Game:
         self.musics_player.select(self.musics_player.get_rdm_playlist().pop())
         yield 1
 
+        if not os.path.exists(os.path.join("..", "saves")):
+            os.mkdir(os.path.join("..", "saves"))
+
         debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
 
     def render(self, dt: float=1.0):

@@ -31,7 +31,7 @@
             "duration": 4,
             "image": "professeur.png",
             "position": (0, 0),
-            "music": "02.wav",
+            "music": "04.ogg",
             "text": {
                 "with_gui": True,
                 "at_time": 0,

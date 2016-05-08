@@ -5,6 +5,17 @@ import pygame.gfxdraw
 from pygame.locals import *
 
 
+def warning(fonction):
+    warning.already_affiche = []
+
+    def wrapper(*args):
+        warning.already_affiche.append(fonction.__name__)
+        if fonction.__name__ not in warning.already_affiche:
+            print("[REE]", fonction.__name__, "est dangereux à utiliser")
+        fonction(*args)
+    return wrapper
+
+
 METHOD = "pygame"
 TYPES = [
     QUIT,
@@ -83,6 +94,7 @@ def get_method() -> str:
 
 
 def init():
+    pygame.mixer.pre_init(44100, -16, 2)
     return pygame.init()
 
 
@@ -192,12 +204,21 @@ def get_key_name(key: int) -> str:
     return pygame.key.name(key)
 
 
+@warning
 def load_music_object(path: str) -> pygame.mixer.Sound:
-    return pygame.mixer.Sound(path)
+    try:
+        return pygame.mixer.Sound(path)
+    except pygame.error:
+        print("Impossible de charger la musique à l'adresse : {}\nUne musique vide a été renvoyée".format(path))
+        return pygame.mixer.Sound(b"")
 
 
+@warning
 def load_music(path: str):
-    pygame.mixer.music.load(path)
+    try:
+        pygame.mixer.music.load(path)
+    except pygame.error:
+        print("Impossible de charger la musique à l'adresse : {}".format(path))
 
 
 def play_music(loops: int=-1):

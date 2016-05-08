@@ -254,7 +254,7 @@ class CinematiqueCreator:
         self._text = None
         self._fade = None
 
-    def load(self):
+    def load(self, with_fade: bool=True):
         if not self._loaded:
             try:
                 with open(self.path, "r", encoding="utf-8") as conf:
@@ -264,7 +264,8 @@ class CinematiqueCreator:
                 for file in glob(os.path.join(self._conf["musics_folder"], "*.*")):
                     self._sounds[os.path.basename(file)] = ree.load_music_object(file)
                 self._current = self._conf["frames_order"][0]
-                self._fade = Fading(self._conf["fade_duration"], self.ecran, "in")
+                if with_fade:
+                    self._fade = Fading(self._conf["fade_duration"], self.ecran, "in")
             except OSError:
                 raise CinematiqueIntrouvable("Avec le path suivant :", self.path)
             self._loaded = True
@@ -279,12 +280,13 @@ class CinematiqueCreator:
         self.ecran.blit(self._images[self._conf["frames"][self._current]["image"]], self._conf["frames"][self._current]["position"])
 
         # fadeout
-        if self._conf["frames"][self._current].get("fadeout", False) and self._time >= self._conf["frames"][self._current].get("duration", 99999) * 1000 - self._conf["fade_duration"] * 1000:
-            if self._fade.current() == "in" and not self._fade.playing():
-                self._fade.reverse()
-            if not self._fade.playing():
-                self._fade.reinit()
-                self._fade.start()
+        if self._fade:
+            if self._conf["frames"][self._current].get("fadeout", False) and self._time >= self._conf["frames"][self._current].get("duration", 99999) * 1000 - self._conf["fade_duration"] * 1000:
+                if self._fade.current() == "in" and not self._fade.playing():
+                    self._fade.reverse()
+                if not self._fade.playing():
+                    self._fade.reinit()
+                    self._fade.start()
         # début affichage texte
         if self._time >= self._conf["frames"][self._current]["text"].get("at_time", 0) * 1000 and not self._displaying_text:
             self._displaying_text = True
@@ -308,8 +310,9 @@ class CinematiqueCreator:
 
         if self._displaying_text and self._text:
             self._text.update_one_frame(ev)
-        if self._fade.playing():
-            self._fade.update(dt)
+        if self._fade:
+            if self._fade.playing():
+                self._fade.update(dt)
 
     def _next(self):
         self._time = 0
@@ -326,12 +329,13 @@ class CinematiqueCreator:
         if self._playing_music and not self._conf["frames"][self._current].get("last_music_continue_here", False):
             self._sounds[self._conf["frames"][last]["music"]].stop()
         # fadein
-        if self._conf["frames"][self._current].get("fadein", False) and not err:
-            if self._fade.current() == "out" and not self._fade.playing():
-                self._fade.reverse()
-            if not self._fade.playing():
-                self._fade.reinit()
-                self._fade.start()
+        if self._fade:
+            if self._conf["frames"][self._current].get("fadein", False) and not err:
+                if self._fade.current() == "out" and not self._fade.playing():
+                    self._fade.reverse()
+                if not self._fade.playing():
+                    self._fade.reinit()
+                    self._fade.start()
         # music
         if self._conf["frames"][self._current].get("music", False) and not err:
             self._playing_music = True
@@ -342,19 +346,23 @@ class CinematiqueCreator:
 
         debug.println(self._time)
 
+        # music
+        if self._conf["frames"][self._current].get("music", False):
+            self._playing_music = True
+            self._sounds[self._conf["frames"][self._current]["music"]].play()
+
         # on a besoin d'une configuration pour faire tourner la cinématique
         while self._running and self._conf:
             self.ecran.fill(0)
-            
+
             dt = self._clock.tick()  # le dt est en ms
             self._time += dt
 
             ev = ree.poll_event()
             self._process_event(ev)
 
+            self._render(ev, dt)
+            ree.flip()
+
             if self._time >= self._conf["frames"][self._current].get("duration", 0) * 1000:
                 self._next()
-
-            self._render(ev, dt)
-
-            ree.flip()
