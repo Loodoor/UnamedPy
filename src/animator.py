@@ -345,8 +345,6 @@ class CinematiqueCreator:
     def play(self):
         self._running = True
 
-        debug.println(self._time)
-
         # music
         if self._conf["frames"][self._current].get("music", False):
             self._playing_music = True

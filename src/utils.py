@@ -121,9 +121,9 @@ def deprecated(fonction):
     deprecated.already_affiche = []
 
     def wrapper(*args):
-        deprecated.already_affiche.append(fonction.__name__)
         if fonction.__name__ not in deprecated.already_affiche:
             print(fonction.__name__, "est déprécié")
+        deprecated.already_affiche.append(fonction.__name__)
         fonction(*args)
     return wrapper
 

@@ -63,6 +63,8 @@ class Adventure:
                     var, cond, next = texte[2:].split('^')
                 next = next.split('|')
                 var = var.format(**self.values)
+                if cond[0] == LOWER_STRIP_CHAR:
+                    cond = cond[1:].strip().lower()
                 if texte[1] == NOT_CHAR:
                     test = var != cond
                 else:
