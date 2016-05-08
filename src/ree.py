@@ -207,7 +207,11 @@ def get_key_name(key: int) -> str:
 @warning
 def load_music_object(path: str) -> pygame.mixer.Sound:
     try:
-        return pygame.mixer.Sound(path)
+        p = pygame.mixer.Sound(path)
+        if not p:
+            print("Impossible de charger la musique à l'adresse : {}\nUne musique vide a été renvoyée".format(path))
+            p = pygame.mixer.Sound(b"")
+        return p
     except pygame.error:
         print("Impossible de charger la musique à l'adresse : {}\nUne musique vide a été renvoyée".format(path))
         return pygame.mixer.Sound(b"")
