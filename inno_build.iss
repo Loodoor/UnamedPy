@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Unamed"
-#define MyAppVersion "0.0.3 Beta Test"
+#define MyAppVersion "Grimberger 0.1-b Beta Test"
 #define MyAppPublisher "Kubiangle (c) (r) tm"
 #define MyAppURL "http://folaefolc.hostux.fr/"
 #define MyAppExeName "main.exe"

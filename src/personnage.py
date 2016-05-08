@@ -77,8 +77,8 @@ class Personnage:
         x, y = self.pos.pos
         mx = vecteur[0] * new_speed
         my = vecteur[1] * new_speed
-        x += self.carte_mgr.get_of1() + mx
-        y += self.carte_mgr.get_of2() + my
+        x += -self.carte_mgr.get_of1() + mx
+        y += -self.carte_mgr.get_of2() + my
         tile_code = self.carte_mgr.get_tile_code_at(x // TILE_SIZE, y // TILE_SIZE)
 
         # pré-traitement avec les tiles de jump
@@ -101,10 +101,9 @@ class Personnage:
         # Détection des collisions avec les tiles et les pnjs (d'une pierre 2 coups :D)
         pnjs_rect = [pnj.get_rect() for pnj in pnjs]
 
-        def colliding(i: int, j: int):
+        def colliding(i: int, j: int) -> bool:
             # tiles_in = self.carte_mgr.get_tiles_from_rect(i + self.carte_mgr.get_of1(), j + self.carte_mgr.get_of2(), PERSO_SIZE_X, PERSO_SIZE_Y)
-
-            return False
+            return self.carte_mgr.collide_at(i // TILE_SIZE, j // TILE_SIZE)
 
         x1, y1 = x, y
         x2, y2 = x1 + TILE_SIZE, y1
@@ -257,8 +256,7 @@ class Personnage:
     def render(self):
         if DEBUG_LEVEL >= 1:
             ree.draw_rect(self.ecran, self.create_hitbox_parole(*self.pos.pos), (255, 0, 0), width=2)
-            ree.draw_rect(self.ecran, (self.pos.x, self.pos.y, PERSO_SIZE_X, PERSO_SIZE_Y), (0, 0, 255))
-            ree.draw_rect(self.ecran, (self.pos.x - self.carte_mgr.get_of1(), self.pos.y * TILE_SIZE - self.carte_mgr.get_of2(), TILE_SIZE, TILE_SIZE), (0, 255, 0))
+            ree.draw_rect(self.ecran, (self.pos.x, self.pos.y, TILE_SIZE, TILE_SIZE), (0, 255, 255))
         self.ecran.blit(self.perso, self.pos.pos)
 
     def get_pos(self) -> tuple:

@@ -344,6 +344,8 @@ class CinematiqueCreator:
 
         # on a besoin d'une configuration pour faire tourner la cinématique
         while self._running and self._conf:
+            self.ecran.fill(0)
+            
             dt = self._clock.tick()  # le dt est en ms
             self._time += dt
 
