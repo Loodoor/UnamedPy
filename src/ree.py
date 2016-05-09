@@ -8,11 +8,11 @@ from pygame.locals import *
 def warning(fonction):
     warning.already_affiche = []
 
-    def wrapper(*args):
+    def wrapper(*args, **kwargs):
         if fonction.__name__ not in warning.already_affiche:
             print("[REE]", fonction.__name__, "est dangereux à utiliser")
         warning.already_affiche.append(fonction.__name__)
-        return fonction(*args)
+        return fonction(*args, **kwargs)
     return wrapper
 
 
@@ -205,16 +205,16 @@ def get_key_name(key: int) -> str:
 
 
 @warning
-def load_music_object(path: str) -> pygame.mixer.Sound:
+def load_music_object(path: str="", buffer: str=b"") -> pygame.mixer.Sound:
     try:
         p = pygame.mixer.Sound(path)
         if not p:
-            print("Impossible de charger la musique à l'adresse : {}\nUne musique vide a été renvoyée".format(path))
-            p = pygame.mixer.Sound(b"")
+            print("(load_music_object) Impossible de charger la musique à l'adresse : {}".format(path))
+            p = pygame.mixer.Sound(buffer=buffer)
         return p
     except pygame.error:
-        print("Impossible de charger la musique à l'adresse : {}\nUne musique vide a été renvoyée".format(path))
-        return pygame.mixer.Sound(b"")
+        print("(load_music_object) Impossible de charger la musique à l'adresse : {}".format(path))
+        return pygame.mixer.Sound(buffer=buffer)
 
 
 @warning
@@ -222,7 +222,7 @@ def load_music(path: str):
     try:
         pygame.mixer.music.load(path)
     except pygame.error:
-        print("Impossible de charger la musique à l'adresse : {}".format(path))
+        print("(load_music) Impossible de charger la musique à l'adresse : {}".format(path))
 
 
 def play_music(loops: int=-1):

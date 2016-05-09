@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from exceptions import ListePleine, CinematiqueIntrouvable
-import debug
+import pickle
 from gui import *
 
 
@@ -246,6 +246,7 @@ class CinematiqueCreator:
         self._loaded = False
         self._running = False
         self.font = ree.load_font(POLICE_PATH, POL_NORMAL_TAILLE)
+        self._musics = []
         self._current = None
         self._clock = None
         self._time = 0
@@ -254,21 +255,39 @@ class CinematiqueCreator:
         self._text = None
         self._fade = None
 
-    def load(self, with_fade: bool=True):
+    def load(self, with_fade: bool=False):
         if not self._loaded:
             try:
                 with open(self.path, "r", encoding="utf-8") as conf:
                     self._conf = eval(conf.read())
-                for file in glob(os.path.join(self._conf["frames_folder"], "*.*")):
-                    self._images[os.path.basename(file)] = ree.load_image(file)
-                for file in glob(os.path.join(self._conf["musics_folder"], "*.*")):
-                    self._sounds[os.path.basename(file)] = ree.load_music_object(file)
-                self._current = self._conf["frames_order"][0]
-                if with_fade:
-                    self._fade = Fading(self._conf["fade_duration"], self.ecran, "in")
-                self._clock = ree.create_clock()
             except OSError:
                 raise CinematiqueIntrouvable("Avec le path suivant :", self.path)
+
+            self._musics = [
+                v.get("music", None) for k, v in self._conf["frames"].items()
+            ]
+
+            for file in glob(os.path.join(self._conf["frames_folder"], "*.*")):
+                try:
+                    self._images[os.path.basename(file)] = ree.load_image(file)
+                except OSError:
+                    raise OSError("Une image est manquante : {}".format(file))
+
+            for file in glob(os.path.join(self._conf["musics_folder"], "*.ogg.datas")):
+                if os.path.basename(file) in self._musics:
+                    try:
+                        buff = pickle.Unpickler(open(file, 'rb')).load()
+                        self._sounds[os.path.basename(file)] = ree.load_music_object(buffer=buff)
+                    except OSError:
+                        raise OSError("Une musique est manquante : {}".format(file))
+
+            self._current = self._conf["frames_order"][0]
+
+            if with_fade:
+                self._fade = Fading(self._conf["fade_duration"], self.ecran, "in")
+
+            self._clock = ree.create_clock()
+
             self._loaded = True
 
     def _process_event(self, ev: ree.Event):

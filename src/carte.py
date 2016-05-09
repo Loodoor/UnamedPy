@@ -675,7 +675,7 @@ class CartesManager:
     def call_trigger_at(self, x: int, y: int):
         if not self.current_carte.call_trigger_at(x, y, self.triggers_mgr):
             if 0 <= y < self.current_carte.height and 0 <= x < self.current_carte.width:
-                if self.carte[y, x, 2] in TILES_RDM_CREATURES and randint(*LUCK_RDM_CREA) >= LUCK_CREA_APPEAR:
+                if str(self.carte[y, x, 2]) in TILES_RDM_CREATURES and randint(*LUCK_RDM_CREA) >= LUCK_CREA_APPEAR:
                     # combat !
                     self.rd_mgr.change_renderer_for(RENDER_COMBAT)
 
