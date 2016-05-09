@@ -367,7 +367,7 @@ class Indexer:
                             POK_Y_IMG_CREA + (j + 1) * POK_ESP_Y_ITEM)
                         )
                     else:
-                        self.ecran.blit(self.police.render("???", POL_ANTIALISING, (255, 255, 255)),
+                        self.ecran.blit(self.police.render(DEFAULT_NAME_UNKNOWN, POL_ANTIALISING, (255, 255, 255)),
                                         (POK_X_DESC, POK_Y_DESC + POK_ESP_Y_ITEM))
                 i += 1
 

@@ -201,11 +201,8 @@ class Combat:
             if self.mon_tour():
                 self._manage_my_turn()
             else:
-                run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
-                                      self.get_adversary().get_pseudo() +
-                                      " ne sait pas quoi faire pour le moment !",
-                                      self.font)
-                self.compteur_tour += 1
+                self._manage_adversary_turn()
+            self.compteur_tour += 1
 
             if self.get_adversary().is_dead():
                 self._manage_adversary_death()
@@ -218,6 +215,22 @@ class Combat:
                 crea.taper(SPEC_DGT_BRULURE(crea.get_niv()))
             if crea.get_state() == SPEC_ETATS.poisone:
                 crea.taper(SPEC_DGT_POISON(crea.get_niv()))
+
+    def _manage_adversary_turn(self):
+        can_attack = True
+        if self.get_adversary().get_state() == SPEC_ETATS.paralise:
+            can_attack = SPEC_LUCK_OF_ATTACK(self.get_adversary().get_vit())
+
+        if can_attack:
+            pass
+        else:
+            if self.get_adversary().get_pseudo() != DEFAULT_NAME_UNKNOWN:
+                texte = self.get_adversary().get_pseudo() + " est paralisé ! Il n'a pas pu attaquer"
+            else:
+                texte = "L'ennemi est paralisé ! Il n'a pas pu attaquer"
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      texte,
+                      self.font)
 
     def _manage_my_turn(self):
         can_attack = True
@@ -235,7 +248,6 @@ class Combat:
             run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
                       self.get_my_creature().get_pseudo() + " est paralisé ! Il n'a pas pu attaquer",
                       self.font)
-            self.compteur_tour += 1
 
     def _manage_my_death(self):
         global Y_FALL
@@ -347,20 +359,20 @@ class Combat:
     def previous(self):
         self.selected_atk = self.selected_atk - 1 if self.selected_atk > 0 else 3
 
-    def attaquer(self):
-        if 0 <= self.selected_atk <= len(self.get_my_creature().get_attacks()) - 1:
-            dgts = self.get_my_creature().attaquer(self.selected_atk)
+    def attaquer(self, crea: creatures_mgr.Creature):
+        if 0 <= self.selected_atk <= len(crea.get_attacks()) - 1:
+            dgts = crea.attaquer(self.selected_atk)
             if dgts != -1:
                 self.get_adversary().taper(calcul_degats(dgts,
-                                                         self.get_my_creature().get_specs(),
+                                                         crea.get_specs(),
                                                          self.get_adversary().get_specs(),
                                                          self.storage.get_coeff(
-                                                             self.get_my_creature().get_type(),
+                                                             crea.get_type(),
                                                              self.get_adversary().get_type()
                                                          ),
-                                                         self.get_my_creature().get_type()))
+                                                         crea.get_type()))
 
-                state = self.get_my_creature().get_attacks()[self.selected_atk].get_state()
+                state = crea.get_attacks()[self.selected_atk].get_state()
                 if random.random() <= SPEC_ETAT_AFFECT_PERCENT:
                     if state == "poisone":
                         self.get_adversary().set_state(SPEC_ETATS.poison)
@@ -372,33 +384,33 @@ class Combat:
                 self.render()
 
                 run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
-                          self.get_my_creature().get_pseudo() +
+                          crea.get_pseudo() +
                           " utilise " +
-                          self.get_my_creature().get_attacks()[self.selected_atk].get_nom() +
+                          crea.get_attacks()[self.selected_atk].get_nom() +
                           " !",
                           self.font)
             else:
                 self.get_adversary().taper(
-                    calcul_degats(self.get_my_creature().lutte(),
-                                  self.get_my_creature().get_specs(),
+                    calcul_degats(crea.lutte(),
+                                  crea.get_specs(),
                                   self.get_adversary().get_specs(),
                                   self.storage.get_coeff(
-                                      self.get_my_creature().get_type(),
+                                      crea.get_type(),
                                       self.get_adversary().get_type()
                                   ),
-                                  self.get_my_creature().get_type()))
+                                  crea.get_type()))
                 self.render()
 
                 run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
                           [
-                              "{} n'a plus de PP pour attaquer !".format(self.get_my_creature().get_pseudo()),
-                              "{} utilise lutte !".format(self.get_my_creature().get_pseudo())
+                              "{} n'a plus de PP pour attaquer !".format(crea.get_pseudo()),
+                              "{} utilise lutte !".format(crea.get_pseudo())
                           ], self.font)
 
     def valide(self):
         if 0 <= self.selected_atk < len(self.get_my_creature().get_attacks()):
             self.has_attacked = True
-            self.attaquer()
+            self.attaquer(self.get_my_creature())
 
     def mouseover(self, xp: int, yp: int):
         if COMB_X_ATK <= xp <= COMB_X_ATK + COMB_SX_ATK_FIELD:
@@ -458,7 +470,7 @@ class Combat:
                             self.get_adversary().get_niv()), POL_ANTIALISING, (10, 10, 10)),
                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
         else:
-            self.ecran.blit(self.font.render("??? :: niv. {}".format(self.get_adversary().get_niv()),
+            self.ecran.blit(self.font.render(DEFAULT_NAME_UNKNOWN + " :: niv. {}".format(self.get_adversary().get_niv()),
                                              POL_ANTIALISING, (10, 10, 10)),
                             (COMB_X_ADV, COMB_Y_ADV - COMB_SY_TXT_NAME - COMB_SY_LIFE_BAR - 10))
         self.ecran.blit(self.font.render("{} :: niv. {} ({})".format(self.get_my_creature().get_pseudo(), self.get_my_creature().get_niv(), self.get_my_creature().get_formatted_state()),

@@ -183,7 +183,7 @@ class Creature:
         self.specs[SPEC_NOM] = new
 
     def get_pseudo(self):
-        return self.specs[SPEC_NOM] if self.specs[SPEC_NOM] != '' else "???"
+        return self.specs[SPEC_NOM] if self.specs[SPEC_NOM] != '' else DEFAULT_NAME_UNKNOWN
 
     def get_type(self):
         return self.specs[SPEC_TYP]

@@ -189,6 +189,65 @@ Notes :  - régions fictives souvent évoquées dans l'histoire : - Tanjoh
     -> Robert a dit d'aller dans la ville suivante
     Laquelle ? Parce que y en a 2. Piderflor ou Pah'tapey ?
     -> On va commencer par Pah'tapey je pense, ça nous mènera au centre de l'île
+    Ké chef
+    -> Et débrouille toi pour chopper d'autres créatures en chemin
+
+# La suite du voyage - no 2
+    [Prof, nous, un truc par terre]
+    Truc: Bonjour, je suis un truc !
+    -> *Continue de marcher sans rien dire :-°*
+    Cc
+    Truc: 'Alut
+    Truc: Tu veux de l'héro ? Coc' ? Métaenphétamynes ?
+    *T'avais raison*
+    Euh ... non merci ça ira vieux
+    -> *Région de pek'nos ...*
+
+# A Pah'tapey
+    [Nous, un gars]
+    Ca me fait penser à "Pate à pain"
+    Gars: Tu parles tout seul
+    Gars: T'es skizo' ?
+    Nop' Je parlais à ce truc qui m'adore en pensant qu'il va m'écouter mais en fait il doit comprendre (oui, oui, je suis bien seul dans ma vie --')
+    Gars: Tuer. Je veux tuer.
+    Oké ... Tu sais quoi, je vais te laisser :-°
+    Gars: Nan nan j'ai besoin de toi
+    Euuuh ... Si c'est pour de l'héro, demande au truc qui trainait là-bas, j'en ai pas ! J'suis clean !
+    Gars: Tu accompagnes le prof Mirabel non ?
+    Oui. Pourquoi ? Tu l'as sautée ?
+    Gars: Elle est bien plus weird que ce que tu crois :ahde:
+    ...
+
+# Seul (je pense (au sens propre))
+    [Nous, la prof]
+    Merde.
+    *mode philosophe on*
+    Est-ce que je bosse pour Mirabel car elle me l'a demandé ou bien parce que j'en ai envie ?
+    Mais à la fin, est-ce que ces voyages ont tous un but commun, celui d'aider la science ?
+    Et si ce n'était pas le cas ... ?
+    *mode philosophe off*
+    -> *bourée* Sal'ut 'oi ! T'as pas un truc à néfu pour m'oi ?
+
+# Retour au labo
+    [La prof, nous, Robert, le gars de Pah'Tapey]
+    -> Hé René !
+    C'est Robert
+    -> On s'en tape.
+    -> T'as vu ce que je t'amène ? Deux belles créatures MORTES C:
+    Robert: *vomi*
+    Robert: Désolé Mira' mais déjà la dernière fois tes fruits de mer puaient, la c'est pire --'
+    -> {player_name} vient là toi.
+    Euuh ... Où ça ?! Les trucs pas nets j'en ai marre !
+    -> *donne du VC Net active + à {player_name}*
+    --' Suuuuuuuuuicide
+    Gars: Owiii. J'peux aider ! J'peux aider !
+    Mais qu'est-ce que ... ?
+    -> Tiens toi là justement. Tu fais tout juste l'affaire. Tu peux tenir cette Tent'à cul ?
+    -> Roooooobert ! Mirabel repart en couilles
+    *une bonne fessée plus tard*
+    Robert: Go disséquer alors ;)
+    *Si tu dissèques c'est que tu es un biologiste*
+    Robert: Hein ? J'ai un diplôme de technicien de surfaces - avec un 10,1 / 20 C: -, ça suffit amplement tu sais !
 
 Nota bene : scénario pas entièrement fini. Et j'ai pu faire des fautes, je suis humain et je me plante (je tape trop en SMS xD) :'( Donc désolé si j'ai heurté quelqu'un en tapant heure taux graphe :D
 Nota bene bis : j'use énormément de smileys, je sais. Askip' c'est dangereux pour la santé xD Mais je trouve que ça donne de la vie dans les scénas (IMO)

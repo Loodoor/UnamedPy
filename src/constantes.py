@@ -178,6 +178,8 @@ TILES_RDM_CREATURES = ['6', '68', '170', '198']
 LUCK_RDM_CREA = (0, 1000)
 LUCK_CREA_APPEAR = 657  # => 65.7% de chance de pas voir de créature donc
 
+DEFAULT_NAME_UNKNOWN = "???"
+
 DEFAULT_POS_AT_BEGINNING = (FEN_large // 2, FEN_haut // 2)
 
 BULLE_SX = 620
