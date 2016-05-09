@@ -222,7 +222,7 @@ class Combat:
             can_attack = SPEC_LUCK_OF_ATTACK(self.get_adversary().get_vit())
 
         if can_attack:
-            pass
+            self.attaquer(self.get_adversary(), self.get_my_creature(), random.randrange(len(self.get_adversary().get_attacks())))
         else:
             if self.get_adversary().get_pseudo() != DEFAULT_NAME_UNKNOWN:
                 texte = self.get_adversary().get_pseudo() + " est paralisé ! Il n'a pas pu attaquer"
@@ -243,7 +243,6 @@ class Combat:
 
             if self.has_attacked:
                 self.has_attacked = False
-                self.compteur_tour += 1
         else:
             run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
                       self.get_my_creature().get_pseudo() + " est paralisé ! Il n'a pas pu attaquer",
@@ -359,58 +358,57 @@ class Combat:
     def previous(self):
         self.selected_atk = self.selected_atk - 1 if self.selected_atk > 0 else 3
 
-    def attaquer(self, crea: creatures_mgr.Creature):
-        if 0 <= self.selected_atk <= len(crea.get_attacks()) - 1:
-            dgts = crea.attaquer(self.selected_atk)
-            if dgts != -1:
-                self.get_adversary().taper(calcul_degats(dgts,
-                                                         crea.get_specs(),
-                                                         self.get_adversary().get_specs(),
-                                                         self.storage.get_coeff(
-                                                             crea.get_type(),
-                                                             self.get_adversary().get_type()
-                                                         ),
-                                                         crea.get_type()))
+    def attaquer(self, crea: creatures_mgr.Creature, adv: creatures_mgr.Creature, choice: int):
+        dgts = crea.attaquer(choice)
+        if dgts != -1:
+            adv.taper(calcul_degats(dgts,
+                                    crea.get_specs(),
+                                    adv.get_specs(),
+                                    self.storage.get_coeff(
+                                        crea.get_type(),
+                                        adv.get_type()
+                                    ),
+                                    crea.get_type()))
 
-                state = crea.get_attacks()[self.selected_atk].get_state()
-                if random.random() <= SPEC_ETAT_AFFECT_PERCENT:
-                    if state == "poisone":
-                        self.get_adversary().set_state(SPEC_ETATS.poison)
-                    if state == "brule":
-                        self.get_adversary().set_state(SPEC_ETATS.brule)
-                    if state == "paralise":
-                        self.get_adversary().set_state(SPEC_ETATS.paralise)
+            state = crea.get_attacks()[choice].get_state()
+            if random.random() <= SPEC_ETAT_AFFECT_PERCENT:
+                if state == "poisone":
+                    adv.set_state(SPEC_ETATS.poison)
+                if state == "brule":
+                    adv.set_state(SPEC_ETATS.brule)
+                if state == "paralise":
+                    adv.set_state(SPEC_ETATS.paralise)
 
-                self.render()
+            self.render()
 
-                run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
-                          crea.get_pseudo() +
-                          " utilise " +
-                          crea.get_attacks()[self.selected_atk].get_nom() +
-                          " !",
-                          self.font)
-            else:
-                self.get_adversary().taper(
-                    calcul_degats(crea.lutte(),
-                                  crea.get_specs(),
-                                  self.get_adversary().get_specs(),
-                                  self.storage.get_coeff(
-                                      crea.get_type(),
-                                      self.get_adversary().get_type()
-                                  ),
-                                  crea.get_type()))
-                self.render()
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      crea.get_pseudo() +
+                      " utilise " +
+                      crea.get_attacks()[choice].get_nom() +
+                      " !",
+                      self.font)
+        else:
+            adv.taper(
+                calcul_degats(crea.lutte(),
+                              crea.get_specs(),
+                              adv.get_specs(),
+                              self.storage.get_coeff(
+                                  crea.get_type(),
+                                  adv.get_type()
+                              ),
+                              crea.get_type()))
+            self.render()
 
-                run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
-                          [
-                              "{} n'a plus de PP pour attaquer !".format(crea.get_pseudo()),
-                              "{} utilise lutte !".format(crea.get_pseudo())
-                          ], self.font)
+            run_bulle("waiting", self.ecran, (POS_BULLE_X, POS_BULLE_Y),
+                      [
+                          "{} n'a plus de PP pour attaquer !".format(crea.get_pseudo()),
+                          "{} utilise lutte !".format(crea.get_pseudo())
+                      ], self.font)
 
     def valide(self):
         if 0 <= self.selected_atk < len(self.get_my_creature().get_attacks()):
             self.has_attacked = True
-            self.attaquer(self.get_my_creature())
+            self.attaquer(self.get_my_creature(), self.get_adversary(), self.selected_atk)
 
     def mouseover(self, xp: int, yp: int):
         if COMB_X_ATK <= xp <= COMB_X_ATK + COMB_SX_ATK_FIELD:
