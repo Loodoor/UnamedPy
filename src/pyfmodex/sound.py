@@ -3,6 +3,7 @@ from .fmodobject import _dll
 from .structures import TAG, VECTOR
 from .globalvars import get_class
 
+
 class ConeSettings(object):
     def __init__(self, sptr):
         self._sptr = sptr
@@ -14,6 +15,7 @@ class ConeSettings(object):
     @property
     def inside_angle(self):
         return self._in.value
+
     @inside_angle.setter
     def inside_angle(self, angle):
         self._in = c_float(angle)
@@ -22,6 +24,7 @@ class ConeSettings(object):
     @property
     def outside_angle(self):
         return self._out.value
+
     @outside_angle.setter
     def outside_angle(self, angle):
         self._out = c_float(angle)
@@ -30,6 +33,7 @@ class ConeSettings(object):
     @property
     def outside_volume(self):
         return self._outvol.value
+
     @outside_volume.setter
     def outside_volume(self, vol):
         self._outvol = c_float(vol)
@@ -37,6 +41,7 @@ class ConeSettings(object):
 
     def _commit(self):
         ckresult(_dll.FMOD_Sound_Set3DConeSettings(self._sptr, self._in, self._out, self._outvol))
+
 
 class Sound(FmodObject):
     def add_sync_point(self, offset, offset_type, name):
@@ -61,6 +66,7 @@ class Sound(FmodObject):
         curve = (VECTOR * num.value)()
         self._call_fmod("FMOD_Sound_Get3DCustomRolloff", byref(curve), 0)
         return [p.to_list() for p in curve]
+
     @custom_rolloff.setter
     def custom_rolloff(self, curve):
         """Sets the custom rolloff curve.
@@ -76,6 +82,7 @@ class Sound(FmodObject):
         max = c_float()
         ckresult(_dll.FMOD_Sound_Get3DMinMaxDistance(self._ptr, byref(min), byref(max)))
         return (min.value, max.value)
+
     @_min_max_distance.setter
     def _min_max_distance(self, dists):
         ckresult(_dll.FMOD_Sound_Set3DMinMaxDistance(self._ptr, c_float(dists[0]), c_float(dists[1])))
@@ -83,6 +90,7 @@ class Sound(FmodObject):
     @property
     def min_distance(self):
         return self._min_max_distance[0]
+
     @min_distance.setter
     def min_distance(self, dist):
         self._min_max_distance = (dist, self._min_max_distance[1])
@@ -90,6 +98,7 @@ class Sound(FmodObject):
     @property
     def max_distance(self):
         return self._min_max_distance[1]
+
     @max_distance.setter
     def max_distance(self, dist):
         self._min_max_distance = (self._min_max_distance[0], dist)
@@ -102,6 +111,7 @@ class Sound(FmodObject):
         pri = c_int()
         ckresult(_dll.FMOD_Sound_GetDefaults(self._ptr, byref(freq), byref(vol), byref(pan), byref(pri)))
         return [freq.value, vol.value, pan.value, pri.value]
+
     @_defaults.setter
     def _defaults(self, vals):
         ckresult(_dll.FMOD_Sound_SetDefaults(self._ptr, c_float(vals[0]), c_float(vals[1]), c_float(vals[2]), vals[3]))
@@ -109,6 +119,7 @@ class Sound(FmodObject):
     @property
     def default_frequency(self):
         return self._defaults[0]
+
     @default_frequency.setter
     def default_frequency(self, freq):
         d = self._defaults
@@ -118,6 +129,7 @@ class Sound(FmodObject):
     @property
     def default_volume(self):
         return self._defaults[1]
+
     @default_volume.setter
     def default_volume(self, vol):
         d = self._defaults
@@ -127,6 +139,7 @@ class Sound(FmodObject):
     @property
     def default_pan(self):
         return self._defaults[2]
+
     @default_pan.setter
     def default_pan(self, pan):
         d = self._defaults
@@ -136,6 +149,7 @@ class Sound(FmodObject):
     @property
     def default_priority(self):
         return self._defaults[3]
+
     @default_priority.setter
     def default_priority(self, pri):
         d = self._defaults
@@ -160,6 +174,7 @@ class Sound(FmodObject):
         c = c_int()
         ckresult(_dll.FMOD_Sound_GetLoopCount(self._ptr, byref(c)))
         return c.value
+
     @loop_count.setter
     def loop_count(self, count):
         ckresult(_dll.FMOD_Sound_SetLoopCount(self._ptr, count))
@@ -168,11 +183,12 @@ class Sound(FmodObject):
     def loop_points(self):
         """Returns tuple of two tuples ((start, startunit),(end, endunit))"""
         start = c_uint()
-        startunit = c_int()    
+        startunit = c_int()
         end = c_uint()
         endunit = c_int()
         ckresult(_dll.FMOD_Sound_GetLoopPoints(self._ptr, byref(start), byref(startunit), byref(end), byref(endunit)))
         return ((start.value, startunit.value), (end.value, endunit.value))
+
     @loop_points.setter
     def loop_points(self, p):
         """Same format as returned from this property is required to successfully call this setter."""
@@ -183,6 +199,7 @@ class Sound(FmodObject):
         mode = c_int()
         ckresult(_dll.FMOD_Sound_GetMode(self._ptr, byref(mode)))
         return mode.value
+
     @mode.setter
     def mode(self, m):
         ckresult(_dll.FMOD_Sound_SetMode(self._ptr, m))
@@ -191,6 +208,7 @@ class Sound(FmodObject):
         v = c_float()
         ckresult(_dll.FMOD_Sound_GetMusicChannelVolume(self._ptr, channel, byref(v)))
         return v.value
+
     def set_music_channel_volume(self, id, vol):
         ckresult(_dll.FMOD_Sound_SetMusicChannelVolume(self._ptr, id, c_float(vol)))
 
@@ -230,14 +248,17 @@ class Sound(FmodObject):
         percentbuffered = c_uint()
         starving = c_bool()
         diskbusy = c_bool()
-        ckresult(_dll.FMOD_Sound_GetOpenState(self._ptr, byref(state), byref(percentbuffered), byref(starving), byref(diskbusy)))
-        return so(state=state.value, percent_buffered=percentbuffered.value, starving=starving.value, disk_busy=diskbusy.value)
+        ckresult(_dll.FMOD_Sound_GetOpenState(self._ptr, byref(state), byref(percentbuffered), byref(starving),
+                                              byref(diskbusy)))
+        return so(state=state.value, percent_buffered=percentbuffered.value, starving=starving.value,
+                  disk_busy=diskbusy.value)
 
     @property
     def sound_group(self):
         grp_ptr = c_void_p()
         ckresult(_dll.FMOD_Sound_GetSoundGroup(self._ptr, byref(grp_ptr)))
         return get_class("SoundGroup")(grp_ptr)
+
     @sound_group.setter
     def sound_group(self, group):
         check_type(group, get_class("SoundGroup"))
@@ -281,6 +302,7 @@ class Sound(FmodObject):
         pan = c_float()
         ckresult(_dll.FMOD_Sound_GetVariations(self._ptr, byref(freq), byref(vol), byref(pan)))
         return [freq.value, vol.value, pan.value]
+
     @_variations.setter
     def _variations(self, vars):
         ckresult(_dll.FMOD_Sound_SetVariations(self._ptr, c_float(vars[0]), c_float(vars[1]), c_float(vars[2])))
@@ -288,6 +310,7 @@ class Sound(FmodObject):
     @property
     def frequency_variation(self):
         return self._variations[0]
+
     @frequency_variation.setter
     def frequency_variation(self, var):
         v = self._variations
@@ -297,6 +320,7 @@ class Sound(FmodObject):
     @property
     def volume_variation(self):
         return self._variations[1]
+
     @volume_variation.setter
     def volume_variation(self, var):
         v = self._variations
@@ -306,6 +330,7 @@ class Sound(FmodObject):
     @property
     def pan_variation(self):
         return self._variations[2]
+
     @pan_variation.setter
     def pan_variation(self, var):
         v = self._variations
@@ -342,6 +367,7 @@ class Sound(FmodObject):
         speed = c_float()
         self._call_fmod("FMOD_Sound_GetMusicSpeed", byref(speed))
         return speed.value
+
     @music_speed.setter
     def music_speed(self, speed):
         self._call_fmod("FMOD_Sound_SetMusicSpeed", c_float(speed))

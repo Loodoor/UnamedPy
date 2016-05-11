@@ -2,8 +2,8 @@ from .fmodobject import *
 from .globalvars import dll as _dll
 from .globalvars import get_class
 
-class ChannelGroup(FmodObject):
 
+class ChannelGroup(FmodObject):
     def add_dsp(self, dsp):
         check_type(dsp, get_class("DSP"))
         c_ptr = c_void_p()
@@ -19,7 +19,8 @@ class ChannelGroup(FmodObject):
         direct = c_float()
         reverb = c_float()
         self._call_fmod("FMOD_ChannelGroup_Get3DOcclusion", byref(direct), byref(reverb))
-        return (direct.value, reverb.value)
+        return direct.value, reverb.value
+
     @_occlusion.setter
     def _occlusion(self, occs):
         self._call_fmod("FMOD_ChannelGroup_Set3DOcclusion", c_float(occs[0]), c_float(occs[1]))
@@ -27,6 +28,7 @@ class ChannelGroup(FmodObject):
     @property
     def direct_occlusion(self):
         return self._occlusion[0]
+
     @direct_occlusion.setter
     def direct_occlusion(self, occ):
         self._occlusion = (occ, self._occlusion[1])
@@ -34,6 +36,7 @@ class ChannelGroup(FmodObject):
     @property
     def reverb_occlusion(self):
         return self._occlusion[1]
+
     @reverb_occlusion.setter
     def reverb_occlusion(self, occ):
         self._occlusion = (self._occlusion[0], occ)
@@ -59,6 +62,7 @@ class ChannelGroup(FmodObject):
         mute = c_bool()
         self._call_fmod("FMOD_ChannelGroup_GetMute", byref(mute))
         return mute.value
+
     @mute.setter
     def mute(self, m):
         self._call_fmod("FMOD_Channel_SetMute", m)
@@ -92,6 +96,7 @@ class ChannelGroup(FmodObject):
         paused = c_bool()
         self._call_fmod("FMOD_ChannelGroup_GetPaused", byref(paused))
         return paused.value
+
     @paused.setter
     def paused(self, p):
         self._call_fmod("FMOD_ChannelGroup_SetPaused", p)
@@ -101,6 +106,7 @@ class ChannelGroup(FmodObject):
         pitch = c_float()
         self._call_fmod("FMOD_ChannelGroup_GetPitch", byref(pitch))
         return pitch.value
+
     @property
     def pitch(self, p):
         self._call_fmod("FMOD_ChannelGroup_SetPitch", p)
@@ -108,7 +114,7 @@ class ChannelGroup(FmodObject):
     def get_spectrum(self, numvalues, channeloffset, window):
         arr = c_float * numvalues
         arri = arr()
-        self._call_fmod("FMOD_ChannelGroup_GetSpectrum", byref(arri), numvalues,  channeloffset, window)
+        self._call_fmod("FMOD_ChannelGroup_GetSpectrum", byref(arri), numvalues, channeloffset, window)
         return list(arri)
 
     @property
@@ -122,6 +128,7 @@ class ChannelGroup(FmodObject):
         vol = c_float()
         self._call_fmod("FMOD_ChannelGroup_GetVolume", byref(vol))
         return vol.value
+
     @volume.setter
     def volume(self, vol):
         self._call_fmod("FMOD_ChannelGroup_SetVolume", c_float(vol))
@@ -129,7 +136,7 @@ class ChannelGroup(FmodObject):
     def get_wave_data(self, numvalues, channeloffset):
         arr = c_float * numvalues
         arri = arr()
-        self._call_fmod("FMOD_ChannelGroup_GetWaveData", byref(arri), numvalues,  channeloffset)
+        self._call_fmod("FMOD_ChannelGroup_GetWaveData", byref(arri), numvalues, channeloffset)
         return list(arri)
 
     def override_3d_attributes(self, pos=0, vel=0):
@@ -146,13 +153,15 @@ class ChannelGroup(FmodObject):
         self._call_fmod("FMOD_ChannelGroup_OverrideReverbProperties", props)
 
     def override_speaker_mix(self, frontleft, frontright, center, lfe, backleft, backright, sideleft, sideright):
-        self._call_fmod("FMOD_ChannelGroup_OverrideSpeakerMix", frontleft, frontright, center, lfe, backleft, backright, sideleft, sideright)
+        self._call_fmod("FMOD_ChannelGroup_OverrideSpeakerMix", frontleft, frontright, center, lfe, backleft, backright,
+                        sideleft, sideright)
 
     def override_volume(self, vol):
         self._call_fmod("FMOD_ChannelGroup_OverrideVolume", c_float(vol))
 
     def release(self):
         self._call_fmod("FMOD_ChannelGroup_Release")
+
     def stop(self):
         self._call_fmod("FMOD_ChannelGroup_Stop")
 
@@ -161,6 +170,7 @@ class ChannelGroup(FmodObject):
         props = REVERB_CHANNELPROPERTIES()
         ckresult(_dll.FMOD_ChannelGroup_GetReverbProperties(self._ptr, byref(props)))
         return props
+
     @reverb_properties.setter
     def reverb_properties(self, props):
         check_type(props, REVERB_CHANNELPROPERTIES)

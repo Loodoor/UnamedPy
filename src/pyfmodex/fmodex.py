@@ -10,9 +10,9 @@ arch = platform.architecture()[0]
 
 if os.name == 'nt':
     if arch == "32bit":
-        _dll = CDLL('../assets/lib/fmod.dll')
+        _dll = CDLL('../assets/lib/fmodL.dll')
     else:
-        _dll = CDLL('../assets/lib/fmod64.dll')
+        _dll = CDLL('../assets/lib/fmodL64.dll')
 elif os.name == "posix":
     if arch == "32bit":
         _dll = CDLL('../assets/lib/libfmodex.so')

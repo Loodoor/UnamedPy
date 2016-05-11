@@ -1,10 +1,10 @@
-#Implementation from http://benlast.livejournal.com/12301.html with removed unnecessary zope security flag
+# Implementation from http://benlast.livejournal.com/12301.html with removed unnecessary zope security flag
 class Structobject(object):
     def __init__(self, **kw):
         """Initialize, and set attributes from all keyword arguments."""
-        self.__members=[]
+        self.__members = []
         for k in list(kw.keys()):
-            setattr(self,k,kw[k])
+            setattr(self, k, kw[k])
             self.__remember(k)
 
 
@@ -48,6 +48,6 @@ class Structobject(object):
         s = ""
         for x in self.__members:
             v = getattr(self, x)
-            if s: s+=", "
+            if s: s += ", "
             s += "%s: %s" % (x, repr(v))
         return s

@@ -2,8 +2,8 @@ from .fmodobject import *
 from .fmodobject import _dll
 from .globalvars import get_class
 
-class DSP(FmodObject):
 
+class DSP(FmodObject):
     def add_input(self, input):
         check_type(input, DSP)
         connptr = c_void_p()
@@ -22,6 +22,7 @@ class DSP(FmodObject):
         ac = c_bool()
         ckresult(_dll.FMOD_DSP_GetActive(self._ptr, byref(ac)))
         return ac.value
+
     @active.setter
     def active(self, ac):
         ckresult(_dll.FMOD_DSP_SetActive(self._ptr, ac))
@@ -31,9 +32,11 @@ class DSP(FmodObject):
         bp = c_bool()
         ckresult(_dll.FMOD_DSP_GetBypass(self._ptr, byref(bp)))
         return bp.value
+
     @bypass.setter
     def bypass(self, bp):
         ckresult(_dll.FMOD_DSP_SetBypass(self._ptr, bp))
+
     @property
     def _defaults(self):
         freq = c_float()
@@ -42,6 +45,7 @@ class DSP(FmodObject):
         pri = c_int()
         ckresult(_dll.FMOD_DSP_GetDefaults(self._ptr, byref(freq), byref(pan), byref(vol), byref(pri)))
         return [freq.value, pan.value, vol.value, pri.value]
+
     @_defaults.setter
     def _defaults(self, vals):
         ckresult(_dll.FMOD_DSP_SetDefaults(self._ptr, c_float(vals[1]), c_float(vals[1]), c_float(vals[2]), vals[3]))
@@ -49,6 +53,7 @@ class DSP(FmodObject):
     @property
     def default_frequency(self):
         return self._defaults[1]
+
     @default_frequency.setter
     def default_frequency(self, f):
         d = self._defaults
@@ -58,6 +63,7 @@ class DSP(FmodObject):
     @property
     def default_pan(self):
         return self._defaults[1]
+
     @default_pan.setter
     def default_pan(self, p):
         d = self._defaults
@@ -67,6 +73,7 @@ class DSP(FmodObject):
     @property
     def default_volume(self):
         return self._defaults[2]
+
     @default_volume.setter
     def default_volume(self, v):
         d = self._defaults
@@ -76,6 +83,7 @@ class DSP(FmodObject):
     @property
     def default_priority(self):
         return self._defaults[3]
+
     @default_priority.setter
     def default_priority(self, p):
         d = self._defaults
@@ -90,7 +98,8 @@ class DSP(FmodObject):
         cfgw = c_int()
         cfgh = c_int()
         ckresult(_dll.FMOD_DSP_GetInfo(self._ptr, byref(name), byref(ver), byref(chans), byref(cfgw), byref(cfgh)))
-        return so(name=name.value, version=ver.value, channels=chans.value, config_width=cfgw.value, config_height=cfgh.value)
+        return so(name=name.value, version=ver.value, channels=chans.value, config_width=cfgw.value,
+                  config_height=cfgh.value)
 
     def get_input(self, index):
         i_ptr = c_void_p()
@@ -128,7 +137,9 @@ class DSP(FmodObject):
         desc = create_string_buffer(512)
         min = c_float()
         max = c_float()
-        ckresult(_dll.FMOD_DSP_GetParameterInfo(self._ptr, index, byref(name), byref(label), byref(desc), 512, byref(min), byref(max)))
+        ckresult(
+            _dll.FMOD_DSP_GetParameterInfo(self._ptr, index, byref(name), byref(label), byref(desc), 512, byref(min),
+                                           byref(max)))
         return so(name=name.value, label=label.value, description=desc.value, min=min.value, max=max.value)
 
     def set_param(self, index, val):
@@ -158,7 +169,7 @@ class DSP(FmodObject):
         ckresult(_dll.FMOD_DSP_Release(self._ptr))
 
     def remove(self):
-        ckresult(_dll.FMOD_DSP_Remove(self._ptr))    
+        ckresult(_dll.FMOD_DSP_Remove(self._ptr))
 
     def reset(self):
         ckresult(_dll.FMOD_DSP_Reset(self._ptr))

@@ -3,13 +3,14 @@ from .fmodobject import *
 from .globalvars import dll as _dll
 from ctypes import create_string_buffer
 
-class SoundGroup(FmodObject):
 
-    @property    
+class SoundGroup(FmodObject):
+    @property
     def max_audible(self):
         val = c_int()
         ckresult(_dll.FMOD_SoundGroup_GetMaxAudible(self._ptr, byref(val)))
         return val.value
+
     @max_audible.setter
     def max_audible(self, val):
         ckresult(_dll.FMOD_SoundGroup_SetMaxAudible(self._ptr, val))
@@ -19,6 +20,7 @@ class SoundGroup(FmodObject):
         behavior = c_int()
         ckresult(_dll.FMOD_SoundGroup_GetMaxAudibleBehavior(self._ptr, byref(behavior)))
         return behavior.value
+
     @max_audible_behavior.setter
     def max_audible_behavior(self, behavior):
         ckresult(_dll.FMOD_SoundGroup_SetMaxAudibleBehavior(self._ptr, behavior))
@@ -28,6 +30,7 @@ class SoundGroup(FmodObject):
         speed = c_float()
         ckresult(_dll.FMOD_SoundGroup_GetMuteFadeSpeed(self._ptr, byref(speed)))
         return speed.value
+
     @mute_fade_speed.setter
     def mute_fade_speed(self, speed):
         ckresult(_dll.FMOD_SoundGroup_SetMuteFadeSpeed(self._ptr, speed))
@@ -66,6 +69,7 @@ class SoundGroup(FmodObject):
         vol = c_float()
         ckresult(_dll.FMOD_SoundGroup_GetVolume(self._ptr, byref(vol)))
         return vol.value
+
     @volume.setter
     def volume(self, vol):
         ckresult(_dll.FMOD_SoundGroup_SetVolume(self._ptr, c_float(vol)))

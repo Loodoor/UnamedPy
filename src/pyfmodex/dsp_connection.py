@@ -2,8 +2,8 @@ from .fmodobject import *
 from .fmodobject import _dll
 from .globalvars import get_class
 
-class DSPConnection(FmodObject):
 
+class DSPConnection(FmodObject):
     @property
     def input(self):
         dsp_ptr = c_void_p()
@@ -15,6 +15,7 @@ class DSPConnection(FmodObject):
         m_val = c_float()
         ckresult(_dll.FMOD_DSPConnection_GetMix(self._ptr, byref(m_val)))
         return m_val.value
+
     @mix.setter
     def mix(self, m):
         ckresult(_dll.FMOD_DSPConnection_SetMix(self._ptr, m))
