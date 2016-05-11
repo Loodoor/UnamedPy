@@ -18,6 +18,10 @@ def warning(fonction):
     return wrapper
 
 
+def _diacritic(chain: str) -> str:
+    return ''.join(c for c in chain if c not in [':', '/', ',', '?', '!', '.', ';', '*', '-', '+', ' '])
+
+
 METHOD = "pygame"
 TYPES = [
     QUIT,
@@ -68,6 +72,14 @@ sound = fmod.sound.Sound
 ssound = None
 
 
+class _TmpBuffer:
+    def __call__(self, *args, **kwargs):
+        self.__dict__.update(*args, **kwargs)
+
+    def __contains__(self, item):
+        return item in self.__dict__
+
+
 class Event:
     def __init__(self, pg_event: pygame.event):
         self._ev = pg_event
@@ -92,6 +104,9 @@ class Event:
 
     def __ne__(self, other) -> bool:
         return not self == other
+
+
+_buffer = _TmpBuffer()
 
 
 def get_method() -> str:
@@ -217,15 +232,28 @@ def get_key_name(key: int) -> str:
 
 def load_music_object(path: str="") -> sound:
     global ssound
+    global _buffer
     try:
         if ssound:
             return ssound.create_sound(path)
-        return pygame.mixer.Sound(buffer=b"")
-    except fmod.utils.FmodError or pygame.error as e:
+        if os.path.exists(path) and path not in _buffer:
+            try:
+                print("(load_music_object) Attente ... Chargement de données lourdes sur %s" % path)
+                _buffer(**{_diacritic(path): pygame.mixer.Sound(path)})
+                return _buffer.path
+            except pygame.error as e:
+                print("(load_music_object) Impossible de charger la musique à l'adresse : {}".format(path))
+                print("(load_music_object) Fichier existant : {}".format(os.path.exists(path)))
+                print("[REE] Err: %s" % e)
+                return pygame.mixer.Sound(buffer=b"")
+    except fmod.utils.FmodError as e:
         print("(load_music_object) Impossible de charger la musique à l'adresse : {}".format(path))
         print("(load_music_object) Fichier existant : {}".format(os.path.exists(path)))
         print("[REE] Err: %s" % e)
-        return pygame.mixer.Sound(buffer=b"")
+        if os.path.exists(path) and path not in _buffer:
+            print("(load_music_object) Attente ... Chargement de données lourdes sur %s" % path)
+            _buffer(**{_diacritic(path): pygame.mixer.Sound(path)})
+        return _buffer.path
 
 
 @warning
