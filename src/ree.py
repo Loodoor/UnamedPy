@@ -233,6 +233,7 @@ def get_key_name(key: int) -> str:
 def load_music_object(path: str="") -> sound:
     global ssound
     global _buffer
+
     try:
         if ssound:
             return ssound.create_sound(path)
@@ -268,13 +269,10 @@ def load_music(path: str):
 
 @warning
 def play_music(loops: int=-1):
-    if ssound:
-        pass
-    else:
-        try:
-            pygame.mixer.music.play(loops=loops)
-        except pygame.error as e:
-            print("[REE] Err: %s" % e)
+    try:
+        pygame.mixer.music.play(loops=loops)
+    except pygame.error as e:
+        print("[REE] Err: %s" % e)
 
 
 def stop_music(s: sound or pygame.mixer.Sound):
@@ -302,6 +300,8 @@ def fadeout_music(value: float):
 
 
 def is_mixer_busy() -> bool:
+    if ssound:
+        return fmod.get_disk_busy()
     return pygame.mixer.get_busy()
 
 
