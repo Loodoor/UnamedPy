@@ -3,6 +3,7 @@
 import pygame
 import pygame.gfxdraw
 from pygame.locals import *
+import pyfmodex as fmod
 
 
 def warning(fonction):
@@ -61,6 +62,9 @@ surf = pygame.Surface
 rect = pygame.Rect
 font = pygame.font.Font
 mask = pygame.mask.Mask
+sound = fmod.sound.Sound
+
+ssound = None
 
 
 class Event:
@@ -94,7 +98,10 @@ def get_method() -> str:
 
 
 def init():
+    global ssound
     pygame.mixer.pre_init(44100, -16, 2)
+    ssound = fmod.System()
+    ssound.init()
     return pygame.init()
 
 
@@ -204,17 +211,12 @@ def get_key_name(key: int) -> str:
     return pygame.key.name(key)
 
 
-@warning
-def load_music_object(path: str="", buffer: str=b"") -> pygame.mixer.Sound:
+def load_music_object(path: str="") -> sound:
+    global ssound
     try:
-        p = pygame.mixer.Sound(path)
-        if not p:
-            print("(load_music_object) Impossible de charger la musique à l'adresse : {}".format(path))
-            p = pygame.mixer.Sound(buffer=buffer)
-        return p
-    except pygame.error:
+        return ssound.create_sound(path)
+    except OSError:
         print("(load_music_object) Impossible de charger la musique à l'adresse : {}".format(path))
-        return pygame.mixer.Sound(buffer=buffer)
 
 
 @warning
@@ -225,16 +227,20 @@ def load_music(path: str):
         print("(load_music) Impossible de charger la musique à l'adresse : {}".format(path))
 
 
+@warning
 def play_music(loops: int=-1):
     pygame.mixer.music.play(loops=loops)
 
 
-def stop_music():
-    pygame.mixer.music.stop()
+def stop_music(s: sound):
+    global ssound
+    c = s.num_music_channels
+    ssound.get_channel(c).stop()
 
 
+@warning
 def fadeout_music(value: float):
-    pygame.mixer.music.fadeout(value)
+    pass  # pygame.mixer.music.fadeout(value)
 
 
 def is_mixer_busy() -> bool:

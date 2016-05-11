@@ -15,15 +15,19 @@ import random
 class MusicPlayer:
     def __init__(self):
         self.folder = os.path.join("..", "assets", "sons")
-        self.sounds_path = glob(os.path.join(self.folder, "*.ogg.datas"))
+        self.sounds_path = glob(os.path.join(self.folder, "*.ogg"))
+        self.sounds = {}
         self.__current = -1
         self.__rdm_playing_list = []
         self.__playing = False
         self.__looping = False
-        self.__music_lenght = 60 * 3 + 30  # c'est une moyenne
         self.__start_playing_at = 0
 
         self.__stop = False
+
+    def load(self):
+        for file in self.sounds_path:
+            self.sounds_path[os.path.basename(file)] = ree.load_music_object(file)
 
     def select(self, sound_index: int):
         if 0 <= sound_index < len(self.sounds_path):
@@ -56,17 +60,14 @@ class MusicPlayer:
             self.__playing = True
             self.__start_playing_at = time.time()
             self.__looping = True if loop == -1 else False
-
-            ree.load_music(self.sounds_path[self.__current])
-            ree.play_music(loops=loop)
         else:
             if not self.__looping:
-                if time.time() >= self.__start_playing_at + self.__music_lenght:
+                if time.time() >= self.__start_playing_at + self.sounds[self.__current].get_length():
                     self.__playing = False
 
     def stop(self):
         if self.__current != -1 and self.is_playing():
-            ree.stop_music()
+            ree.stop_music(self.sounds[self.__current])
             self.__playing = False
             self.__stop = True
 

@@ -12,7 +12,7 @@
             "duration": 5,
             "image": "professeur.png",
             "position": (0, 0),
-            "music": "02.ogg.datas",
+            "music": "02.ogg",
             "text": {
                 "with_gui": True,
                 "at_time": 0,

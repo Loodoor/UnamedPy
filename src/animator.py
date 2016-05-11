@@ -273,11 +273,10 @@ class CinematiqueCreator:
                 except OSError:
                     raise OSError("Une image est manquante : {}".format(file))
 
-            for file in glob(os.path.join(self._conf["musics_folder"], "*.ogg.datas")):
+            for file in glob(os.path.join(self._conf["musics_folder"], "*.ogg")):
                 if os.path.basename(file) in self._musics:
                     try:
-                        buff = pickle.Unpickler(open(file, 'rb')).load()
-                        self._sounds[os.path.basename(file)] = ree.load_music_object(buffer=buff)
+                        self._sounds[os.path.basename(file)] = ree.load_music_object(file)
                     except OSError:
                         raise OSError("Une musique est manquante : {}".format(file))
 
@@ -347,7 +346,7 @@ class CinematiqueCreator:
 
         # continuation de la musique
         if self._playing_music and not self._conf["frames"][self._current].get("last_music_continue_here", False):
-            self._sounds[self._conf["frames"][last]["music"]].stop()
+            ree.stop_music(self._sounds[self._conf["frames"][last]["music"]])
         # fadein
         if self._fade:
             if self._conf["frames"][self._current].get("fadein", False) and not err:

@@ -544,6 +544,9 @@ class Game:
         self.equipe_mgr.add_pc(self.pc_mgr)
         yield 1
 
+        self.musics_player.load()
+        yield 1
+
         for i in self.load():
             yield i
 
