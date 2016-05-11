@@ -50,13 +50,7 @@ Temporary Items
 .apdisk
 
 # Directory of Unamed (saves)
-saves/indexer.umd
-saves/inventaire.umd
-saves/pos.umd
-saves/pseudo.umd
-saves/triggers.umd
-saves/utils.umd
-saves/zones.umd
+saves/*
 
 # Directory of PyCharm
 .idea
