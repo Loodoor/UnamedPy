@@ -49,8 +49,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Directory of Unamed (saves)
+# Directory of Unamed
 saves/*
+assets/map/*.umd
 
 # Directory of PyCharm
 .idea
