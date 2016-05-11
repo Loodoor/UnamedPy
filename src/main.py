@@ -8,7 +8,7 @@ if os.path.split(os.getcwd())[1] not in ["src", "build"]:
     raise ErreurRepertoire("Le répertoire courant n'est pas correct, le jeu ne peut pas se lancer")
 if not os.path.exists(os.path.join("..", "saves")):
     os.mkdir(os.path.join("..", "saves"))
-debug.println("Chargement ...")
+debug.println("[CORE] Chargement ...")
 
 import socket
 from glob import glob
@@ -33,12 +33,12 @@ def get_alea_text(path: str="textes") -> str:
 def main():
     start_at = time.time()
     tmp = ree.init()
-    debug.println("Initialisation de Pygame ... {modules} ; {erreurs}".format(
+    debug.println("[CORE] Initialisation de Pygame ... {modules} ; {erreurs}".format(
         modules="Modules chargés : {}".format(tmp[0]),
         erreurs="Erreurs de chargement : {}".format(tmp[1])
     ))
-    debug.println("Initialisation de Pygame.Font ...", ree.init_font())
-    debug.println("Initialisation de Pygame.Mixer ...", ree.init_mixer())
+    debug.println("[CORE] Initialisation de Pygame.Font ...", ree.init_font())
+    debug.println("[CORE] Initialisation de Pygame.Mixer ...", ree.init_mixer())
 
     if DEBUG_LEVEL >= 1:
         ecran = ree.create_window((DEBUG_FEN_large, DEBUG_FEN_haut), HWSURFACE)
@@ -64,7 +64,7 @@ def main():
                                       encoding='utf-8').read(),
                                  POL_ANTIALISING, (0, 0, 0))
 
-    debug.println("Appuyez sur 'J' pour lancer le jeu")
+    debug.println("[CORE] Appuyez sur 'J' pour lancer le jeu")
 
     continuer = 1
     has_already_played = adventure.has_already_played()
@@ -83,13 +83,13 @@ def main():
     except OSError:
         max_avancement = 98
 
-    debug.println("Menu chargé en %3.4f sec" % (time.time() - start_at))
-    debug.println("Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
+    debug.println("[CORE] Menu chargé en %3.4f sec" % (time.time() - start_at))
+    debug.println("[CORE] Aucune partie trouvée" if not has_already_played else "Une partie a bien été trouvée")
 
     temp = utils.ULoader()
     temp.load()
     del temp
-    debug.println("Chargement et création des valeurs par défaut terminé")
+    debug.println("[CORE] Chargement et création des valeurs par défaut terminé")
 
     while continuer:
         dt = clock.tick()
@@ -108,7 +108,7 @@ def main():
                 if MENU_BTN_RESEAU_X <= xp <= MENU_BTN_RESEAU_X + MENU_BTN_SX and \
                         MENU_BTN_RESEAU_Y <= yp <= MENU_BTN_RESEAU_Y + MENU_BTN_SY:
                     chargement = True
-                    debug.println("Entrée en mode réseau ...")
+                    debug.println("[CORE] Entrée en mode réseau ...")
                     ecran.fill(0)
                     ree.flip()
                     ip = TextBox(ecran, x=100, y=ecran.get_height() // 2,
@@ -157,7 +157,7 @@ def main():
                     loading_text = police.render(open(load_texts.pop(0), encoding='utf-8').read(),
                                                  POL_ANTIALISING, (0, 0, 0))
             if finished_loading and chargement:
-                debug.println("L'avancement max est {}".format(avancement))
+                debug.println("[CORE] avancement : {}".format(avancement))
                 if avancement != max_avancement:
                     max_avancement = avancement
                 avancement = 0
@@ -184,7 +184,7 @@ def main():
     with open(os.path.join("..", "assets", "configuration", "maxavcmt" + EXTENSION), "w") as file:
         file.write(str(max_avancement))
 
-    debug.println("Le programme s'est terminé proprement")
+    debug.println("[CORE] Le programme s'est terminé proprement")
 
 if __name__ == '__main__':
     main()

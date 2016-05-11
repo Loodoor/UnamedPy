@@ -134,17 +134,17 @@ class ParametresManager:
     def _pre_load(self):
         if not os.path.exists(self.path_to_settings):
             with open(self.path_to_settings, "wb") as wsettings:
-                debug.println("Creating default configuration")
+                debug.println("[PARAMS] Création de la configuration par défaut")
                 pickle.Pickler(wsettings).dump(self._default_config)
 
     def load(self):
         self._pre_load()
         try:
             with open(self.path_to_settings, 'rb') as file:
-                debug.println("Loading settings")
+                debug.println("[PARAMS] Chargement")
                 self.params = pickle.Unpickler(file).load()
         except _pickle.UnpicklingError:
-            debug.println("Loading settings failed")
+            debug.println("[PARAMS] Chargement raté")
             os.remove(self.path_to_settings)
             self._pre_load()
 
@@ -161,10 +161,10 @@ class ParametresManager:
             raise ClassNonChargee("ParametresManager", "set")
 
     def save(self):
-        debug.println("Saving settings ...")
+        debug.println("[PARAMS] Sauvegarde")
         with open(self.path_to_settings, "wb") as wsettings:
             pickle.Pickler(wsettings).dump(self.params)
-        debug.println("Saving finished !")
+        debug.println("[PARAMS] Sauvegarde terminée")
 
 
 def gui_access(ecran, police):
@@ -229,7 +229,7 @@ def gui_access(ecran, police):
                     tmp.update({"has_default": not tmp["has_default"]})
                     params.set("delta_time", tmp)
                 if selected == 13:
-                    debug.println("DEMANDE à FAIRE !")
+                    debug.println("[PARAMS] DEMANDE à FAIRE !")
             if 0 < selected < 10 and event == KEYUP:
                 code = event.key
                 tmp = params.get("controls")

@@ -69,7 +69,7 @@ def uround(nb: int or float, lim: float=0.5):
 def uscreenschot(surface):
     path_ = os.path.join("..", "screenshots", str(len(glob(os.path.join("..", "screenshots", "*.png")))) + ".png")
     ree.save_image(surface, path_)
-    debug.println("Screenshot sauvegardée sous '" + path_ + "'")
+    debug.println("[UTILS] Screenshot sauvegardée sous '" + path_ + "'")
 
 
 def uset_image_as_shiney(base) -> object:
@@ -185,7 +185,7 @@ class Point:
 
 
 class UMoment:
-    def __init__(self, description_job: str=""):
+    def __init__(self, description_job: str="-"):
         self.time = time.time()
         self.desc = description_job
 
@@ -201,9 +201,9 @@ class ULoader:
     def load(self):
         if not path.exists(self.path):
             self.create()
-            debug.println("J'ai fini mon travail")
+            debug.println("[ULoader] Chargement terminé")
         else:
-            debug.println("Le fichier indiquant une manipulation existe déjà.\nRemarque(s) :")
+            debug.println("[ULoader] Note :", sep='', end=' ')
             with open(self.path, 'rb') as rlast_job_done:
                 debug.println(pickle.Unpickler(rlast_job_done).load())
             self.create()
@@ -404,11 +404,7 @@ class ULoader:
 
         # Fin du boulot !
         with open(self.path, 'wb') as fjob_done:
-            pickle.Pickler(fjob_done).dump(UMoment("Ajout des premières créatures, "
-                                                   "d'un trigger de test en (0, 10), "
-                                                   "de nouveaux objets, refonte des zones id, "
-                                                   "refonte des zones de base, "
-                                                   "et nouveau système de fonctionnement des objets"))
+            pickle.Pickler(fjob_done).dump(UMoment())
 
     def reload(self):
         self.load()

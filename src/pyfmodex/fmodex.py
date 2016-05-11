@@ -9,15 +9,29 @@ from .structobject import Structobject as so
 arch = platform.architecture()[0]
 
 if os.name == 'nt':
-    if arch == "32bit":
-        _dll = CDLL('../assets/lib/fmodL.dll')
+    if arch == '32bit':
+        # print("[FMODEX] Loading : %s" % "default")
+        # _dll = windll.fmodex
+        print("[FMODEX] Loading : %s" % "../assets/lib/fmodex.dll")
+        print("[FMODEX] Exists  : %s" % os.path.exists("../assets/lib/fmodex.dll"))
+        _dll = CDLL("../assets/lib/fmodex.dll")
     else:
-        _dll = CDLL('../assets/lib/fmodL64.dll')
-elif os.name == "posix":
-    if arch == "32bit":
+        # print("[FMODEX] Loading : %s" % "default x64")
+        # _dll = windll.fmodex64
+        print("[FMODEX] Loading : %s" % "../assets/lib/fmodex64.dll")
+        print("[FMODEX] Exists  : %s" % os.path.exists("../assets/lib/fmodex64.dll"))
+        _dll = CDLL("../assets/lib/fmodex64.dll")
+elif os.name == 'posix':
+    if arch == '32bit':
+        print("[FMODEX] Loading : %s" % "../assets/lib/libfmodex.so")
+        print("[FMODEX] Exists  : %s" % os.path.exists("../assets/lib/libfmodex.so"))
         _dll = CDLL('../assets/lib/libfmodex.so')
     else:
+        print("[FMODEX] Loading : %s" % "../assets/lib/libfmodex64.so")
+        print("[FMODEX] Exists  : %s" % os.path.exists("../assets/lib/libfmodex64.so"))
         _dll = CDLL('../assets/lib/libfmodex64.so')
+else:
+    raise RuntimeError("Can not load FMODEX on this Operating system")
 
 globalvars.dll = _dll
 

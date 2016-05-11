@@ -133,10 +133,10 @@ class Adventure:
                 if self.progress == 0:
                     self.values['sprite'] = self.determine_sexe() + 'player'
             except IndexError:
-                debug.println("L'aventure semble terminée, impossible d'avencer plus")
+                debug.println("[AVENTURE] L'aventure semble terminée, impossible d'avencer plus")
             self.progress += 1
         else:
-            debug.println("Merci de charger l'AdventureManager avant d'utiliser cette méthode")
+            debug.println("[AVENTURE] Merci de charger l'AdventureManager avant d'utiliser cette méthode")
 
     def muted_next(self):
         if self.loaded:
@@ -146,7 +146,7 @@ class Adventure:
                 self.values["pseudo"] = "testeur"
             self.progress += 1
         else:
-            debug.println("Merci de charger l'AdventureManager avant d'utiliser cette méthode")
+            debug.println("[AVENTURE] Merci de charger l'AdventureManager avant d'utiliser cette méthode")
 
     def set_pseudo(self, new: str):
         self.values["pseudo"] = new
@@ -173,7 +173,7 @@ class Adventure:
                 with open(os.path.join("..", "assets", "aventure", name + ".txt"), "r", encoding="utf-8") as file:
                     self.textes[name] = file.readlines()
         except OSError:
-            debug.println("Un fichier de sauvegarde n'existe pas. Impossible de continuer.")
+            debug.println("[AVENTURE] Un fichier de sauvegarde n'existe pas. Impossible de continuer.")
             exit(1)
         self.loaded = True
 

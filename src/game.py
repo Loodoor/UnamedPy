@@ -28,8 +28,6 @@ from exceptions import FonctionnaliteNonImplementee
 from network_event_listener import NetworkEventsListener
 # from fpsregulator import IAFPS
 
-from animator import CinematiqueCreator
-
 
 class Game:
     def __init__(self, ecran, adventure: Adventure, s: socket.socket=None,
@@ -155,7 +153,7 @@ class Game:
         yield 1
 
     def save(self):
-        debug.println("Sauvegarde ...")
+        debug.println("[GAME] Sauvegarde ...")
         self.carte_mgr.save()
         self.personnage.save()
         self.parametres.save()
@@ -511,7 +509,7 @@ class Game:
                 self.personnage.end_move()
 
     def prepare(self):
-        debug.println("Le jeu démarre ...")
+        debug.println("[GAME] Démarrage")
         self.__start_at__ = time.time()
 
         # Variables ayant besoin d'être rechargées avant le lancement du jeu (en cas de lancement multiple du jeu)
@@ -556,7 +554,7 @@ class Game:
             joystick = ree.create_joystick()
             joystick.init()
             self.joystick = JoystickController(joystick)
-            debug.println("Un joystick a été trouvé")
+            debug.println("[GAME] Un joystick a été trouvé")
 
         ree.set_key_repeat(200, 100)
         yield 1
@@ -572,7 +570,7 @@ class Game:
         if not os.path.exists(os.path.join("..", "saves")):
             os.mkdir(os.path.join("..", "saves"))
 
-        debug.println("Le jeu a démarré en %3.4f sec" % (time.time() - self.__start_at__))
+        debug.println("[GAME] Démarré en %3.4f sec" % (time.time() - self.__start_at__))
 
     def render(self, dt: float=1.0):
         if self.renderer_manager.can_i_render():

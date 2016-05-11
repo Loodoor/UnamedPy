@@ -123,12 +123,12 @@ class Inventaire:
             if INVENT_BTN_JETER_Y <= yp <= INVENT_BTN_JETER_Y + INVENT_SIZE_BTN_Y and \
                     INVENT_BTN_JETER_X <= xp <= INVENT_BTN_JETER_X + INVENT_SIZE_BTN_X:
                 # DEMANDER CONFIRMATION AVANT !
-                debug.println("besoin de confirmation")
+                debug.println("[INVENTAIRE] besoin de confirmation")
                 self.jeter(self.selected_item)
             elif INVENT_BTN_JETERTT_Y <= yp <= INVENT_BTN_JETERTT_Y + INVENT_SIZE_BTN_Y and \
                     INVENT_BTN_JETERTT_X <= xp <= INVENT_BTN_JETERTT_X + INVENT_SIZE_BTN_X:
                 # DEMANDER CONFIRMATION AVANT !
-                debug.println("besoin de confirmation")
+                debug.println("[INVENTAIRE] besoin de confirmation")
                 self.jeter_tout(self.selected_item)
             elif INVENT_BTN_USE_Y <= yp <= INVENT_BTN_USE_Y + INVENT_SIZE_BTN_Y and \
                     INVENT_BTN_USE_X <= xp <= INVENT_BTN_USE_X + INVENT_SIZE_BTN_X:

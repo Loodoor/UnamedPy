@@ -22,13 +22,13 @@ def maps_retriver(site: str):
     try:
         tmp = request.urlopen(site + "/provider/list").read().decode()
         data = str(tmp).replace('false', 'False').replace('true', 'True').replace('null', 'None')
-        debug.println("Récupération de la liste des mondes ({}) ...".format(site + '/provider/list'))
+        debug.println("[MAP RETRIEVER] Récupération de la liste des mondes ({}) ...".format(site + '/provider/list'))
         files = eval(data)
-        debug.println("Contenu du fichier : {}".format(files))
+        debug.println("[MAP RETRIEVER] Contenu du fichier : {}".format(files))
     except (socket.gaierror, error.URLError):
-        debug.println("Pas de connexion internet || Le fichier / site n'exsite pas")
+        debug.println("[MAP RETRIEVER] Pas de connexion internet || Le fichier / site n'exsite pas")
     except PermissionError:
-        debug.println("Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")
+        debug.println("[MAP RETRIEVER] Le jeu n'a pas les droits suffisants pour télécharger la liste de maps")
     finally:
         yield 1
 
@@ -57,9 +57,9 @@ def maps_retriver(site: str):
                     with open(dl_path, "w") as file:
                         file.write(str(carte))
                 except PermissionError:
-                    debug.println("Le jeu n'a pas les droits suffisants pour télécharger les maps")
+                    debug.println("[MAP RETRIEVER] Le jeu n'a pas les droits suffisants pour télécharger les maps")
                 except OSError:
-                    debug.println("Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
+                    debug.println("[MAP RETRIEVER] Le chemin d'enregistrement des cartes n'est pas correct ({})".format(dl_path))
     yield 1
 
 
@@ -384,19 +384,19 @@ class CartesManager:
         self.animators['rain'] = BaseSideAnimator(self.images[TILE_RAIN], ANIM_SPEED_RAIN, True)
         self.animators['rain'].load()
 
-        debug.println("Création et chargement des animateurs terminé")
+        debug.println("[CARTE] Création et chargement des animateurs terminé")
 
     def _load_lights(self):
         self.lights = self.current_carte.get_lights()
         for _light in self.lights:
             _light.load()
-        debug.println("Chargement des lights terminé")
+        debug.println("[CARTE] Chargement des lights terminé")
 
     def _load_tiles_rects(self):
         try:
             with open(self.tiles_rects_path, "rb") as file:
                 self.tiles_rects = pickle.Unpickler(file).load()
-                debug.println("Chargement des tiles rects terminé")
+                debug.println("[CARTE] Chargement des tiles rects terminé")
         except OSError:
             pass
 
@@ -420,7 +420,7 @@ class CartesManager:
 
         self.loaded = True
 
-        debug.println("Chargement global terminé")
+        debug.println("[CARTE] Chargement global terminé")
 
     def load(self):
         if not self.loaded:

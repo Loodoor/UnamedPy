@@ -39,7 +39,7 @@ class GUIBulle:
         try:
             self.image = ree.load_image(os.path.join("..", "assets", "gui", "bulle_{}.png".format(color)))
         except OSError:
-            debug.println("La couleur demandée n'est pas trouvable pour la gui bulle ('{}')".format(color))
+            debug.println("[GUI] La couleur demandée n'est pas trouvable pour la gui bulle ('{}')".format(color))
 
     def update(self, dt: int=1):
         self.render()

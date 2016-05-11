@@ -35,10 +35,10 @@ class NetworkEventsListener:
             'key': self._connection_key,
             'avatar': os.path.basename(self._controlers['perso'].get_skin_path())
         })
-        debug.println("Connexion")
+        debug.println("[NETWORK] Connexion")
 
     def disable(self):
-        debug.println("Désactivation de la connexion")
+        debug.println("[NETWORK] Désactivation de la connexion")
         self._enabled = False
 
     def enable(self):
@@ -87,7 +87,7 @@ class NetworkEventsListener:
             try:
                 return json.loads(self._sock.recv(self._buffer_size).decode())
             except ConnectionResetError:
-                debug.println("La connexion a été fermée par le serveur. "
+                debug.println("[NETWORK] La connexion a été fermée par le serveur. "
                               "Contactez l'administrateur si vous pensez que cela est un problème technique")
                 self.disable()
         return UDP_NOTHING_NEW
@@ -103,19 +103,19 @@ class NetworkEventsListener:
     def listen(self):
         if self._enabled:
             if not self._connected:
-                debug.println("Connection en cours")
+                debug.println("[NETWORK] Connection en cours")
                 if self.check_before_connecting():
-                    debug.println("Connexion vérifiée")
+                    debug.println("[NETWORK] Connexion vérifiée")
                     self.on_connect()
-                    debug.println("En attente du serveur")
+                    debug.println("[NETWORK] En attente du serveur")
                     if self._recv() == UDP_CONNECTED:
-                        debug.println("Connecté !")
+                        debug.println("[NETWORK] Connecté")
                         self._connected = True
                     else:
-                        debug.println("Impossible de se connecter correctement au serveur, la connexion a été refusée ou a échoué")
+                        debug.println("[NETWORK] Impossible de se connecter correctement au serveur, la connexion a été refusée ou a échoué")
                         self.disable()
                 else:
-                    debug.println("Impossible de se connecter correctement au serveur, des controlers sont manquant")
+                    debug.println("[NETWORK] Impossible de se connecter correctement au serveur, des controlers sont manquant")
                     self.disable()
 
             self.send(UDP_ASK_NEWS)

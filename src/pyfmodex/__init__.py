@@ -18,6 +18,6 @@ c = {
     "System": system.System
 }
 globalvars.class_list = c
-from . import constants
+from . import constants, utils
 
 System = c["System"]

@@ -165,6 +165,7 @@ class System(object):
         """If create is True, new instance is created. Otherwise ptr must be a valid pointer."""
         if create:
             self._ptr = c_void_p()
+            print("[FMODEX] System datas : ", _dll.__dict__)
             ckresult(_dll.FMOD_System_Create(byref(self._ptr)))
         else:
             self._ptr = ptr
@@ -304,7 +305,6 @@ class System(object):
         ckresult(_dll.FMOD_System_GetDSPClock(self._ptr, byref(hi), byref(lo)))
         return MAKELONG(hi.value, lo.value)
 
-
     @property
     def dsp_head(self):
         dsp_ptr = c_void_p()
@@ -360,7 +360,6 @@ class System(object):
         total = c_int()
         ckresult(_dll.FMOD_System_GetHardwareChannels(self._ptr, byref(num2d), byref(num3d), byref(total)))
         return so(num_2d=num2d.value, num_3d=num3d.value, total=total.value)
-
 
     @property
     def master_channel_group(self):

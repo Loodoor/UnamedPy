@@ -27,7 +27,7 @@ class MusicPlayer:
 
     def load(self):
         for file in self.sounds_path:
-            self.sounds_path[os.path.basename(file)] = ree.load_music_object(file)
+            self.sounds[os.path.basename(file)] = ree.load_music_object(file)
 
     def select(self, sound_index: int):
         if 0 <= sound_index < len(self.sounds_path):

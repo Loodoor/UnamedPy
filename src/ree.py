@@ -4,6 +4,7 @@ import pygame
 import pygame.gfxdraw
 from pygame.locals import *
 import pyfmodex as fmod
+import os
 
 
 def warning(fonction):
@@ -100,8 +101,11 @@ def get_method() -> str:
 def init():
     global ssound
     pygame.mixer.pre_init(44100, -16, 2)
-    ssound = fmod.System()
-    ssound.init()
+    try:
+        ssound = fmod.System()
+        ssound.init()
+    except ValueError as e:
+        print("[REE] Impossible de charger FMODEX\n[REE] - Err: %s" % e)
     return pygame.init()
 
 
@@ -214,33 +218,59 @@ def get_key_name(key: int) -> str:
 def load_music_object(path: str="") -> sound:
     global ssound
     try:
-        return ssound.create_sound(path)
-    except OSError:
+        if ssound:
+            return ssound.create_sound(path)
+        return pygame.mixer.Sound(buffer=b"")
+    except fmod.utils.FmodError or pygame.error as e:
         print("(load_music_object) Impossible de charger la musique à l'adresse : {}".format(path))
+        print("(load_music_object) Fichier existant : {}".format(os.path.exists(path)))
+        print("[REE] Err: %s" % e)
+        return pygame.mixer.Sound(buffer=b"")
 
 
 @warning
 def load_music(path: str):
     try:
         pygame.mixer.music.load(path)
-    except pygame.error:
+    except pygame.error as e:
         print("(load_music) Impossible de charger la musique à l'adresse : {}".format(path))
+        print("(load_music_object) Fichier existant : {}".format(os.path.exists(path)))
+        print("[REE] Err: %s" % e)
 
 
 @warning
 def play_music(loops: int=-1):
-    pygame.mixer.music.play(loops=loops)
+    if ssound:
+        pass
+    else:
+        try:
+            pygame.mixer.music.play(loops=loops)
+        except pygame.error as e:
+            print("[REE] Err: %s" % e)
 
 
-def stop_music(s: sound):
+def stop_music(s: sound or pygame.mixer.Sound):
     global ssound
-    c = s.num_music_channels
-    ssound.get_channel(c).stop()
+    if ssound:
+        c = s.num_music_channels
+        ssound.get_channel(c).stop()
+    else:
+        try:
+            s.stop()
+            pygame.mixer.stop()
+        except pygame.error as e:
+            print("[REE] Err: %s" % e)
 
 
 @warning
 def fadeout_music(value: float):
-    pass  # pygame.mixer.music.fadeout(value)
+    if ssound:
+        pass
+    else:
+        try:
+            pygame.mixer.music.fadeout(value)
+        except pygame.error as e:
+            print("[REE] Err: %s" % e)
 
 
 def is_mixer_busy() -> bool:

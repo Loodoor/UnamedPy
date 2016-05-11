@@ -140,8 +140,8 @@ class Combat:
         self._fond_socle_pokemon = ree.load_image(os.path.join("..", "assets", "gui", "fd_combat_pokemon.png"))
 
     def on_start(self):
-        debug.println("adv id", self.adversaire.get_id())
-        debug.println("zid", self.zid)
+        debug.println("[COMBAT] ID de l'adversaire", self.adversaire.get_id())
+        debug.println("[COMBAT] Zone ID", self.zid)
         self.has_started = True
         global Y_ADV_FALL
         Y_ADV_FALL = 0

@@ -108,7 +108,7 @@ class PlayerAnimator:
     def load(self):
         self._create_anims()
         self._create_masks()
-        debug.println("Animateur chargé, anims : {}, masks : {}".format(self.anims is not None, self.masks is not None))
+        debug.println("[ANIM] Chargé, anims : {}, masks : {}".format(self.anims is not None, self.masks is not None))
 
     def next(self):
         self._tot += 1
@@ -161,7 +161,7 @@ class PlayerAnimator:
         return self.get_mask(direc, self.get_anim_cursor())
 
     def _create_anims(self):
-        debug.println(self.path)
+        debug.println("[ANIM]", self.path)
         lhaut = [ree.load_image(_, True) for _ in glob(os.path.join(self.path, "haut*.png"))]
         lbas = [ree.load_image(_, True) for _ in glob(os.path.join(self.path, "bas*.png"))]
         lgauche = [ree.load_image(_, True) for _ in glob(os.path.join(self.path, "gauche*.png"))]
