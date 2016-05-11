@@ -13,6 +13,7 @@ Description d'une cinématique : *description*
 Texte : -> blabla
    ou : nom_de_la_personne : blabla
    Nota bene : très très souvent (genre tout le temps), "->" est utilisé pour introduire les paroles du prof
+   Nota bene bis : System: texte affichera un texte dans une bulle bleue
 
 Entrée utilisateur demandée : INPUT variable_où_stocker_l'input
 
@@ -65,11 +66,11 @@ Notes :  - régions fictives souvent évoquées dans l'histoire : - Tanjoh
     -> Tu es chargé d'arpenter cette île de long en large, de travers en pas-travers, bref d'aller partout. Et ce dans le but de récolter des données sur l'environnement et les créatures y vivant.
     -> Grâce à toutes ces données, je pourrais améliorer ta carte (très sommaire pour le moment, même les habitants ont peur d'explorer l'île à cause des créatures).
     -> Tu vas sûrement rencontrer des créatures sauvages, il va te falloir du courage (ben oui, on est dans un ARPG quand même ! Si t'as pas les boules, je serais pas contente :( ) !
-    ... Pardon ? Je comprends plus trop là ... C'est toi, Mirabel, qui me parle là ? Où c'est le zozo qu'a fait ce jeu ?
+    ... Pardon ? Je comprends plus trop là ... C'est toi, Mirabel, qui me parle là ? Ou c'est le zozo qu'a fait ce jeu ?
     -> Donc, nous disions ... Ah oui ! Bon, comme à Tanjoh et Ult'af, on soupsonne l'existence des créatures découvertes dans ces 2 régions ici aussi.
     (*note: régions fictives, me faut bien un background. Et pis je veux pas d'ennui avec Nintendo :P*)
     -> Je pense donc partir sur une sorte de "Dexeur", qui fonctionnera comme ceux qu'on a utilisés à Tanjoh et Ult'af. En voilà déjà un, mais je vais l'améliorer par la suite hein ;)
-    {player_name} a reçu un "Dexeur" ! Youpi !
+    System: {player_name} a reçu un "Dexeur" ! Youpi !
     Euh ... Nan mais il va vraiment copier Poké... ?
     -> Tu m'écoutes quand je te parle ou pas ?
     CHOICE ... [oui, non] tu_ecoutes
@@ -95,11 +96,11 @@ Notes :  - régions fictives souvent évoquées dans l'histoire : - Tanjoh
     -> Elles sont corriaces ces créa', j'aurais pas croivu
     Oh mer** une STMG qui sait pas parler
     -> S't'ai pour voir si tu suivais. Reprenons. Tu as chopé avec brio ce ... cette ... enfin ce "trukibidule"
-    -> Maintenant on va le tuer pour le disséquer
+    -> Maintenant on va le tuer pour le disséquer :perv:
     O_o Mirabel, tu fais peur
     -> Je rigole (gros kikoo va)
     ...
-    -> Elle a l'air de t'apprécier, c'est étrange ! Tu te rappelles à Ult'af avec le Mporf...
+    -> Elle a l'air de t'apprécier, c'est étrange ! Tu te rappelles à Ult'af avec le Mparf...
     Pas un mot de plus.
     -> Comme tu voudras. :P
     -> Direction la ville, on va dans mon labo (et oui, en à peine 2 minutes de cinématique, j'ai déjà trouvé un labo ^^ la magie des jeux videos)
@@ -121,6 +122,7 @@ Notes :  - régions fictives souvent évoquées dans l'histoire : - Tanjoh
     EndEvent
     -> Wah ! Pas mal du tout, c'est la première fois que je te vois gagner un combat contre une créa' ! Tu t'rappelles, à Tanjoh, tu te faisais la-mi-ner
     ...
+    System: Tu connais que '...' comme réplique ou quoi ?
     -> Bon, ce qui est pas mal, c'est qu'on a de l'espace pour s'entrainer.
     -> Du coup j'ai changé mes plans, je vais chercher une créa', et toi pendant ce temps tu m'attends en entrainant la tienne.
     -> On ira à mon labo après.
@@ -235,14 +237,13 @@ Notes :  - régions fictives souvent évoquées dans l'histoire : - Tanjoh
     -> On s'en tape.
     -> T'as vu ce que je t'amène ? Deux belles créatures MORTES C:
     Robert: *vomi*
-    Robert: Désolé Mira' mais déjà la dernière fois tes fruits de mer puaient, la c'est pire --'
     -> {player_name} vient là toi.
     Euuh ... Où ça ?! Les trucs pas nets j'en ai marre !
     -> *donne du VC Net active + à {player_name}*
     --' Suuuuuuuuuicide
     Gars: Owiii. J'peux aider ! J'peux aider !
     Mais qu'est-ce que ... ?
-    -> Tiens toi là justement. Tu fais tout juste l'affaire. Tu peux tenir cette Tent'à cul ?
+    -> *une connerie censurée*
     -> Roooooobert ! Mirabel repart en couilles
     *une bonne fessée plus tard*
     Robert: Go disséquer alors ;)
