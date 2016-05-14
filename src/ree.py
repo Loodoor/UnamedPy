@@ -5,6 +5,7 @@ import pygame.gfxdraw
 from pygame.locals import *
 import pyfmodex as fmod
 import os
+import pickle
 
 
 def warning(fonction):
@@ -73,8 +74,14 @@ ssound = None
 
 
 class _TmpBuffer:
+    def __init__(self):
+        self.items = {}
+
     def __call__(self, *args, **kwargs):
-        self.__dict__.update(*args, **kwargs)
+        self.items.update(*args, **kwargs)
+
+    def __getitem__(self, item):
+        return self.items[item]
 
     def __contains__(self, item):
         return item in self.__dict__
@@ -240,8 +247,8 @@ def load_music_object(path: str="") -> sound:
         if os.path.exists(path) and path not in _buffer:
             try:
                 print("(load_music_object) Attente ... Chargement de données lourdes sur %s" % path)
-                _buffer(**{_diacritic(path): pygame.mixer.Sound(path)})
-                return _buffer.path
+                _buffer(**{_diacritic(path): pygame.mixer.Sound(buffer=pickle.Unpickler(open(path, 'rb')).load())})
+                return _buffer[_diacritic(path)]
             except pygame.error as e:
                 print("(load_music_object) Impossible de charger la musique à l'adresse : {}".format(path))
                 print("(load_music_object) Fichier existant : {}".format(os.path.exists(path)))
@@ -253,8 +260,8 @@ def load_music_object(path: str="") -> sound:
         print("[REE] Err: %s" % e)
         if os.path.exists(path) and path not in _buffer:
             print("(load_music_object) Attente ... Chargement de données lourdes sur %s" % path)
-            _buffer(**{_diacritic(path): pygame.mixer.Sound(path)})
-        return _buffer.path
+            _buffer(**{_diacritic(path): pygame.mixer.Sound(buffer=pickle.Unpickler(open(path, 'rb')).load())})
+        return _buffer[_diacritic(path)]
 
 
 @warning
