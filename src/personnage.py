@@ -127,7 +127,7 @@ class Personnage:
             if colliding(x3, y3) or colliding(x4, y4):
                 y -= my
 
-        return x, y
+        return x + self.carte_mgr.get_of1(), y + self.carte_mgr.get_of2()
 
     def change_animator_for_current_state(self):
         if self.cur_div == DIV_DT_BASIC:
@@ -196,18 +196,21 @@ class Personnage:
 
         x, y = self._check_collisions(direction, vecteur, new_speed, pnjs)
         rx, ry = x - self.carte_mgr.get_of1(), y - self.carte_mgr.get_of2()
+        print("@", x, y)
+        print("O", self.carte_mgr.get_of1(), self.carte_mgr.get_of2())
         self._of_had_moved = False
         _rx, _ry = rx, ry
+        print("#", rx, ry)
         rx, ry = self._move_offsets(rx, ry)
         # cs = self.carte_mgr.calculate_current_chunk_size_from_offsets()
         # rx = 0 if rx < 0 else cs[0] * TILE_SIZE - 2 * TILE_SIZE if rx > cs[0] * TILE_SIZE - 2 * TILE_SIZE else rx
         # ry = 0 if ry < 0 else cs[1] * TILE_SIZE - 2 * TILE_SIZE if ry > cs[1] * TILE_SIZE - 2 * TILE_SIZE else ry
+        nx, ny = rx + self.carte_mgr.get_of1(), ry + self.carte_mgr.get_of2()
         if (_rx, _ry) != (rx, ry):
             self._of_had_moved = True
         if not self._of_had_moved:
-            self.pos.pos = rx, ry
+            self.pos.pos = nx, ny
         else:
-            print(rx, ry)
             self.pos.pos = rx, ry
             self._of_had_moved = False
 
