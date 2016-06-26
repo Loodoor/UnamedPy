@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import _pickle
 import pygame
 import pygame.gfxdraw
 from pygame.locals import *
@@ -249,7 +250,7 @@ def load_music_object(path: str="") -> sound:
                 print("(load_music_object) Attente ... Chargement de données lourdes sur %s" % path)
                 _buffer(**{_diacritic(path): pygame.mixer.Sound(buffer=pickle.Unpickler(open(path, 'rb')).load())})
                 return _buffer[_diacritic(path)]
-            except pygame.error as e:
+            except (pygame.error, _pickle.UnpicklingError) as e:
                 print("(load_music_object) Impossible de charger la musique à l'adresse : {}".format(path))
                 print("(load_music_object) Fichier existant : {}".format(os.path.exists(path)))
                 print("[REE] Err: %s" % e)

@@ -483,6 +483,10 @@ class Game:
         if event == (KEYUP, self.controles[MAJ]):
             self.personnage.change_moving_state()
 
+        if DEBUG_LEVEL and event == (MOUSEBUTTONUP, 3):
+            x, y = event.pos
+            self.personnage.set_pos(x, y)
+
         # joystick
         if self.joystick:
             if self.joystick.is_button_pressed(self.controles_joy[MENU]["button"]):

@@ -27,6 +27,7 @@ class Personnage:
         self.inventaire = inventaire.Inventaire(self.ecran, self.police, self.carte_mgr)
         self.last_case = self.pos.tile
         self.same_as_before = False
+        self._of_had_moved = False
 
     def change_moving_state(self) -> None:
         if self.cur_div == DIV_DT_BASIC:
@@ -195,11 +196,20 @@ class Personnage:
 
         x, y = self._check_collisions(direction, vecteur, new_speed, pnjs)
         rx, ry = x - self.carte_mgr.get_of1(), y - self.carte_mgr.get_of2()
+        self._of_had_moved = False
+        _rx, _ry = rx, ry
         rx, ry = self._move_offsets(rx, ry)
         # cs = self.carte_mgr.calculate_current_chunk_size_from_offsets()
         # rx = 0 if rx < 0 else cs[0] * TILE_SIZE - 2 * TILE_SIZE if rx > cs[0] * TILE_SIZE - 2 * TILE_SIZE else rx
         # ry = 0 if ry < 0 else cs[1] * TILE_SIZE - 2 * TILE_SIZE if ry > cs[1] * TILE_SIZE - 2 * TILE_SIZE else ry
-        self.pos.pos = rx, ry
+        if (_rx, _ry) != (rx, ry):
+            self._of_had_moved = True
+        if not self._of_had_moved:
+            self.pos.pos = rx, ry
+        else:
+            print(rx, ry)
+            self.pos.pos = rx, ry
+            self._of_had_moved = False
 
         if self.changed_cur_case():
             self.carte_mgr.call_trigger_at(int(x // TILE_SIZE), int(y // TILE_SIZE))
@@ -261,6 +271,10 @@ class Personnage:
 
     def get_pos(self) -> tuple:
         return self.pos.pos
+
+    def set_pos(self, new_x: int, new_y: int):
+        self.pos.x = new_x
+        self.pos.y = new_y
 
     def get_real_pos(self) -> tuple:
         return self.pos.x - self.carte_mgr.get_of1(), self.pos.y - self.carte_mgr.get_of2()

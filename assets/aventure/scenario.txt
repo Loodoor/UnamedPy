@@ -210,7 +210,7 @@ Notes :  - régions fictives souvent évoquées dans l'histoire : - Tanjoh
     Ca me fait penser à "Pate à pain"
     Gars: Tu parles tout seul
     Gars: T'es skizo' ?
-    Nop' Je parlais à ce truc qui m'adore en pensant qu'il va m'écouter mais en fait il doit comprendre (oui, oui, je suis bien seul dans ma vie --')
+    Nop' Je parlais à ce truc qui m'adore en pensant qu'il va m'écouter mais en fait il doit pas me comprendre (oui, oui, je suis bien seul dans ma vie --')
     Gars: Tuer. Je veux tuer.
     Oké ... Tu sais quoi, je vais te laisser :-°
     Gars: Nan nan j'ai besoin de toi
@@ -228,7 +228,7 @@ Notes :  - régions fictives souvent évoquées dans l'histoire : - Tanjoh
     Mais à la fin, est-ce que ces voyages ont tous un but commun, celui d'aider la science ?
     Et si ce n'était pas le cas ... ?
     *mode philosophe off*
-    -> *bourée* Sal'ut 'oi ! T'as pas un truc à néfu pour m'oi ?
+    -> *bourée* Salu' 'oi ! T'as pas un truc à néfu pour m'oi ?
 
 # Retour au labo
     [La prof, nous, Robert, le gars de Pah'Tapey]
@@ -243,9 +243,9 @@ Notes :  - régions fictives souvent évoquées dans l'histoire : - Tanjoh
     --' Suuuuuuuuuicide
     Gars: Owiii. J'peux aider ! J'peux aider !
     Mais qu'est-ce que ... ?
-    -> *une connerie censurée*
+    System: *censuré* #laCensureC'estMal
     -> Roooooobert ! Mirabel repart en couilles
-    *une bonne fessée plus tard*
+    System: *une bonne fessée plus tard*
     Robert: Go disséquer alors ;)
     *Si tu dissèques c'est que tu es un biologiste*
     Robert: Hein ? J'ai un diplôme de technicien de surfaces - avec un 10,1 / 20 C: -, ça suffit amplement tu sais !
