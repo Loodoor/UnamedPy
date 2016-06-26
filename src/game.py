@@ -670,7 +670,7 @@ class Game:
                                  "Map id : {}".format(self.carte_mgr.current_carte.id),
                                  "Offsets : {}".format([float("%4.3f" % i) for i in self.carte_mgr.get_ofs()]),
                                  "Entités affichées : {}".format(self.carte_mgr.get_draw_entites()),
-                                 "Taille du chunk : {}".format(self.carte_mgr.calculate_current_chunk_size_from_offsets()),
+                                 # "Taille du chunk : {}".format(self.carte_mgr.calculate_current_chunk_size_from_offsets()),
                                  "- - Personnage - -",
                                  "Direction: {}".format(self.personnage.get_dir()),
                                  "Position: {}".format(self.personnage.get_real_pos()),

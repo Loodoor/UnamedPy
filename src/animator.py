@@ -337,6 +337,9 @@ class CinematiqueCreator:
         self._time = 0
         last = self._current
 
+        self._displaying_text = False
+        self._text = None
+
         err = False
         try:
             self._current = self._conf["frames_order"][self._conf["frames_order"].index(self._current) + 1]
