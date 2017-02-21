@@ -196,11 +196,8 @@ class Personnage:
 
         x, y = self._check_collisions(direction, vecteur, new_speed, pnjs)
         rx, ry = x - self.carte_mgr.get_of1(), y - self.carte_mgr.get_of2()
-        print("@", x, y)
-        print("O", self.carte_mgr.get_of1(), self.carte_mgr.get_of2())
         self._of_had_moved = False
         _rx, _ry = rx, ry
-        print("#", rx, ry)
         rx, ry = self._move_offsets(rx, ry)
         # cs = self.carte_mgr.calculate_current_chunk_size_from_offsets()
         # rx = 0 if rx < 0 else cs[0] * TILE_SIZE - 2 * TILE_SIZE if rx > cs[0] * TILE_SIZE - 2 * TILE_SIZE else rx
